@@ -7,6 +7,7 @@ Module bytecode.
       (* StructRecord
         {
           name := "TypesSection";
+          const_params := [];
           ty_params := [];
           fields :=
             [ ("inputs", Ty.path "u8"); ("outputs", Ty.path "u8"); ("max_stack_size", Ty.path "u16")
@@ -18,9 +19,9 @@ Module bytecode.
           Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -61,7 +62,7 @@ Module bytecode.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -77,9 +78,9 @@ Module bytecode.
           Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -95,7 +96,7 @@ Module bytecode.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -111,9 +112,9 @@ Module bytecode.
           Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm_primitives::bytecode::eof::types_section::TypesSection"
@@ -152,7 +153,7 @@ Module bytecode.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -168,9 +169,9 @@ Module bytecode.
           Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection".
         
         (* Hash *)
-        Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ __H ], [ self; state ] =>
+        Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ __H ], [ self; state ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
@@ -229,7 +230,7 @@ Module bytecode.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -257,9 +258,9 @@ Module bytecode.
           Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -314,7 +315,7 @@ Module bytecode.
                       |)
                     |))))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -342,9 +343,13 @@ Module bytecode.
           Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -360,7 +365,7 @@ Module bytecode.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -393,9 +398,9 @@ Module bytecode.
                 self.outputs as i32 - self.inputs as i32
             }
         *)
-        Definition io_diff (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition io_diff (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Wrap.sub
@@ -416,7 +421,7 @@ Module bytecode.
                       "inputs"
                     |)
                   |)))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_io_diff : M.IsAssociatedFunction Self "io_diff" io_diff.
@@ -428,9 +433,9 @@ Module bytecode.
                 buffer.extend_from_slice(&self.max_stack_size.to_be_bytes());
             }
         *)
-        Definition encode (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; buffer ] =>
+        Definition encode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; buffer ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let buffer := M.alloc (| buffer |) in
@@ -441,6 +446,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "push",
                         []
@@ -463,6 +469,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "push",
                         []
@@ -485,6 +492,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "extend_from_slice",
                         []
@@ -512,7 +520,7 @@ Module bytecode.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_encode : M.IsAssociatedFunction Self "encode" encode.
@@ -531,9 +539,9 @@ Module bytecode.
                 Ok((section, input))
             }
         *)
-        Definition decode (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ input ] =>
+        Definition decode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ input ] =>
             ltac:(M.monadic
               (let input := M.alloc (| input |) in
               M.catch_return (|
@@ -547,12 +555,14 @@ Module bytecode.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [
                                   Ty.tuple
                                     [
                                       Ty.apply
                                         (Ty.path "&")
-                                        [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                       Ty.path "u8"
                                     ];
                                   Ty.path "revm_primitives::bytecode::eof::EofDecodeError"
@@ -591,6 +601,7 @@ Module bytecode.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.tuple
                                                 [
@@ -598,7 +609,9 @@ Module bytecode.
                                                     "revm_primitives::bytecode::eof::types_section::TypesSection";
                                                   Ty.apply
                                                     (Ty.path "&")
-                                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ]
                                                 ];
                                               Ty.path
                                                 "revm_primitives::bytecode::eof::EofDecodeError"
@@ -606,6 +619,7 @@ Module bytecode.
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.path "core::convert::Infallible";
                                                 Ty.path
@@ -648,12 +662,14 @@ Module bytecode.
                                       "core::ops::try_trait::Try",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.tuple
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
-                                                [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                               Ty.path "u8"
                                             ];
                                           Ty.path "revm_primitives::bytecode::eof::EofDecodeError"
@@ -692,6 +708,7 @@ Module bytecode.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.tuple
                                                         [
@@ -699,9 +716,11 @@ Module bytecode.
                                                             "revm_primitives::bytecode::eof::types_section::TypesSection";
                                                           Ty.apply
                                                             (Ty.path "&")
+                                                            []
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "slice")
+                                                                []
                                                                 [ Ty.path "u8" ]
                                                             ]
                                                         ];
@@ -711,6 +730,7 @@ Module bytecode.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.path "core::convert::Infallible";
                                                         Ty.path
@@ -753,14 +773,17 @@ Module bytecode.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.tuple
                                                     [
                                                       Ty.apply
                                                         (Ty.path "&")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "slice")
+                                                            []
                                                             [ Ty.path "u8" ]
                                                         ];
                                                       Ty.path "u16"
@@ -802,6 +825,7 @@ Module bytecode.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple
                                                                 [
@@ -809,9 +833,11 @@ Module bytecode.
                                                                     "revm_primitives::bytecode::eof::types_section::TypesSection";
                                                                   Ty.apply
                                                                     (Ty.path "&")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "slice")
+                                                                        []
                                                                         [ Ty.path "u8" ]
                                                                     ]
                                                                 ];
@@ -821,6 +847,7 @@ Module bytecode.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.path "core::convert::Infallible";
                                                                 Ty.path
@@ -873,6 +900,7 @@ Module bytecode.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.tuple [];
                                                           Ty.path
@@ -914,6 +942,7 @@ Module bytecode.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.tuple
                                                                         [
@@ -921,9 +950,11 @@ Module bytecode.
                                                                             "revm_primitives::bytecode::eof::types_section::TypesSection";
                                                                           Ty.apply
                                                                             (Ty.path "&")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [ Ty.path "u8" ]
                                                                             ]
                                                                         ];
@@ -934,6 +965,7 @@ Module bytecode.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
@@ -978,7 +1010,7 @@ Module bytecode.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.
@@ -994,9 +1026,9 @@ Module bytecode.
                 Ok(())
             }
         *)
-        Definition validate (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition validate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -1120,7 +1152,7 @@ Module bytecode.
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_validate : M.IsAssociatedFunction Self "validate" validate.

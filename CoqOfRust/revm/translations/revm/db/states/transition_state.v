@@ -7,12 +7,14 @@ Module db.
       (* StructRecord
         {
           name := "TransitionState";
+          const_params := [];
           ty_params := [];
           fields :=
             [
               ("transitions",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
                     Ty.path "alloy_primitives::bits::address::Address";
                     Ty.path "revm::db::states::transition_account::TransitionAccount";
@@ -25,9 +27,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::transition_state::TransitionState".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -39,6 +41,7 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::transition_account::TransitionAccount";
@@ -57,7 +60,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -72,9 +75,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::transition_state::TransitionState".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm::db::states::transition_state::TransitionState"
@@ -85,6 +88,7 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::transition_account::TransitionAccount";
@@ -97,7 +101,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -112,9 +116,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::transition_state::TransitionState".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -139,7 +143,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -165,9 +169,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::transition_state::TransitionState".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -176,6 +180,7 @@ Module db.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
+                    []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
                       Ty.path "revm::db::states::transition_account::TransitionAccount";
@@ -184,6 +189,7 @@ Module db.
                   [
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
                         Ty.path "alloy_primitives::bits::address::Address";
                         Ty.path "revm::db::states::transition_account::TransitionAccount";
@@ -206,7 +212,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -232,9 +238,13 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::transition_state::TransitionState".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -243,7 +253,7 @@ Module db.
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -265,9 +275,9 @@ Module db.
                 TransitionState { transitions }
             }
         *)
-        Definition single (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ address; transition ] =>
+        Definition single (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ address; transition ] =>
             ltac:(M.monadic
               (let address := M.alloc (| address |) in
               let transition := M.alloc (| transition |) in
@@ -278,6 +288,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::transition_account::TransitionAccount";
@@ -295,6 +306,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::transition_account::TransitionAccount";
@@ -312,7 +324,7 @@ Module db.
                     [ ("transitions", M.read (| transitions |)) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_single : M.IsAssociatedFunction Self "single" single.
@@ -322,9 +334,9 @@ Module db.
                 core::mem::take(self)
             }
         *)
-        Definition take (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition take (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -334,7 +346,7 @@ Module db.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_take : M.IsAssociatedFunction Self "take" take.
@@ -354,9 +366,9 @@ Module db.
                 }
             }
         *)
-        Definition add_transitions (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; transitions ] =>
+        Definition add_transitions (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; transitions ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let transitions := M.alloc (| transitions |) in
@@ -369,6 +381,7 @@ Module db.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.tuple
                                 [
@@ -398,6 +411,7 @@ Module db.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "alloc::vec::into_iter::IntoIter")
+                                          []
                                           [
                                             Ty.tuple
                                               [
@@ -440,6 +454,7 @@ Module db.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "std::collections::hash::map::HashMap")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "alloy_primitives::bits::address::Address";
@@ -477,6 +492,7 @@ Module db.
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::map::OccupiedEntry")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "alloy_primitives::bits::address::Address";
@@ -518,6 +534,7 @@ Module db.
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::map::VacantEntry")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "alloy_primitives::bits::address::Address";
@@ -540,7 +557,7 @@ Module db.
                     ]
                   |))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_add_transitions :

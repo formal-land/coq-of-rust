@@ -26,7 +26,7 @@ Module iter.
             (α : list Value.t)
             : M :=
           match ε, τ, α with
-          | [], [], [ self ] =>
+          | [ N ], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -883,7 +883,7 @@ Module iter.
             (α : list Value.t)
             : M :=
           match ε, τ, α with
-          | [], [ F; R ], [ self; f ] =>
+          | [ N ], [ F; R ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -2761,7 +2761,7 @@ Module iter.
             (α : list Value.t)
             : M :=
           match ε, τ, α with
-          | [], [], [ self ] =>
+          | [ N ], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|

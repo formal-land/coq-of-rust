@@ -6,19 +6,20 @@ Module context.
     (* StructRecord
       {
         name := "EvmContext";
+        const_params := [];
         ty_params := [ "DB" ];
         fields :=
           [
             ("inner",
-              Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ]);
+              Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [] [ DB ]);
             ("precompiles",
-              Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [ DB ])
+              Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [] [ DB ])
           ];
       } *)
     
     Module Impl_core_clone_Clone_where_revm_primitives_db_Database_DB_where_core_clone_Clone_DB_where_core_clone_Clone_associated_type_for_revm_context_evm_context_EvmContext_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ].
+        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ].
       
       (*
           fn clone(&self) -> Self {
@@ -28,10 +29,10 @@ Module context.
               }
           }
       *)
-      Definition clone (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -41,7 +42,10 @@ Module context.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       [],
                       "clone",
                       []
@@ -60,6 +64,7 @@ Module context.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "revm::context::context_precompiles::ContextPrecompiles")
+                        []
                         [ DB ],
                       [],
                       "default",
@@ -68,7 +73,7 @@ Module context.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -82,7 +87,7 @@ Module context.
     
     Module Impl_core_fmt_Debug_where_revm_primitives_db_Database_DB_where_core_fmt_Debug_DB_where_core_fmt_Debug_associated_type_for_revm_context_evm_context_EvmContext_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ].
+        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -92,10 +97,10 @@ Module context.
                   .finish_non_exhaustive()
           }
       *)
-      Definition fmt (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -152,7 +157,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -166,21 +171,21 @@ Module context.
     
     Module Impl_core_ops_deref_Deref_where_revm_primitives_db_Database_DB_for_revm_context_evm_context_EvmContext_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ].
+        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ].
       
       (*     type Target = InnerEvmContext<DB>; *)
       Definition _Target (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ].
+        Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [] [ DB ].
       
       (*
           fn deref(&self) -> &Self::Target {
               &self.inner
           }
       *)
-      Definition deref (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -188,7 +193,7 @@ Module context.
               "revm::context::evm_context::EvmContext",
               "inner"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -203,17 +208,17 @@ Module context.
     
     Module Impl_core_ops_deref_DerefMut_where_revm_primitives_db_Database_DB_for_revm_context_evm_context_EvmContext_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ].
+        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ].
       
       (*
           fn deref_mut(&mut self) -> &mut Self::Target {
               &mut self.inner
           }
       *)
-      Definition deref_mut (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref_mut (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -221,7 +226,7 @@ Module context.
               "revm::context::evm_context::EvmContext",
               "inner"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -235,7 +240,7 @@ Module context.
     
     Module Impl_revm_context_evm_context_EvmContext_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ].
+        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ].
       
       (*
           pub fn new(db: DB) -> Self {
@@ -245,10 +250,10 @@ Module context.
               }
           }
       *)
-      Definition new (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ db ] =>
+        match ε, τ, α with
+        | [], [], [ db ] =>
           ltac:(M.monadic
             (let db := M.alloc (| db |) in
             Value.StructRecord
@@ -257,7 +262,10 @@ Module context.
                 ("inner",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "new",
                       []
                     |),
@@ -269,6 +277,7 @@ Module context.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "revm::context::context_precompiles::ContextPrecompiles")
+                        []
                         [ DB ],
                       [],
                       "default",
@@ -277,7 +286,7 @@ Module context.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -292,10 +301,15 @@ Module context.
               }
           }
       *)
-      Definition new_with_env (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_with_env
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ db; env ] =>
+        match ε, τ, α with
+        | [], [], [ db; env ] =>
           ltac:(M.monadic
             (let db := M.alloc (| db |) in
             let env := M.alloc (| env |) in
@@ -305,7 +319,10 @@ Module context.
                 ("inner",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "new_with_env",
                       []
                     |),
@@ -317,6 +334,7 @@ Module context.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "revm::context::context_precompiles::ContextPrecompiles")
+                        []
                         [ DB ],
                       [],
                       "default",
@@ -325,7 +343,7 @@ Module context.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_with_env :
@@ -340,10 +358,10 @@ Module context.
               }
           }
       *)
-      Definition with_db (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition with_db (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [ ODB ], [ self; db ] =>
+        match ε, τ, α with
+        | [], [ ODB ], [ self; db ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let db := M.alloc (| db |) in
@@ -353,7 +371,10 @@ Module context.
                 ("inner",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "with_db",
                       [ ODB ]
                     |),
@@ -374,6 +395,7 @@ Module context.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "revm::context::context_precompiles::ContextPrecompiles")
+                        []
                         [ ODB ],
                       [],
                       "default",
@@ -382,7 +404,7 @@ Module context.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_with_db :
@@ -397,10 +419,15 @@ Module context.
               self.precompiles = precompiles;
           }
       *)
-      Definition set_precompiles (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set_precompiles
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; precompiles ] =>
+        match ε, τ, α with
+        | [], [], [ self; precompiles ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let precompiles := M.alloc (| precompiles |) in
@@ -412,7 +439,7 @@ Module context.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -428,12 +455,16 @@ Module context.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
-                      Ty.apply (Ty.path "core::iter::adapters::copied::Copied") [ Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::copied::Copied")
+                        []
+                        [ Ty.associated ],
                       [],
                       "collect",
                       [
                         Ty.apply
                           (Ty.path "std::collections::hash::set::HashSet")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "std::hash::random::RandomState"
@@ -454,6 +485,7 @@ Module context.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "revm::context::context_precompiles::ContextPrecompiles")
+                                []
                                 [ DB ],
                               "addresses",
                               []
@@ -476,7 +508,7 @@ Module context.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_precompiles :
@@ -520,10 +552,15 @@ Module context.
               Some(result)
           }
       *)
-      Definition call_precompile (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call_precompile
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; address; input_data; gas ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; input_data; gas ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -541,9 +578,11 @@ Module context.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [
                                       Ty.tuple
                                         [ Ty.path "u64"; Ty.path "alloy_primitives::bytes_::Bytes"
@@ -561,6 +600,7 @@ Module context.
                                   Ty.apply
                                     (Ty.path
                                       "revm::context::context_precompiles::ContextPrecompiles")
+                                    []
                                     [ DB ],
                                   "call",
                                   []
@@ -610,6 +650,7 @@ Module context.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [
                                               Ty.path
                                                 "revm_interpreter::interpreter::InterpreterResult"
@@ -617,6 +658,7 @@ Module context.
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -820,7 +862,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_call_precompile :
@@ -907,10 +949,15 @@ Module context.
               }
           }
       *)
-      Definition make_call_frame (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition make_call_frame
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; inputs ] =>
+        match ε, τ, α with
+        | [], [], [ self; inputs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let inputs := M.alloc (| inputs |) in
@@ -979,6 +1026,7 @@ Module context.
                                                   "core::clone::Clone",
                                                   Ty.apply
                                                     (Ty.path "core::ops::range::Range")
+                                                    []
                                                     [ Ty.path "usize" ],
                                                   [],
                                                   "clone",
@@ -1023,6 +1071,7 @@ Module context.
                                               "core::ops::deref::Deref",
                                               Ty.apply
                                                 (Ty.path "revm::context::evm_context::EvmContext")
+                                                []
                                                 [ DB ],
                                               [],
                                               "deref",
@@ -1058,10 +1107,12 @@ Module context.
                                           ]
                                           (Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "revm::frame::FrameOrResult";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]),
                                         [
@@ -1099,16 +1150,19 @@ Module context.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
+                                      []
                                       [ Ty.path "revm_primitives::state::Account" ];
                                     Ty.path "bool"
                                   ];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -1172,19 +1226,23 @@ Module context.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "revm::frame::FrameOrResult";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -1238,6 +1296,7 @@ Module context.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
+                                    []
                                     [ Ty.path "revm_primitives::bytecode::Bytecode" ],
                                   "unwrap_or_default",
                                   []
@@ -1248,6 +1307,7 @@ Module context.
                                       "core::clone::Clone",
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [ Ty.path "revm_primitives::bytecode::Bytecode" ],
                                       [],
                                       "clone",
@@ -1283,6 +1343,7 @@ Module context.
                                         "core::ops::deref::DerefMut",
                                         Ty.apply
                                           (Ty.path "revm::context::evm_context::EvmContext")
+                                          []
                                           [ DB ],
                                         [],
                                         "deref_mut",
@@ -1318,8 +1379,16 @@ Module context.
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
-                                            Ty.path "ruint::Uint",
-                                            [ Ty.path "ruint::Uint" ],
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                []
+                                            ],
                                             "eq",
                                             []
                                           |),
@@ -1339,17 +1408,20 @@ Module context.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.tuple
                                                     [
                                                       Ty.apply
                                                         (Ty.path "&mut")
+                                                        []
                                                         [ Ty.path "revm_primitives::state::Account"
                                                         ];
                                                       Ty.path "bool"
                                                     ];
                                                   Ty.apply
                                                     (Ty.path "revm_primitives::result::EVMError")
+                                                    []
                                                     [ Ty.associated ]
                                                 ],
                                               [],
@@ -1362,6 +1434,7 @@ Module context.
                                                   Ty.apply
                                                     (Ty.path
                                                       "revm::context::inner_evm_context::InnerEvmContext")
+                                                    []
                                                     [ DB ],
                                                   "load_account",
                                                   []
@@ -1373,6 +1446,7 @@ Module context.
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm::context::evm_context::EvmContext")
+                                                        []
                                                         [ DB ],
                                                       [],
                                                       "deref_mut",
@@ -1411,21 +1485,25 @@ Module context.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.path "revm::frame::FrameOrResult";
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "revm_primitives::result::EVMError")
+                                                                []
                                                                 [ Ty.associated ]
                                                             ],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.path "core::convert::Infallible";
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "revm_primitives::result::EVMError")
+                                                                  []
                                                                   [ Ty.associated ]
                                                               ]
                                                           ],
@@ -1466,6 +1544,7 @@ Module context.
                                                   Ty.apply
                                                     (Ty.path
                                                       "revm::context::evm_context::EvmContext")
+                                                    []
                                                     [ DB ],
                                                   [],
                                                   "deref_mut",
@@ -1507,9 +1586,11 @@ Module context.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "revm_interpreter::instruction_result::InstructionResult"
@@ -1517,6 +1598,7 @@ Module context.
                                                           Ty.apply
                                                             (Ty.path
                                                               "revm_primitives::result::EVMError")
+                                                            []
                                                             [ Ty.associated ]
                                                         ],
                                                       [],
@@ -1585,24 +1667,28 @@ Module context.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm::frame::FrameOrResult";
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "revm_primitives::result::EVMError")
+                                                                        []
                                                                         [ Ty.associated ]
                                                                     ],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "revm_primitives::result::EVMError")
+                                                                          []
                                                                           [ Ty.associated ]
                                                                       ]
                                                                   ],
@@ -1654,6 +1740,7 @@ Module context.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "revm::context::evm_context::EvmContext")
+                                                                  []
                                                                   [ DB ],
                                                                 [],
                                                                 "deref_mut",
@@ -1682,11 +1769,13 @@ Module context.
                                                           ]
                                                           (Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.path "revm::frame::FrameOrResult";
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "revm_primitives::result::EVMError")
+                                                                []
                                                                 [ Ty.associated ]
                                                             ]),
                                                         [
@@ -1725,6 +1814,7 @@ Module context.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "revm::context::evm_context::EvmContext")
+                                            []
                                             [ DB ],
                                           "call_precompile",
                                           []
@@ -1850,6 +1940,7 @@ Module context.
                                                           Ty.apply
                                                             (Ty.path
                                                               "revm::context::evm_context::EvmContext")
+                                                            []
                                                             [ DB ],
                                                           [],
                                                           "deref_mut",
@@ -1882,6 +1973,7 @@ Module context.
                                                           Ty.apply
                                                             (Ty.path
                                                               "revm::context::evm_context::EvmContext")
+                                                            []
                                                             [ DB ],
                                                           [],
                                                           "deref_mut",
@@ -1916,6 +2008,7 @@ Module context.
                                                 "core::clone::Clone",
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::Range")
+                                                  []
                                                   [ Ty.path "usize" ],
                                                 [],
                                                 "clone",
@@ -2008,6 +2101,7 @@ Module context.
                                                         "core::clone::Clone",
                                                         Ty.apply
                                                           (Ty.path "core::ops::range::Range")
+                                                          []
                                                           [ Ty.path "usize" ],
                                                         [],
                                                         "clone",
@@ -2070,6 +2164,7 @@ Module context.
                                                         Ty.apply
                                                           (Ty.path
                                                             "revm::context::evm_context::EvmContext")
+                                                          []
                                                           [ DB ],
                                                         [],
                                                         "deref_mut",
@@ -2097,11 +2192,13 @@ Module context.
                                                   ]
                                                   (Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "revm::frame::FrameOrResult";
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ]),
                                                 [
@@ -2133,7 +2230,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_make_call_frame :

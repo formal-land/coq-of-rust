@@ -12,7 +12,7 @@ Module cmp.
         (α : list Value.t)
         : M :=
       match ε, τ, α with
-      | [ host ], [], [ self; other ] =>
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in

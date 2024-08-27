@@ -7,16 +7,16 @@ Module db.
   
   Module underscore.
     Module Impl_revm_primitives_db_Database_where_revm_primitives_db_Database_T_where_core_marker_Sized_T_for_ref_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (* #[auto_impl(&mut, Box)] *)
       Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition basic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -24,14 +24,19 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "basic", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition code_by_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let code_hash := M.alloc (| code_hash |) in
@@ -39,14 +44,14 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "code_by_hash", [] |),
               [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition storage (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -55,14 +60,14 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "storage", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition block_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -70,7 +75,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "block_hash", [] |),
               [ M.read (| M.read (| self |) |); M.read (| number |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -90,16 +95,16 @@ Module db.
     End Impl_revm_primitives_db_Database_where_revm_primitives_db_Database_T_where_core_marker_Sized_T_for_ref_mut_T.
     Module Impl_revm_primitives_db_Database_where_revm_primitives_db_Database_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&mut, Box)] *)
       Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition basic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -107,14 +112,19 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "basic", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition code_by_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let code_hash := M.alloc (| code_hash |) in
@@ -122,14 +132,14 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "code_by_hash", [] |),
               [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition storage (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -138,14 +148,14 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "storage", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition block_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -153,7 +163,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "block_hash", [] |),
               [ M.read (| M.read (| self |) |); M.read (| number |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -172,13 +182,13 @@ Module db.
           ].
     End Impl_revm_primitives_db_Database_where_revm_primitives_db_Database_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
     Module Impl_revm_primitives_db_DatabaseCommit_where_revm_primitives_db_DatabaseCommit_T_where_core_marker_Sized_T_for_ref_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition commit (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition commit (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; changes ] =>
+        match ε, τ, α with
+        | [], [], [ self; changes ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let changes := M.alloc (| changes |) in
@@ -186,7 +196,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseCommit", T, [], "commit", [] |),
               [ M.read (| M.read (| self |) |); M.read (| changes |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -199,13 +209,13 @@ Module db.
     End Impl_revm_primitives_db_DatabaseCommit_where_revm_primitives_db_DatabaseCommit_T_where_core_marker_Sized_T_for_ref_mut_T.
     Module Impl_revm_primitives_db_DatabaseCommit_where_revm_primitives_db_DatabaseCommit_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition commit (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition commit (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; changes ] =>
+        match ε, τ, α with
+        | [], [], [ self; changes ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let changes := M.alloc (| changes |) in
@@ -213,7 +223,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseCommit", T, [], "commit", [] |),
               [ M.read (| M.read (| self |) |); M.read (| changes |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -225,16 +235,16 @@ Module db.
           (* Instance *) [ ("commit", InstanceField.Method (commit T)) ].
     End Impl_revm_primitives_db_DatabaseCommit_where_revm_primitives_db_DatabaseCommit_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
     Module Impl_revm_primitives_db_DatabaseRef_where_revm_primitives_db_DatabaseRef_T_where_core_marker_Sized_T_for_ref__T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
       Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition basic_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -242,14 +252,19 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseRef", T, [], "basic_ref", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition code_by_hash_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let code_hash := M.alloc (| code_hash |) in
@@ -263,14 +278,14 @@ Module db.
               |),
               [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition storage_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -279,14 +294,19 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseRef", T, [], "storage_ref", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition block_hash_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -300,7 +320,7 @@ Module db.
               |),
               [ M.read (| M.read (| self |) |); M.read (| number |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -319,16 +339,16 @@ Module db.
           ].
     End Impl_revm_primitives_db_DatabaseRef_where_revm_primitives_db_DatabaseRef_T_where_core_marker_Sized_T_for_ref__T.
     Module Impl_revm_primitives_db_DatabaseRef_where_revm_primitives_db_DatabaseRef_T_where_core_marker_Sized_T_for_ref_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
       Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition basic_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -336,14 +356,19 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseRef", T, [], "basic_ref", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition code_by_hash_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let code_hash := M.alloc (| code_hash |) in
@@ -357,14 +382,14 @@ Module db.
               |),
               [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition storage_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -373,14 +398,19 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseRef", T, [], "storage_ref", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition block_hash_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -394,7 +424,7 @@ Module db.
               |),
               [ M.read (| M.read (| self |) |); M.read (| number |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -414,16 +444,16 @@ Module db.
     End Impl_revm_primitives_db_DatabaseRef_where_revm_primitives_db_DatabaseRef_T_where_core_marker_Sized_T_for_ref_mut_T.
     Module Impl_revm_primitives_db_DatabaseRef_where_revm_primitives_db_DatabaseRef_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
       Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition basic_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -431,14 +461,19 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseRef", T, [], "basic_ref", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition code_by_hash_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let code_hash := M.alloc (| code_hash |) in
@@ -452,14 +487,14 @@ Module db.
               |),
               [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition storage_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -468,14 +503,19 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseRef", T, [], "storage_ref", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition block_hash_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -489,7 +529,7 @@ Module db.
               |),
               [ M.read (| M.read (| self |) |); M.read (| number |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -509,16 +549,16 @@ Module db.
     End Impl_revm_primitives_db_DatabaseRef_where_revm_primitives_db_DatabaseRef_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
     Module Impl_revm_primitives_db_DatabaseRef_where_revm_primitives_db_DatabaseRef_T_where_core_marker_Sized_T_for_alloc_rc_Rc_T_alloc_alloc_Global.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ].
+        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
       Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition basic_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -528,7 +568,7 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                     [],
                     "deref",
                     []
@@ -538,14 +578,19 @@ Module db.
                 M.read (| address |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition code_by_hash_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let code_hash := M.alloc (| code_hash |) in
@@ -561,7 +606,7 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                     [],
                     "deref",
                     []
@@ -571,14 +616,14 @@ Module db.
                 M.read (| code_hash |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition storage_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -589,7 +634,7 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                     [],
                     "deref",
                     []
@@ -600,14 +645,19 @@ Module db.
                 M.read (| index |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition block_hash_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -623,7 +673,7 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                     [],
                     "deref",
                     []
@@ -633,7 +683,7 @@ Module db.
                 M.read (| number |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -653,16 +703,16 @@ Module db.
     End Impl_revm_primitives_db_DatabaseRef_where_revm_primitives_db_DatabaseRef_T_where_core_marker_Sized_T_for_alloc_rc_Rc_T_alloc_alloc_Global.
     Module Impl_revm_primitives_db_DatabaseRef_where_revm_primitives_db_DatabaseRef_T_where_core_marker_Sized_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ].
+        Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
       Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition basic_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -672,7 +722,7 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                     [],
                     "deref",
                     []
@@ -682,14 +732,19 @@ Module db.
                 M.read (| address |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition code_by_hash_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let code_hash := M.alloc (| code_hash |) in
@@ -705,7 +760,7 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                     [],
                     "deref",
                     []
@@ -715,14 +770,14 @@ Module db.
                 M.read (| code_hash |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition storage_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -733,7 +788,7 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                     [],
                     "deref",
                     []
@@ -744,14 +799,19 @@ Module db.
                 M.read (| index |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-      Definition block_hash_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -767,7 +827,7 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                     [],
                     "deref",
                     []
@@ -777,7 +837,7 @@ Module db.
                 M.read (| number |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -814,19 +874,20 @@ Module db.
   (* StructTuple
     {
       name := "WrapDatabaseRef";
+      const_params := [];
       ty_params := [ "T" ];
       fields := [ T ];
     } *)
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     (* Clone *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple
@@ -843,7 +904,7 @@ Module db.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -857,7 +918,7 @@ Module db.
   
   Module Impl_core_marker_Copy_where_core_marker_Copy_T_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -870,13 +931,13 @@ Module db.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     (* Debug *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -900,7 +961,7 @@ Module db.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -914,13 +975,13 @@ Module db.
   
   Module Impl_core_default_Default_where_core_default_Default_T_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     (* Default *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructTuple
             "revm_primitives::db::WrapDatabaseRef"
@@ -930,7 +991,7 @@ Module db.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -944,7 +1005,7 @@ Module db.
   
   Module Impl_core_marker_StructuralPartialEq_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -957,13 +1018,13 @@ Module db.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     (* PartialEq *)
-    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -982,7 +1043,7 @@ Module db.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -996,7 +1057,7 @@ Module db.
   
   Module Impl_core_marker_StructuralEq_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -1009,13 +1070,18 @@ Module db.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1024,7 +1090,7 @@ Module db.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1039,13 +1105,13 @@ Module db.
   
   Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     (* PartialOrd *)
-    Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1064,7 +1130,7 @@ Module db.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1078,13 +1144,13 @@ Module db.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     (* Ord *)
-    Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1103,7 +1169,7 @@ Module db.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1117,13 +1183,13 @@ Module db.
   
   Module Impl_core_hash_Hash_where_core_hash_Hash_T_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     (* Hash *)
-    Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -1138,7 +1204,7 @@ Module db.
               M.read (| state |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1152,21 +1218,21 @@ Module db.
   
   Module Impl_core_convert_From_where_revm_primitives_db_DatabaseRef_F_F_for_revm_primitives_db_WrapDatabaseRef_F.
     Definition Self (F : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ F ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ F ].
     
     (*
         fn from(f: F) -> Self {
             WrapDatabaseRef(f)
         }
     *)
-    Definition from (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self F in
-      match τ, α with
-      | [], [ f ] =>
+      match ε, τ, α with
+      | [], [], [ f ] =>
         ltac:(M.monadic
           (let f := M.alloc (| f |) in
           Value.StructTuple "revm_primitives::db::WrapDatabaseRef" [ M.read (| f |) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1183,7 +1249,7 @@ Module db.
   
   Module Impl_revm_primitives_db_Database_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     (*     type Error = T::Error; *)
     Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
@@ -1193,10 +1259,10 @@ Module db.
             self.0.basic_ref(address)
         }
     *)
-    Definition basic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition basic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; address ] =>
+      match ε, τ, α with
+      | [], [], [ self; address ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -1211,7 +1277,7 @@ Module db.
               M.read (| address |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1219,10 +1285,10 @@ Module db.
             self.0.code_by_hash_ref(code_hash)
         }
     *)
-    Definition code_by_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition code_by_hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; code_hash ] =>
+      match ε, τ, α with
+      | [], [], [ self; code_hash ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let code_hash := M.alloc (| code_hash |) in
@@ -1243,7 +1309,7 @@ Module db.
               M.read (| code_hash |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1251,10 +1317,10 @@ Module db.
             self.0.storage_ref(address, index)
         }
     *)
-    Definition storage (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition storage (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; address; index ] =>
+      match ε, τ, α with
+      | [], [], [ self; address; index ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -1271,7 +1337,7 @@ Module db.
               M.read (| index |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1279,10 +1345,10 @@ Module db.
             self.0.block_hash_ref(number)
         }
     *)
-    Definition block_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition block_hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; number ] =>
+      match ε, τ, α with
+      | [], [], [ self; number ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let number := M.alloc (| number |) in
@@ -1303,7 +1369,7 @@ Module db.
               M.read (| number |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1324,17 +1390,17 @@ Module db.
   
   Module Impl_revm_primitives_db_DatabaseCommit_where_revm_primitives_db_DatabaseRef_T_where_revm_primitives_db_DatabaseCommit_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ T ].
+      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
     
     (*
         fn commit(&mut self, changes: HashMap<Address, Account>) {
             self.0.commit(changes)
         }
     *)
-    Definition commit (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition commit (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; changes ] =>
+      match ε, τ, α with
+      | [], [], [ self; changes ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let changes := M.alloc (| changes |) in
@@ -1349,7 +1415,7 @@ Module db.
               M.read (| changes |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1364,33 +1430,37 @@ Module db.
   (* StructRecord
     {
       name := "RefDBWrapper";
+      const_params := [];
       ty_params := [ "E" ];
       fields :=
         [
           ("db",
-            Ty.apply (Ty.path "&") [ Ty.dyn [ ("revm_primitives::db::DatabaseRef::Trait", []) ] ])
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.dyn [ ("revm_primitives::db::DatabaseRef::Trait", []) ] ])
         ];
     } *)
   
   Module Impl_revm_primitives_db_RefDBWrapper_E.
     Definition Self (E : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::RefDBWrapper") [ E ].
+      Ty.apply (Ty.path "revm_primitives::db::RefDBWrapper") [] [ E ].
     
     (*
         pub fn new(db: &'a dyn DatabaseRef<Error = E>) -> Self {
             Self { db }
         }
     *)
-    Definition new (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self E in
-      match τ, α with
-      | [], [ db ] =>
+      match ε, τ, α with
+      | [], [], [ db ] =>
         ltac:(M.monadic
           (let db := M.alloc (| db |) in
           Value.StructRecord
             "revm_primitives::db::RefDBWrapper"
             [ ("db", (* Unsize *) M.pointer_coercion (M.read (| db |))) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : forall (E : Ty.t), M.IsAssociatedFunction (Self E) "new" (new E).
@@ -1398,7 +1468,7 @@ Module db.
   
   Module Impl_revm_primitives_db_Database_for_revm_primitives_db_RefDBWrapper_E.
     Definition Self (E : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::RefDBWrapper") [ E ].
+      Ty.apply (Ty.path "revm_primitives::db::RefDBWrapper") [] [ E ].
     
     (*     type Error = E; *)
     Definition _Error (E : Ty.t) : Ty.t := E.
@@ -1408,10 +1478,10 @@ Module db.
             self.db.basic_ref(address)
         }
     *)
-    Definition basic (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition basic (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self E in
-      match τ, α with
-      | [], [ self; address ] =>
+      match ε, τ, α with
+      | [], [], [ self; address ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -1434,7 +1504,7 @@ Module db.
               M.read (| address |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1442,10 +1512,10 @@ Module db.
             self.db.code_by_hash_ref(code_hash)
         }
     *)
-    Definition code_by_hash (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition code_by_hash (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self E in
-      match τ, α with
-      | [], [ self; code_hash ] =>
+      match ε, τ, α with
+      | [], [], [ self; code_hash ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let code_hash := M.alloc (| code_hash |) in
@@ -1468,7 +1538,7 @@ Module db.
               M.read (| code_hash |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1476,10 +1546,10 @@ Module db.
             self.db.storage_ref(address, index)
         }
     *)
-    Definition storage (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition storage (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self E in
-      match τ, α with
-      | [], [ self; address; index ] =>
+      match ε, τ, α with
+      | [], [], [ self; address; index ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -1504,7 +1574,7 @@ Module db.
               M.read (| index |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1512,10 +1582,10 @@ Module db.
             self.db.block_hash_ref(number)
         }
     *)
-    Definition block_hash (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition block_hash (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self E in
-      match τ, α with
-      | [], [ self; number ] =>
+      match ε, τ, α with
+      | [], [], [ self; number ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let number := M.alloc (| number |) in
@@ -1538,7 +1608,7 @@ Module db.
               M.read (| number |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

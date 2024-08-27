@@ -5,6 +5,7 @@ Module env.
   (* StructRecord
     {
       name := "Env";
+      const_params := [];
       ty_params := [];
       fields :=
         [
@@ -18,9 +19,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::Env".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -78,7 +79,7 @@ Module env.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -93,9 +94,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::Env".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -136,7 +137,7 @@ Module env.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -151,9 +152,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::Env".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_primitives::env::Env"
@@ -192,7 +193,7 @@ Module env.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -218,9 +219,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::Env".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -293,7 +294,7 @@ Module env.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -319,9 +320,13 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::Env".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -344,7 +349,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -364,9 +369,9 @@ Module env.
             *self = Self::default();
         }
     *)
-    Definition clear (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clear (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -386,7 +391,7 @@ Module env.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -396,9 +401,9 @@ Module env.
             Box::new(Self { cfg, block, tx })
         }
     *)
-    Definition boxed (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ cfg; block; tx ] =>
+    Definition boxed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ cfg; block; tx ] =>
         ltac:(M.monadic
           (let cfg := M.alloc (| cfg |) in
           let block := M.alloc (| block |) in
@@ -407,6 +412,7 @@ Module env.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
+                []
                 [ Ty.path "revm_primitives::env::Env"; Ty.path "alloc::alloc::Global" ],
               "new",
               []
@@ -418,7 +424,7 @@ Module env.
                 ]
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_boxed : M.IsAssociatedFunction Self "boxed" boxed.
@@ -432,9 +438,9 @@ Module env.
             }
         }
     *)
-    Definition effective_gas_price (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition effective_gas_price (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -462,7 +468,15 @@ Module env.
                     let priority_fee := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::cmp::min", [ Ty.path "ruint::Uint" ] |),
+                        M.get_function (|
+                          "core::cmp::min",
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              []
+                          ]
+                        |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -478,8 +492,16 @@ Module env.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::arith::Add",
-                              Ty.path "ruint::Uint",
-                              [ Ty.path "ruint::Uint" ],
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [],
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  []
+                              ],
                               "add",
                               []
                             |),
@@ -515,7 +537,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_effective_gas_price :
@@ -528,18 +550,20 @@ Module env.
             })
         }
     *)
-    Definition calc_data_fee (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition calc_data_fee (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
               "map",
               [
-                Ty.path "ruint::Uint";
-                Ty.function [ Ty.tuple [ Ty.path "u128" ] ] (Ty.path "ruint::Uint")
+                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                Ty.function
+                  [ Ty.tuple [ Ty.path "u128" ] ]
+                  (Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [])
               ]
             |),
             [
@@ -570,14 +594,20 @@ Module env.
                               (let blob_gas_price := M.copy (| γ |) in
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "ruint::Uint",
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [],
                                   "saturating_mul",
                                   []
                                 |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "ruint::Uint",
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
                                       "from",
                                       [ Ty.path "u128" ]
                                     |),
@@ -585,7 +615,10 @@ Module env.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "ruint::Uint",
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
                                       "from",
                                       [ Ty.path "u64" ]
                                     |),
@@ -614,7 +647,7 @@ Module env.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_calc_data_fee :
@@ -627,18 +660,26 @@ Module env.
             })
         }
     *)
-    Definition calc_max_data_fee (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition calc_max_data_fee (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
               "map",
               [
-                Ty.path "ruint::Uint";
-                Ty.function [ Ty.tuple [ Ty.path "ruint::Uint" ] ] (Ty.path "ruint::Uint")
+                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                Ty.function
+                  [
+                    Ty.tuple
+                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ]
+                  ]
+                  (Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [])
               ]
             |),
             [
@@ -666,7 +707,10 @@ Module env.
                               (let max_fee_per_blob_gas := M.copy (| γ |) in
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "ruint::Uint",
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [],
                                   "saturating_mul",
                                   []
                                 |),
@@ -674,7 +718,10 @@ Module env.
                                   M.read (| max_fee_per_blob_gas |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "ruint::Uint",
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
                                       "from",
                                       [ Ty.path "u64" ]
                                     |),
@@ -703,7 +750,7 @@ Module env.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_calc_max_data_fee :
@@ -722,9 +769,9 @@ Module env.
             Ok(())
         }
     *)
-    Definition validate_block_env (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ SPEC ], [ self ] =>
+    Definition validate_block_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ SPEC ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -759,7 +806,13 @@ Module env.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
-                                          [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                              [ Value.Integer 32 ]
+                                              []
+                                          ],
                                         "is_none",
                                         []
                                       |),
@@ -826,6 +879,7 @@ Module env.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ],
                                         "is_none",
                                         []
@@ -867,7 +921,7 @@ Module env.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_validate_block_env :
@@ -1007,9 +1061,9 @@ Module env.
             Ok(())
         }
     *)
-    Definition validate_tx (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ SPEC ], [ self ] =>
+    Definition validate_tx (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ SPEC ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -1075,8 +1129,16 @@ Module env.
                                                   M.call_closure (|
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialOrd",
-                                                      Ty.path "ruint::Uint",
-                                                      [ Ty.path "ruint::Uint" ],
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          []
+                                                      ],
                                                       "gt",
                                                       []
                                                     |),
@@ -1148,8 +1210,16 @@ Module env.
                                             (M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::cmp::PartialOrd",
-                                                Ty.path "ruint::Uint",
-                                                [ Ty.path "ruint::Uint" ],
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    []
+                                                ],
                                                 "lt",
                                                 []
                                               |),
@@ -1232,8 +1302,16 @@ Module env.
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialOrd",
-                                        Ty.path "ruint::Uint",
-                                        [ Ty.path "ruint::Uint" ],
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
                                         "gt",
                                         []
                                       |),
@@ -1241,7 +1319,10 @@ Module env.
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path "ruint::Uint",
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [],
                                               "from",
                                               [ Ty.path "u64" ]
                                             |),
@@ -1344,14 +1425,17 @@ Module env.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "unwrap_or",
                                   []
                                 |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
                                       "map",
                                       [
                                         Ty.path "usize";
@@ -1573,6 +1657,7 @@ Module env.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
                                               Ty.tuple
                                                 [
@@ -1580,8 +1665,12 @@ Module env.
                                                     "alloy_primitives::bits::address::Address";
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
-                                                      Ty.path "ruint::Uint";
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [];
                                                       Ty.path "alloc::alloc::Global"
                                                     ]
                                                 ];
@@ -1678,6 +1767,7 @@ Module env.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u128" ],
                                           "expect",
                                           []
@@ -1713,8 +1803,16 @@ Module env.
                                                   M.call_closure (|
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialOrd",
-                                                      Ty.path "ruint::Uint",
-                                                      [ Ty.path "ruint::Uint" ],
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          []
+                                                      ],
                                                       "gt",
                                                       []
                                                     |),
@@ -1722,7 +1820,10 @@ Module env.
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_associated_function (|
-                                                            Ty.path "ruint::Uint",
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [],
                                                             "from",
                                                             [ Ty.path "u128" ]
                                                           |),
@@ -1769,9 +1870,13 @@ Module env.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::Vec")
+                                                        []
                                                         [
-                                                          Ty.path
-                                                            "alloy_primitives::bits::fixed::FixedBytes";
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloy_primitives::bits::fixed::FixedBytes")
+                                                            [ Value.Integer 32 ]
+                                                            [];
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       "is_empty",
@@ -1873,9 +1978,13 @@ Module env.
                                               "core::iter::traits::collect::IntoIterator",
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::Iter")
+                                                []
                                                 [
-                                                  Ty.path
-                                                    "alloy_primitives::bits::fixed::FixedBytes"
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloy_primitives::bits::fixed::FixedBytes")
+                                                    [ Value.Integer 32 ]
+                                                    []
                                                 ],
                                               [],
                                               "into_iter",
@@ -1886,9 +1995,13 @@ Module env.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "slice")
+                                                    []
                                                     [
-                                                      Ty.path
-                                                        "alloy_primitives::bits::fixed::FixedBytes"
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloy_primitives::bits::fixed::FixedBytes")
+                                                        [ Value.Integer 32 ]
+                                                        []
                                                     ],
                                                   "iter",
                                                   []
@@ -1899,9 +2012,13 @@ Module env.
                                                       "core::ops::deref::Deref",
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::Vec")
+                                                        []
                                                         [
-                                                          Ty.path
-                                                            "alloy_primitives::bits::fixed::FixedBytes";
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloy_primitives::bits::fixed::FixedBytes")
+                                                            [ Value.Integer 32 ]
+                                                            [];
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       [],
@@ -1939,9 +2056,13 @@ Module env.
                                                             "core::iter::traits::iterator::Iterator",
                                                             Ty.apply
                                                               (Ty.path "core::slice::iter::Iter")
+                                                              []
                                                               [
-                                                                Ty.path
-                                                                  "alloy_primitives::bits::fixed::FixedBytes"
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloy_primitives::bits::fixed::FixedBytes")
+                                                                  [ Value.Integer 32 ]
+                                                                  []
                                                               ],
                                                             [],
                                                             "next",
@@ -1985,8 +2106,14 @@ Module env.
                                                                               M.call_closure (|
                                                                                 M.get_trait_method (|
                                                                                   "core::ops::index::Index",
-                                                                                  Ty.path
-                                                                                    "alloy_primitives::bits::fixed::FixedBytes",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloy_primitives::bits::fixed::FixedBytes")
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        32
+                                                                                    ]
+                                                                                    [],
                                                                                   [ Ty.path "usize"
                                                                                   ],
                                                                                   "index",
@@ -2048,9 +2175,13 @@ Module env.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::Vec")
+                                                        []
                                                         [
-                                                          Ty.path
-                                                            "alloy_primitives::bits::fixed::FixedBytes";
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloy_primitives::bits::fixed::FixedBytes")
+                                                            [ Value.Integer 32 ]
+                                                            [];
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       "len",
@@ -2117,9 +2248,13 @@ Module env.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
-                                                    Ty.path
-                                                      "alloy_primitives::bits::fixed::FixedBytes";
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloy_primitives::bits::fixed::FixedBytes")
+                                                      [ Value.Integer 32 ]
+                                                      [];
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "is_empty",
@@ -2173,7 +2308,13 @@ Module env.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
-                                              [ Ty.path "ruint::Uint" ],
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  []
+                                              ],
                                             "is_some",
                                             []
                                           |),
@@ -2254,6 +2395,7 @@ Module env.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.path "alloy_primitives::bytes_::Bytes";
                                                   Ty.path "alloc::alloc::Global"
@@ -2293,9 +2435,13 @@ Module env.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::vec::Vec")
+                                                          []
                                                           [
-                                                            Ty.path
-                                                              "alloy_primitives::bits::fixed::FixedBytes";
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloy_primitives::bits::fixed::FixedBytes")
+                                                              [ Value.Integer 32 ]
+                                                              [];
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "is_empty",
@@ -2350,7 +2496,13 @@ Module env.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
-                                                        [ Ty.path "ruint::Uint" ],
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            []
+                                                        ],
                                                       "is_some",
                                                       []
                                                     |),
@@ -2461,6 +2613,7 @@ Module env.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::vec::Vec")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "alloy_primitives::bytes_::Bytes";
@@ -2519,9 +2672,13 @@ Module env.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
                                                       (Ty.path "std::collections::hash::map::Iter")
+                                                      []
                                                       [
-                                                        Ty.path
-                                                          "alloy_primitives::bits::fixed::FixedBytes";
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloy_primitives::bits::fixed::FixedBytes")
+                                                          [ Value.Integer 32 ]
+                                                          [];
                                                         Ty.path "alloy_primitives::bytes_::Bytes"
                                                       ],
                                                     [],
@@ -2535,12 +2692,17 @@ Module env.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "&")
+                                                                    []
                                                                     [
-                                                                      Ty.path
-                                                                        "alloy_primitives::bits::fixed::FixedBytes"
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "alloy_primitives::bits::fixed::FixedBytes")
+                                                                        [ Value.Integer 32 ]
+                                                                        []
                                                                     ];
                                                                   Ty.apply
                                                                     (Ty.path "&")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "alloy_primitives::bytes_::Bytes"
@@ -2558,9 +2720,13 @@ Module env.
                                                           Ty.apply
                                                             (Ty.path
                                                               "std::collections::hash::map::HashMap")
+                                                            []
                                                             [
-                                                              Ty.path
-                                                                "alloy_primitives::bits::fixed::FixedBytes";
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloy_primitives::bits::fixed::FixedBytes")
+                                                                [ Value.Integer 32 ]
+                                                                [];
                                                               Ty.path
                                                                 "alloy_primitives::bytes_::Bytes";
                                                               Ty.path
@@ -2677,6 +2843,7 @@ Module env.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.path "alloy_primitives::bytes_::Bytes";
                                                   Ty.path "alloc::alloc::Global"
@@ -2725,7 +2892,7 @@ Module env.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_validate_tx : M.IsAssociatedFunction Self "validate_tx" validate_tx.
@@ -2786,9 +2953,13 @@ Module env.
             Ok(())
         }
     *)
-    Definition validate_tx_against_state (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ SPEC ], [ self; account ] =>
+    Definition validate_tx_against_state
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [ SPEC ], [ self; account ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let account := M.alloc (| account |) in
@@ -2824,8 +2995,16 @@ Module env.
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                                        [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                          [ Value.Integer 32 ]
+                                          [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer 32 ]
+                                            []
+                                        ],
                                         "ne",
                                         []
                                       |),
@@ -2974,8 +3153,12 @@ Module env.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
-                                Ty.path "ruint::Uint";
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
                                 Ty.path "revm_primitives::result::InvalidTransaction"
                               ],
                             [],
@@ -2985,7 +3168,15 @@ Module env.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                 "ok_or",
                                 [ Ty.path "revm_primitives::result::InvalidTransaction" ]
                               |),
@@ -2994,28 +3185,57 @@ Module env.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
-                                      [ Ty.path "ruint::Uint" ],
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          []
+                                      ],
                                     "and_then",
                                     [
-                                      Ty.path "ruint::Uint";
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [];
                                       Ty.function
-                                        [ Ty.tuple [ Ty.path "ruint::Uint" ] ]
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                []
+                                            ]
+                                        ]
                                         (Ty.apply
                                           (Ty.path "core::option::Option")
-                                          [ Ty.path "ruint::Uint" ])
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ])
                                     ]
                                   |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.path "ruint::Uint",
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [],
                                         "checked_mul",
                                         []
                                       |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.path "ruint::Uint",
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [],
                                             "from",
                                             [ Ty.path "u64" ]
                                           |),
@@ -3059,7 +3279,10 @@ Module env.
                                                     (let gas_cost := M.copy (| γ |) in
                                                     M.call_closure (|
                                                       M.get_associated_function (|
-                                                        Ty.path "ruint::Uint",
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [],
                                                         "checked_add",
                                                         []
                                                       |),
@@ -3111,6 +3334,7 @@ Module env.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.path "revm_primitives::result::InvalidTransaction"
@@ -3118,6 +3342,7 @@ Module env.
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "revm_primitives::result::InvalidTransaction"
@@ -3177,7 +3402,13 @@ Module env.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
-                                    [ Ty.path "ruint::Uint" ],
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ],
                                   "unwrap_or_default",
                                   []
                                 |),
@@ -3204,8 +3435,12 @@ Module env.
                                         "core::ops::try_trait::Try",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
-                                            Ty.path "ruint::Uint";
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [];
                                             Ty.path "revm_primitives::result::InvalidTransaction"
                                           ],
                                         [],
@@ -3217,7 +3452,13 @@ Module env.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
-                                              [ Ty.path "ruint::Uint" ],
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  []
+                                              ],
                                             "ok_or",
                                             [ Ty.path "revm_primitives::result::InvalidTransaction"
                                             ]
@@ -3225,7 +3466,10 @@ Module env.
                                           [
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.path "ruint::Uint",
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [],
                                                 "checked_add",
                                                 []
                                               |),
@@ -3233,9 +3477,17 @@ Module env.
                                                 M.read (| balance_check |);
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.path "ruint::Uint",
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [],
                                                     "from",
-                                                    [ Ty.path "ruint::Uint" ]
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        []
+                                                    ]
                                                   |),
                                                   [ M.read (| data_fee |) ]
                                                 |)
@@ -3268,6 +3520,7 @@ Module env.
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.tuple [];
                                                         Ty.path
@@ -3276,6 +3529,7 @@ Module env.
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.path "core::convert::Infallible";
                                                           Ty.path
@@ -3321,8 +3575,16 @@ Module env.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
-                                    Ty.path "ruint::Uint",
-                                    [ Ty.path "ruint::Uint" ],
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ],
                                     "gt",
                                     []
                                   |),
@@ -3401,8 +3663,12 @@ Module env.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::boxed::Box")
+                                                          []
                                                           [
-                                                            Ty.path "ruint::Uint";
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [];
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "new",
@@ -3415,8 +3681,12 @@ Module env.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::boxed::Box")
+                                                          []
                                                           [
-                                                            Ty.path "ruint::Uint";
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [];
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "new",
@@ -3450,7 +3720,7 @@ Module env.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_validate_tx_against_state :
@@ -3460,6 +3730,7 @@ Module env.
   (* StructRecord
     {
       name := "CfgEnv";
+      const_params := [];
       ty_params := [];
       fields :=
         [
@@ -3467,7 +3738,7 @@ Module env.
           ("kzg_settings", Ty.path "revm_primitives::kzg::env_settings::EnvKzgSettings");
           ("perf_analyse_created_bytecodes", Ty.path "revm_primitives::env::AnalysisKind");
           ("limit_contract_code_size",
-            Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ])
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ])
         ];
     } *)
   
@@ -3475,9 +3746,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::CfgEnv".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -3532,7 +3803,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                     [],
                     "clone",
                     []
@@ -3546,7 +3817,7 @@ Module env.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3561,9 +3832,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::CfgEnv".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -3612,7 +3883,7 @@ Module env.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3638,9 +3909,13 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::CfgEnv".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -3670,7 +3945,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3697,9 +3972,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::CfgEnv".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -3771,8 +4046,8 @@ Module env.
               (M.call_closure (|
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
-                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ] ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ],
                   "eq",
                   []
                 |),
@@ -3790,7 +4065,7 @@ Module env.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3810,9 +4085,9 @@ Module env.
             self
         }
     *)
-    Definition with_chain_id (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; chain_id ] =>
+    Definition with_chain_id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; chain_id ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let chain_id := M.alloc (| chain_id |) in
@@ -3828,7 +4103,7 @@ Module env.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_chain_id :
@@ -3839,13 +4114,13 @@ Module env.
             false
         }
     *)
-    Definition is_eip3607_disabled (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_eip3607_disabled (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Bool false))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_eip3607_disabled :
@@ -3856,13 +4131,17 @@ Module env.
             false
         }
     *)
-    Definition is_balance_check_disabled (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_balance_check_disabled
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Bool false))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_balance_check_disabled :
@@ -3873,13 +4152,13 @@ Module env.
             false
         }
     *)
-    Definition is_gas_refund_disabled (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_gas_refund_disabled (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Bool false))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_gas_refund_disabled :
@@ -3890,13 +4169,17 @@ Module env.
             false
         }
     *)
-    Definition is_base_fee_check_disabled (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_base_fee_check_disabled
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Bool false))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_base_fee_check_disabled :
@@ -3907,13 +4190,17 @@ Module env.
             false
         }
     *)
-    Definition is_block_gas_limit_disabled (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_block_gas_limit_disabled
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Bool false))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_block_gas_limit_disabled :
@@ -3924,13 +4211,17 @@ Module env.
             false
         }
     *)
-    Definition is_beneficiary_reward_disabled (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_beneficiary_reward_disabled
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Bool false))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_beneficiary_reward_disabled :
@@ -3965,9 +4256,9 @@ Module env.
             }
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_primitives::env::CfgEnv"
@@ -3988,7 +4279,7 @@ Module env.
               ("kzg_settings",
                 Value.StructTuple "revm_primitives::kzg::env_settings::EnvKzgSettings::Default" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4002,22 +4293,31 @@ Module env.
   (* StructRecord
     {
       name := "BlockEnv";
+      const_params := [];
       ty_params := [];
       fields :=
         [
-          ("number", Ty.path "ruint::Uint");
+          ("number", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
           ("coinbase", Ty.path "alloy_primitives::bits::address::Address");
-          ("timestamp", Ty.path "ruint::Uint");
-          ("gas_limit", Ty.path "ruint::Uint");
-          ("basefee", Ty.path "ruint::Uint");
-          ("difficulty", Ty.path "ruint::Uint");
+          ("timestamp", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+          ("gas_limit", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+          ("basefee", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+          ("difficulty",
+            Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
           ("prevrandao",
             Ty.apply
               (Ty.path "core::option::Option")
-              [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ]);
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer 32 ]
+                  []
+              ]);
           ("blob_excess_gas_and_price",
             Ty.apply
               (Ty.path "core::option::Option")
+              []
               [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ])
         ];
     } *)
@@ -4026,9 +4326,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::BlockEnv".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -4038,7 +4338,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -4072,7 +4372,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -4089,7 +4389,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -4106,7 +4406,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -4123,7 +4423,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -4142,7 +4442,13 @@ Module env.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "core::option::Option")
-                      [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          []
+                      ],
                     [],
                     "clone",
                     []
@@ -4161,6 +4467,7 @@ Module env.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ],
                     [],
                     "clone",
@@ -4175,7 +4482,7 @@ Module env.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4190,9 +4497,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::BlockEnv".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -4297,7 +4604,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4323,9 +4630,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::BlockEnv".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -4339,8 +4646,16 @@ Module env.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.path "ruint::Uint",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "eq",
                             []
                           |),
@@ -4384,8 +4699,16 @@ Module env.
                         (M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.path "ruint::Uint",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "eq",
                             []
                           |),
@@ -4407,8 +4730,16 @@ Module env.
                       (M.call_closure (|
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
-                          Ty.path "ruint::Uint",
-                          [ Ty.path "ruint::Uint" ],
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [],
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              []
+                          ],
                           "eq",
                           []
                         |),
@@ -4430,8 +4761,9 @@ Module env.
                     (M.call_closure (|
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
-                        Ty.path "ruint::Uint",
-                        [ Ty.path "ruint::Uint" ],
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        ],
                         "eq",
                         []
                       |),
@@ -4453,8 +4785,9 @@ Module env.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
-                      Ty.path "ruint::Uint",
-                      [ Ty.path "ruint::Uint" ],
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      ],
                       "eq",
                       []
                     |),
@@ -4478,11 +4811,23 @@ Module env.
                     "core::cmp::PartialEq",
                     Ty.apply
                       (Ty.path "core::option::Option")
-                      [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          []
+                      ],
                     [
                       Ty.apply
                         (Ty.path "core::option::Option")
-                        [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ]
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            []
+                        ]
                     ],
                     "eq",
                     []
@@ -4507,10 +4852,12 @@ Module env.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ],
                   [
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ]
                   ],
                   "eq",
@@ -4530,7 +4877,7 @@ Module env.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4556,9 +4903,13 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::BlockEnv".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4588,7 +4939,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4604,9 +4955,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::BlockEnv".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -4616,7 +4967,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "hash",
                     [ __H ]
@@ -4656,7 +5007,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "hash",
                     [ __H ]
@@ -4676,7 +5027,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "hash",
                     [ __H ]
@@ -4696,7 +5047,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "hash",
                     [ __H ]
@@ -4716,7 +5067,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "hash",
                     [ __H ]
@@ -4738,7 +5089,13 @@ Module env.
                     "core::hash::Hash",
                     Ty.apply
                       (Ty.path "core::option::Option")
-                      [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          []
+                      ],
                     [],
                     "hash",
                     [ __H ]
@@ -4759,6 +5116,7 @@ Module env.
                   "core::hash::Hash",
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ],
                   [],
                   "hash",
@@ -4775,7 +5133,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4794,9 +5152,13 @@ Module env.
             self.blob_excess_gas_and_price = Some(BlobExcessGasAndPrice::new(excess_blob_gas));
         }
     *)
-    Definition set_blob_excess_gas_and_price (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; excess_blob_gas ] =>
+    Definition set_blob_excess_gas_and_price
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; excess_blob_gas ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let excess_blob_gas := M.alloc (| excess_blob_gas |) in
@@ -4823,7 +5185,7 @@ Module env.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_set_blob_excess_gas_and_price :
@@ -4836,16 +5198,21 @@ Module env.
                 .map(|a| a.blob_gasprice)
         }
     *)
-    Definition get_blob_gasprice (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition get_blob_gasprice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
-                [ Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ]
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ]
                 ],
               "map",
               [
@@ -4856,6 +5223,7 @@ Module env.
                       [
                         Ty.apply
                           (Ty.path "&")
+                          []
                           [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ]
                       ]
                   ]
@@ -4867,6 +5235,7 @@ Module env.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ],
                   "as_ref",
                   []
@@ -4903,7 +5272,7 @@ Module env.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_get_blob_gasprice :
@@ -4916,16 +5285,21 @@ Module env.
                 .map(|a| a.excess_blob_gas)
         }
     *)
-    Definition get_blob_excess_gas (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition get_blob_excess_gas (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
-                [ Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ]
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ]
                 ],
               "map",
               [
@@ -4936,6 +5310,7 @@ Module env.
                       [
                         Ty.apply
                           (Ty.path "&")
+                          []
                           [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ]
                       ]
                   ]
@@ -4947,6 +5322,7 @@ Module env.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "revm_primitives::env::BlobExcessGasAndPrice" ],
                   "as_ref",
                   []
@@ -4983,7 +5359,7 @@ Module env.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_get_blob_excess_gas :
@@ -4994,9 +5370,9 @@ Module env.
             *self = Self::default();
         }
     *)
-    Definition clear (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clear (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5016,7 +5392,7 @@ Module env.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -5039,9 +5415,9 @@ Module env.
             }
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_primitives::env::BlockEnv"
@@ -5051,7 +5427,11 @@ Module env.
                 M.read (| M.get_constant (| "alloy_primitives::bits::address::ZERO" |) |));
               ("timestamp",
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "ruint::Uint", "from", [ Ty.path "i32" ] |),
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    "from",
+                    [ Ty.path "i32" ]
+                  |),
                   [ Value.Integer 1 ]
                 |));
               ("gas_limit", M.read (| M.get_constant (| "ruint::MAX" |) |));
@@ -5075,7 +5455,7 @@ Module env.
                     |)
                   ])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5089,47 +5469,71 @@ Module env.
   (* StructRecord
     {
       name := "TxEnv";
+      const_params := [];
       ty_params := [];
       fields :=
         [
           ("caller", Ty.path "alloy_primitives::bits::address::Address");
           ("gas_limit", Ty.path "u64");
-          ("gas_price", Ty.path "ruint::Uint");
+          ("gas_price", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
           ("transact_to", Ty.path "revm_primitives::env::TransactTo");
-          ("value", Ty.path "ruint::Uint");
+          ("value", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
           ("data", Ty.path "alloy_primitives::bytes_::Bytes");
-          ("nonce", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ]);
-          ("chain_id", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ]);
+          ("nonce", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ]);
+          ("chain_id", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ]);
           ("access_list",
             Ty.apply
               (Ty.path "alloc::vec::Vec")
+              []
               [
                 Ty.tuple
                   [
                     Ty.path "alloy_primitives::bits::address::Address";
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
-                      [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ]
+                      []
+                      [
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.path "alloc::alloc::Global"
+                      ]
                   ];
                 Ty.path "alloc::alloc::Global"
               ]);
-          ("gas_priority_fee", Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ]);
+          ("gas_priority_fee",
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ]);
           ("blob_hashes",
             Ty.apply
               (Ty.path "alloc::vec::Vec")
-              [ Ty.path "alloy_primitives::bits::fixed::FixedBytes"; Ty.path "alloc::alloc::Global"
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer 32 ]
+                  [];
+                Ty.path "alloc::alloc::Global"
               ]);
           ("max_fee_per_blob_gas",
-            Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ]);
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ]);
           ("eof_initcodes",
             Ty.apply
               (Ty.path "alloc::vec::Vec")
+              []
               [ Ty.path "alloy_primitives::bytes_::Bytes"; Ty.path "alloc::alloc::Global" ]);
           ("eof_initcodes_hashed",
             Ty.apply
               (Ty.path "std::collections::hash::map::HashMap")
+              []
               [
-                Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer 32 ]
+                  [];
                 Ty.path "alloy_primitives::bytes_::Bytes";
                 Ty.path "std::hash::random::RandomState"
               ])
@@ -5140,9 +5544,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::TxEnv".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -5180,7 +5584,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -5214,7 +5618,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -5248,7 +5652,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     [],
                     "clone",
                     []
@@ -5265,7 +5669,7 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     [],
                     "clone",
                     []
@@ -5284,13 +5688,21 @@ Module env.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.tuple
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
-                              [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ]
                           ];
                         Ty.path "alloc::alloc::Global"
                       ],
@@ -5310,7 +5722,11 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      ],
                     [],
                     "clone",
                     []
@@ -5329,8 +5745,12 @@ Module env.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
-                        Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          [];
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
@@ -5349,7 +5769,11 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      ],
                     [],
                     "clone",
                     []
@@ -5368,6 +5792,7 @@ Module env.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [ Ty.path "alloy_primitives::bytes_::Bytes"; Ty.path "alloc::alloc::Global" ],
                     [],
                     "clone",
@@ -5387,8 +5812,12 @@ Module env.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
-                        Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          [];
                         Ty.path "alloy_primitives::bytes_::Bytes";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -5405,7 +5834,7 @@ Module env.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5420,9 +5849,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::TxEnv".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -5575,7 +6004,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5601,9 +6030,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::TxEnv".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -5662,8 +6091,16 @@ Module env.
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.path "ruint::Uint",
-                                        [ Ty.path "ruint::Uint" ],
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
                                         "eq",
                                         []
                                       |),
@@ -5708,8 +6145,16 @@ Module env.
                                 (M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "ruint::Uint",
-                                    [ Ty.path "ruint::Uint" ],
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ],
                                     "eq",
                                     []
                                   |),
@@ -5754,8 +6199,8 @@ Module env.
                             (M.call_closure (|
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
-                                Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ],
-                                [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ] ],
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ] ],
                                 "eq",
                                 []
                               |),
@@ -5777,8 +6222,8 @@ Module env.
                           (M.call_closure (|
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ],
-                              [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ] ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ] ],
                               "eq",
                               []
                             |),
@@ -5802,26 +6247,42 @@ Module env.
                             "core::cmp::PartialEq",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.tuple
                                   [
                                     Ty.path "alloy_primitives::bits::address::Address";
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
-                                      [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ]
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [];
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
                                   ];
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [
                                   Ty.tuple
                                     [
                                       Ty.path "alloy_primitives::bits::address::Address";
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
-                                        [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ]
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ];
                                   Ty.path "alloc::alloc::Global"
                                 ]
@@ -5847,8 +6308,26 @@ Module env.
                       (M.call_closure (|
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
-                          Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
-                          [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ] ],
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  []
+                              ]
+                          ],
                           "eq",
                           []
                         |),
@@ -5872,15 +6351,23 @@ Module env.
                         "core::cmp::PartialEq",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "alloc::alloc::Global"
                           ],
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
-                              Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 32 ]
+                                [];
                               Ty.path "alloc::alloc::Global"
                             ]
                         ],
@@ -5905,8 +6392,22 @@ Module env.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
-                      [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ] ],
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              []
+                          ]
+                      ],
                       "eq",
                       []
                     |),
@@ -5930,10 +6431,12 @@ Module env.
                     "core::cmp::PartialEq",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [ Ty.path "alloy_primitives::bytes_::Bytes"; Ty.path "alloc::alloc::Global" ],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "alloy_primitives::bytes_::Bytes"; Ty.path "alloc::alloc::Global"
                         ]
                     ],
@@ -5960,16 +6463,24 @@ Module env.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
+                    []
                     [
-                      Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer 32 ]
+                        [];
                       Ty.path "alloy_primitives::bytes_::Bytes";
                       Ty.path "std::hash::random::RandomState"
                     ],
                   [
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
-                        Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          [];
                         Ty.path "alloy_primitives::bytes_::Bytes";
                         Ty.path "std::hash::random::RandomState"
                       ]
@@ -5991,7 +6502,7 @@ Module env.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6017,9 +6528,13 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::TxEnv".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6122,7 +6637,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6137,6 +6652,7 @@ Module env.
   (*
   Enum TxType
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -6172,9 +6688,9 @@ Module env.
             GAS_PER_BLOB * self.blob_hashes.len() as u64
         }
     *)
-    Definition get_total_blob_gas (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition get_total_blob_gas (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.mul
@@ -6185,8 +6701,12 @@ Module env.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [
-                      Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer 32 ]
+                        [];
                       Ty.path "alloc::alloc::Global"
                     ],
                   "len",
@@ -6200,7 +6720,7 @@ Module env.
                   |)
                 ]
               |)))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_get_total_blob_gas :
@@ -6211,9 +6731,9 @@ Module env.
             *self = Self::default();
         }
     *)
-    Definition clear (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clear (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6233,7 +6753,7 @@ Module env.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -6264,9 +6784,9 @@ Module env.
             }
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_primitives::env::TxEnv"
@@ -6296,13 +6816,21 @@ Module env.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.tuple
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
-                              [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ]
                           ];
                         Ty.path "alloc::alloc::Global"
                       ],
@@ -6316,8 +6844,12 @@ Module env.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
-                        Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          [];
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
@@ -6331,6 +6863,7 @@ Module env.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [ Ty.path "alloy_primitives::bytes_::Bytes"; Ty.path "alloc::alloc::Global" ],
                     "new",
                     []
@@ -6342,8 +6875,12 @@ Module env.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
-                        Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          [];
                         Ty.path "alloy_primitives::bytes_::Bytes";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -6353,7 +6890,7 @@ Module env.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6367,6 +6904,7 @@ Module env.
   (* StructRecord
     {
       name := "BlobExcessGasAndPrice";
+      const_params := [];
       ty_params := [];
       fields := [ ("excess_blob_gas", Ty.path "u64"); ("blob_gasprice", Ty.path "u128") ];
     } *)
@@ -6375,9 +6913,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::BlobExcessGasAndPrice".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -6406,7 +6944,7 @@ Module env.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6421,9 +6959,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::BlobExcessGasAndPrice".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -6456,7 +6994,7 @@ Module env.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6482,9 +7020,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::BlobExcessGasAndPrice".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -6521,7 +7059,7 @@ Module env.
                   |)
                 |))))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6547,9 +7085,13 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::BlobExcessGasAndPrice".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6565,7 +7107,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6581,9 +7123,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::BlobExcessGasAndPrice".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -6616,7 +7158,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6639,9 +7181,9 @@ Module env.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ excess_blob_gas ] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ excess_blob_gas ] =>
         ltac:(M.monadic
           (let excess_blob_gas := M.alloc (| excess_blob_gas |) in
           M.read (|
@@ -6661,7 +7203,7 @@ Module env.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -6670,6 +7212,7 @@ Module env.
   (*
   Enum TransactTo
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -6691,9 +7234,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::TransactTo".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6735,7 +7278,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6750,9 +7293,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::TransactTo".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -6802,7 +7345,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6828,9 +7371,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::TransactTo".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -6902,7 +7445,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6928,9 +7471,13 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::TransactTo".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6939,7 +7486,7 @@ Module env.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6955,9 +7502,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::TransactTo".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -7008,7 +7555,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7027,13 +7574,13 @@ Module env.
             Self::Call(address)
         }
     *)
-    Definition call (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ address ] =>
+    Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ address ] =>
         ltac:(M.monadic
           (let address := M.alloc (| address |) in
           Value.StructTuple "revm_primitives::env::TransactTo::Call" [ M.read (| address |) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_call : M.IsAssociatedFunction Self "call" call.
@@ -7043,10 +7590,11 @@ Module env.
             Self::Create
         }
     *)
-    Definition create (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] => ltac:(M.monadic (Value.StructTuple "revm_primitives::env::TransactTo::Create" []))
-      | _, _ => M.impossible
+    Definition create (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic (Value.StructTuple "revm_primitives::env::TransactTo::Create" []))
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_create : M.IsAssociatedFunction Self "create" create.
@@ -7056,9 +7604,9 @@ Module env.
             matches!(self, Self::Call(_))
         }
     *)
-    Definition is_call (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -7079,7 +7627,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_call : M.IsAssociatedFunction Self "is_call" is_call.
@@ -7089,9 +7637,9 @@ Module env.
             matches!(self, Self::Create)
         }
     *)
-    Definition is_create (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_create (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -7108,7 +7656,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_create : M.IsAssociatedFunction Self "is_create" is_create.
@@ -7117,6 +7665,7 @@ Module env.
   (*
   Enum CreateScheme
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -7127,7 +7676,10 @@ Module env.
         };
         {
           name := "Create2";
-          item := StructRecord [ ("salt", Ty.path "ruint::Uint") ];
+          item :=
+            StructRecord
+              [ ("salt", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [])
+              ];
           discriminant := None;
         }
       ];
@@ -7138,9 +7690,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::CreateScheme".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -7149,7 +7701,7 @@ Module env.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7175,9 +7727,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::CreateScheme".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -7228,7 +7780,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7254,9 +7806,13 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::CreateScheme".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -7265,7 +7821,7 @@ Module env.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7292,9 +7848,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::CreateScheme".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -7351,8 +7907,16 @@ Module env.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "ruint::Uint",
-                                  [ Ty.path "ruint::Uint" ],
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                   "eq",
                                   []
                                 |),
@@ -7366,7 +7930,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7381,9 +7945,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::CreateScheme".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -7422,7 +7986,10 @@ Module env.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::hash::Hash",
-                          Ty.path "ruint::Uint",
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [],
                           [],
                           "hash",
                           [ __H ]
@@ -7434,7 +8001,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7448,6 +8015,7 @@ Module env.
   (*
   Enum AnalysisKind
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -7469,9 +8037,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::AnalysisKind".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -7494,7 +8062,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7509,11 +8077,11 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::AnalysisKind".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::env::AnalysisKind::Analyse" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7528,9 +8096,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::AnalysisKind".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -7562,7 +8130,7 @@ Module env.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7588,13 +8156,17 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::AnalysisKind".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7621,9 +8193,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::AnalysisKind".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -7650,7 +8222,7 @@ Module env.
               |) in
             M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7665,9 +8237,9 @@ Module env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::AnalysisKind".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -7689,7 +8261,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

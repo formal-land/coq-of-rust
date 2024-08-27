@@ -559,7 +559,7 @@ fn compile_top_level_item_without_local_items<'a>(
                     .iter()
                     .map(|item| {
                         let item = env.tcx.hir().trait_item(item.id);
-                        let const_params = get_const_params(env, generics);
+                        let const_params = get_const_params(env, item.generics);
                         let ty_params = get_ty_params(env, item.generics);
                         let body = compile_trait_item_body(env, const_params, ty_params, item);
                         let is_value = match body.as_ref() {

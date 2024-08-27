@@ -6,6 +6,7 @@ Module state.
     (Ty.path "revm_primitives::state::State") =
       (Ty.apply
         (Ty.path "std::collections::hash::map::HashMap")
+        []
         [
           Ty.path "alloy_primitives::bits::address::Address";
           Ty.path "revm_primitives::state::Account";
@@ -16,9 +17,14 @@ Module state.
     (Ty.path "revm_primitives::state::TransientStorage") =
       (Ty.apply
         (Ty.path "std::collections::hash::map::HashMap")
+        []
         [
-          Ty.tuple [ Ty.path "alloy_primitives::bits::address::Address"; Ty.path "ruint::Uint" ];
-          Ty.path "ruint::Uint";
+          Ty.tuple
+            [
+              Ty.path "alloy_primitives::bits::address::Address";
+              Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+            ];
+          Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
           Ty.path "std::hash::random::RandomState"
         ]).
   
@@ -26,8 +32,9 @@ Module state.
     (Ty.path "revm_primitives::state::Storage") =
       (Ty.apply
         (Ty.path "std::collections::hash::map::HashMap")
+        []
         [
-          Ty.path "ruint::Uint";
+          Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
           Ty.path "revm_primitives::state::StorageSlot";
           Ty.path "std::hash::random::RandomState"
         ]).
@@ -35,6 +42,7 @@ Module state.
   (* StructRecord
     {
       name := "Account";
+      const_params := [];
       ty_params := [];
       fields :=
         [
@@ -42,8 +50,9 @@ Module state.
           ("storage",
             Ty.apply
               (Ty.path "std::collections::hash::map::HashMap")
+              []
               [
-                Ty.path "ruint::Uint";
+                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                 Ty.path "revm_primitives::state::StorageSlot";
                 Ty.path "std::hash::random::RandomState"
               ]);
@@ -55,9 +64,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::Account".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -98,7 +107,7 @@ Module state.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -113,9 +122,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::Account".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -144,8 +153,9 @@ Module state.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
-                        Ty.path "ruint::Uint";
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                         Ty.path "revm_primitives::state::StorageSlot";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -179,7 +189,7 @@ Module state.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -205,9 +215,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::Account".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -240,16 +250,21 @@ Module state.
                     "core::cmp::PartialEq",
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
-                        Ty.path "ruint::Uint";
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                         Ty.path "revm_primitives::state::StorageSlot";
                         Ty.path "std::hash::random::RandomState"
                       ],
                     [
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "revm_primitives::state::StorageSlot";
                           Ty.path "std::hash::random::RandomState"
                         ]
@@ -294,7 +309,7 @@ Module state.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -320,9 +335,13 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::Account".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -345,7 +364,7 @@ Module state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -361,9 +380,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::Account".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_primitives::state::Account"
@@ -385,8 +404,9 @@ Module state.
                     "core::default::Default",
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
-                        Ty.path "ruint::Uint";
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                         Ty.path "revm_primitives::state::StorageSlot";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -408,7 +428,7 @@ Module state.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -423,9 +443,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountStatus".
     
     (*     Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -449,7 +469,7 @@ Module state.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -464,9 +484,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountStatus".
     
     (*     Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -475,7 +495,7 @@ Module state.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -512,9 +532,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountStatus".
     
     (*     PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -539,7 +559,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -565,9 +585,13 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountStatus".
     
     (*     Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -576,7 +600,7 @@ Module state.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -592,9 +616,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountStatus".
     
     (*     PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -619,7 +643,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -634,9 +658,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountStatus".
     
     (*     Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -661,7 +685,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -676,9 +700,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountStatus".
     
     (*     Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -699,7 +723,7 @@ Module state.
               M.read (| state |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -718,11 +742,11 @@ Module state.
             Self::Loaded
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (M.read (| M.get_constant (| "revm_primitives::state::Loaded" |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -745,9 +769,9 @@ Module state.
             }
         }
     *)
-    Definition new_not_existing (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition new_not_existing (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_primitives::state::Account"
@@ -768,8 +792,9 @@ Module state.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
-                        Ty.path "ruint::Uint";
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                         Ty.path "revm_primitives::state::StorageSlot";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -781,7 +806,7 @@ Module state.
               ("status",
                 M.read (| M.get_constant (| "revm_primitives::state::LoadedAsNotExisting" |) |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_not_existing :
@@ -792,9 +817,9 @@ Module state.
             self.status |= AccountStatus::SelfDestructed;
         }
     *)
-    Definition mark_selfdestruct (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition mark_selfdestruct (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -820,7 +845,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_mark_selfdestruct :
@@ -831,9 +856,9 @@ Module state.
             self.status -= AccountStatus::SelfDestructed;
         }
     *)
-    Definition unmark_selfdestruct (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition unmark_selfdestruct (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -859,7 +884,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_unmark_selfdestruct :
@@ -870,9 +895,9 @@ Module state.
             self.status.contains(AccountStatus::SelfDestructed)
         }
     *)
-    Definition is_selfdestructed (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_selfdestructed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -890,7 +915,7 @@ Module state.
               M.read (| M.get_constant (| "revm_primitives::state::SelfDestructed" |) |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_selfdestructed :
@@ -901,9 +926,9 @@ Module state.
             self.status |= AccountStatus::Touched;
         }
     *)
-    Definition mark_touch (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition mark_touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -929,7 +954,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_mark_touch : M.IsAssociatedFunction Self "mark_touch" mark_touch.
@@ -939,9 +964,9 @@ Module state.
             self.status -= AccountStatus::Touched;
         }
     *)
-    Definition unmark_touch (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition unmark_touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -967,7 +992,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_unmark_touch : M.IsAssociatedFunction Self "unmark_touch" unmark_touch.
@@ -977,9 +1002,9 @@ Module state.
             self.status.contains(AccountStatus::Touched)
         }
     *)
-    Definition is_touched (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_touched (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -997,7 +1022,7 @@ Module state.
               M.read (| M.get_constant (| "revm_primitives::state::Touched" |) |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_touched : M.IsAssociatedFunction Self "is_touched" is_touched.
@@ -1007,9 +1032,9 @@ Module state.
             self.status |= AccountStatus::Created;
         }
     *)
-    Definition mark_created (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition mark_created (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1035,7 +1060,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_mark_created : M.IsAssociatedFunction Self "mark_created" mark_created.
@@ -1045,9 +1070,9 @@ Module state.
             self.status -= AccountStatus::Created;
         }
     *)
-    Definition unmark_created (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition unmark_created (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1073,7 +1098,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_unmark_created :
@@ -1084,9 +1109,13 @@ Module state.
             self.status.contains(AccountStatus::LoadedAsNotExisting)
         }
     *)
-    Definition is_loaded_as_not_existing (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_loaded_as_not_existing
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1104,7 +1133,7 @@ Module state.
               M.read (| M.get_constant (| "revm_primitives::state::LoadedAsNotExisting" |) |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_loaded_as_not_existing :
@@ -1115,9 +1144,9 @@ Module state.
             self.status.contains(AccountStatus::Created)
         }
     *)
-    Definition is_created (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_created (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1135,7 +1164,7 @@ Module state.
               M.read (| M.get_constant (| "revm_primitives::state::Created" |) |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_created : M.IsAssociatedFunction Self "is_created" is_created.
@@ -1145,9 +1174,9 @@ Module state.
             self.info.is_empty()
         }
     *)
-    Definition is_empty (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1164,7 +1193,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -1174,9 +1203,9 @@ Module state.
             self.storage.iter().filter(|(_, slot)| slot.is_changed())
         }
     *)
-    Definition changed_storage_slots (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition changed_storage_slots (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1184,7 +1213,11 @@ Module state.
               "core::iter::traits::iterator::Iterator",
               Ty.apply
                 (Ty.path "std::collections::hash::map::Iter")
-                [ Ty.path "ruint::Uint"; Ty.path "revm_primitives::state::StorageSlot" ],
+                []
+                [
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                  Ty.path "revm_primitives::state::StorageSlot"
+                ],
               [],
               "filter",
               [
@@ -1194,12 +1227,22 @@ Module state.
                       [
                         Ty.apply
                           (Ty.path "&")
+                          []
                           [
                             Ty.tuple
                               [
-                                Ty.apply (Ty.path "&") [ Ty.path "ruint::Uint" ];
                                 Ty.apply
                                   (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
                                   [ Ty.path "revm_primitives::state::StorageSlot" ]
                               ]
                           ]
@@ -1213,8 +1256,9 @@ Module state.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
+                    []
                     [
-                      Ty.path "ruint::Uint";
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                       Ty.path "revm_primitives::state::StorageSlot";
                       Ty.path "std::hash::random::RandomState"
                     ],
@@ -1257,7 +1301,7 @@ Module state.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_changed_storage_slots :
@@ -1276,9 +1320,9 @@ Module state.
             }
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ info ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ info ] =>
         ltac:(M.monadic
           (let info := M.alloc (| info |) in
           Value.StructRecord
@@ -1290,8 +1334,9 @@ Module state.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
-                        Ty.path "ruint::Uint";
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                         Ty.path "revm_primitives::state::StorageSlot";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -1302,7 +1347,7 @@ Module state.
                 |));
               ("status", M.read (| M.get_constant (| "revm_primitives::state::Loaded" |) |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1316,11 +1361,14 @@ Module state.
   (* StructRecord
     {
       name := "StorageSlot";
+      const_params := [];
       ty_params := [];
       fields :=
         [
-          ("previous_or_original_value", Ty.path "ruint::Uint");
-          ("present_value", Ty.path "ruint::Uint")
+          ("previous_or_original_value",
+            Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+          ("present_value",
+            Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [])
         ];
     } *)
   
@@ -1328,9 +1376,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::StorageSlot".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1363,7 +1411,7 @@ Module state.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1378,9 +1426,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::StorageSlot".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -1390,7 +1438,7 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -1407,7 +1455,7 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -1421,7 +1469,7 @@ Module state.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1436,9 +1484,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::StorageSlot".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_primitives::state::StorageSlot"
@@ -1447,7 +1495,7 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "default",
                     []
@@ -1458,7 +1506,7 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "default",
                     []
@@ -1466,7 +1514,7 @@ Module state.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1492,9 +1540,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::StorageSlot".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1502,8 +1550,8 @@ Module state.
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.path "ruint::Uint",
-                [ Ty.path "ruint::Uint" ],
+                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                 "eq",
                 []
               |),
@@ -1524,8 +1572,8 @@ Module state.
               (M.call_closure (|
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
-                  Ty.path "ruint::Uint",
-                  [ Ty.path "ruint::Uint" ],
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                   "eq",
                   []
                 |),
@@ -1543,7 +1591,7 @@ Module state.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1569,9 +1617,13 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::StorageSlot".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1580,7 +1632,7 @@ Module state.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1596,9 +1648,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::StorageSlot".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -1608,7 +1660,7 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "hash",
                     [ __H ]
@@ -1627,7 +1679,7 @@ Module state.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::hash::Hash",
-                  Ty.path "ruint::Uint",
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                   [],
                   "hash",
                   [ __H ]
@@ -1643,7 +1695,7 @@ Module state.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1665,9 +1717,9 @@ Module state.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ original ] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ original ] =>
         ltac:(M.monadic
           (let original := M.alloc (| original |) in
           Value.StructRecord
@@ -1676,7 +1728,7 @@ Module state.
               ("previous_or_original_value", M.read (| original |));
               ("present_value", M.read (| original |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1689,9 +1741,9 @@ Module state.
             }
         }
     *)
-    Definition new_changed (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ previous_or_original_value; present_value ] =>
+    Definition new_changed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ previous_or_original_value; present_value ] =>
         ltac:(M.monadic
           (let previous_or_original_value := M.alloc (| previous_or_original_value |) in
           let present_value := M.alloc (| present_value |) in
@@ -1701,7 +1753,7 @@ Module state.
               ("previous_or_original_value", M.read (| previous_or_original_value |));
               ("present_value", M.read (| present_value |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_changed : M.IsAssociatedFunction Self "new_changed" new_changed.
@@ -1711,16 +1763,16 @@ Module state.
             self.previous_or_original_value != self.present_value
         }
     *)
-    Definition is_changed (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_changed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialEq",
-              Ty.path "ruint::Uint",
-              [ Ty.path "ruint::Uint" ],
+              Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+              [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
               "ne",
               []
             |),
@@ -1737,7 +1789,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_changed : M.IsAssociatedFunction Self "is_changed" is_changed.
@@ -1747,9 +1799,9 @@ Module state.
             self.previous_or_original_value
         }
     *)
-    Definition original_value (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition original_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1759,7 +1811,7 @@ Module state.
               "previous_or_original_value"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_original_value :
@@ -1770,9 +1822,9 @@ Module state.
             self.present_value
         }
     *)
-    Definition present_value (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition present_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1782,7 +1834,7 @@ Module state.
               "present_value"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_present_value :
@@ -1792,15 +1844,18 @@ Module state.
   (* StructRecord
     {
       name := "AccountInfo";
+      const_params := [];
       ty_params := [];
       fields :=
         [
-          ("balance", Ty.path "ruint::Uint");
+          ("balance", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
           ("nonce", Ty.path "u64");
-          ("code_hash", Ty.path "alloy_primitives::bits::fixed::FixedBytes");
+          ("code_hash",
+            Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ Value.Integer 32 ] []);
           ("code",
             Ty.apply
               (Ty.path "core::option::Option")
+              []
               [ Ty.path "revm_primitives::bytecode::Bytecode" ])
         ];
     } *)
@@ -1809,9 +1864,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountInfo".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -1821,7 +1876,7 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -1849,7 +1904,10 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "alloy_primitives::bits::fixed::FixedBytes",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -1868,6 +1926,7 @@ Module state.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "revm_primitives::bytecode::Bytecode" ],
                     [],
                     "clone",
@@ -1882,7 +1941,7 @@ Module state.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1897,9 +1956,9 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountInfo".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1948,7 +2007,7 @@ Module state.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1974,9 +2033,13 @@ Module state.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountInfo".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2006,7 +2069,7 @@ Module state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2031,9 +2094,9 @@ Module state.
             }
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_primitives::state::AccountInfo"
@@ -2058,7 +2121,7 @@ Module state.
                   ]);
               ("nonce", Value.Integer 0)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2079,9 +2142,9 @@ Module state.
                 && self.code_hash == other.code_hash
         }
     *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -2090,8 +2153,8 @@ Module state.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
-                  Ty.path "ruint::Uint",
-                  [ Ty.path "ruint::Uint" ],
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                   "eq",
                   []
                 |),
@@ -2129,8 +2192,16 @@ Module state.
               (M.call_closure (|
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
-                  Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                  [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer 32 ]
+                    [],
+                  [
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      []
+                  ],
                   "eq",
                   []
                 |),
@@ -2148,7 +2219,7 @@ Module state.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2169,9 +2240,9 @@ Module state.
             self.code_hash.hash(state);
         }
     *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -2181,7 +2252,7 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "hash",
                     [ H ]
@@ -2215,7 +2286,10 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.path "alloy_primitives::bits::fixed::FixedBytes",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [],
                     [],
                     "hash",
                     [ H ]
@@ -2232,7 +2306,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2256,9 +2330,9 @@ Module state.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ balance; nonce; code_hash; code ] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ balance; nonce; code_hash; code ] =>
         ltac:(M.monadic
           (let balance := M.alloc (| balance |) in
           let nonce := M.alloc (| nonce |) in
@@ -2272,7 +2346,7 @@ Module state.
               ("code", Value.StructTuple "core::option::Option::Some" [ M.read (| code |) ]);
               ("code_hash", M.read (| code_hash |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -2283,9 +2357,9 @@ Module state.
             self
         }
     *)
-    Definition without_code (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition without_code (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2302,7 +2376,7 @@ Module state.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_without_code : M.IsAssociatedFunction Self "without_code" without_code.
@@ -2313,9 +2387,9 @@ Module state.
             code_empty && self.balance == U256::ZERO && self.nonce == 0
         }
     *)
-    Definition is_empty (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2334,8 +2408,16 @@ Module state.
                     (M.call_closure (|
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
-                        Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                        [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          [],
+                        [
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            []
+                        ],
                         "eq",
                         []
                       |),
@@ -2358,8 +2440,9 @@ Module state.
                     (M.call_closure (|
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
-                        Ty.path "ruint::Uint",
-                        [ Ty.path "ruint::Uint" ],
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        ],
                         "eq",
                         []
                       |),
@@ -2386,7 +2469,7 @@ Module state.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -2396,9 +2479,9 @@ Module state.
             !self.is_empty()
         }
     *)
-    Definition exists_ (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition exists_ (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
@@ -2410,7 +2493,7 @@ Module state.
               |),
               [ M.read (| self |) ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_exists_ : M.IsAssociatedFunction Self "exists_" exists_.
@@ -2420,9 +2503,9 @@ Module state.
             self.is_empty_code_hash() && self.nonce == 0
         }
     *)
-    Definition has_no_code_and_nonce (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition has_no_code_and_nonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           LogicalOp.and (|
@@ -2445,7 +2528,7 @@ Module state.
                 |))
                 (Value.Integer 0)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_has_no_code_and_nonce :
@@ -2456,9 +2539,9 @@ Module state.
             self.code_hash
         }
     *)
-    Definition code_hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition code_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2468,7 +2551,7 @@ Module state.
               "code_hash"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_code_hash : M.IsAssociatedFunction Self "code_hash" code_hash.
@@ -2478,16 +2561,24 @@ Module state.
             self.code_hash == KECCAK_EMPTY
         }
     *)
-    Definition is_empty_code_hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_empty_code_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialEq",
-              Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-              [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+              Ty.apply
+                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                [ Value.Integer 32 ]
+                [],
+              [
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer 32 ]
+                  []
+              ],
               "eq",
               []
             |),
@@ -2500,7 +2591,7 @@ Module state.
               M.get_constant (| "revm_primitives::utilities::KECCAK_EMPTY" |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_empty_code_hash :
@@ -2511,15 +2602,16 @@ Module state.
             self.code.take()
         }
     *)
-    Definition take_bytecode (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition take_bytecode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [ Ty.path "revm_primitives::bytecode::Bytecode" ],
               "take",
               []
@@ -2532,7 +2624,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_take_bytecode :
@@ -2546,9 +2638,9 @@ Module state.
             }
         }
     *)
-    Definition from_balance (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ balance ] =>
+    Definition from_balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ balance ] =>
         ltac:(M.monadic
           (let balance := M.alloc (| balance |) in
           M.struct_record_update
@@ -2563,7 +2655,7 @@ Module state.
               []
             |))
             [ ("balance", M.read (| balance |)) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_balance : M.IsAssociatedFunction Self "from_balance" from_balance.

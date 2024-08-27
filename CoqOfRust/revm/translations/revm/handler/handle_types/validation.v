@@ -6,9 +6,13 @@ Module handler.
     Module validation.
       Axiom ValidateEnvHandle :
         forall (DB : Ty.t),
-        (Ty.apply (Ty.path "revm::handler::handle_types::validation::ValidateEnvHandle") [ DB ]) =
+        (Ty.apply
+            (Ty.path "revm::handler::handle_types::validation::ValidateEnvHandle")
+            []
+            [ DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -22,9 +26,11 @@ Module handler.
         forall (EXT DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::validation::ValidateTxEnvAgainstState")
+            []
             [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -38,9 +44,11 @@ Module handler.
         forall (DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::validation::ValidateInitialTxGasHandle")
+            []
             [ DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -53,12 +61,14 @@ Module handler.
       (* StructRecord
         {
           name := "ValidationHandler";
+          const_params := [];
           ty_params := [ "EXT"; "DB" ];
           fields :=
             [
               ("initial_tx_gas",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -70,6 +80,7 @@ Module handler.
               ("tx_against_state",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -81,6 +92,7 @@ Module handler.
               ("env",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -96,6 +108,7 @@ Module handler.
         Definition Self (EXT DB : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "revm::handler::handle_types::validation::ValidationHandler")
+            []
             [ EXT; DB ].
         
         (*
@@ -107,10 +120,10 @@ Module handler.
                 }
             }
         *)
-        Definition new (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [ SPEC ], [] =>
+          match ε, τ, α with
+          | [], [ SPEC ], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm::handler::handle_types::validation::ValidationHandler"
@@ -122,15 +135,19 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
-                                [ Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::env::Env" ] ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "revm_primitives::env::Env" ]
+                                ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.path "u64";
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -152,15 +169,19 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
-                                [ Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::env::Env" ] ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "revm_primitives::env::Env" ]
+                                ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.tuple [];
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -182,19 +203,23 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ]
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ]
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.tuple [];
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -210,7 +235,7 @@ Module handler.
                         ]
                       |)))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -221,10 +246,10 @@ Module handler.
                 (self.env)(env)
             }
         *)
-        Definition env (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition env (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; env ] =>
+          match ε, τ, α with
+          | [], [], [ self; env ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let env := M.alloc (| env |) in
@@ -236,7 +261,8 @@ Module handler.
                       ("existential predicate with variables", []);
                       ("existential predicate with variables", [])
                     ],
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::env::Env" ] ] ],
+                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "revm_primitives::env::Env" ] ]
+                  ],
                   "call",
                   []
                 |),
@@ -246,6 +272,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -269,7 +296,7 @@ Module handler.
                   Value.Tuple [ M.read (| env |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_env :
@@ -281,10 +308,15 @@ Module handler.
                 (self.initial_tx_gas)(env)
             }
         *)
-        Definition initial_tx_gas (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition initial_tx_gas
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; env ] =>
+          match ε, τ, α with
+          | [], [], [ self; env ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let env := M.alloc (| env |) in
@@ -296,7 +328,8 @@ Module handler.
                       ("existential predicate with variables", []);
                       ("existential predicate with variables", [])
                     ],
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::env::Env" ] ] ],
+                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "revm_primitives::env::Env" ] ]
+                  ],
                   "call",
                   []
                 |),
@@ -306,6 +339,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -329,7 +363,7 @@ Module handler.
                   Value.Tuple [ M.read (| env |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_initial_tx_gas :
@@ -344,10 +378,15 @@ Module handler.
                 (self.tx_against_state)(context)
             }
         *)
-        Definition tx_against_state (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition tx_against_state
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context ] =>
+          match ε, τ, α with
+          | [], [], [ self; context ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -364,7 +403,8 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ]
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ]
                       ]
                   ],
                   "call",
@@ -376,6 +416,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -399,7 +440,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_tx_against_state :

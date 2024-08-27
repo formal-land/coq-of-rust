@@ -8,7 +8,10 @@ Module utilities.
         (M.alloc (|
           M.call_closure (|
             M.get_associated_function (|
-              Ty.path "alloy_primitives::bits::fixed::FixedBytes",
+              Ty.apply
+                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                [ Value.Integer 32 ]
+                [],
               "new",
               []
             |),
@@ -21,9 +24,9 @@ Module utilities.
       (parent_excess_blob_gas + parent_blob_gas_used).saturating_sub(TARGET_BLOB_GAS_PER_BLOCK)
   }
   *)
-  Definition calc_excess_blob_gas (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ parent_excess_blob_gas; parent_blob_gas_used ] =>
+  Definition calc_excess_blob_gas (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ parent_excess_blob_gas; parent_blob_gas_used ] =>
       ltac:(M.monadic
         (let parent_excess_blob_gas := M.alloc (| parent_excess_blob_gas |) in
         let parent_blob_gas_used := M.alloc (| parent_blob_gas_used |) in
@@ -39,7 +42,7 @@ Module utilities.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_calc_excess_blob_gas :
@@ -54,9 +57,9 @@ Module utilities.
       )
   }
   *)
-  Definition calc_blob_gasprice (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ excess_blob_gas ] =>
+  Definition calc_blob_gasprice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ excess_blob_gas ] =>
       ltac:(M.monadic
         (let excess_blob_gas := M.alloc (| excess_blob_gas |) in
         M.call_closure (|
@@ -69,7 +72,7 @@ Module utilities.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_calc_blob_gasprice :
@@ -95,9 +98,9 @@ Module utilities.
       output / denominator
   }
   *)
-  Definition fake_exponential (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ factor; numerator; denominator ] =>
+  Definition fake_exponential (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ factor; numerator; denominator ] =>
       ltac:(M.monadic
         (let factor := M.alloc (| factor |) in
         let numerator := M.alloc (| numerator |) in
@@ -248,7 +251,7 @@ Module utilities.
             |) in
           M.alloc (| BinOp.Wrap.div Integer.U128 (M.read (| output |)) (M.read (| denominator |)) |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_fake_exponential :

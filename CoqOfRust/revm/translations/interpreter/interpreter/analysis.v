@@ -23,9 +23,9 @@ Module interpreter.
         Bytecode::LegacyAnalyzed(LegacyAnalyzedBytecode::new(bytes, len, jump_table))
     }
     *)
-    Definition to_analysed (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ bytecode ] =>
+    Definition to_analysed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ bytecode ] =>
         ltac:(M.monadic
           (let bytecode := M.alloc (| bytecode |) in
           M.catch_return (|
@@ -72,6 +72,7 @@ Module interpreter.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                   "with_capacity",
                                   []
@@ -86,6 +87,7 @@ Module interpreter.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                   "extend_from_slice",
                                   []
@@ -122,6 +124,7 @@ Module interpreter.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                   "resize",
                                   []
@@ -146,6 +149,7 @@ Module interpreter.
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                     ],
                                     "from",
@@ -183,7 +187,7 @@ Module interpreter.
                                   M.get_trait_method (|
                                     "core::convert::AsRef",
                                     Ty.path "alloy_primitives::bytes_::Bytes",
-                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     "as_ref",
                                     []
                                   |),
@@ -211,7 +215,7 @@ Module interpreter.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_to_analysed :
@@ -246,9 +250,9 @@ Module interpreter.
         JumpTable(Arc::new(jumps))
     }
     *)
-    Definition analyze (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ code ] =>
+    Definition analyze (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ code ] =>
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           M.read (|
@@ -258,6 +262,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "bitvec::vec::BitVec")
+                      []
                       [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
                     "repeat",
                     []
@@ -266,7 +271,7 @@ Module interpreter.
                     BinOp.Pure.ne (Value.Integer 0) (Value.Integer 0);
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
                         []
                       |),
@@ -279,7 +284,7 @@ Module interpreter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "as_ptr_range",
                     []
                   |),
@@ -338,6 +343,7 @@ Module interpreter.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "bitvec::slice::BitSlice")
+                                            []
                                             [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
                                           "set_unchecked",
                                           []
@@ -348,6 +354,7 @@ Module interpreter.
                                               "core::ops::deref::DerefMut",
                                               Ty.apply
                                                 (Ty.path "bitvec::vec::BitVec")
+                                                []
                                                 [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
                                               [],
                                               "deref_mut",
@@ -358,7 +365,7 @@ Module interpreter.
                                           M.rust_cast
                                             (M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                 "offset_from",
                                                 []
                                               |),
@@ -373,7 +380,7 @@ Module interpreter.
                                       iterator,
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                           "offset",
                                           []
                                         |),
@@ -421,7 +428,7 @@ Module interpreter.
                                               iterator,
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                   "offset",
                                                   []
                                                 |),
@@ -443,7 +450,7 @@ Module interpreter.
                                               iterator,
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                   "offset",
                                                   []
                                                 |),
@@ -477,9 +484,11 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.apply
                             (Ty.path "bitvec::vec::BitVec")
+                            []
                             [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -491,7 +500,7 @@ Module interpreter.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_analyze :
@@ -504,9 +513,9 @@ Module interpreter.
         Ok(eof)
     }
     *)
-    Definition validate_raw_eof (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ bytecode ] =>
+    Definition validate_raw_eof (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ bytecode ] =>
         ltac:(M.monadic
           (let bytecode := M.alloc (| bytecode |) in
           M.catch_return (|
@@ -521,6 +530,7 @@ Module interpreter.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.path "revm_primitives::bytecode::eof::Eof";
                                 Ty.path "revm_primitives::bytecode::eof::EofDecodeError"
@@ -560,6 +570,7 @@ Module interpreter.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "revm_primitives::bytecode::eof::Eof";
                                             Ty.path
@@ -568,6 +579,7 @@ Module interpreter.
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path
@@ -604,6 +616,7 @@ Module interpreter.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.tuple [];
                               Ty.path "revm_interpreter::interpreter::analysis::EofError"
@@ -642,6 +655,7 @@ Module interpreter.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "revm_primitives::bytecode::eof::Eof";
                                           Ty.path
@@ -650,6 +664,7 @@ Module interpreter.
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.path
@@ -680,7 +695,7 @@ Module interpreter.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| eof |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_validate_raw_eof :
@@ -704,9 +719,9 @@ Module interpreter.
         Ok(())
     }
     *)
-    Definition validate_eof (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ eof ] =>
+    Definition validate_eof (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ eof ] =>
         ltac:(M.monadic
           (let eof := M.alloc (| eof |) in
           M.catch_return (|
@@ -718,6 +733,7 @@ Module interpreter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "slice")
+                          []
                           [ Ty.path "revm_primitives::bytecode::eof::Eof" ],
                         "into_vec",
                         [ Ty.path "alloc::alloc::Global" ]
@@ -730,9 +746,11 @@ Module interpreter.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "array")
+                                      [ Value.Integer 1 ]
                                       [ Ty.path "revm_primitives::bytecode::eof::Eof" ];
                                     Ty.path "alloc::alloc::Global"
                                   ],
@@ -775,6 +793,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [
                                           Ty.path "revm_primitives::bytecode::eof::Eof";
                                           Ty.path "alloc::alloc::Global"
@@ -800,6 +819,7 @@ Module interpreter.
                                         "core::ops::try_trait::Try",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.path
@@ -839,6 +859,7 @@ Module interpreter.
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.tuple [];
                                                         Ty.path
@@ -847,6 +868,7 @@ Module interpreter.
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.path "core::convert::Infallible";
                                                           Ty.path
@@ -882,6 +904,7 @@ Module interpreter.
                                         "core::iter::traits::collect::IntoIterator",
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "alloy_primitives::bytes_::Bytes";
                                             Ty.path "alloc::alloc::Global"
@@ -919,6 +942,7 @@ Module interpreter.
                                                       "core::iter::traits::iterator::Iterator",
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                        []
                                                         [
                                                           Ty.path "alloy_primitives::bytes_::Bytes";
                                                           Ty.path "alloc::alloc::Global"
@@ -958,6 +982,7 @@ Module interpreter.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "alloc::vec::Vec")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "revm_primitives::bytecode::eof::Eof";
@@ -977,6 +1002,7 @@ Module interpreter.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "revm_primitives::bytecode::eof::Eof";
@@ -1021,6 +1047,7 @@ Module interpreter.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::result::Result")
+                                                                                      []
                                                                                       [
                                                                                         Ty.tuple [];
                                                                                         Ty.path
@@ -1030,6 +1057,7 @@ Module interpreter.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "core::result::Result")
+                                                                                        []
                                                                                         [
                                                                                           Ty.path
                                                                                             "core::convert::Infallible";
@@ -1093,7 +1121,7 @@ Module interpreter.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_validate_eof :
@@ -1148,9 +1176,9 @@ Module interpreter.
         Ok(())
     }
     *)
-    Definition validate_eof_codes (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ eof ] =>
+    Definition validate_eof_codes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ eof ] =>
         ltac:(M.monadic
           (let eof := M.alloc (| eof |) in
           M.catch_return (|
@@ -1166,6 +1194,7 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path "alloy_primitives::bytes_::Bytes";
                                 Ty.path "alloc::alloc::Global"
@@ -1202,6 +1231,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [
                                           Ty.path "alloy_primitives::bytes_::Bytes";
                                           Ty.path "alloc::alloc::Global"
@@ -1225,6 +1255,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [
                                           Ty.path
                                             "revm_primitives::bytecode::eof::types_section::TypesSection";
@@ -1279,6 +1310,7 @@ Module interpreter.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "alloy_primitives::bytes_::Bytes";
                                         Ty.path "alloc::alloc::Global"
@@ -1326,6 +1358,7 @@ Module interpreter.
                         "core::ops::index::IndexMut",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
                         [ Ty.path "usize" ],
                         "index_mut",
@@ -1342,6 +1375,7 @@ Module interpreter.
                         "core::ops::index::Index",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection";
                             Ty.path "alloc::alloc::Global"
@@ -1423,7 +1457,7 @@ Module interpreter.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "usize" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
                         "into_vec",
                         [ Ty.path "alloc::alloc::Global" ]
                       |),
@@ -1435,8 +1469,12 @@ Module interpreter.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
-                                    Ty.apply (Ty.path "array") [ Ty.path "usize" ];
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer 1 ]
+                                      [ Ty.path "usize" ];
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "new",
@@ -1462,6 +1500,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                                       "pop",
                                       []
@@ -1483,6 +1522,7 @@ Module interpreter.
                                       "core::ops::index::Index",
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [
                                           Ty.path "alloy_primitives::bytes_::Bytes";
                                           Ty.path "alloc::alloc::Global"
@@ -1514,9 +1554,11 @@ Module interpreter.
                                           "core::ops::try_trait::Try",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "std::collections::hash::set::HashSet")
+                                                []
                                                 [
                                                   Ty.path "usize";
                                                   Ty.path "std::hash::random::RandomState"
@@ -1573,6 +1615,7 @@ Module interpreter.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
                                                       Ty.path "alloy_primitives::bytes_::Bytes";
                                                       Ty.path "alloc::alloc::Global"
@@ -1597,6 +1640,7 @@ Module interpreter.
                                                   "core::ops::deref::Deref",
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
                                                       Ty.path
                                                         "revm_primitives::bytecode::eof::types_section::TypesSection";
@@ -1642,6 +1686,7 @@ Module interpreter.
                                                       "core::ops::try_trait::FromResidual",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.tuple [];
                                                           Ty.path
@@ -1650,6 +1695,7 @@ Module interpreter.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
+                                                          []
                                                           [
                                                             Ty.path "core::convert::Infallible";
                                                             Ty.path
@@ -1685,6 +1731,7 @@ Module interpreter.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "std::collections::hash::set::IntoIter")
+                                        []
                                         [ Ty.path "usize" ],
                                       [],
                                       "for_each",
@@ -1696,6 +1743,7 @@ Module interpreter.
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
                                             (Ty.path "std::collections::hash::set::HashSet")
+                                            []
                                             [
                                               Ty.path "usize";
                                               Ty.path "std::hash::random::RandomState"
@@ -1734,6 +1782,7 @@ Module interpreter.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "alloc::vec::Vec")
+                                                                                []
                                                                                 [
                                                                                   Ty.path "bool";
                                                                                   Ty.path
@@ -1763,6 +1812,7 @@ Module interpreter.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "alloc::vec::Vec")
+                                                                          []
                                                                           [
                                                                             Ty.path "bool";
                                                                             Ty.path
@@ -1784,6 +1834,7 @@ Module interpreter.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "alloc::vec::Vec")
+                                                                          []
                                                                           [
                                                                             Ty.path "usize";
                                                                             Ty.path
@@ -1840,6 +1891,7 @@ Module interpreter.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
                                       (Ty.path "alloc::vec::into_iter::IntoIter")
+                                      []
                                       [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
                                     [],
                                     "any",
@@ -1852,6 +1904,7 @@ Module interpreter.
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
                                           [],
                                           "into_iter",
@@ -1902,7 +1955,7 @@ Module interpreter.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_validate_eof_codes :
@@ -1911,6 +1964,7 @@ Module interpreter.
     (*
     Enum EofError
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -1933,9 +1987,9 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::analysis::EofError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1994,7 +2048,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2009,9 +2063,9 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::analysis::EofError".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2089,7 +2143,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2115,9 +2169,9 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::analysis::EofError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2234,7 +2288,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2260,9 +2314,13 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::analysis::EofError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2278,7 +2336,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2294,9 +2352,9 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::analysis::EofError".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2406,7 +2464,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2421,9 +2479,9 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::analysis::EofError".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2546,7 +2604,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2561,9 +2619,9 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::analysis::EofError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2579,7 +2637,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2609,15 +2667,15 @@ Module interpreter.
               EofError::Decode(err)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ err ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ err ] =>
           ltac:(M.monadic
             (let err := M.alloc (| err |) in
             Value.StructTuple
               "revm_interpreter::interpreter::analysis::EofError::Decode"
               [ M.read (| err |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2637,15 +2695,15 @@ Module interpreter.
               EofError::Validation(err)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ err ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ err ] =>
           ltac:(M.monadic
             (let err := M.alloc (| err |) in
             Value.StructTuple
               "revm_interpreter::interpreter::analysis::EofError::Validation"
               [ M.read (| err |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2660,6 +2718,7 @@ Module interpreter.
     (*
     Enum EofValidationError
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -2822,9 +2881,9 @@ Module interpreter.
         Ty.path "revm_interpreter::interpreter::analysis::EofValidationError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -3117,7 +3176,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3133,9 +3192,9 @@ Module interpreter.
         Ty.path "revm_interpreter::interpreter::analysis::EofValidationError".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -3157,7 +3216,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3185,9 +3244,9 @@ Module interpreter.
         Ty.path "revm_interpreter::interpreter::analysis::EofValidationError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3214,7 +3273,7 @@ Module interpreter.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3242,13 +3301,17 @@ Module interpreter.
         Ty.path "revm_interpreter::interpreter::analysis::EofValidationError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3265,9 +3328,9 @@ Module interpreter.
         Ty.path "revm_interpreter::interpreter::analysis::EofValidationError".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3305,7 +3368,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3321,9 +3384,9 @@ Module interpreter.
         Ty.path "revm_interpreter::interpreter::analysis::EofValidationError".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3355,7 +3418,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3371,13 +3434,13 @@ Module interpreter.
         Ty.path "revm_interpreter::interpreter::analysis::EofValidationError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3717,9 +3780,9 @@ Module interpreter.
         Ok(accessed_codes)
     }
     *)
-    Definition validate_eof_code (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ code; data_size; this_types_index; num_of_containers; types ] =>
+    Definition validate_eof_code (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ code; data_size; this_types_index; num_of_containers; types ] =>
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           let data_size := M.alloc (| data_size |) in
@@ -3735,6 +3798,7 @@ Module interpreter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::set::HashSet")
+                          []
                           [ Ty.path "usize"; Ty.path "std::hash::random::RandomState" ],
                         "new",
                         []
@@ -3770,7 +3834,7 @@ Module interpreter.
                         |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
                             []
                           |),
@@ -3818,7 +3882,7 @@ Module interpreter.
                                       (M.read (| i |))
                                       (M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
@@ -3905,6 +3969,7 @@ Module interpreter.
                                               "core::ops::index::IndexMut",
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.path
                                                     "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo";
@@ -4098,6 +4163,7 @@ Module interpreter.
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "slice")
+                                                                        []
                                                                         [ Ty.path "u8" ],
                                                                       "len",
                                                                       []
@@ -4138,6 +4204,7 @@ Module interpreter.
                                                           "core::iter::traits::collect::IntoIterator",
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::Range")
+                                                            []
                                                             [ Ty.path "usize" ],
                                                           [],
                                                           "into_iter",
@@ -4181,6 +4248,7 @@ Module interpreter.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::ops::range::Range")
+                                                                          []
                                                                           [ Ty.path "usize" ],
                                                                         [],
                                                                         "next",
@@ -4223,6 +4291,7 @@ Module interpreter.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
+                                                                                    []
                                                                                     [
                                                                                       Ty.tuple [];
                                                                                       Ty.path
@@ -4247,6 +4316,7 @@ Module interpreter.
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "alloc::vec::Vec")
+                                                                                            []
                                                                                             [
                                                                                               Ty.path
                                                                                                 "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo";
@@ -4300,10 +4370,12 @@ Module interpreter.
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "core::result::Result")
+                                                                                                []
                                                                                                 [
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "std::collections::hash::set::HashSet")
+                                                                                                    []
                                                                                                     [
                                                                                                       Ty.path
                                                                                                         "usize";
@@ -4317,6 +4389,7 @@ Module interpreter.
                                                                                                 Ty.apply
                                                                                                   (Ty.path
                                                                                                     "core::result::Result")
+                                                                                                  []
                                                                                                   [
                                                                                                     Ty.path
                                                                                                       "core::convert::Infallible";
@@ -4396,6 +4469,7 @@ Module interpreter.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [ Ty.path "isize"; Ty.path "alloc::alloc::Global" ],
                                               "new",
                                               []
@@ -4447,6 +4521,7 @@ Module interpreter.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "*const")
+                                                                          []
                                                                           [ Ty.path "u8" ],
                                                                         "add",
                                                                         []
@@ -4456,6 +4531,7 @@ Module interpreter.
                                                                           M.get_associated_function (|
                                                                             Ty.apply
                                                                               (Ty.path "slice")
+                                                                              []
                                                                               [ Ty.path "u8" ],
                                                                             "as_ptr",
                                                                             []
@@ -4478,6 +4554,7 @@ Module interpreter.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [ Ty.path "isize" ],
                                                                   "into_vec",
                                                                   [ Ty.path "alloc::alloc::Global" ]
@@ -4491,9 +4568,11 @@ Module interpreter.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::boxed::Box")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "array")
+                                                                                [ Value.Integer 1 ]
                                                                                 [ Ty.path "isize" ];
                                                                               Ty.path
                                                                                 "alloc::alloc::Global"
@@ -4590,6 +4669,7 @@ Module interpreter.
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "slice")
+                                                                        []
                                                                         [ Ty.path "u8" ],
                                                                       "len",
                                                                       []
@@ -4631,6 +4711,7 @@ Module interpreter.
                                                             "core::iter::traits::collect::IntoIterator",
                                                             Ty.apply
                                                               (Ty.path "core::ops::range::Range")
+                                                              []
                                                               [ Ty.path "usize" ],
                                                             [],
                                                             "into_iter",
@@ -4664,6 +4745,7 @@ Module interpreter.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::ops::range::Range")
+                                                                            []
                                                                             [ Ty.path "usize" ],
                                                                           [],
                                                                           "next",
@@ -4706,6 +4788,7 @@ Module interpreter.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::result::Result")
+                                                                                      []
                                                                                       [
                                                                                         Ty.tuple [];
                                                                                         Ty.path
@@ -4730,6 +4813,7 @@ Module interpreter.
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "alloc::vec::Vec")
+                                                                                              []
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo";
@@ -4787,10 +4871,12 @@ Module interpreter.
                                                                                                 Ty.apply
                                                                                                   (Ty.path
                                                                                                     "core::result::Result")
+                                                                                                  []
                                                                                                   [
                                                                                                     Ty.apply
                                                                                                       (Ty.path
                                                                                                         "std::collections::hash::set::HashSet")
+                                                                                                      []
                                                                                                       [
                                                                                                         Ty.path
                                                                                                           "usize";
@@ -4804,6 +4890,7 @@ Module interpreter.
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "core::result::Result")
+                                                                                                    []
                                                                                                     [
                                                                                                       Ty.path
                                                                                                         "core::convert::Infallible";
@@ -4854,6 +4941,7 @@ Module interpreter.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::vec::Vec")
+                                                          []
                                                           [
                                                             Ty.path "isize";
                                                             Ty.path "alloc::alloc::Global"
@@ -4873,6 +4961,7 @@ Module interpreter.
                                                             "core::iter::traits::collect::IntoIterator",
                                                             Ty.apply
                                                               (Ty.path "core::ops::range::Range")
+                                                              []
                                                               [ Ty.path "usize" ],
                                                             [],
                                                             "into_iter",
@@ -4903,6 +4992,7 @@ Module interpreter.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::ops::range::Range")
+                                                                            []
                                                                             [ Ty.path "usize" ],
                                                                           [],
                                                                           "next",
@@ -4950,6 +5040,7 @@ Module interpreter.
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "*const")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "u8"
@@ -4963,6 +5054,7 @@ Module interpreter.
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "slice")
+                                                                                              []
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "u8"
@@ -5004,6 +5096,7 @@ Module interpreter.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "alloc::vec::Vec")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "isize";
@@ -5070,6 +5163,7 @@ Module interpreter.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "*const")
+                                                                []
                                                                 [ Ty.path "u8" ],
                                                               "add",
                                                               []
@@ -5079,6 +5173,7 @@ Module interpreter.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [ Ty.path "u8" ],
                                                                   "as_ptr",
                                                                   []
@@ -5100,6 +5195,7 @@ Module interpreter.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "slice")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "revm_primitives::bytecode::eof::types_section::TypesSection"
@@ -5202,6 +5298,7 @@ Module interpreter.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "std::collections::hash::set::HashSet")
+                                                                  []
                                                                   [
                                                                     Ty.path "usize";
                                                                     Ty.path
@@ -5303,6 +5400,7 @@ Module interpreter.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "*const")
+                                                                []
                                                                 [ Ty.path "u8" ],
                                                               "add",
                                                               []
@@ -5312,6 +5410,7 @@ Module interpreter.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [ Ty.path "u8" ],
                                                                   "as_ptr",
                                                                   []
@@ -5333,6 +5432,7 @@ Module interpreter.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "slice")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "revm_primitives::bytecode::eof::types_section::TypesSection"
@@ -5436,6 +5536,7 @@ Module interpreter.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "std::collections::hash::set::HashSet")
+                                                                  []
                                                                   [
                                                                     Ty.path "usize";
                                                                     Ty.path
@@ -5774,6 +5875,7 @@ Module interpreter.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "*const")
+                                                                []
                                                                 [ Ty.path "u8" ],
                                                               "add",
                                                               []
@@ -5783,6 +5885,7 @@ Module interpreter.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [ Ty.path "u8" ],
                                                                   "as_ptr",
                                                                   []
@@ -6092,6 +6195,7 @@ Module interpreter.
                                                   "core::iter::traits::collect::IntoIterator",
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
                                                       Ty.path "isize";
                                                       Ty.path "alloc::alloc::Global"
@@ -6118,6 +6222,7 @@ Module interpreter.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::vec::into_iter::IntoIter")
+                                                                  []
                                                                   [
                                                                     Ty.path "isize";
                                                                     Ty.path "alloc::alloc::Global"
@@ -6213,6 +6318,7 @@ Module interpreter.
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "slice")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "u8"
@@ -6267,6 +6373,7 @@ Module interpreter.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "alloc::vec::Vec")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo";
@@ -6614,6 +6721,7 @@ Module interpreter.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path
                                   "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo";
@@ -6640,6 +6748,7 @@ Module interpreter.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "alloc::vec::into_iter::IntoIter")
+                                            []
                                             [
                                               Ty.path
                                                 "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo";
@@ -6747,7 +6856,7 @@ Module interpreter.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_validate_eof_code :
@@ -6757,6 +6866,7 @@ Module interpreter.
       (* StructRecord
         {
           name := "InstructionInfo";
+          const_params := [];
           ty_params := [];
           fields :=
             [
@@ -6772,9 +6882,9 @@ Module interpreter.
           Ty.path "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo".
         
         (*     Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -6823,7 +6933,7 @@ Module interpreter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6851,9 +6961,9 @@ Module interpreter.
           Ty.path "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo".
         
         (*     Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -6869,7 +6979,7 @@ Module interpreter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6894,9 +7004,9 @@ Module interpreter.
                     Ok(())
                 }
         *)
-        Definition mark_as_immediate (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition mark_as_immediate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -6950,7 +7060,7 @@ Module interpreter.
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_mark_as_immediate :
@@ -6971,9 +7081,9 @@ Module interpreter.
                     }
                 }
         *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo"
@@ -6983,7 +7093,7 @@ Module interpreter.
                   ("smallest", M.read (| M.get_constant (| "core::num::MAX" |) |));
                   ("biggest", M.read (| M.get_constant (| "core::num::MIN" |) |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

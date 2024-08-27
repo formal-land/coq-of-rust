@@ -4,24 +4,27 @@ Require Import CoqOfRust.CoqOfRust.
 Module result.
   Axiom EVMResult :
     forall (DBError : Ty.t),
-    (Ty.apply (Ty.path "revm_primitives::result::EVMResult") [ DBError ]) =
+    (Ty.apply (Ty.path "revm_primitives::result::EVMResult") [] [ DBError ]) =
       (Ty.apply
         (Ty.path "core::result::Result")
+        []
         [
           Ty.path "revm_primitives::result::ResultAndState";
-          Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ]
+          Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ]
         ]).
   
   Axiom EVMResultGeneric :
     forall (T DBError : Ty.t),
-    (Ty.apply (Ty.path "revm_primitives::result::EVMResultGeneric") [ T; DBError ]) =
+    (Ty.apply (Ty.path "revm_primitives::result::EVMResultGeneric") [] [ T; DBError ]) =
       (Ty.apply
         (Ty.path "core::result::Result")
-        [ T; Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ] ]).
+        []
+        [ T; Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ] ]).
   
   (* StructRecord
     {
       name := "ResultAndState";
+      const_params := [];
       ty_params := [];
       fields :=
         [
@@ -29,6 +32,7 @@ Module result.
           ("state",
             Ty.apply
               (Ty.path "std::collections::hash::map::HashMap")
+              []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
                 Ty.path "revm_primitives::state::Account";
@@ -41,9 +45,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::ResultAndState".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -76,7 +80,7 @@ Module result.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -91,9 +95,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::ResultAndState".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -122,6 +126,7 @@ Module result.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
                         Ty.path "alloy_primitives::bits::address::Address";
                         Ty.path "revm_primitives::state::Account";
@@ -140,7 +145,7 @@ Module result.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -166,9 +171,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::ResultAndState".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -200,6 +205,7 @@ Module result.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
+                    []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
                       Ty.path "revm_primitives::state::Account";
@@ -208,6 +214,7 @@ Module result.
                   [
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
                         Ty.path "alloy_primitives::bits::address::Address";
                         Ty.path "revm_primitives::state::Account";
@@ -231,7 +238,7 @@ Module result.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -257,9 +264,13 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::ResultAndState".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -275,7 +286,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -290,6 +301,7 @@ Module result.
   (*
   Enum ExecutionResult
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -304,9 +316,11 @@ Module result.
                 ("logs",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [
                       Ty.apply
                         (Ty.path "alloy_primitives::log::Log")
+                        []
                         [ Ty.path "alloy_primitives::log::LogData" ];
                       Ty.path "alloc::alloc::Global"
                     ]);
@@ -340,9 +354,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::ExecutionResult".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -482,7 +496,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -497,9 +511,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::ExecutionResult".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -587,9 +601,11 @@ Module result.
                                 "core::clone::Clone",
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloy_primitives::log::Log")
+                                      []
                                       [ Ty.path "alloy_primitives::log::LogData" ];
                                     Ty.path "alloc::alloc::Global"
                                   ],
@@ -705,7 +721,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -731,9 +747,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::ExecutionResult".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -873,18 +889,22 @@ Module result.
                                         "core::cmp::PartialEq",
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloy_primitives::log::Log")
+                                              []
                                               [ Ty.path "alloy_primitives::log::LogData" ];
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloy_primitives::log::Log")
+                                                []
                                                 [ Ty.path "alloy_primitives::log::LogData" ];
                                               Ty.path "alloc::alloc::Global"
                                             ]
@@ -1028,7 +1048,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1054,9 +1074,13 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::ExecutionResult".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1104,7 +1128,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1120,9 +1144,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::ExecutionResult".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -1231,9 +1255,11 @@ Module result.
                             "core::hash::Hash",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloy_primitives::log::Log")
+                                  []
                                   [ Ty.path "alloy_primitives::log::LogData" ];
                                 Ty.path "alloc::alloc::Global"
                               ],
@@ -1343,7 +1369,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1362,9 +1388,9 @@ Module result.
             matches!(self, Self::Success { .. })
         }
     *)
-    Definition is_success (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_success (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1384,7 +1410,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_success : M.IsAssociatedFunction Self "is_success" is_success.
@@ -1394,9 +1420,9 @@ Module result.
             matches!(self, Self::Halt { .. })
         }
     *)
-    Definition is_halt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_halt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1413,7 +1439,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_halt : M.IsAssociatedFunction Self "is_halt" is_halt.
@@ -1427,9 +1453,9 @@ Module result.
             }
         }
     *)
-    Definition output (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition output (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1478,7 +1504,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_output : M.IsAssociatedFunction Self "output" output.
@@ -1492,9 +1518,9 @@ Module result.
             }
         }
     *)
-    Definition into_output (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition into_output (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1541,7 +1567,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_output : M.IsAssociatedFunction Self "into_output" into_output.
@@ -1554,9 +1580,9 @@ Module result.
             }
         }
     *)
-    Definition logs (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition logs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1579,9 +1605,11 @@ Module result.
                           "core::ops::deref::Deref",
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::log::Log")
+                                []
                                 [ Ty.path "alloy_primitives::log::LogData" ];
                               Ty.path "alloc::alloc::Global"
                             ],
@@ -1598,7 +1626,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_logs : M.IsAssociatedFunction Self "logs" logs.
@@ -1611,9 +1639,9 @@ Module result.
             }
         }
     *)
-    Definition into_logs (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition into_logs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1637,9 +1665,11 @@ Module result.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::log::Log")
+                                []
                                 [ Ty.path "alloy_primitives::log::LogData" ];
                               Ty.path "alloc::alloc::Global"
                             ],
@@ -1652,7 +1682,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_logs : M.IsAssociatedFunction Self "into_logs" into_logs.
@@ -1666,9 +1696,9 @@ Module result.
             }
         }
     *)
-    Definition gas_used (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition gas_used (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1719,7 +1749,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_gas_used : M.IsAssociatedFunction Self "gas_used" gas_used.
@@ -1728,6 +1758,7 @@ Module result.
   (*
   Enum Output
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -1744,6 +1775,7 @@ Module result.
                 Ty.path "alloy_primitives::bytes_::Bytes";
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "alloy_primitives::bits::address::Address" ]
               ];
           discriminant := None;
@@ -1756,9 +1788,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::Output".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1825,7 +1857,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1840,9 +1872,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::Output".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1911,6 +1943,7 @@ Module result.
                               "core::clone::Clone",
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [ Ty.path "alloy_primitives::bits::address::Address" ],
                               [],
                               "clone",
@@ -1923,7 +1956,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1949,9 +1982,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::Output".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -2068,10 +2101,12 @@ Module result.
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [ Ty.path "alloy_primitives::bits::address::Address" ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "alloy_primitives::bits::address::Address" ]
                                       ],
                                       "eq",
@@ -2097,7 +2132,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2123,9 +2158,13 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::Output".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2141,7 +2180,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2157,9 +2196,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::Output".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -2242,6 +2281,7 @@ Module result.
                           "core::hash::Hash",
                           Ty.apply
                             (Ty.path "core::option::Option")
+                            []
                             [ Ty.path "alloy_primitives::bits::address::Address" ],
                           [],
                           "hash",
@@ -2253,7 +2293,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2275,9 +2315,9 @@ Module result.
             }
         }
     *)
-    Definition into_data (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition into_data (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2313,7 +2353,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_data : M.IsAssociatedFunction Self "into_data" into_data.
@@ -2326,9 +2366,9 @@ Module result.
             }
         }
     *)
-    Definition data (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition data (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2366,7 +2406,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
@@ -2379,9 +2419,9 @@ Module result.
             }
         }
     *)
-    Definition address (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2419,6 +2459,7 @@ Module result.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
+                            []
                             [ Ty.path "alloy_primitives::bits::address::Address" ],
                           "as_ref",
                           []
@@ -2429,7 +2470,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
@@ -2438,6 +2479,7 @@ Module result.
   (*
   Enum EVMError
   {
+    const_params := [];
     ty_params := [ "DBError" ];
     variants :=
       [
@@ -2467,13 +2509,13 @@ Module result.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_DBError_for_revm_primitives_result_EVMError_DBError.
     Definition Self (DBError : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ].
+      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ].
     
     (* Debug *)
-    Definition fmt (DBError : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (DBError : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self DBError in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -2580,7 +2622,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2594,13 +2636,13 @@ Module result.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_DBError_for_revm_primitives_result_EVMError_DBError.
     Definition Self (DBError : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ].
+      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ].
     
     (* Clone *)
-    Definition clone (DBError : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (DBError : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self DBError in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2708,7 +2750,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2722,7 +2764,7 @@ Module result.
   
   Module Impl_core_marker_StructuralPartialEq_for_revm_primitives_result_EVMError_DBError.
     Definition Self (DBError : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ].
+      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ].
     
     Axiom Implements :
       forall (DBError : Ty.t),
@@ -2735,13 +2777,13 @@ Module result.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_DBError_for_revm_primitives_result_EVMError_DBError.
     Definition Self (DBError : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ].
+      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ].
     
     (* PartialEq *)
-    Definition eq (DBError : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (DBError : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self DBError in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -2751,7 +2793,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ] ]
+                    [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ] ]
                   |),
                   [ M.read (| self |) ]
                 |)
@@ -2761,7 +2803,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ] ]
+                    [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ] ]
                   |),
                   [ M.read (| other |) ]
                 |)
@@ -2918,7 +2960,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2932,7 +2974,7 @@ Module result.
   
   Module Impl_core_marker_StructuralEq_for_revm_primitives_result_EVMError_DBError.
     Definition Self (DBError : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ].
+      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ].
     
     Axiom Implements :
       forall (DBError : Ty.t),
@@ -2945,17 +2987,18 @@ Module result.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_DBError_for_revm_primitives_result_EVMError_DBError.
     Definition Self (DBError : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ].
+      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ].
     
     (* Eq *)
     Definition assert_receiver_is_total_eq
         (DBError : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self DBError in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2985,7 +3028,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3003,13 +3046,13 @@ Module result.
   
   Module Impl_core_hash_Hash_where_core_hash_Hash_DBError_for_revm_primitives_result_EVMError_DBError.
     Definition Self (DBError : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ].
+      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ].
     
     (* Hash *)
-    Definition hash (DBError : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (DBError : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self DBError in
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -3019,7 +3062,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ] ]
+                    [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ] ]
                   |),
                   [ M.read (| self |) ]
                 |)
@@ -3119,7 +3162,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3133,7 +3176,7 @@ Module result.
   
   Module Impl_core_error_Error_where_core_error_Error_DBError_for_revm_primitives_result_EVMError_DBError.
     Definition Self (DBError : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ].
+      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ].
     
     (*
         fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
@@ -3145,10 +3188,10 @@ Module result.
             }
         }
     *)
-    Definition source (DBError : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition source (DBError : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self DBError in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -3213,7 +3256,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3227,7 +3270,7 @@ Module result.
   
   Module Impl_core_fmt_Display_where_core_fmt_Display_DBError_for_revm_primitives_result_EVMError_DBError.
     Definition Self (DBError : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ].
+      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -3239,10 +3282,10 @@ Module result.
             }
         }
     *)
-    Definition fmt (DBError : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (DBError : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self DBError in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -3294,6 +3337,7 @@ Module result.
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [
                                                 Ty.path
                                                   "revm_primitives::result::InvalidTransaction"
@@ -3353,6 +3397,7 @@ Module result.
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [ Ty.path "revm_primitives::result::InvalidHeader" ]
                                           ]
                                         |),
@@ -3405,7 +3450,7 @@ Module result.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
-                                          [ Ty.apply (Ty.path "&") [ DBError ] ]
+                                          [ Ty.apply (Ty.path "&") [] [ DBError ] ]
                                         |),
                                         [ e ]
                                       |)
@@ -3451,7 +3496,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3465,23 +3510,23 @@ Module result.
   
   Module Impl_core_convert_From_revm_primitives_result_InvalidTransaction_for_revm_primitives_result_EVMError_DBError.
     Definition Self (DBError : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ].
+      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ].
     
     (*
         fn from(value: InvalidTransaction) -> Self {
             Self::Transaction(value)
         }
     *)
-    Definition from (DBError : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (DBError : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self DBError in
-      match τ, α with
-      | [], [ value ] =>
+      match ε, τ, α with
+      | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           Value.StructTuple
             "revm_primitives::result::EVMError::Transaction"
             [ M.read (| value |) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3496,21 +3541,21 @@ Module result.
   
   Module Impl_core_convert_From_revm_primitives_result_InvalidHeader_for_revm_primitives_result_EVMError_DBError.
     Definition Self (DBError : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ DBError ].
+      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ].
     
     (*
         fn from(value: InvalidHeader) -> Self {
             Self::Header(value)
         }
     *)
-    Definition from (DBError : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (DBError : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self DBError in
-      match τ, α with
-      | [], [ value ] =>
+      match ε, τ, α with
+      | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           Value.StructTuple "revm_primitives::result::EVMError::Header" [ M.read (| value |) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3525,6 +3570,7 @@ Module result.
   (*
   Enum InvalidTransaction
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -3561,11 +3607,19 @@ Module result.
                 ("fee",
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
-                    [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ]);
+                    []
+                    [
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                      Ty.path "alloc::alloc::Global"
+                    ]);
                 ("balance",
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
-                    [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ])
+                    []
+                    [
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                      Ty.path "alloc::alloc::Global"
+                    ])
               ];
           discriminant := None;
         };
@@ -3667,9 +3721,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidTransaction".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -4163,7 +4217,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4178,9 +4232,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidTransaction".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4279,7 +4333,14 @@ Module result.
                                 "core::clone::Clone",
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
-                                  [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 [],
                                 "clone",
                                 []
@@ -4292,7 +4353,14 @@ Module result.
                                 "core::clone::Clone",
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
-                                  [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 [],
                                 "clone",
                                 []
@@ -4600,7 +4668,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4626,9 +4694,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidTransaction".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -4702,11 +4770,25 @@ Module result.
                                     "core::cmp::PartialEq",
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
-                                      [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
-                                        [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ]
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ],
                                     "eq",
                                     []
@@ -4719,11 +4801,25 @@ Module result.
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
-                                        [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
-                                          [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ]
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [];
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ],
                                       "eq",
                                       []
@@ -4829,7 +4925,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4855,9 +4951,13 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidTransaction".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4880,7 +4980,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4896,9 +4996,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidTransaction".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -4947,7 +5047,14 @@ Module result.
                             "core::hash::Hash",
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
-                              [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             [],
                             "hash",
                             [ __H ]
@@ -4961,7 +5068,14 @@ Module result.
                           "core::hash::Hash",
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
-                            [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ],
                           [],
                           "hash",
                           [ __H ]
@@ -5057,7 +5171,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5154,9 +5268,9 @@ Module result.
             }
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -5411,11 +5525,16 @@ Module result.
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
+                                                  []
                                                   [
-                                                    Ty.path "ruint::Uint";
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [];
                                                     Ty.path "alloc::alloc::Global"
                                                   ]
                                               ]
@@ -5430,11 +5549,16 @@ Module result.
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
+                                                  []
                                                   [
-                                                    Ty.path "ruint::Uint";
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [];
                                                     Ty.path "alloc::alloc::Global"
                                                   ]
                                               ]
@@ -5570,7 +5694,7 @@ Module result.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
                                         |),
                                         [ tx ]
                                       |);
@@ -5578,7 +5702,7 @@ Module result.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
                                         |),
                                         [ state ]
                                       |)
@@ -5640,7 +5764,7 @@ Module result.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
                                         |),
                                         [ tx ]
                                       |);
@@ -5648,7 +5772,7 @@ Module result.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
                                         |),
                                         [ state ]
                                       |)
@@ -6160,7 +6284,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6174,6 +6298,7 @@ Module result.
   (*
   Enum InvalidHeader
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -6195,9 +6320,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidHeader".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -6232,7 +6357,7 @@ Module result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6258,13 +6383,13 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidHeader".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6290,9 +6415,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidHeader".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -6319,7 +6444,7 @@ Module result.
               |) in
             M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6345,13 +6470,17 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidHeader".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6367,9 +6496,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidHeader".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -6391,7 +6520,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6424,9 +6553,9 @@ Module result.
             }
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -6506,7 +6635,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6520,6 +6649,7 @@ Module result.
   (*
   Enum SuccessReason
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -6546,9 +6676,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::SuccessReason".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -6592,7 +6722,7 @@ Module result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6607,13 +6737,13 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::SuccessReason".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6650,9 +6780,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::SuccessReason".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -6679,7 +6809,7 @@ Module result.
               |) in
             M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6705,13 +6835,17 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::SuccessReason".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6727,9 +6861,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::SuccessReason".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -6751,7 +6885,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6765,6 +6899,7 @@ Module result.
   (*
   Enum HaltReason
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -6871,9 +7006,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::HaltReason".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -7232,7 +7367,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7247,9 +7382,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::HaltReason".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -7258,7 +7393,7 @@ Module result.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7295,9 +7430,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::HaltReason".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -7369,7 +7504,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7395,9 +7530,13 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::HaltReason".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -7406,7 +7545,7 @@ Module result.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7422,9 +7561,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::HaltReason".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -7475,7 +7614,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7489,6 +7628,7 @@ Module result.
   (*
   Enum OutOfGasError
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -7525,9 +7665,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::OutOfGasError".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -7589,7 +7729,7 @@ Module result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7615,13 +7755,13 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::OutOfGasError".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7647,9 +7787,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::OutOfGasError".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -7676,7 +7816,7 @@ Module result.
               |) in
             M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7702,13 +7842,17 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::OutOfGasError".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7724,9 +7868,9 @@ Module result.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::OutOfGasError".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -7748,7 +7892,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

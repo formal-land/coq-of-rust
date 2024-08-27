@@ -14,14 +14,19 @@ Module inspector.
               self
           }
       *)
-      Definition get_inspector (DB INSP : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_inspector
+          (DB INSP : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB INSP in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| self |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -231,9 +236,13 @@ Module inspector.
         });
     }
     *)
-    Definition inspector_handle_register (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ DB; EXT ], [ handler ] =>
+    Definition inspector_handle_register
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [ DB; EXT ], [ handler ] =>
         ltac:(M.monadic
           (let handler := M.alloc (| handler |) in
           M.read (|
@@ -243,10 +252,12 @@ Module inspector.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [
                         Ty.apply
                           (Ty.path "revm_interpreter::opcode::InstructionTables")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ] ]
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
                       ],
                     "expect",
                     []
@@ -256,7 +267,8 @@ Module inspector.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "take_instruction_table",
                         []
                       |),
@@ -286,19 +298,23 @@ Module inspector.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
                                 (Ty.path "core::iter::adapters::map::Map")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::array::iter::IntoIter")
+                                    [ Value.Integer 256 ]
                                     [
                                       Ty.function
                                         [
                                           Ty.apply
                                             (Ty.path "&mut")
+                                            []
                                             [ Ty.path "revm_interpreter::interpreter::Interpreter"
                                             ];
                                           Ty.apply
                                             (Ty.path "&mut")
-                                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ] ]
+                                            []
+                                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
                                         ]
                                         (Ty.tuple [])
                                     ];
@@ -310,19 +326,23 @@ Module inspector.
                                             [
                                               Ty.apply
                                                 (Ty.path "&mut")
+                                                []
                                                 [
                                                   Ty.path
                                                     "revm_interpreter::interpreter::Interpreter"
                                                 ];
                                               Ty.apply
                                                 (Ty.path "&mut")
-                                                [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ] ]
+                                                []
+                                                [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]
+                                                ]
                                             ]
                                             (Ty.tuple [])
                                         ]
                                     ]
                                     (Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.dyn
                                           [
@@ -337,9 +357,11 @@ Module inspector.
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.dyn
                                           [
@@ -358,16 +380,19 @@ Module inspector.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::array::iter::IntoIter")
+                                    [ Value.Integer 256 ]
                                     [
                                       Ty.function
                                         [
                                           Ty.apply
                                             (Ty.path "&mut")
+                                            []
                                             [ Ty.path "revm_interpreter::interpreter::Interpreter"
                                             ];
                                           Ty.apply
                                             (Ty.path "&mut")
-                                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ] ]
+                                            []
+                                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
                                         ]
                                         (Ty.tuple [])
                                     ],
@@ -376,6 +401,7 @@ Module inspector.
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.dyn
                                           [
@@ -392,13 +418,19 @@ Module inspector.
                                               [
                                                 Ty.apply
                                                   (Ty.path "&mut")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm_interpreter::interpreter::Interpreter"
                                                   ];
                                                 Ty.apply
                                                   (Ty.path "&mut")
-                                                  [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "revm::evm::Evm")
+                                                      []
+                                                      [ EXT; DB ]
                                                   ]
                                               ]
                                               (Ty.tuple [])
@@ -406,6 +438,7 @@ Module inspector.
                                       ]
                                       (Ty.apply
                                         (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
                                           Ty.dyn
                                             [
@@ -422,18 +455,22 @@ Module inspector.
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.apply
                                         (Ty.path "array")
+                                        [ Value.Integer 256 ]
                                         [
                                           Ty.function
                                             [
                                               Ty.apply
                                                 (Ty.path "&mut")
+                                                []
                                                 [
                                                   Ty.path
                                                     "revm_interpreter::interpreter::Interpreter"
                                                 ];
                                               Ty.apply
                                                 (Ty.path "&mut")
-                                                [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ] ]
+                                                []
+                                                [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]
+                                                ]
                                             ]
                                             (Ty.tuple [])
                                         ],
@@ -464,15 +501,18 @@ Module inspector.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&mut")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "revm_interpreter::interpreter::Interpreter"
                                                               ];
                                                             Ty.apply
                                                               (Ty.path "&mut")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "revm::evm::Evm")
+                                                                  []
                                                                   [ EXT; DB ]
                                                               ]
                                                           ]
@@ -505,12 +545,15 @@ Module inspector.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
                                 (Ty.path "core::iter::adapters::map::Map")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::array::iter::IntoIter")
+                                    [ Value.Integer 256 ]
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
                                           Ty.dyn
                                             [
@@ -526,6 +569,7 @@ Module inspector.
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
+                                            []
                                             [
                                               Ty.dyn
                                                 [
@@ -538,6 +582,7 @@ Module inspector.
                                     ]
                                     (Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.dyn
                                           [
@@ -552,9 +597,11 @@ Module inspector.
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.dyn
                                           [
@@ -573,9 +620,11 @@ Module inspector.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::array::iter::IntoIter")
+                                    [ Value.Integer 256 ]
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
                                           Ty.dyn
                                             [
@@ -590,6 +639,7 @@ Module inspector.
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.dyn
                                           [
@@ -604,6 +654,7 @@ Module inspector.
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::boxed::Box")
+                                              []
                                               [
                                                 Ty.dyn
                                                   [
@@ -616,6 +667,7 @@ Module inspector.
                                       ]
                                       (Ty.apply
                                         (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
                                           Ty.dyn
                                             [
@@ -632,9 +684,11 @@ Module inspector.
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.apply
                                         (Ty.path "array")
+                                        [ Value.Integer 256 ]
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
+                                            []
                                             [
                                               Ty.dyn
                                                 [
@@ -669,6 +723,7 @@ Module inspector.
                                                         DB;
                                                         Ty.apply
                                                           (Ty.path "alloc::boxed::Box")
+                                                          []
                                                           [
                                                             Ty.dyn
                                                               [
@@ -720,9 +775,11 @@ Module inspector.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "slice")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "alloc::boxed::Box")
+                                                        []
                                                         [
                                                           Ty.dyn
                                                             [
@@ -743,9 +800,11 @@ Module inspector.
                                                       "core::ops::deref::DerefMut",
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::Vec")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "alloc::boxed::Box")
+                                                            []
                                                             [
                                                               Ty.dyn
                                                                 [
@@ -783,6 +842,7 @@ Module inspector.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "alloc::boxed::Box")
+                                                      []
                                                       [
                                                         Ty.dyn
                                                           [
@@ -803,6 +863,7 @@ Module inspector.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::boxed::Box")
+                                                          []
                                                           [
                                                             Ty.function
                                                               [
@@ -810,15 +871,18 @@ Module inspector.
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "&mut")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "revm_interpreter::interpreter::Interpreter"
                                                                       ];
                                                                     Ty.apply
                                                                       (Ty.path "&mut")
+                                                                      []
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "revm::evm::Evm")
+                                                                          []
                                                                           [ EXT; DB ]
                                                                       ]
                                                                   ]
@@ -865,6 +929,7 @@ Module inspector.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::boxed::Box")
+                                                    []
                                                     [
                                                       Ty.function
                                                         [
@@ -872,15 +937,18 @@ Module inspector.
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&mut")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "revm_interpreter::interpreter::Interpreter"
                                                                 ];
                                                               Ty.apply
                                                                 (Ty.path "&mut")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "revm::evm::Evm")
+                                                                    []
                                                                     [ EXT; DB ]
                                                                 ]
                                                             ]
@@ -919,10 +987,12 @@ Module inspector.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "alloc::vec::Vec")
+                                                                                      []
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "alloy_primitives::log::Log")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "alloy_primitives::log::LogData"
@@ -942,6 +1012,7 @@ Module inspector.
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "revm::context::evm_context::EvmContext")
+                                                                                              []
                                                                                               [ DB
                                                                                               ],
                                                                                             [],
@@ -979,6 +1050,7 @@ Module inspector.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "alloc::boxed::Box")
+                                                                                      []
                                                                                       [
                                                                                         Ty.dyn
                                                                                           [
@@ -996,6 +1068,7 @@ Module inspector.
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "&mut")
+                                                                                            []
                                                                                             [
                                                                                               Ty.path
                                                                                                 "revm_interpreter::interpreter::Interpreter"
@@ -1003,10 +1076,12 @@ Module inspector.
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "&mut")
+                                                                                            []
                                                                                             [
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "revm::evm::Evm")
+                                                                                                []
                                                                                                 [
                                                                                                   EXT;
                                                                                                   DB
@@ -1047,10 +1122,12 @@ Module inspector.
                                                                                                 Ty.apply
                                                                                                   (Ty.path
                                                                                                     "alloc::vec::Vec")
+                                                                                                  []
                                                                                                   [
                                                                                                     Ty.apply
                                                                                                       (Ty.path
                                                                                                         "alloy_primitives::log::Log")
+                                                                                                      []
                                                                                                       [
                                                                                                         Ty.path
                                                                                                           "alloy_primitives::log::LogData"
@@ -1070,6 +1147,7 @@ Module inspector.
                                                                                                         Ty.apply
                                                                                                           (Ty.path
                                                                                                             "revm::context::evm_context::EvmContext")
+                                                                                                          []
                                                                                                           [
                                                                                                             DB
                                                                                                           ],
@@ -1123,6 +1201,7 @@ Module inspector.
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "alloy_primitives::log::Log")
+                                                                                              []
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "alloy_primitives::log::LogData"
@@ -1137,14 +1216,17 @@ Module inspector.
                                                                                                 Ty.apply
                                                                                                   (Ty.path
                                                                                                     "core::option::Option")
+                                                                                                  []
                                                                                                   [
                                                                                                     Ty.apply
                                                                                                       (Ty.path
                                                                                                         "&")
+                                                                                                      []
                                                                                                       [
                                                                                                         Ty.apply
                                                                                                           (Ty.path
                                                                                                             "alloy_primitives::log::Log")
+                                                                                                          []
                                                                                                           [
                                                                                                             Ty.path
                                                                                                               "alloy_primitives::log::LogData"
@@ -1160,10 +1242,12 @@ Module inspector.
                                                                                                     Ty.apply
                                                                                                       (Ty.path
                                                                                                         "slice")
+                                                                                                      []
                                                                                                       [
                                                                                                         Ty.apply
                                                                                                           (Ty.path
                                                                                                             "alloy_primitives::log::Log")
+                                                                                                          []
                                                                                                           [
                                                                                                             Ty.path
                                                                                                               "alloy_primitives::log::LogData"
@@ -1179,10 +1263,12 @@ Module inspector.
                                                                                                         Ty.apply
                                                                                                           (Ty.path
                                                                                                             "alloc::vec::Vec")
+                                                                                                          []
                                                                                                           [
                                                                                                             Ty.apply
                                                                                                               (Ty.path
                                                                                                                 "alloy_primitives::log::Log")
+                                                                                                              []
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "alloy_primitives::log::LogData"
@@ -1203,6 +1289,7 @@ Module inspector.
                                                                                                                 Ty.apply
                                                                                                                   (Ty.path
                                                                                                                     "revm::context::evm_context::EvmContext")
+                                                                                                                  []
                                                                                                                   [
                                                                                                                     DB
                                                                                                                   ],
@@ -1414,9 +1501,11 @@ Module inspector.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "slice")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.dyn
                                         [
@@ -1435,9 +1524,11 @@ Module inspector.
                                   "core::ops::deref::DerefMut",
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
                                           Ty.dyn
                                             [
@@ -1476,6 +1567,7 @@ Module inspector.
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.dyn
                                       [
@@ -1494,6 +1586,7 @@ Module inspector.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.function
                                           [
@@ -1501,13 +1594,19 @@ Module inspector.
                                               [
                                                 Ty.apply
                                                   (Ty.path "&mut")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm_interpreter::interpreter::Interpreter"
                                                   ];
                                                 Ty.apply
                                                   (Ty.path "&mut")
-                                                  [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "revm::evm::Evm")
+                                                      []
+                                                      [ EXT; DB ]
                                                   ]
                                               ]
                                           ]
@@ -1549,6 +1648,7 @@ Module inspector.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
                                   Ty.function
                                     [
@@ -1556,11 +1656,13 @@ Module inspector.
                                         [
                                           Ty.apply
                                             (Ty.path "&mut")
+                                            []
                                             [ Ty.path "revm_interpreter::interpreter::Interpreter"
                                             ];
                                           Ty.apply
                                             (Ty.path "&mut")
-                                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ] ]
+                                            []
+                                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
                                         ]
                                     ]
                                     (Ty.tuple []);
@@ -1595,6 +1697,7 @@ Module inspector.
                                                                 "core::ops::function::Fn",
                                                                 Ty.apply
                                                                   (Ty.path "alloc::boxed::Box")
+                                                                  []
                                                                   [
                                                                     Ty.dyn
                                                                       [
@@ -1610,16 +1713,19 @@ Module inspector.
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "&mut")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm_interpreter::interpreter::Interpreter"
                                                                         ];
                                                                       Ty.apply
                                                                         (Ty.path "&mut")
+                                                                        []
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "revm::evm::Evm")
+                                                                            []
                                                                             [ EXT; DB ]
                                                                         ]
                                                                     ]
@@ -1648,6 +1754,7 @@ Module inspector.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "revm::journaled_state::JournalEntry"
@@ -1662,6 +1769,7 @@ Module inspector.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "alloc::vec::Vec")
+                                                                              []
                                                                               [
                                                                                 Ty.path
                                                                                   "revm::journaled_state::JournalEntry";
@@ -1678,13 +1786,16 @@ Module inspector.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::option::Option")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path "&")
+                                                                                      []
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "alloc::vec::Vec")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "revm::journaled_state::JournalEntry";
@@ -1702,10 +1813,12 @@ Module inspector.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "slice")
+                                                                                      []
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "alloc::vec::Vec")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "revm::journaled_state::JournalEntry";
@@ -1723,10 +1836,12 @@ Module inspector.
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "alloc::vec::Vec")
+                                                                                          []
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "alloc::vec::Vec")
+                                                                                              []
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "revm::journaled_state::JournalEntry";
@@ -1749,6 +1864,7 @@ Module inspector.
                                                                                                 Ty.apply
                                                                                                   (Ty.path
                                                                                                     "revm::context::evm_context::EvmContext")
+                                                                                                  []
                                                                                                   [
                                                                                                     DB
                                                                                                   ],
@@ -1884,7 +2000,8 @@ Module inspector.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::handler::Handler")
-                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                      []
+                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                     "set_instruction_table",
                     []
                   |),
@@ -1897,12 +2014,15 @@ Module inspector.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "array")
+                                  [ Value.Integer 256 ]
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.dyn
                                           [
@@ -1914,9 +2034,11 @@ Module inspector.
                                   ];
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.dyn
                                           [
@@ -1936,9 +2058,11 @@ Module inspector.
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
+                                            []
                                             [
                                               Ty.dyn
                                                 [
@@ -1953,9 +2077,11 @@ Module inspector.
                                 ]
                                 (Ty.apply
                                   (Ty.path "array")
+                                  [ Value.Integer 256 ]
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.dyn
                                           [
@@ -1973,9 +2099,11 @@ Module inspector.
                                 "core::convert::TryInto",
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.dyn
                                           [
@@ -1989,9 +2117,11 @@ Module inspector.
                                 [
                                   Ty.apply
                                     (Ty.path "array")
+                                    [ Value.Integer 256 ]
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
                                           Ty.dyn
                                             [
@@ -2044,15 +2174,19 @@ Module inspector.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::cell::RefCell")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -2071,12 +2205,15 @@ Module inspector.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::cell::RefCell")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -2093,9 +2230,11 @@ Module inspector.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -2119,15 +2258,19 @@ Module inspector.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::cell::RefCell")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2146,12 +2289,15 @@ Module inspector.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::cell::RefCell")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2168,9 +2314,11 @@ Module inspector.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2194,12 +2342,15 @@ Module inspector.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::cell::RefCell")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path
                                   "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -2216,9 +2367,11 @@ Module inspector.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::cell::RefCell")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path
                                   "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -2233,6 +2386,7 @@ Module inspector.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path
                                   "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -2255,15 +2409,19 @@ Module inspector.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::cell::RefCell")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2288,6 +2446,7 @@ Module inspector.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::sync::Arc")
+                      []
                       [
                         Ty.dyn
                           [
@@ -2330,6 +2489,7 @@ Module inspector.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.function
                             [
@@ -2337,9 +2497,11 @@ Module inspector.
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.path
                                         "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2349,10 +2511,12 @@ Module inspector.
                             ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.path "revm::frame::FrameOrResult";
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ]);
                           Ty.path "alloc::alloc::Global"
@@ -2442,10 +2606,12 @@ Module inspector.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "alloc::vec::Vec")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "alloc::boxed::Box")
+                                                                              []
                                                                               [
                                                                                 Ty.path
                                                                                   "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2465,14 +2631,17 @@ Module inspector.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::cell::RefMut")
+                                                                              []
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "alloc::vec::Vec")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "alloc::boxed::Box")
+                                                                                      []
                                                                                       [
                                                                                         Ty.path
                                                                                           "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2494,14 +2663,17 @@ Module inspector.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::cell::RefCell")
+                                                                                    []
                                                                                     [
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "alloc::vec::Vec")
+                                                                                        []
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "alloc::boxed::Box")
+                                                                                            []
                                                                                             [
                                                                                               Ty.path
                                                                                                 "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2522,18 +2694,22 @@ Module inspector.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "alloc::rc::Rc")
+                                                                                        []
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "core::cell::RefCell")
+                                                                                            []
                                                                                             [
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "alloc::vec::Vec")
+                                                                                                []
                                                                                                 [
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "alloc::boxed::Box")
+                                                                                                    []
                                                                                                     [
                                                                                                       Ty.path
                                                                                                         "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2566,6 +2742,7 @@ Module inspector.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "alloc::boxed::Box")
+                                                                              []
                                                                               [
                                                                                 Ty.path
                                                                                   "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2608,9 +2785,11 @@ Module inspector.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::vec::Vec")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "alloc::boxed::Box")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2627,12 +2806,15 @@ Module inspector.
                                                             "core::ops::deref::DerefMut",
                                                             Ty.apply
                                                               (Ty.path "core::cell::RefMut")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "alloc::vec::Vec")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "alloc::boxed::Box")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2652,13 +2834,16 @@ Module inspector.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "core::cell::RefCell")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "alloc::vec::Vec")
+                                                                        []
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::boxed::Box")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2678,18 +2863,22 @@ Module inspector.
                                                                       "core::ops::deref::Deref",
                                                                       Ty.apply
                                                                         (Ty.path "alloc::rc::Rc")
+                                                                        []
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::cell::RefCell")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "alloc::vec::Vec")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "alloc::boxed::Box")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2719,6 +2908,7 @@ Module inspector.
                                                             "core::clone::Clone",
                                                             Ty.apply
                                                               (Ty.path "alloc::boxed::Box")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2750,14 +2940,17 @@ Module inspector.
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&mut")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "revm::context::Context")
+                                                                    []
                                                                     [ EXT; DB ]
                                                                 ];
                                                               Ty.apply
                                                                 (Ty.path "alloc::boxed::Box")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -2774,6 +2967,7 @@ Module inspector.
                                                             "core::ops::deref::Deref",
                                                             Ty.apply
                                                               (Ty.path "alloc::sync::Arc")
+                                                              []
                                                               [
                                                                 Ty.dyn
                                                                   [
@@ -2881,15 +3075,19 @@ Module inspector.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::cell::RefCell")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -2914,6 +3112,7 @@ Module inspector.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::sync::Arc")
+                      []
                       [
                         Ty.dyn
                           [
@@ -2956,6 +3155,7 @@ Module inspector.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.function
                             [
@@ -2963,9 +3163,11 @@ Module inspector.
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.path
                                         "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -2975,10 +3177,12 @@ Module inspector.
                             ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.path "revm::frame::FrameOrResult";
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ]);
                           Ty.path "alloc::alloc::Global"
@@ -3047,9 +3251,11 @@ Module inspector.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::vec::Vec")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "alloc::boxed::Box")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -3066,12 +3272,15 @@ Module inspector.
                                                             "core::ops::deref::DerefMut",
                                                             Ty.apply
                                                               (Ty.path "core::cell::RefMut")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "alloc::vec::Vec")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "alloc::boxed::Box")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -3091,13 +3300,16 @@ Module inspector.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "core::cell::RefCell")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "alloc::vec::Vec")
+                                                                        []
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::boxed::Box")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -3117,18 +3329,22 @@ Module inspector.
                                                                       "core::ops::deref::Deref",
                                                                       Ty.apply
                                                                         (Ty.path "alloc::rc::Rc")
+                                                                        []
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::cell::RefCell")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "alloc::vec::Vec")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "alloc::boxed::Box")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -3158,6 +3374,7 @@ Module inspector.
                                                             "core::clone::Clone",
                                                             Ty.apply
                                                               (Ty.path "alloc::boxed::Box")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -3227,14 +3444,17 @@ Module inspector.
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&mut")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "revm::context::Context")
+                                                                    []
                                                                     [ EXT; DB ]
                                                                 ];
                                                               Ty.apply
                                                                 (Ty.path "alloc::boxed::Box")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -3251,6 +3471,7 @@ Module inspector.
                                                             "core::ops::deref::Deref",
                                                             Ty.apply
                                                               (Ty.path "alloc::sync::Arc")
+                                                              []
                                                               [
                                                                 Ty.dyn
                                                                   [
@@ -3358,15 +3579,19 @@ Module inspector.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::cell::RefCell")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -3391,6 +3616,7 @@ Module inspector.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::sync::Arc")
+                      []
                       [
                         Ty.dyn
                           [
@@ -3433,6 +3659,7 @@ Module inspector.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.function
                             [
@@ -3440,10 +3667,12 @@ Module inspector.
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
-                                  Ty.apply (Ty.path "&mut") [ Ty.path "revm::frame::Frame" ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ];
                                   Ty.apply
                                     (Ty.path "&mut")
+                                    []
                                     [
                                       Ty.path
                                         "revm_interpreter::interpreter::shared_memory::SharedMemory"
@@ -3454,10 +3683,12 @@ Module inspector.
                             ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple [];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ]);
                           Ty.path "alloc::alloc::Global"
@@ -3503,10 +3734,12 @@ Module inspector.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::option::Option")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "alloc::boxed::Box")
+                                                                              []
                                                                               [
                                                                                 Ty.path
                                                                                   "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -3523,10 +3756,12 @@ Module inspector.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "alloc::vec::Vec")
+                                                                              []
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "alloc::boxed::Box")
+                                                                                  []
                                                                                   [
                                                                                     Ty.path
                                                                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -3546,14 +3781,17 @@ Module inspector.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::cell::RefMut")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "alloc::vec::Vec")
+                                                                                      []
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "alloc::boxed::Box")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -3575,14 +3813,17 @@ Module inspector.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "core::cell::RefCell")
+                                                                                        []
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "alloc::vec::Vec")
+                                                                                            []
                                                                                             [
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "alloc::boxed::Box")
+                                                                                                []
                                                                                                 [
                                                                                                   Ty.path
                                                                                                     "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -3603,18 +3844,22 @@ Module inspector.
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "alloc::rc::Rc")
+                                                                                            []
                                                                                             [
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "core::cell::RefCell")
+                                                                                                []
                                                                                                 [
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "alloc::vec::Vec")
+                                                                                                    []
                                                                                                     [
                                                                                                       Ty.apply
                                                                                                         (Ty.path
                                                                                                           "alloc::boxed::Box")
+                                                                                                        []
                                                                                                         [
                                                                                                           Ty.path
                                                                                                             "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -3700,20 +3945,24 @@ Module inspector.
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path "&mut")
+                                                                              []
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "revm::context::Context")
+                                                                                  []
                                                                                   [ EXT; DB ]
                                                                               ];
                                                                             Ty.apply
                                                                               (Ty.path "&mut")
+                                                                              []
                                                                               [
                                                                                 Ty.path
                                                                                   "revm::frame::Frame"
                                                                               ];
                                                                             Ty.apply
                                                                               (Ty.path "&mut")
+                                                                              []
                                                                               [
                                                                                 Ty.path
                                                                                   "revm_interpreter::interpreter::shared_memory::SharedMemory"
@@ -3732,6 +3981,7 @@ Module inspector.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::sync::Arc")
+                                                                            []
                                                                             [
                                                                               Ty.dyn
                                                                                 [
@@ -3782,15 +4032,19 @@ Module inspector.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::cell::RefCell")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -3815,6 +4069,7 @@ Module inspector.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::sync::Arc")
+                      []
                       [
                         Ty.dyn
                           [
@@ -3857,6 +4112,7 @@ Module inspector.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.function
                             [
@@ -3864,18 +4120,21 @@ Module inspector.
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
-                                  Ty.apply (Ty.path "&mut") [ Ty.path "revm::frame::Frame" ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ];
                                   Ty.path
                                     "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
                                 ]
                             ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple [];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ]);
                           Ty.path "alloc::alloc::Global"
@@ -3914,9 +4173,11 @@ Module inspector.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "alloc::boxed::Box")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -3932,10 +4193,12 @@ Module inspector.
                                                                   M.get_associated_function (|
                                                                     Ty.apply
                                                                       (Ty.path "alloc::vec::Vec")
+                                                                      []
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "alloc::boxed::Box")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -3955,14 +4218,17 @@ Module inspector.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::cell::RefMut")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "alloc::vec::Vec")
+                                                                              []
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "alloc::boxed::Box")
+                                                                                  []
                                                                                   [
                                                                                     Ty.path
                                                                                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -3984,14 +4250,17 @@ Module inspector.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::cell::RefCell")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "alloc::vec::Vec")
+                                                                                    []
                                                                                     [
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "alloc::boxed::Box")
+                                                                                        []
                                                                                         [
                                                                                           Ty.path
                                                                                             "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -4012,18 +4281,22 @@ Module inspector.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "alloc::rc::Rc")
+                                                                                    []
                                                                                     [
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "core::cell::RefCell")
+                                                                                        []
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "alloc::vec::Vec")
+                                                                                            []
                                                                                             [
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "alloc::boxed::Box")
+                                                                                                []
                                                                                                 [
                                                                                                   Ty.path
                                                                                                     "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -4109,14 +4382,17 @@ Module inspector.
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "&mut")
+                                                                      []
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "revm::context::Context")
+                                                                          []
                                                                           [ EXT; DB ]
                                                                       ];
                                                                     Ty.apply
                                                                       (Ty.path "&mut")
+                                                                      []
                                                                       [ Ty.path "revm::frame::Frame"
                                                                       ];
                                                                     Ty.path
@@ -4132,6 +4408,7 @@ Module inspector.
                                                                   "core::ops::deref::Deref",
                                                                   Ty.apply
                                                                     (Ty.path "alloc::sync::Arc")
+                                                                    []
                                                                     [
                                                                       Ty.dyn
                                                                         [
@@ -4176,6 +4453,7 @@ Module inspector.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::sync::Arc")
+                      []
                       [
                         Ty.dyn
                           [
@@ -4218,6 +4496,7 @@ Module inspector.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.function
                             [
@@ -4225,16 +4504,22 @@ Module inspector.
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
-                                  Ty.apply (Ty.path "&mut") [ Ty.path "revm::frame::FrameResult" ]
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.path "revm::frame::FrameResult" ]
                                 ]
                             ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple [];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ]);
                           Ty.path "alloc::alloc::Global"
@@ -4300,10 +4585,12 @@ Module inspector.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "alloc::boxed::Box")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -4319,10 +4606,12 @@ Module inspector.
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "alloc::vec::Vec")
+                                                                        []
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::boxed::Box")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -4342,14 +4631,17 @@ Module inspector.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::cell::RefMut")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "alloc::vec::Vec")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "alloc::boxed::Box")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -4371,14 +4663,17 @@ Module inspector.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::cell::RefCell")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "alloc::vec::Vec")
+                                                                                      []
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "alloc::boxed::Box")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -4399,18 +4694,22 @@ Module inspector.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "alloc::rc::Rc")
+                                                                                      []
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "core::cell::RefCell")
+                                                                                          []
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "alloc::vec::Vec")
+                                                                                              []
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
                                                                                                     "alloc::boxed::Box")
+                                                                                                  []
                                                                                                   [
                                                                                                     Ty.path
                                                                                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -4491,10 +4790,12 @@ Module inspector.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "alloc::boxed::Box")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -4510,10 +4811,12 @@ Module inspector.
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "alloc::vec::Vec")
+                                                                        []
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::boxed::Box")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -4533,14 +4836,17 @@ Module inspector.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::cell::RefMut")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "alloc::vec::Vec")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "alloc::boxed::Box")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -4562,14 +4868,17 @@ Module inspector.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::cell::RefCell")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "alloc::vec::Vec")
+                                                                                      []
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "alloc::boxed::Box")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -4590,18 +4899,22 @@ Module inspector.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "alloc::rc::Rc")
+                                                                                      []
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "core::cell::RefCell")
+                                                                                          []
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "alloc::vec::Vec")
+                                                                                              []
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
                                                                                                     "alloc::boxed::Box")
+                                                                                                  []
                                                                                                   [
                                                                                                     Ty.path
                                                                                                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -4683,6 +4996,7 @@ Module inspector.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
@@ -4695,6 +5009,7 @@ Module inspector.
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "alloc::vec::Vec")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -4711,10 +5026,12 @@ Module inspector.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::cell::RefMut")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "alloc::vec::Vec")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -4733,10 +5050,12 @@ Module inspector.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::cell::RefCell")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "alloc::vec::Vec")
+                                                                                      []
                                                                                       [
                                                                                         Ty.path
                                                                                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -4754,14 +5073,17 @@ Module inspector.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "alloc::rc::Rc")
+                                                                                      []
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "core::cell::RefCell")
+                                                                                          []
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "alloc::vec::Vec")
+                                                                                              []
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -4842,13 +5164,16 @@ Module inspector.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&mut")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "revm::context::Context")
+                                                                  []
                                                                   [ EXT; DB ]
                                                               ];
                                                             Ty.apply
                                                               (Ty.path "&mut")
+                                                              []
                                                               [ Ty.path "revm::frame::FrameResult" ]
                                                           ]
                                                       ],
@@ -4861,6 +5186,7 @@ Module inspector.
                                                           "core::ops::deref::Deref",
                                                           Ty.apply
                                                             (Ty.path "alloc::sync::Arc")
+                                                            []
                                                             [
                                                               Ty.dyn
                                                                 [
@@ -4897,7 +5223,7 @@ Module inspector.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_inspector_handle_register :
@@ -4942,9 +5268,9 @@ Module inspector.
         )
     }
     *)
-    Definition inspector_instruction (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ INSP; DB; Instruction ], [ instruction ] =>
+    Definition inspector_instruction (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ INSP; DB; Instruction ], [ instruction ] =>
         ltac:(M.monadic
           (let instruction := M.alloc (| instruction |) in
           (* Unsize *)
@@ -4955,6 +5281,7 @@ Module inspector.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [
                       Ty.function
                         [
@@ -4962,10 +5289,12 @@ Module inspector.
                             [
                               Ty.apply
                                 (Ty.path "&mut")
+                                []
                                 [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
                               Ty.apply
                                 (Ty.path "&mut")
-                                [ Ty.apply (Ty.path "revm::evm::Evm") [ INSP; DB ] ]
+                                []
+                                [ Ty.apply (Ty.path "revm::evm::Evm") [] [ INSP; DB ] ]
                             ]
                         ]
                         (Ty.tuple []);
@@ -5002,7 +5331,7 @@ Module inspector.
                                                 |),
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                     "sub",
                                                     []
                                                   |),
@@ -5122,7 +5451,7 @@ Module inspector.
                                                 |),
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                     "add",
                                                     []
                                                   |),
@@ -5149,15 +5478,18 @@ Module inspector.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "&mut")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "revm_interpreter::interpreter::Interpreter"
                                                             ];
                                                           Ty.apply
                                                             (Ty.path "&mut")
+                                                            []
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "revm::evm::Evm")
+                                                                []
                                                                 [ INSP; DB ]
                                                             ]
                                                         ]
@@ -5227,7 +5559,7 @@ Module inspector.
                         end))
                 ]
               |)))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_inspector_instruction :

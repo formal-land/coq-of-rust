@@ -5,6 +5,7 @@ Module handler.
   (* StructRecord
     {
       name := "Handler";
+      const_params := [];
       ty_params := [ "H"; "EXT"; "DB" ];
       fields :=
         [
@@ -12,29 +13,35 @@ Module handler.
           ("instruction_table",
             Ty.apply
               (Ty.path "core::option::Option")
-              [ Ty.apply (Ty.path "revm_interpreter::opcode::InstructionTables") [ H ] ]);
+              []
+              [ Ty.apply (Ty.path "revm_interpreter::opcode::InstructionTables") [] [ H ] ]);
           ("registers",
             Ty.apply
               (Ty.path "alloc::vec::Vec")
+              []
               [
-                Ty.apply (Ty.path "revm::handler::register::HandleRegisters") [ EXT; DB ];
+                Ty.apply (Ty.path "revm::handler::register::HandleRegisters") [] [ EXT; DB ];
                 Ty.path "alloc::alloc::Global"
               ]);
           ("validation",
             Ty.apply
               (Ty.path "revm::handler::handle_types::validation::ValidationHandler")
+              []
               [ EXT; DB ]);
           ("pre_execution",
             Ty.apply
               (Ty.path "revm::handler::handle_types::pre_execution::PreExecutionHandler")
+              []
               [ EXT; DB ]);
           ("post_execution",
             Ty.apply
               (Ty.path "revm::handler::handle_types::post_execution::PostExecutionHandler")
+              []
               [ EXT; DB ]);
           ("execution",
             Ty.apply
               (Ty.path "revm::handler::handle_types::execution::ExecutionHandler")
+              []
               [ EXT; DB ])
         ];
     } *)
@@ -43,7 +50,8 @@ Module handler.
     Definition Self (EXT DB : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "revm::handler::Handler")
-        [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ].
+        []
+        [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ].
     
     (*
         pub fn new(cfg: HandlerCfg) -> Self {
@@ -60,17 +68,18 @@ Module handler.
             }
         }
     *)
-    Definition new (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ cfg ] =>
+      match ε, τ, α with
+      | [], [], [ cfg ] =>
         ltac:(M.monadic
           (let cfg := M.alloc (| cfg |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "revm::handler::Handler")
-                [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                []
+                [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
               "mainnet_with_spec",
               []
             |),
@@ -84,7 +93,7 @@ Module handler.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new :
@@ -104,10 +113,10 @@ Module handler.
             }
         }
     *)
-    Definition mainnet (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition mainnet (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [ SPEC ], [] =>
+      match ε, τ, α with
+      | [], [ SPEC ], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm::handler::Handler"
@@ -133,7 +142,8 @@ Module handler.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm_interpreter::opcode::InstructionTables")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ] ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ],
                         "new_plain",
                         [ SPEC ]
                       |),
@@ -145,8 +155,12 @@ Module handler.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
-                        Ty.apply (Ty.path "revm::handler::register::HandleRegisters") [ EXT; DB ];
+                        Ty.apply
+                          (Ty.path "revm::handler::register::HandleRegisters")
+                          []
+                          [ EXT; DB ];
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
@@ -159,6 +173,7 @@ Module handler.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::handler::handle_types::validation::ValidationHandler")
+                      []
                       [ EXT; DB ],
                     "new",
                     [ SPEC ]
@@ -170,6 +185,7 @@ Module handler.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::handler::handle_types::pre_execution::PreExecutionHandler")
+                      []
                       [ EXT; DB ],
                     "new",
                     [ SPEC ]
@@ -181,6 +197,7 @@ Module handler.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::handler::handle_types::post_execution::PostExecutionHandler")
+                      []
                       [ EXT; DB ],
                     "new",
                     [ SPEC ]
@@ -192,6 +209,7 @@ Module handler.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::handler::handle_types::execution::ExecutionHandler")
+                      []
                       [ EXT; DB ],
                     "new",
                     [ SPEC ]
@@ -199,7 +217,7 @@ Module handler.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_mainnet :
@@ -211,10 +229,15 @@ Module handler.
             self.cfg.is_optimism()
         }
     *)
-    Definition is_optimism (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_optimism
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -231,7 +254,7 @@ Module handler.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_optimism :
@@ -243,10 +266,15 @@ Module handler.
             spec_to_generic!(spec_id, Self::mainnet::<SPEC>())
         }
     *)
-    Definition mainnet_with_spec (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition mainnet_with_spec
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ spec_id ] =>
+      match ε, τ, α with
+      | [], [], [ spec_id ] =>
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           M.read (|
@@ -285,7 +313,9 @@ Module handler.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                                      []
+                                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB
+                                      ],
                                     "mainnet",
                                     [ Ty.path "revm_primitives::specification::FrontierSpec" ]
                                   |),
@@ -327,7 +357,9 @@ Module handler.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                                      []
+                                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB
+                                      ],
                                     "mainnet",
                                     [ Ty.path "revm_primitives::specification::HomesteadSpec" ]
                                   |),
@@ -349,7 +381,8 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "revm::handler::Handler")
-                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                            []
+                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                           "mainnet",
                           [ Ty.path "revm_primitives::specification::TangerineSpec" ]
                         |),
@@ -368,7 +401,8 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "revm::handler::Handler")
-                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                            []
+                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                           "mainnet",
                           [ Ty.path "revm_primitives::specification::SpuriousDragonSpec" ]
                         |),
@@ -387,7 +421,8 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "revm::handler::Handler")
-                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                            []
+                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                           "mainnet",
                           [ Ty.path "revm_primitives::specification::ByzantiumSpec" ]
                         |),
@@ -426,7 +461,9 @@ Module handler.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                                      []
+                                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB
+                                      ],
                                     "mainnet",
                                     [ Ty.path "revm_primitives::specification::PetersburgSpec" ]
                                   |),
@@ -468,7 +505,9 @@ Module handler.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                                      []
+                                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB
+                                      ],
                                     "mainnet",
                                     [ Ty.path "revm_primitives::specification::IstanbulSpec" ]
                                   |),
@@ -487,7 +526,8 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "revm::handler::Handler")
-                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                            []
+                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                           "mainnet",
                           [ Ty.path "revm_primitives::specification::BerlinSpec" ]
                         |),
@@ -534,7 +574,9 @@ Module handler.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                                      []
+                                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB
+                                      ],
                                     "mainnet",
                                     [ Ty.path "revm_primitives::specification::LondonSpec" ]
                                   |),
@@ -553,7 +595,8 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "revm::handler::Handler")
-                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                            []
+                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                           "mainnet",
                           [ Ty.path "revm_primitives::specification::MergeSpec" ]
                         |),
@@ -572,7 +615,8 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "revm::handler::Handler")
-                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                            []
+                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                           "mainnet",
                           [ Ty.path "revm_primitives::specification::ShanghaiSpec" ]
                         |),
@@ -588,7 +632,8 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "revm::handler::Handler")
-                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                            []
+                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                           "mainnet",
                           [ Ty.path "revm_primitives::specification::CancunSpec" ]
                         |),
@@ -604,7 +649,8 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "revm::handler::Handler")
-                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                            []
+                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                           "mainnet",
                           [ Ty.path "revm_primitives::specification::LatestSpec" ]
                         |),
@@ -620,7 +666,8 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "revm::handler::Handler")
-                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                            []
+                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                           "mainnet",
                           [ Ty.path "revm_primitives::specification::PragueSpec" ]
                         |),
@@ -630,7 +677,7 @@ Module handler.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_mainnet_with_spec :
@@ -642,10 +689,10 @@ Module handler.
             self.cfg
         }
     *)
-    Definition cfg (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cfg (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -655,7 +702,7 @@ Module handler.
               "cfg"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_cfg :
@@ -667,20 +714,27 @@ Module handler.
             self.instruction_table.take()
         }
     *)
-    Definition take_instruction_table (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition take_instruction_table
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "revm_interpreter::opcode::InstructionTables")
-                    [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ] ]
+                    []
+                    [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
                 ],
               "take",
               []
@@ -693,7 +747,7 @@ Module handler.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_take_instruction_table :
@@ -705,10 +759,15 @@ Module handler.
             self.instruction_table = Some(table);
         }
     *)
-    Definition set_instruction_table (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition set_instruction_table
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; table ] =>
+      match ε, τ, α with
+      | [], [], [ self; table ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let table := M.alloc (| table |) in
@@ -724,7 +783,7 @@ Module handler.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_set_instruction_table :
@@ -736,10 +795,15 @@ Module handler.
             &self.pre_execution
         }
     *)
-    Definition pre_execution (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition pre_execution
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -747,7 +811,7 @@ Module handler.
             "revm::handler::Handler",
             "pre_execution"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_pre_execution :
@@ -759,10 +823,15 @@ Module handler.
             &self.post_execution
         }
     *)
-    Definition post_execution (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition post_execution
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -770,7 +839,7 @@ Module handler.
             "revm::handler::Handler",
             "post_execution"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_post_execution :
@@ -782,10 +851,15 @@ Module handler.
             &self.execution
         }
     *)
-    Definition execution (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition execution
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -793,7 +867,7 @@ Module handler.
             "revm::handler::Handler",
             "execution"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_execution :
@@ -805,10 +879,15 @@ Module handler.
             &self.validation
         }
     *)
-    Definition validation (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition validation
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -816,7 +895,7 @@ Module handler.
             "revm::handler::Handler",
             "validation"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_validation :
@@ -829,10 +908,15 @@ Module handler.
             self.registers.push(register);
         }
     *)
-    Definition append_handler_register (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition append_handler_register
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; register ] =>
+      match ε, τ, α with
+      | [], [], [ self; register ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let register := M.alloc (| register |) in
@@ -841,7 +925,7 @@ Module handler.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "revm::handler::register::HandleRegisters") [ EXT; DB ],
+                    Ty.apply (Ty.path "revm::handler::register::HandleRegisters") [] [ EXT; DB ],
                     "register",
                     []
                   |),
@@ -854,8 +938,12 @@ Module handler.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
-                        Ty.apply (Ty.path "revm::handler::register::HandleRegisters") [ EXT; DB ];
+                        Ty.apply
+                          (Ty.path "revm::handler::register::HandleRegisters")
+                          []
+                          [ EXT; DB ];
                         Ty.path "alloc::alloc::Global"
                       ],
                     "push",
@@ -873,7 +961,7 @@ Module handler.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_append_handler_register :
@@ -891,12 +979,13 @@ Module handler.
     *)
     Definition append_handler_register_plain
         (EXT DB : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; register ] =>
+      match ε, τ, α with
+      | [], [], [ self; register ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let register := M.alloc (| register |) in
@@ -909,8 +998,12 @@ Module handler.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
-                        Ty.apply (Ty.path "revm::handler::register::HandleRegisters") [ EXT; DB ];
+                        Ty.apply
+                          (Ty.path "revm::handler::register::HandleRegisters")
+                          []
+                          [ EXT; DB ];
                         Ty.path "alloc::alloc::Global"
                       ],
                     "push",
@@ -930,7 +1023,7 @@ Module handler.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_append_handler_register_plain :
@@ -946,10 +1039,15 @@ Module handler.
             self.registers.push(HandleRegisters::Box(register));
         }
     *)
-    Definition append_handler_register_box (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition append_handler_register_box
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; register ] =>
+      match ε, τ, α with
+      | [], [], [ self; register ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let register := M.alloc (| register |) in
@@ -961,6 +1059,7 @@ Module handler.
                     "core::ops::function::Fn",
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [
                         Ty.dyn
                           [
@@ -974,10 +1073,12 @@ Module handler.
                         [
                           Ty.apply
                             (Ty.path "&mut")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "revm::handler::Handler")
-                                [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ]
+                                []
+                                [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ]
                             ]
                         ]
                     ],
@@ -993,8 +1094,12 @@ Module handler.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
-                        Ty.apply (Ty.path "revm::handler::register::HandleRegisters") [ EXT; DB ];
+                        Ty.apply
+                          (Ty.path "revm::handler::register::HandleRegisters")
+                          []
+                          [ EXT; DB ];
                         Ty.path "alloc::alloc::Global"
                       ],
                     "push",
@@ -1014,7 +1119,7 @@ Module handler.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_append_handler_register_box :
@@ -1039,10 +1144,15 @@ Module handler.
             out
         }
     *)
-    Definition pop_handle_register (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition pop_handle_register
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1052,8 +1162,12 @@ Module handler.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
-                        Ty.apply (Ty.path "revm::handler::register::HandleRegisters") [ EXT; DB ];
+                        Ty.apply
+                          (Ty.path "revm::handler::register::HandleRegisters")
+                          []
+                          [ EXT; DB ];
                         Ty.path "alloc::alloc::Global"
                       ],
                     "pop",
@@ -1081,9 +1195,11 @@ Module handler.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "revm::handler::register::HandleRegisters")
+                                      []
                                       [ EXT; DB ]
                                   ],
                                 "is_some",
@@ -1101,9 +1217,11 @@ Module handler.
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "revm::handler::register::HandleRegisters")
+                                      []
                                       [ EXT; DB ];
                                     Ty.path "alloc::alloc::Global"
                                   ]
@@ -1124,7 +1242,8 @@ Module handler.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "revm::handler::Handler")
-                                [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                                []
+                                [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                               "mainnet_with_spec",
                               []
                             |),
@@ -1152,9 +1271,11 @@ Module handler.
                                   "core::iter::traits::collect::IntoIterator",
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "revm::handler::register::HandleRegisters")
+                                        []
                                         [ EXT; DB ];
                                       Ty.path "alloc::alloc::Global"
                                     ],
@@ -1179,10 +1300,12 @@ Module handler.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "revm::handler::register::HandleRegisters")
+                                                      []
                                                       [ EXT; DB ];
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
@@ -1218,9 +1341,11 @@ Module handler.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "revm::handler::Handler")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "revm::evm::Evm")
+                                                            []
                                                             [ EXT; DB ];
                                                           EXT;
                                                           DB
@@ -1244,7 +1369,7 @@ Module handler.
               |) in
             out
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_pop_handle_register :
@@ -1262,10 +1387,15 @@ Module handler.
             base_handler
         }
     *)
-    Definition create_handle_generic (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition create_handle_generic
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [ SPEC ], [ self ] =>
+      match ε, τ, α with
+      | [], [ SPEC ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1277,8 +1407,12 @@ Module handler.
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [
-                          Ty.apply (Ty.path "revm::handler::register::HandleRegisters") [ EXT; DB ];
+                          Ty.apply
+                            (Ty.path "revm::handler::register::HandleRegisters")
+                            []
+                            [ EXT; DB ];
                           Ty.path "alloc::alloc::Global"
                         ]
                     ]
@@ -1298,7 +1432,8 @@ Module handler.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::handler::Handler")
-                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                      []
+                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                     "mainnet",
                     [ SPEC ]
                   |),
@@ -1314,9 +1449,11 @@ Module handler.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.apply
                               (Ty.path "revm::handler::register::HandleRegisters")
+                              []
                               [ EXT; DB ];
                             Ty.path "alloc::alloc::Global"
                           ],
@@ -1341,9 +1478,11 @@ Module handler.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "revm::handler::register::HandleRegisters")
+                                            []
                                             [ EXT; DB ];
                                           Ty.path "alloc::alloc::Global"
                                         ],
@@ -1376,8 +1515,9 @@ Module handler.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "revm::handler::Handler")
+                                              []
                                               [
-                                                Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ];
+                                                Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ];
                                                 EXT;
                                                 DB
                                               ],
@@ -1395,7 +1535,7 @@ Module handler.
                 |)) in
             base_handler
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_create_handle_generic :
@@ -1420,10 +1560,15 @@ Module handler.
             *self = handler;
         }
     *)
-    Definition modify_spec_id (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition modify_spec_id
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; spec_id ] =>
+      match ε, τ, α with
+      | [], [], [ self; spec_id ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let spec_id := M.alloc (| spec_id |) in
@@ -1477,9 +1622,11 @@ Module handler.
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "revm::handler::register::HandleRegisters")
+                                []
                                 [ EXT; DB ];
                               Ty.path "alloc::alloc::Global"
                             ]
@@ -1500,7 +1647,8 @@ Module handler.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "mainnet_with_spec",
                         []
                       |),
@@ -1516,9 +1664,11 @@ Module handler.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "revm::handler::register::HandleRegisters")
+                                  []
                                   [ EXT; DB ];
                                 Ty.path "alloc::alloc::Global"
                               ],
@@ -1543,9 +1693,11 @@ Module handler.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "alloc::vec::into_iter::IntoIter")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "revm::handler::register::HandleRegisters")
+                                                []
                                                 [ EXT; DB ];
                                               Ty.path "alloc::alloc::Global"
                                             ],
@@ -1581,8 +1733,12 @@ Module handler.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "revm::handler::Handler")
+                                                  []
                                                   [
-                                                    Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ];
+                                                    Ty.apply
+                                                      (Ty.path "revm::evm::Evm")
+                                                      []
+                                                      [ EXT; DB ];
                                                     EXT;
                                                     DB
                                                   ],
@@ -1609,7 +1765,8 @@ Module handler.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "cfg",
                         []
                       |),
@@ -1633,7 +1790,7 @@ Module handler.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_modify_spec_id :

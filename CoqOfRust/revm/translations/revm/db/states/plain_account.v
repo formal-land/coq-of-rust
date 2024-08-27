@@ -7,6 +7,7 @@ Module db.
       (* StructRecord
         {
           name := "PlainAccount";
+          const_params := [];
           ty_params := [];
           fields :=
             [
@@ -14,9 +15,10 @@ Module db.
               ("storage",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
-                    Ty.path "ruint::Uint";
-                    Ty.path "ruint::Uint";
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                     Ty.path "std::hash::random::RandomState"
                   ])
             ];
@@ -26,9 +28,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::plain_account::PlainAccount".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -57,9 +59,16 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "ruint::Uint";
-                            Ty.path "ruint::Uint";
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
                             Ty.path "std::hash::random::RandomState"
                           ],
                         [],
@@ -75,7 +84,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -90,9 +99,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::plain_account::PlainAccount".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -125,7 +134,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -140,9 +149,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::plain_account::PlainAccount".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm::db::states::plain_account::PlainAccount"
@@ -164,9 +173,16 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "ruint::Uint";
-                            Ty.path "ruint::Uint";
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
                             Ty.path "std::hash::random::RandomState"
                           ],
                         [],
@@ -176,7 +192,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -202,9 +218,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::plain_account::PlainAccount".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -236,17 +252,31 @@ Module db.
                       "core::cmp::PartialEq",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       [
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "ruint::Uint";
-                            Ty.path "ruint::Uint";
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
                             Ty.path "std::hash::random::RandomState"
                           ]
                       ],
@@ -267,7 +297,7 @@ Module db.
                     ]
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -293,9 +323,13 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::plain_account::PlainAccount".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -311,7 +345,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -334,9 +368,13 @@ Module db.
                 }
             }
         *)
-        Definition new_empty_with_storage (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ storage ] =>
+        Definition new_empty_with_storage
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ storage ] =>
             ltac:(M.monadic
               (let storage := M.alloc (| storage |) in
               Value.StructRecord
@@ -355,7 +393,7 @@ Module db.
                     |));
                   ("storage", M.read (| storage |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new_empty_with_storage :
@@ -366,9 +404,9 @@ Module db.
                 (self.info, self.storage)
             }
         *)
-        Definition into_components (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition into_components (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.Tuple
@@ -388,7 +426,7 @@ Module db.
                     |)
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_components :
@@ -399,8 +437,9 @@ Module db.
         (Ty.path "revm::db::states::plain_account::StorageWithOriginalValues") =
           (Ty.apply
             (Ty.path "std::collections::hash::map::HashMap")
+            []
             [
-              Ty.path "ruint::Uint";
+              Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
               Ty.path "revm_primitives::state::StorageSlot";
               Ty.path "std::hash::random::RandomState"
             ]).
@@ -409,7 +448,11 @@ Module db.
         (Ty.path "revm::db::states::plain_account::PlainStorage") =
           (Ty.apply
             (Ty.path "std::collections::hash::map::HashMap")
-            [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint"; Ty.path "std::hash::random::RandomState"
+            []
+            [
+              Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+              Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+              Ty.path "std::hash::random::RandomState"
             ]).
       
       Module Impl_core_convert_From_revm_primitives_state_AccountInfo_for_revm_db_states_plain_account_PlainAccount.
@@ -423,9 +466,9 @@ Module db.
                 }
             }
         *)
-        Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ info ] =>
+        Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ info ] =>
             ltac:(M.monadic
               (let info := M.alloc (| info |) in
               Value.StructRecord
@@ -437,9 +480,16 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "ruint::Uint";
-                            Ty.path "ruint::Uint";
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
                             Ty.path "std::hash::random::RandomState"
                           ],
                         "new",
@@ -448,7 +498,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

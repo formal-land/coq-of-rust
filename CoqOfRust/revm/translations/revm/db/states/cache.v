@@ -7,12 +7,14 @@ Module db.
       (* StructRecord
         {
           name := "CacheState";
+          const_params := [];
           ty_params := [];
           fields :=
             [
               ("accounts",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
                     Ty.path "alloy_primitives::bits::address::Address";
                     Ty.path "revm::db::states::cache_account::CacheAccount";
@@ -21,8 +23,12 @@ Module db.
               ("contracts",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
-                    Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [];
                     Ty.path "revm_primitives::bytecode::Bytecode";
                     Ty.path "std::hash::random::RandomState"
                   ]);
@@ -34,9 +40,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::cache::CacheState".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -48,6 +54,7 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::cache_account::CacheAccount";
@@ -71,8 +78,12 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "revm_primitives::bytecode::Bytecode";
                             Ty.path "std::hash::random::RandomState"
                           ],
@@ -106,7 +117,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -121,9 +132,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::cache::CacheState".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -164,7 +175,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -190,9 +201,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::cache::CacheState".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -203,6 +214,7 @@ Module db.
                       "core::cmp::PartialEq",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
                           Ty.path "alloy_primitives::bits::address::Address";
                           Ty.path "revm::db::states::cache_account::CacheAccount";
@@ -211,6 +223,7 @@ Module db.
                       [
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::cache_account::CacheAccount";
@@ -239,16 +252,24 @@ Module db.
                         "core::cmp::PartialEq",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "revm_primitives::bytecode::Bytecode";
                             Ty.path "std::hash::random::RandomState"
                           ],
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
-                              Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 32 ]
+                                [];
                               Ty.path "revm_primitives::bytecode::Bytecode";
                               Ty.path "std::hash::random::RandomState"
                             ]
@@ -287,7 +308,7 @@ Module db.
                       |)
                     |))))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -313,9 +334,13 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::cache::CacheState".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -338,7 +363,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -358,9 +383,9 @@ Module db.
                 Self::new(true)
             }
         *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_associated_function (|
@@ -370,7 +395,7 @@ Module db.
                 |),
                 [ Value.Bool true ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -393,9 +418,9 @@ Module db.
                 }
             }
         *)
-        Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ has_state_clear ] =>
+        Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ has_state_clear ] =>
             ltac:(M.monadic
               (let has_state_clear := M.alloc (| has_state_clear |) in
               Value.StructRecord
@@ -407,6 +432,7 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::cache_account::CacheAccount";
@@ -424,8 +450,12 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "revm_primitives::bytecode::Bytecode";
                             Ty.path "std::hash::random::RandomState"
                           ],
@@ -437,7 +467,7 @@ Module db.
                     |));
                   ("has_state_clear", M.read (| has_state_clear |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -447,9 +477,9 @@ Module db.
                 self.has_state_clear = has_state_clear;
             }
         *)
-        Definition set_state_clear_flag (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; has_state_clear ] =>
+        Definition set_state_clear_flag (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; has_state_clear ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let has_state_clear := M.alloc (| has_state_clear |) in
@@ -465,7 +495,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_set_state_clear_flag :
@@ -481,9 +511,9 @@ Module db.
                 })
             }
         *)
-        Definition trie_account (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition trie_account (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -491,6 +521,7 @@ Module db.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply
                     (Ty.path "std::collections::hash::map::Iter")
+                    []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
                       Ty.path "revm::db::states::cache_account::CacheAccount"
@@ -503,6 +534,7 @@ Module db.
                         Ty.path "alloy_primitives::bits::address::Address";
                         Ty.apply
                           (Ty.path "&")
+                          []
                           [ Ty.path "revm::db::states::plain_account::PlainAccount" ]
                       ];
                     Ty.function
@@ -513,21 +545,25 @@ Module db.
                               [
                                 Ty.apply
                                   (Ty.path "&")
+                                  []
                                   [ Ty.path "alloy_primitives::bits::address::Address" ];
                                 Ty.apply
                                   (Ty.path "&")
+                                  []
                                   [ Ty.path "revm::db::states::cache_account::CacheAccount" ]
                               ]
                           ]
                       ]
                       (Ty.apply
                         (Ty.path "core::option::Option")
+                        []
                         [
                           Ty.tuple
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.apply
                                 (Ty.path "&")
+                                []
                                 [ Ty.path "revm::db::states::plain_account::PlainAccount" ]
                             ]
                         ])
@@ -538,6 +574,7 @@ Module db.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
                           Ty.path "alloy_primitives::bits::address::Address";
                           Ty.path "revm::db::states::cache_account::CacheAccount";
@@ -572,9 +609,11 @@ Module db.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "&")
+                                            []
                                             [
                                               Ty.path
                                                 "revm::db::states::plain_account::PlainAccount"
@@ -587,6 +626,7 @@ Module db.
                                             Ty.path "alloy_primitives::bits::address::Address";
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [
                                                 Ty.path
                                                   "revm::db::states::plain_account::PlainAccount"
@@ -598,6 +638,7 @@ Module db.
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm::db::states::plain_account::PlainAccount"
@@ -609,6 +650,7 @@ Module db.
                                               Ty.path "alloy_primitives::bits::address::Address";
                                               Ty.apply
                                                 (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.path
                                                     "revm::db::states::plain_account::PlainAccount"
@@ -621,6 +663,7 @@ Module db.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [
                                               Ty.path
                                                 "revm::db::states::plain_account::PlainAccount"
@@ -664,7 +707,7 @@ Module db.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_trie_account :
@@ -676,9 +719,9 @@ Module db.
                     .insert(address, CacheAccount::new_loaded_not_existing());
             }
         *)
-        Definition insert_not_existing (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; address ] =>
+        Definition insert_not_existing (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; address ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -689,6 +732,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::cache_account::CacheAccount";
@@ -717,7 +761,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_insert_not_existing :
@@ -733,9 +777,9 @@ Module db.
                 self.accounts.insert(address, account);
             }
         *)
-        Definition insert_account (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; address; info ] =>
+        Definition insert_account (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; address; info ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -777,9 +821,16 @@ Module db.
                                       "core::default::Default",
                                       Ty.apply
                                         (Ty.path "std::collections::hash::map::HashMap")
+                                        []
                                         [
-                                          Ty.path "ruint::Uint";
-                                          Ty.path "ruint::Uint";
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
                                           Ty.path "std::hash::random::RandomState"
                                         ],
                                       [],
@@ -806,9 +857,16 @@ Module db.
                                       "core::default::Default",
                                       Ty.apply
                                         (Ty.path "std::collections::hash::map::HashMap")
+                                        []
                                         [
-                                          Ty.path "ruint::Uint";
-                                          Ty.path "ruint::Uint";
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
                                           Ty.path "std::hash::random::RandomState"
                                         ],
                                       [],
@@ -829,6 +887,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::cache_account::CacheAccount";
@@ -850,7 +909,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_insert_account :
@@ -871,9 +930,13 @@ Module db.
                 self.accounts.insert(address, account);
             }
         *)
-        Definition insert_account_with_storage (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; address; info; storage ] =>
+        Definition insert_account_with_storage
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; address; info; storage ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -933,6 +996,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::cache_account::CacheAccount";
@@ -954,7 +1018,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_insert_account_with_storage :
@@ -971,9 +1035,9 @@ Module db.
                 transitions
             }
         *)
-        Definition apply_evm_state (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; evm_state ] =>
+        Definition apply_evm_state (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; evm_state ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let evm_state := M.alloc (| evm_state |) in
@@ -984,6 +1048,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.tuple
                               [
@@ -1000,6 +1065,7 @@ Module db.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm_primitives::state::Account";
@@ -1022,6 +1088,7 @@ Module db.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm_primitives::state::Account";
@@ -1048,6 +1115,7 @@ Module db.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "std::collections::hash::map::IntoIter")
+                                            []
                                             [
                                               Ty.path "alloy_primitives::bits::address::Address";
                                               Ty.path "revm_primitives::state::Account"
@@ -1116,6 +1184,7 @@ Module db.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "alloc::vec::Vec")
+                                                            []
                                                             [
                                                               Ty.tuple
                                                                 [
@@ -1152,7 +1221,7 @@ Module db.
                     |)) in
                 transitions
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_apply_evm_state :
@@ -1210,9 +1279,9 @@ Module db.
                 }
             }
         *)
-        Definition apply_account_state (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; address; account ] =>
+        Definition apply_account_state (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; address; account ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -1262,9 +1331,11 @@ Module db.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "&mut")
+                                  []
                                   [ Ty.path "revm::db::states::cache_account::CacheAccount" ]
                               ],
                             "expect",
@@ -1275,6 +1346,7 @@ Module db.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "std::collections::hash::map::HashMap")
+                                  []
                                   [
                                     Ty.path "alloy_primitives::bits::address::Address";
                                     Ty.path "revm::db::states::cache_account::CacheAccount";
@@ -1506,7 +1578,7 @@ Module db.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_apply_account_state :

@@ -9,16 +9,21 @@ Module db.
       
       Module underscore.
         Module Impl_revm_primitives_db_components_block_hash_BlockHash_where_revm_primitives_db_components_block_hash_BlockHash_T_where_core_marker_Sized_T_for_ref_mut_T.
-          Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+          Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
           
           (* #[auto_impl(&mut, Box)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&mut, Box)] *)
-          Definition block_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition block_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; number ] =>
+            match ε, τ, α with
+            | [], [], [ self; number ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let number := M.alloc (| number |) in
@@ -32,7 +37,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| number |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -49,16 +54,21 @@ Module db.
         End Impl_revm_primitives_db_components_block_hash_BlockHash_where_revm_primitives_db_components_block_hash_BlockHash_T_where_core_marker_Sized_T_for_ref_mut_T.
         Module Impl_revm_primitives_db_components_block_hash_BlockHash_where_revm_primitives_db_components_block_hash_BlockHash_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
           Definition Self (T : Ty.t) : Ty.t :=
-            Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
           
           (* #[auto_impl(&mut, Box)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&mut, Box)] *)
-          Definition block_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition block_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; number ] =>
+            match ε, τ, α with
+            | [], [], [ self; number ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let number := M.alloc (| number |) in
@@ -72,7 +82,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| number |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -88,16 +98,21 @@ Module db.
               ].
         End Impl_revm_primitives_db_components_block_hash_BlockHash_where_revm_primitives_db_components_block_hash_BlockHash_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
         Module Impl_revm_primitives_db_components_block_hash_BlockHashRef_where_revm_primitives_db_components_block_hash_BlockHashRef_T_where_core_marker_Sized_T_for_ref__T.
-          Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+          Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition block_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition block_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; number ] =>
+            match ε, τ, α with
+            | [], [], [ self; number ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let number := M.alloc (| number |) in
@@ -111,7 +126,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| number |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -127,16 +142,21 @@ Module db.
               ].
         End Impl_revm_primitives_db_components_block_hash_BlockHashRef_where_revm_primitives_db_components_block_hash_BlockHashRef_T_where_core_marker_Sized_T_for_ref__T.
         Module Impl_revm_primitives_db_components_block_hash_BlockHashRef_where_revm_primitives_db_components_block_hash_BlockHashRef_T_where_core_marker_Sized_T_for_ref_mut_T.
-          Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+          Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition block_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition block_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; number ] =>
+            match ε, τ, α with
+            | [], [], [ self; number ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let number := M.alloc (| number |) in
@@ -150,7 +170,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| number |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -167,16 +187,21 @@ Module db.
         End Impl_revm_primitives_db_components_block_hash_BlockHashRef_where_revm_primitives_db_components_block_hash_BlockHashRef_T_where_core_marker_Sized_T_for_ref_mut_T.
         Module Impl_revm_primitives_db_components_block_hash_BlockHashRef_where_revm_primitives_db_components_block_hash_BlockHashRef_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
           Definition Self (T : Ty.t) : Ty.t :=
-            Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition block_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition block_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; number ] =>
+            match ε, τ, α with
+            | [], [], [ self; number ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let number := M.alloc (| number |) in
@@ -190,7 +215,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| number |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -207,16 +232,21 @@ Module db.
         End Impl_revm_primitives_db_components_block_hash_BlockHashRef_where_revm_primitives_db_components_block_hash_BlockHashRef_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
         Module Impl_revm_primitives_db_components_block_hash_BlockHashRef_where_revm_primitives_db_components_block_hash_BlockHashRef_T_where_core_marker_Sized_T_for_alloc_rc_Rc_T_alloc_alloc_Global.
           Definition Self (T : Ty.t) : Ty.t :=
-            Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ].
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ].
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition block_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition block_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; number ] =>
+            match ε, τ, α with
+            | [], [], [ self; number ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let number := M.alloc (| number |) in
@@ -232,7 +262,7 @@ Module db.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                         [],
                         "deref",
                         []
@@ -242,7 +272,7 @@ Module db.
                     M.read (| number |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -259,16 +289,21 @@ Module db.
         End Impl_revm_primitives_db_components_block_hash_BlockHashRef_where_revm_primitives_db_components_block_hash_BlockHashRef_T_where_core_marker_Sized_T_for_alloc_rc_Rc_T_alloc_alloc_Global.
         Module Impl_revm_primitives_db_components_block_hash_BlockHashRef_where_revm_primitives_db_components_block_hash_BlockHashRef_T_where_core_marker_Sized_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
           Definition Self (T : Ty.t) : Ty.t :=
-            Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ].
+            Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition block_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition block_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; number ] =>
+            match ε, τ, α with
+            | [], [], [ self; number ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let number := M.alloc (| number |) in
@@ -284,7 +319,10 @@ Module db.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ],
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ],
                         [],
                         "deref",
                         []
@@ -294,7 +332,7 @@ Module db.
                     M.read (| number |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -321,7 +359,7 @@ Module db.
       
       
       Module Impl_revm_primitives_db_components_block_hash_BlockHash_where_revm_primitives_db_components_block_hash_BlockHashRef_T_for_ref__T.
-        Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+        Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
         
         (*     type Error = <T as BlockHashRef>::Error; *)
         Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
@@ -331,10 +369,15 @@ Module db.
                 BlockHashRef::block_hash( *self, number)
             }
         *)
-        Definition block_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition block_hash
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; number ] =>
+          match ε, τ, α with
+          | [], [], [ self; number ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let number := M.alloc (| number |) in
@@ -348,7 +391,7 @@ Module db.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| number |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -366,7 +409,7 @@ Module db.
       
       Module Impl_revm_primitives_db_components_block_hash_BlockHash_where_revm_primitives_db_components_block_hash_BlockHashRef_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ].
+          Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
         
         (*     type Error = <T as BlockHashRef>::Error; *)
         Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
@@ -376,17 +419,22 @@ Module db.
                 self.deref().block_hash(number)
             }
         *)
-        Definition block_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition block_hash
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; number ] =>
+          match ε, τ, α with
+          | [], [], [ self; number ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let number := M.alloc (| number |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "revm_primitives::db::components::block_hash::BlockHashRef",
-                  Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ],
+                  Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   [],
                   "block_hash",
                   []
@@ -397,9 +445,11 @@ Module db.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "&mut")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [ T; Ty.path "alloc::alloc::Global" ]
                         ],
                       [],
@@ -411,7 +461,7 @@ Module db.
                   M.read (| number |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

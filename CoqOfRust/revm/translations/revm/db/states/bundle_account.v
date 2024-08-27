@@ -7,22 +7,26 @@ Module db.
       (* StructRecord
         {
           name := "BundleAccount";
+          const_params := [];
           ty_params := [];
           fields :=
             [
               ("info",
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "revm_primitives::state::AccountInfo" ]);
               ("original_info",
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "revm_primitives::state::AccountInfo" ]);
               ("storage",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
-                    Ty.path "ruint::Uint";
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                     Ty.path "revm_primitives::state::StorageSlot";
                     Ty.path "std::hash::random::RandomState"
                   ]);
@@ -34,9 +38,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_account::BundleAccount".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -48,6 +52,7 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [ Ty.path "revm_primitives::state::AccountInfo" ],
                         [],
                         "clone",
@@ -67,6 +72,7 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [ Ty.path "revm_primitives::state::AccountInfo" ],
                         [],
                         "clone",
@@ -86,8 +92,12 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "ruint::Uint";
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
                             Ty.path "revm_primitives::state::StorageSlot";
                             Ty.path "std::hash::random::RandomState"
                           ],
@@ -121,7 +131,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -136,9 +146,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_account::BundleAccount".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -187,7 +197,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -213,9 +223,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_account::BundleAccount".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -227,10 +237,12 @@ Module db.
                         "core::cmp::PartialEq",
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [ Ty.path "revm_primitives::state::AccountInfo" ],
                         [
                           Ty.apply
                             (Ty.path "core::option::Option")
+                            []
                             [ Ty.path "revm_primitives::state::AccountInfo" ]
                         ],
                         "eq",
@@ -255,10 +267,12 @@ Module db.
                           "core::cmp::PartialEq",
                           Ty.apply
                             (Ty.path "core::option::Option")
+                            []
                             [ Ty.path "revm_primitives::state::AccountInfo" ],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [ Ty.path "revm_primitives::state::AccountInfo" ]
                           ],
                           "eq",
@@ -284,16 +298,24 @@ Module db.
                         "core::cmp::PartialEq",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "ruint::Uint";
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
                             Ty.path "revm_primitives::state::StorageSlot";
                             Ty.path "std::hash::random::RandomState"
                           ],
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
-                              Ty.path "ruint::Uint";
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
                               Ty.path "revm_primitives::state::StorageSlot";
                               Ty.path "std::hash::random::RandomState"
                             ]
@@ -338,7 +360,7 @@ Module db.
                     ]
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -364,9 +386,13 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_account::BundleAccount".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -397,7 +423,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -427,9 +453,9 @@ Module db.
                 }
             }
         *)
-        Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ original_info; present_info; storage; status ] =>
+        Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ original_info; present_info; storage; status ] =>
             ltac:(M.monadic
               (let original_info := M.alloc (| original_info |) in
               let present_info := M.alloc (| present_info |) in
@@ -443,7 +469,7 @@ Module db.
                   ("storage", M.read (| storage |));
                   ("status", M.read (| status |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -453,9 +479,9 @@ Module db.
                 1 + self.storage.len()
             }
         *)
-        Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Wrap.add
@@ -465,8 +491,9 @@ Module db.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
-                        Ty.path "ruint::Uint";
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                         Ty.path "revm_primitives::state::StorageSlot";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -481,7 +508,7 @@ Module db.
                     |)
                   ]
                 |))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_size_hint : M.IsAssociatedFunction Self "size_hint" size_hint.
@@ -498,9 +525,9 @@ Module db.
                 }
             }
         *)
-        Definition storage_slot (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; slot ] =>
+        Definition storage_slot (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; slot ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let slot := M.alloc (| slot |) in
@@ -511,21 +538,33 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::state::StorageSlot" ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_primitives::state::StorageSlot" ]
                           ],
                         "map",
                         [
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.function
                             [
                               Ty.tuple
                                 [
                                   Ty.apply
                                     (Ty.path "&")
+                                    []
                                     [ Ty.path "revm_primitives::state::StorageSlot" ]
                                 ]
                             ]
-                            (Ty.path "ruint::Uint")
+                            (Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [])
                         ]
                       |),
                       [
@@ -533,13 +572,22 @@ Module db.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
-                                Ty.path "ruint::Uint";
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
                                 Ty.path "revm_primitives::state::StorageSlot";
                                 Ty.path "std::hash::random::RandomState"
                               ],
                             "get",
-                            [ Ty.path "ruint::Uint" ]
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ]
                           |),
                           [
                             M.SubPointer.get_struct_record_field (|
@@ -587,7 +635,13 @@ Module db.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
-                                    [ Ty.path "ruint::Uint" ],
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ],
                                   "is_some",
                                   []
                                 |),
@@ -640,7 +694,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_storage_slot :
@@ -651,9 +705,9 @@ Module db.
                 self.info.clone()
             }
         *)
-        Definition account_info (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition account_info (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -661,6 +715,7 @@ Module db.
                   "core::clone::Clone",
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "revm_primitives::state::AccountInfo" ],
                   [],
                   "clone",
@@ -674,7 +729,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_account_info :
@@ -685,9 +740,9 @@ Module db.
                 self.status.was_destroyed()
             }
         *)
-        Definition was_destroyed (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition was_destroyed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -704,7 +759,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_was_destroyed :
@@ -715,9 +770,9 @@ Module db.
                 self.info != self.original_info
             }
         *)
-        Definition is_info_changed (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition is_info_changed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -725,10 +780,12 @@ Module db.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "revm_primitives::state::AccountInfo" ],
                   [
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "revm_primitives::state::AccountInfo" ]
                   ],
                   "ne",
@@ -747,7 +804,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_is_info_changed :
@@ -758,9 +815,9 @@ Module db.
                 self.info.as_ref().map(|a| a.code_hash) != self.original_info.as_ref().map(|a| a.code_hash)
             }
         *)
-        Definition is_contract_changed (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition is_contract_changed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -768,11 +825,23 @@ Module db.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "core::option::Option")
-                    [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer 32 ]
+                        []
+                    ],
                   [
                     Ty.apply
                       (Ty.path "core::option::Option")
-                      [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ]
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          []
+                      ]
                   ],
                   "ne",
                   []
@@ -783,21 +852,33 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::state::AccountInfo" ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_primitives::state::AccountInfo" ]
                           ],
                         "map",
                         [
-                          Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [];
                           Ty.function
                             [
                               Ty.tuple
                                 [
                                   Ty.apply
                                     (Ty.path "&")
+                                    []
                                     [ Ty.path "revm_primitives::state::AccountInfo" ]
                                 ]
                             ]
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            (Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [])
                         ]
                       |),
                       [
@@ -805,6 +886,7 @@ Module db.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [ Ty.path "revm_primitives::state::AccountInfo" ],
                             "as_ref",
                             []
@@ -847,21 +929,33 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::state::AccountInfo" ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_primitives::state::AccountInfo" ]
                           ],
                         "map",
                         [
-                          Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [];
                           Ty.function
                             [
                               Ty.tuple
                                 [
                                   Ty.apply
                                     (Ty.path "&")
+                                    []
                                     [ Ty.path "revm_primitives::state::AccountInfo" ]
                                 ]
                             ]
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            (Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [])
                         ]
                       |),
                       [
@@ -869,6 +963,7 @@ Module db.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [ Ty.path "revm_primitives::state::AccountInfo" ],
                             "as_ref",
                             []
@@ -908,7 +1003,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_is_contract_changed :
@@ -955,9 +1050,9 @@ Module db.
                 false
             }
         *)
-        Definition revert (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; revert ] =>
+        Definition revert (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; revert ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let revert := M.alloc (| revert |) in
@@ -1023,6 +1118,7 @@ Module db.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
+                                                  []
                                                   [ Ty.path "revm_primitives::state::AccountInfo" ],
                                                 "is_none",
                                                 []
@@ -1056,8 +1152,12 @@ Module db.
                                                     Ty.apply
                                                       (Ty.path
                                                         "std::collections::hash::map::HashMap")
+                                                      []
                                                       [
-                                                        Ty.path "ruint::Uint";
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [];
                                                         Ty.path
                                                           "revm_primitives::state::StorageSlot";
                                                         Ty.path "std::hash::random::RandomState"
@@ -1085,8 +1185,12 @@ Module db.
                                                     Ty.apply
                                                       (Ty.path
                                                         "std::collections::hash::map::IterMut")
+                                                      []
                                                       [
-                                                        Ty.path "ruint::Uint";
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [];
                                                         Ty.path
                                                           "revm_primitives::state::StorageSlot"
                                                       ],
@@ -1101,9 +1205,19 @@ Module db.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "&")
-                                                                    [ Ty.path "ruint::Uint" ];
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        []
+                                                                    ];
                                                                   Ty.apply
                                                                     (Ty.path "&mut")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm_primitives::state::StorageSlot"
@@ -1120,8 +1234,12 @@ Module db.
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::map::HashMap")
+                                                          []
                                                           [
-                                                            Ty.path "ruint::Uint";
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [];
                                                             Ty.path
                                                               "revm_primitives::state::StorageSlot";
                                                             Ty.path "std::hash::random::RandomState"
@@ -1215,8 +1333,12 @@ Module db.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
                                   (Ty.path "std::collections::hash::map::HashMap")
+                                  []
                                   [
-                                    Ty.path "ruint::Uint";
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [];
                                     Ty.path "revm::db::states::reverts::RevertToSlot";
                                     Ty.path "std::hash::random::RandomState"
                                   ],
@@ -1249,8 +1371,12 @@ Module db.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "std::collections::hash::map::IntoIter")
+                                                []
                                                 [
-                                                  Ty.path "ruint::Uint";
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
                                                   Ty.path "revm::db::states::reverts::RevertToSlot"
                                                 ],
                                               [],
@@ -1305,8 +1431,15 @@ Module db.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "std::collections::hash::map::Entry")
+                                                                  []
                                                                   [
-                                                                    Ty.path "ruint::Uint";
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [
+                                                                        Value.Integer 256;
+                                                                        Value.Integer 4
+                                                                      ]
+                                                                      [];
                                                                     Ty.path
                                                                       "revm_primitives::state::StorageSlot"
                                                                   ],
@@ -1319,8 +1452,15 @@ Module db.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "std::collections::hash::map::HashMap")
+                                                                      []
                                                                       [
-                                                                        Ty.path "ruint::Uint";
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          [];
                                                                         Ty.path
                                                                           "revm_primitives::state::StorageSlot";
                                                                         Ty.path
@@ -1369,15 +1509,30 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::HashMap")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.path
                                                                     "revm_primitives::state::StorageSlot";
                                                                   Ty.path
                                                                     "std::hash::random::RandomState"
                                                                 ],
                                                               "remove",
-                                                              [ Ty.path "ruint::Uint" ]
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  []
+                                                              ]
                                                             |),
                                                             [
                                                               M.SubPointer.get_struct_record_field (|
@@ -1401,7 +1556,7 @@ Module db.
                     M.alloc (| Value.Bool false |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_revert : M.IsAssociatedFunction Self "revert" revert.
@@ -1647,9 +1802,13 @@ Module db.
                 account_revert.and_then(|acc| if acc.is_empty() { None } else { Some(acc) })
             }
         *)
-        Definition update_and_create_revert (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; transition ] =>
+        Definition update_and_create_revert
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; transition ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let transition := M.alloc (| transition |) in
@@ -1707,8 +1866,12 @@ Module db.
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::map::HashMap")
+                                                          []
                                                           [
-                                                            Ty.path "ruint::Uint";
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [];
                                                             Ty.path
                                                               "revm_primitives::state::StorageSlot";
                                                             Ty.path "std::hash::random::RandomState"
@@ -1735,8 +1898,15 @@ Module db.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "std::collections::hash::map::IntoIter")
+                                                                        []
                                                                         [
-                                                                          Ty.path "ruint::Uint";
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [
+                                                                              Value.Integer 256;
+                                                                              Value.Integer 4
+                                                                            ]
+                                                                            [];
                                                                           Ty.path
                                                                             "revm_primitives::state::StorageSlot"
                                                                         ],
@@ -1790,9 +1960,18 @@ Module db.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "std::collections::hash::map::Entry")
+                                                                                  []
                                                                                   [
-                                                                                    Ty.path
-                                                                                      "ruint::Uint";
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "ruint::Uint")
+                                                                                      [
+                                                                                        Value.Integer
+                                                                                          256;
+                                                                                        Value.Integer
+                                                                                          4
+                                                                                      ]
+                                                                                      [];
                                                                                     Ty.path
                                                                                       "revm_primitives::state::StorageSlot"
                                                                                   ],
@@ -1805,9 +1984,18 @@ Module db.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "std::collections::hash::map::HashMap")
+                                                                                      []
                                                                                       [
-                                                                                        Ty.path
-                                                                                          "ruint::Uint";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "ruint::Uint")
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              256;
+                                                                                            Value.Integer
+                                                                                              4
+                                                                                          ]
+                                                                                          [];
                                                                                         Ty.path
                                                                                           "revm_primitives::state::StorageSlot";
                                                                                         Ty.path
@@ -1870,14 +2058,20 @@ Module db.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::map::Map")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::iter::adapters::filter::Filter")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "std::collections::hash::map::Iter")
+                                                  []
                                                   [
-                                                    Ty.path "ruint::Uint";
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [];
                                                     Ty.path "revm_primitives::state::StorageSlot"
                                                   ];
                                                 Ty.function
@@ -1886,14 +2080,25 @@ Module db.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&")
+                                                          []
                                                           [
                                                             Ty.tuple
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&")
-                                                                  [ Ty.path "ruint::Uint" ];
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [
+                                                                        Value.Integer 256;
+                                                                        Value.Integer 4
+                                                                      ]
+                                                                      []
+                                                                  ];
                                                                 Ty.apply
                                                                   (Ty.path "&")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "revm_primitives::state::StorageSlot"
@@ -1912,9 +2117,16 @@ Module db.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&")
-                                                          [ Ty.path "ruint::Uint" ];
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              []
+                                                          ];
                                                         Ty.apply
                                                           (Ty.path "&")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "revm_primitives::state::StorageSlot"
@@ -1924,7 +2136,10 @@ Module db.
                                               ]
                                               (Ty.tuple
                                                 [
-                                                  Ty.path "ruint::Uint";
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
                                                   Ty.path "revm::db::states::reverts::RevertToSlot"
                                                 ])
                                           ],
@@ -1933,8 +2148,12 @@ Module db.
                                         [
                                           Ty.apply
                                             (Ty.path "std::collections::hash::map::HashMap")
+                                            []
                                             [
-                                              Ty.path "ruint::Uint";
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [];
                                               Ty.path "revm::db::states::reverts::RevertToSlot";
                                               Ty.path "std::hash::random::RandomState"
                                             ]
@@ -1946,11 +2165,16 @@ Module db.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
                                               (Ty.path "core::iter::adapters::filter::Filter")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "std::collections::hash::map::Iter")
+                                                  []
                                                   [
-                                                    Ty.path "ruint::Uint";
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [];
                                                     Ty.path "revm_primitives::state::StorageSlot"
                                                   ];
                                                 Ty.function
@@ -1959,14 +2183,25 @@ Module db.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&")
+                                                          []
                                                           [
                                                             Ty.tuple
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&")
-                                                                  [ Ty.path "ruint::Uint" ];
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [
+                                                                        Value.Integer 256;
+                                                                        Value.Integer 4
+                                                                      ]
+                                                                      []
+                                                                  ];
                                                                 Ty.apply
                                                                   (Ty.path "&")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "revm_primitives::state::StorageSlot"
@@ -1982,7 +2217,10 @@ Module db.
                                             [
                                               Ty.tuple
                                                 [
-                                                  Ty.path "ruint::Uint";
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
                                                   Ty.path "revm::db::states::reverts::RevertToSlot"
                                                 ];
                                               Ty.function
@@ -1993,9 +2231,17 @@ Module db.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "&")
-                                                            [ Ty.path "ruint::Uint" ];
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [ Value.Integer 256; Value.Integer 4
+                                                                ]
+                                                                []
+                                                            ];
                                                           Ty.apply
                                                             (Ty.path "&")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "revm_primitives::state::StorageSlot"
@@ -2005,7 +2251,10 @@ Module db.
                                                 ]
                                                 (Ty.tuple
                                                   [
-                                                    Ty.path "ruint::Uint";
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [];
                                                     Ty.path
                                                       "revm::db::states::reverts::RevertToSlot"
                                                   ])
@@ -2017,8 +2266,12 @@ Module db.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "std::collections::hash::map::Iter")
+                                                  []
                                                   [
-                                                    Ty.path "ruint::Uint";
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [];
                                                     Ty.path "revm_primitives::state::StorageSlot"
                                                   ],
                                                 [],
@@ -2030,14 +2283,25 @@ Module db.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "&")
+                                                            []
                                                             [
                                                               Ty.tuple
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "&")
-                                                                    [ Ty.path "ruint::Uint" ];
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        []
+                                                                    ];
                                                                   Ty.apply
                                                                     (Ty.path "&")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm_primitives::state::StorageSlot"
@@ -2055,8 +2319,12 @@ Module db.
                                                     Ty.apply
                                                       (Ty.path
                                                         "std::collections::hash::map::HashMap")
+                                                      []
                                                       [
-                                                        Ty.path "ruint::Uint";
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [];
                                                         Ty.path
                                                           "revm_primitives::state::StorageSlot";
                                                         Ty.path "std::hash::random::RandomState"
@@ -2164,10 +2432,12 @@ Module db.
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [ Ty.path "revm_primitives::state::AccountInfo" ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "revm_primitives::state::AccountInfo" ]
                                       ],
                                       "ne",
@@ -2193,6 +2463,7 @@ Module db.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [ Ty.path "revm_primitives::state::AccountInfo" ],
                                       "unwrap_or_default",
                                       []
@@ -2203,6 +2474,7 @@ Module db.
                                           "core::clone::Clone",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "revm_primitives::state::AccountInfo" ],
                                           [],
                                           "clone",
@@ -2253,11 +2525,16 @@ Module db.
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "std::collections::hash::map::HashMap")
+                                                  []
                                                   [
-                                                    Ty.path "ruint::Uint";
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [];
                                                     Ty.path "revm_primitives::state::StorageSlot";
                                                     Ty.path "std::hash::random::RandomState"
                                                   ]
@@ -2266,8 +2543,12 @@ Module db.
                                       ]
                                       (Ty.apply
                                         (Ty.path "std::collections::hash::map::HashMap")
+                                        []
                                         [
-                                          Ty.path "ruint::Uint";
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
                                           Ty.path "revm::db::states::reverts::RevertToSlot";
                                           Ty.path "std::hash::random::RandomState"
                                         ]),
@@ -2276,11 +2557,16 @@ Module db.
                                         [
                                           Ty.apply
                                             (Ty.path "&")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "std::collections::hash::map::HashMap")
+                                                []
                                                 [
-                                                  Ty.path "ruint::Uint";
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
                                                   Ty.path "revm_primitives::state::StorageSlot";
                                                   Ty.path "std::hash::random::RandomState"
                                                 ]
@@ -2339,12 +2625,20 @@ Module db.
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&mut")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "std::collections::hash::map::HashMap")
+                                                                      []
                                                                       [
-                                                                        Ty.path "ruint::Uint";
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          [];
                                                                         Ty.path
                                                                           "revm_primitives::state::StorageSlot";
                                                                         Ty.path
@@ -2354,8 +2648,15 @@ Module db.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "std::collections::hash::map::HashMap")
+                                                                  []
                                                                   [
-                                                                    Ty.path "ruint::Uint";
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [
+                                                                        Value.Integer 256;
+                                                                        Value.Integer 4
+                                                                      ]
+                                                                      [];
                                                                     Ty.path
                                                                       "revm_primitives::state::StorageSlot";
                                                                     Ty.path
@@ -2369,12 +2670,20 @@ Module db.
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&mut")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "std::collections::hash::map::HashMap")
+                                                                    []
                                                                     [
-                                                                      Ty.path "ruint::Uint";
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
                                                                       Ty.path
                                                                         "revm_primitives::state::StorageSlot";
                                                                       Ty.path
@@ -2384,8 +2693,15 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::HashMap")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.path
                                                                     "revm_primitives::state::StorageSlot";
                                                                   Ty.path
@@ -2459,6 +2775,7 @@ Module db.
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&mut")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "revm::db::states::bundle_account::BundleAccount"
@@ -2537,11 +2854,16 @@ Module db.
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "std::collections::hash::map::HashMap")
+                                                  []
                                                   [
-                                                    Ty.path "ruint::Uint";
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [];
                                                     Ty.path "revm_primitives::state::StorageSlot";
                                                     Ty.path "std::hash::random::RandomState"
                                                   ]
@@ -2550,8 +2872,12 @@ Module db.
                                       ]
                                       (Ty.apply
                                         (Ty.path "std::collections::hash::map::HashMap")
+                                        []
                                         [
-                                          Ty.path "ruint::Uint";
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
                                           Ty.path "revm::db::states::reverts::RevertToSlot";
                                           Ty.path "std::hash::random::RandomState"
                                         ]),
@@ -2560,11 +2886,16 @@ Module db.
                                         [
                                           Ty.apply
                                             (Ty.path "&")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "std::collections::hash::map::HashMap")
+                                                []
                                                 [
-                                                  Ty.path "ruint::Uint";
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
                                                   Ty.path "revm_primitives::state::StorageSlot";
                                                   Ty.path "std::hash::random::RandomState"
                                                 ]
@@ -2624,12 +2955,20 @@ Module db.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "&mut")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "std::collections::hash::map::HashMap")
+                                                                        []
                                                                         [
-                                                                          Ty.path "ruint::Uint";
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [
+                                                                              Value.Integer 256;
+                                                                              Value.Integer 4
+                                                                            ]
+                                                                            [];
                                                                           Ty.path
                                                                             "revm_primitives::state::StorageSlot";
                                                                           Ty.path
@@ -2639,8 +2978,15 @@ Module db.
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "std::collections::hash::map::HashMap")
+                                                                    []
                                                                     [
-                                                                      Ty.path "ruint::Uint";
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
                                                                       Ty.path
                                                                         "revm_primitives::state::StorageSlot";
                                                                       Ty.path
@@ -2654,12 +3000,20 @@ Module db.
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&mut")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "std::collections::hash::map::HashMap")
+                                                                      []
                                                                       [
-                                                                        Ty.path "ruint::Uint";
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          [];
                                                                         Ty.path
                                                                           "revm_primitives::state::StorageSlot";
                                                                         Ty.path
@@ -2669,8 +3023,15 @@ Module db.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "std::collections::hash::map::HashMap")
+                                                                  []
                                                                   [
-                                                                    Ty.path "ruint::Uint";
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [
+                                                                        Value.Integer 256;
+                                                                        Value.Integer 4
+                                                                      ]
+                                                                      [];
                                                                     Ty.path
                                                                       "revm_primitives::state::StorageSlot";
                                                                     Ty.path
@@ -2774,6 +3135,7 @@ Module db.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "&mut")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm::db::states::bundle_account::BundleAccount"
@@ -2890,8 +3252,12 @@ Module db.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
                                       (Ty.path "std::collections::hash::map::Drain")
+                                      []
                                       [
-                                        Ty.path "ruint::Uint";
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [];
                                         Ty.path "revm_primitives::state::StorageSlot"
                                       ],
                                     [],
@@ -2899,8 +3265,12 @@ Module db.
                                     [
                                       Ty.apply
                                         (Ty.path "std::collections::hash::map::HashMap")
+                                        []
                                         [
-                                          Ty.path "ruint::Uint";
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
                                           Ty.path "revm_primitives::state::StorageSlot";
                                           Ty.path "std::hash::random::RandomState"
                                         ]
@@ -2911,8 +3281,12 @@ Module db.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "std::collections::hash::map::HashMap")
+                                          []
                                           [
-                                            Ty.path "ruint::Uint";
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [];
                                             Ty.path "revm_primitives::state::StorageSlot";
                                             Ty.path "std::hash::random::RandomState"
                                           ],
@@ -3059,6 +3433,7 @@ Module db.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "&mut")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm::db::states::bundle_account::BundleAccount"
@@ -3074,6 +3449,7 @@ Module db.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm_primitives::state::AccountInfo"
@@ -3117,6 +3493,7 @@ Module db.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm::db::states::reverts::AccountRevert"
@@ -3294,13 +3671,23 @@ Module db.
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path "&")
+                                                                                    []
                                                                                     [
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "std::collections::hash::map::HashMap")
+                                                                                        []
                                                                                         [
-                                                                                          Ty.path
-                                                                                            "ruint::Uint";
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            [];
                                                                                           Ty.path
                                                                                             "revm_primitives::state::StorageSlot";
                                                                                           Ty.path
@@ -3312,9 +3699,17 @@ Module db.
                                                                             (Ty.apply
                                                                               (Ty.path
                                                                                 "std::collections::hash::map::HashMap")
+                                                                              []
                                                                               [
-                                                                                Ty.path
-                                                                                  "ruint::Uint";
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "ruint::Uint")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      256;
+                                                                                    Value.Integer 4
+                                                                                  ]
+                                                                                  [];
                                                                                 Ty.path
                                                                                   "revm::db::states::reverts::RevertToSlot";
                                                                                 Ty.path
@@ -3325,13 +3720,23 @@ Module db.
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path "&")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "std::collections::hash::map::HashMap")
+                                                                                      []
                                                                                       [
-                                                                                        Ty.path
-                                                                                          "ruint::Uint";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "ruint::Uint")
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              256;
+                                                                                            Value.Integer
+                                                                                              4
+                                                                                          ]
+                                                                                          [];
                                                                                         Ty.path
                                                                                           "revm_primitives::state::StorageSlot";
                                                                                         Ty.path
@@ -3399,12 +3804,21 @@ Module db.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::iter::adapters::map::Map")
+                                                                      []
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "std::collections::hash::map::IntoIter")
+                                                                          []
                                                                           [
-                                                                            Ty.path "ruint::Uint";
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "ruint::Uint")
+                                                                              [
+                                                                                Value.Integer 256;
+                                                                                Value.Integer 4
+                                                                              ]
+                                                                              [];
                                                                             Ty.path
                                                                               "revm_primitives::state::StorageSlot"
                                                                           ];
@@ -3414,8 +3828,16 @@ Module db.
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
-                                                                                    Ty.path
-                                                                                      "ruint::Uint";
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "ruint::Uint")
+                                                                                      [
+                                                                                        Value.Integer
+                                                                                          256;
+                                                                                        Value.Integer
+                                                                                          4
+                                                                                      ]
+                                                                                      [];
                                                                                     Ty.path
                                                                                       "revm_primitives::state::StorageSlot"
                                                                                   ]
@@ -3423,7 +3845,14 @@ Module db.
                                                                           ]
                                                                           (Ty.tuple
                                                                             [
-                                                                              Ty.path "ruint::Uint";
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "ruint::Uint")
+                                                                                [
+                                                                                  Value.Integer 256;
+                                                                                  Value.Integer 4
+                                                                                ]
+                                                                                [];
                                                                               Ty.path
                                                                                 "revm::db::states::reverts::RevertToSlot"
                                                                             ])
@@ -3434,8 +3863,15 @@ Module db.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "std::collections::hash::map::HashMap")
+                                                                        []
                                                                         [
-                                                                          Ty.path "ruint::Uint";
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [
+                                                                              Value.Integer 256;
+                                                                              Value.Integer 4
+                                                                            ]
+                                                                            [];
                                                                           Ty.path
                                                                             "revm::db::states::reverts::RevertToSlot";
                                                                           Ty.path
@@ -3450,8 +3886,16 @@ Module db.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "std::collections::hash::map::IntoIter")
+                                                                          []
                                                                           [
-                                                                            Ty.path "ruint::Uint";
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "ruint::Uint")
+                                                                              [
+                                                                                Value.Integer 256;
+                                                                                Value.Integer 4
+                                                                              ]
+                                                                              [];
                                                                             Ty.path
                                                                               "revm_primitives::state::StorageSlot"
                                                                           ],
@@ -3460,7 +3904,14 @@ Module db.
                                                                         [
                                                                           Ty.tuple
                                                                             [
-                                                                              Ty.path "ruint::Uint";
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "ruint::Uint")
+                                                                                [
+                                                                                  Value.Integer 256;
+                                                                                  Value.Integer 4
+                                                                                ]
+                                                                                [];
                                                                               Ty.path
                                                                                 "revm::db::states::reverts::RevertToSlot"
                                                                             ];
@@ -3470,8 +3921,16 @@ Module db.
                                                                                 [
                                                                                   Ty.tuple
                                                                                     [
-                                                                                      Ty.path
-                                                                                        "ruint::Uint";
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "ruint::Uint")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            256;
+                                                                                          Value.Integer
+                                                                                            4
+                                                                                        ]
+                                                                                        [];
                                                                                       Ty.path
                                                                                         "revm_primitives::state::StorageSlot"
                                                                                     ]
@@ -3479,8 +3938,15 @@ Module db.
                                                                             ]
                                                                             (Ty.tuple
                                                                               [
-                                                                                Ty.path
-                                                                                  "ruint::Uint";
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "ruint::Uint")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      256;
+                                                                                    Value.Integer 4
+                                                                                  ]
+                                                                                  [];
                                                                                 Ty.path
                                                                                   "revm::db::states::reverts::RevertToSlot"
                                                                               ])
@@ -3493,9 +3959,17 @@ Module db.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "std::collections::hash::map::HashMap")
+                                                                              []
                                                                               [
-                                                                                Ty.path
-                                                                                  "ruint::Uint";
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "ruint::Uint")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      256;
+                                                                                    Value.Integer 4
+                                                                                  ]
+                                                                                  [];
                                                                                 Ty.path
                                                                                   "revm_primitives::state::StorageSlot";
                                                                                 Ty.path
@@ -3513,9 +3987,18 @@ Module db.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "std::collections::hash::map::HashMap")
+                                                                                    []
                                                                                     [
-                                                                                      Ty.path
-                                                                                        "ruint::Uint";
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "ruint::Uint")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            256;
+                                                                                          Value.Integer
+                                                                                            4
+                                                                                        ]
+                                                                                        [];
                                                                                       Ty.path
                                                                                         "revm_primitives::state::StorageSlot";
                                                                                       Ty.path
@@ -3590,8 +4073,16 @@ Module db.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "std::collections::hash::map::Keys")
+                                                                          []
                                                                           [
-                                                                            Ty.path "ruint::Uint";
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "ruint::Uint")
+                                                                              [
+                                                                                Value.Integer 256;
+                                                                                Value.Integer 4
+                                                                              ]
+                                                                              [];
                                                                             Ty.path
                                                                               "revm_primitives::state::StorageSlot"
                                                                           ],
@@ -3605,9 +4096,17 @@ Module db.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "std::collections::hash::map::HashMap")
+                                                                              []
                                                                               [
-                                                                                Ty.path
-                                                                                  "ruint::Uint";
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "ruint::Uint")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      256;
+                                                                                    Value.Integer 4
+                                                                                  ]
+                                                                                  [];
                                                                                 Ty.path
                                                                                   "revm_primitives::state::StorageSlot";
                                                                                 Ty.path
@@ -3637,9 +4136,18 @@ Module db.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "std::collections::hash::map::Keys")
+                                                                                        []
                                                                                         [
-                                                                                          Ty.path
-                                                                                            "ruint::Uint";
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            [];
                                                                                           Ty.path
                                                                                             "revm_primitives::state::StorageSlot"
                                                                                         ],
@@ -3684,9 +4192,18 @@ Module db.
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "std::collections::hash::map::Entry")
+                                                                                                []
                                                                                                 [
-                                                                                                  Ty.path
-                                                                                                    "ruint::Uint";
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "ruint::Uint")
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        256;
+                                                                                                      Value.Integer
+                                                                                                        4
+                                                                                                    ]
+                                                                                                    [];
                                                                                                   Ty.path
                                                                                                     "revm::db::states::reverts::RevertToSlot"
                                                                                                 ],
@@ -3699,9 +4216,18 @@ Module db.
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "std::collections::hash::map::HashMap")
+                                                                                                    []
                                                                                                     [
-                                                                                                      Ty.path
-                                                                                                        "ruint::Uint";
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "ruint::Uint")
+                                                                                                        [
+                                                                                                          Value.Integer
+                                                                                                            256;
+                                                                                                          Value.Integer
+                                                                                                            4
+                                                                                                        ]
+                                                                                                        [];
                                                                                                       Ty.path
                                                                                                         "revm::db::states::reverts::RevertToSlot";
                                                                                                       Ty.path
@@ -3750,13 +4276,23 @@ Module db.
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "&")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "std::collections::hash::map::HashMap")
+                                                                                []
                                                                                 [
-                                                                                  Ty.path
-                                                                                    "ruint::Uint";
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "ruint::Uint")
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        256;
+                                                                                      Value.Integer
+                                                                                        4
+                                                                                    ]
+                                                                                    [];
                                                                                   Ty.path
                                                                                     "revm_primitives::state::StorageSlot";
                                                                                   Ty.path
@@ -3768,8 +4304,15 @@ Module db.
                                                                     (Ty.apply
                                                                       (Ty.path
                                                                         "std::collections::hash::map::HashMap")
+                                                                      []
                                                                       [
-                                                                        Ty.path "ruint::Uint";
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          [];
                                                                         Ty.path
                                                                           "revm::db::states::reverts::RevertToSlot";
                                                                         Ty.path
@@ -3780,13 +4323,22 @@ Module db.
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "std::collections::hash::map::HashMap")
+                                                                              []
                                                                               [
-                                                                                Ty.path
-                                                                                  "ruint::Uint";
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "ruint::Uint")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      256;
+                                                                                    Value.Integer 4
+                                                                                  ]
+                                                                                  [];
                                                                                 Ty.path
                                                                                   "revm_primitives::state::StorageSlot";
                                                                                 Ty.path
@@ -3856,8 +4408,15 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::HashMap")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.path
                                                                     "revm_primitives::state::StorageSlot";
                                                                   Ty.path
@@ -3875,8 +4434,15 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::HashMap")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.path
                                                                     "revm_primitives::state::StorageSlot";
                                                                   Ty.path
@@ -3933,6 +4499,7 @@ Module db.
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "&mut")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "revm::db::states::bundle_account::BundleAccount"
@@ -3983,12 +4550,17 @@ Module db.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "&mut")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::map::HashMap")
+                                                          []
                                                           [
-                                                            Ty.path "ruint::Uint";
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [];
                                                             Ty.path
                                                               "revm_primitives::state::StorageSlot";
                                                             Ty.path "std::hash::random::RandomState"
@@ -3997,8 +4569,12 @@ Module db.
                                                     Ty.apply
                                                       (Ty.path
                                                         "std::collections::hash::map::HashMap")
+                                                      []
                                                       [
-                                                        Ty.path "ruint::Uint";
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [];
                                                         Ty.path
                                                           "revm_primitives::state::StorageSlot";
                                                         Ty.path "std::hash::random::RandomState"
@@ -4011,12 +4587,17 @@ Module db.
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&mut")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path
                                                           "std::collections::hash::map::HashMap")
+                                                        []
                                                         [
-                                                          Ty.path "ruint::Uint";
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [];
                                                           Ty.path
                                                             "revm_primitives::state::StorageSlot";
                                                           Ty.path "std::hash::random::RandomState"
@@ -4024,8 +4605,12 @@ Module db.
                                                     ];
                                                   Ty.apply
                                                     (Ty.path "std::collections::hash::map::HashMap")
+                                                    []
                                                     [
-                                                      Ty.path "ruint::Uint";
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [];
                                                       Ty.path "revm_primitives::state::StorageSlot";
                                                       Ty.path "std::hash::random::RandomState"
                                                     ]
@@ -4083,8 +4668,12 @@ Module db.
                                                       Ty.apply
                                                         (Ty.path
                                                           "std::collections::hash::map::HashMap")
+                                                        []
                                                         [
-                                                          Ty.path "ruint::Uint";
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [];
                                                           Ty.path
                                                             "revm_primitives::state::StorageSlot";
                                                           Ty.path "std::hash::random::RandomState"
@@ -4192,6 +4781,7 @@ Module db.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm_primitives::state::AccountInfo"
@@ -4206,6 +4796,7 @@ Module db.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::option::Option")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm_primitives::state::AccountInfo"
@@ -4231,8 +4822,15 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::Drain")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.path
                                                                     "revm_primitives::state::StorageSlot"
                                                                 ],
@@ -4242,8 +4840,15 @@ Module db.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "std::collections::hash::map::HashMap")
+                                                                  []
                                                                   [
-                                                                    Ty.path "ruint::Uint";
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [
+                                                                        Value.Integer 256;
+                                                                        Value.Integer 4
+                                                                      ]
+                                                                      [];
                                                                     Ty.path
                                                                       "revm_primitives::state::StorageSlot";
                                                                     Ty.path
@@ -4257,8 +4862,15 @@ Module db.
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "std::collections::hash::map::HashMap")
+                                                                    []
                                                                     [
-                                                                      Ty.path "ruint::Uint";
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
                                                                       Ty.path
                                                                         "revm_primitives::state::StorageSlot";
                                                                       Ty.path
@@ -4283,8 +4895,15 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::HashMap")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.path
                                                                     "revm_primitives::state::StorageSlot";
                                                                   Ty.path
@@ -4341,6 +4960,7 @@ Module db.
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "&mut")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "revm::db::states::bundle_account::BundleAccount"
@@ -4388,8 +5008,12 @@ Module db.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "std::collections::hash::map::HashMap")
+                                      []
                                       [
-                                        Ty.path "ruint::Uint";
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [];
                                         Ty.path "revm_primitives::state::StorageSlot";
                                         Ty.path "std::hash::random::RandomState"
                                       ],
@@ -4414,6 +5038,7 @@ Module db.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::option::Option")
+                        []
                         [ Ty.path "revm::db::states::reverts::AccountRevert" ],
                       "and_then",
                       [
@@ -4422,6 +5047,7 @@ Module db.
                           [ Ty.tuple [ Ty.path "revm::db::states::reverts::AccountRevert" ] ]
                           (Ty.apply
                             (Ty.path "core::option::Option")
+                            []
                             [ Ty.path "revm::db::states::reverts::AccountRevert" ])
                       ]
                     |),
@@ -4483,7 +5109,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_update_and_create_revert :

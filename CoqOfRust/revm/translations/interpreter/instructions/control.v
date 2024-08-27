@@ -13,9 +13,9 @@ Module instructions.
         interpreter.instruction_pointer = unsafe { interpreter.instruction_pointer.offset(offset + 2) };
     }
     *)
-    Definition rjump (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition rjump (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -144,7 +144,7 @@ Module instructions.
                     |),
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "offset",
                         []
                       |),
@@ -163,7 +163,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_rjump : M.IsFunction "revm_interpreter::instructions::control::rjump" rjump.
@@ -183,9 +183,9 @@ Module instructions.
         interpreter.instruction_pointer = unsafe { interpreter.instruction_pointer.offset(offset) };
     }
     *)
-    Definition rjumpi (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition rjumpi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -365,7 +365,10 @@ Module instructions.
                                 UnOp.Pure.not
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "ruint::Uint",
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
                                       "is_zero",
                                       []
                                     |),
@@ -411,7 +414,7 @@ Module instructions.
                     |),
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "offset",
                         []
                       |),
@@ -430,7 +433,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_rjumpi : M.IsFunction "revm_interpreter::instructions::control::rjumpi" rjumpi.
@@ -461,9 +464,9 @@ Module instructions.
         interpreter.instruction_pointer = unsafe { interpreter.instruction_pointer.offset(offset) };
     }
     *)
-    Definition rjumpv (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition rjumpv (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -636,6 +639,7 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
                         "unwrap_or",
                         []
@@ -655,7 +659,10 @@ Module instructions.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "ruint::Uint",
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
                                       "as_limbs",
                                       []
                                     |),
@@ -772,7 +779,7 @@ Module instructions.
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                           "offset",
                                           []
                                         |),
@@ -809,7 +816,7 @@ Module instructions.
                     |),
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "offset",
                         []
                       |),
@@ -828,7 +835,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_rjumpv : M.IsFunction "revm_interpreter::instructions::control::rjumpv" rjumpv.
@@ -840,9 +847,9 @@ Module instructions.
         jump_inner(interpreter, target);
     }
     *)
-    Definition jump (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition jump (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -979,7 +986,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_jump : M.IsFunction "revm_interpreter::instructions::control::jump" jump.
@@ -993,9 +1000,9 @@ Module instructions.
         }
     }
     *)
-    Definition jumpi (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition jumpi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1139,8 +1146,16 @@ Module instructions.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
-                                          Ty.path "ruint::Uint",
-                                          [ Ty.path "ruint::Uint" ],
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ],
                                           "ne",
                                           []
                                         |),
@@ -1170,7 +1185,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_jumpi : M.IsFunction "revm_interpreter::instructions::control::jumpi" jumpi.
@@ -1186,9 +1201,9 @@ Module instructions.
         interpreter.instruction_pointer = unsafe { interpreter.bytecode.as_ptr().add(target) };
     }
     *)
-    Definition jump_inner (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ interpreter; target ] =>
+    Definition jump_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ interpreter; target ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let target := M.alloc (| target |) in
@@ -1200,7 +1215,14 @@ Module instructions.
                     let~ x :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "ruint::Uint", "as_limbs", [] |),
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [],
+                            "as_limbs",
+                            []
+                          |),
                           [ target ]
                         |)
                       |) in
@@ -1362,14 +1384,14 @@ Module instructions.
                     |),
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "add",
                         []
                       |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
                             []
                           |),
@@ -1410,7 +1432,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_jump_inner :
@@ -1421,9 +1443,9 @@ Module instructions.
         gas!(interpreter, gas::JUMPDEST);
     }
     *)
-    Definition jumpdest_or_nop (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition jumpdest_or_nop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1486,7 +1508,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_jumpdest_or_nop :
@@ -1514,9 +1536,9 @@ Module instructions.
         interpreter.load_eof_code(idx, 0)
     }
     *)
-    Definition callf (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition callf (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1724,7 +1746,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_callf : M.IsFunction "revm_interpreter::instructions::control::callf" callf.
@@ -1741,9 +1763,9 @@ Module instructions.
         interpreter.load_eof_code(fframe.idx, fframe.pc);
     }
     *)
-    Definition retf (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition retf (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1903,7 +1925,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_retf : M.IsFunction "revm_interpreter::instructions::control::retf" retf.
@@ -1921,9 +1943,9 @@ Module instructions.
         interpreter.load_eof_code(idx, 0)
     }
     *)
-    Definition jumpf (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition jumpf (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -2071,7 +2093,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_jumpf : M.IsFunction "revm_interpreter::instructions::control::jumpf" jumpf.
@@ -2083,9 +2105,9 @@ Module instructions.
         push!(interpreter, U256::from(interpreter.program_counter() - 1));
     }
     *)
-    Definition pc (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition pc (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -2162,7 +2184,10 @@ Module instructions.
                           |);
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.path "ruint::Uint",
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [],
                               "from",
                               [ Ty.path "usize" ]
                             |),
@@ -2223,7 +2248,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_pc : M.IsFunction "revm_interpreter::instructions::control::pc" pc.
@@ -2252,9 +2277,9 @@ Module instructions.
         };
     }
     *)
-    Definition return_inner (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ interpreter; instruction_result ] =>
+    Definition return_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ interpreter; instruction_result ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let instruction_result := M.alloc (| instruction_result |) in
@@ -2340,7 +2365,10 @@ Module instructions.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "ruint::Uint",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
                                     "as_limbs",
                                     []
                                   |),
@@ -2482,7 +2510,10 @@ Module instructions.
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path "ruint::Uint",
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [],
                                               "as_limbs",
                                               []
                                             |),
@@ -2698,6 +2729,7 @@ Module instructions.
                                         "core::convert::Into",
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                         [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                         "into",
@@ -2706,7 +2738,7 @@ Module instructions.
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "to_vec",
                                             []
                                           |),
@@ -2777,7 +2809,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_return_inner :
@@ -2788,9 +2820,9 @@ Module instructions.
         return_inner(interpreter, InstructionResult::Return);
     }
     *)
-    Definition ret (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition ret (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -2809,7 +2841,7 @@ Module instructions.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_ret : M.IsFunction "revm_interpreter::instructions::control::ret" ret.
@@ -2820,9 +2852,9 @@ Module instructions.
         return_inner(interpreter, InstructionResult::Revert);
     }
     *)
-    Definition revert (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; _host ] =>
+    Definition revert (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -2895,7 +2927,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_revert : M.IsFunction "revm_interpreter::instructions::control::revert" revert.
@@ -2905,9 +2937,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::Stop;
     }
     *)
-    Definition stop (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition stop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -2923,7 +2955,7 @@ Module instructions.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_stop : M.IsFunction "revm_interpreter::instructions::control::stop" stop.
@@ -2933,9 +2965,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::InvalidFEOpcode;
     }
     *)
-    Definition invalid (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition invalid (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -2953,7 +2985,7 @@ Module instructions.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_invalid :
@@ -2964,9 +2996,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::OpcodeNotFound;
     }
     *)
-    Definition unknown (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition unknown (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -2984,7 +3016,7 @@ Module instructions.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_unknown :

@@ -12,9 +12,9 @@ Module instructions.
         *top = interpreter.shared_memory.get_u256(offset);
     }
     *)
-    Definition mload (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition mload (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -145,7 +145,14 @@ Module instructions.
                     let~ x :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "ruint::Uint", "as_limbs", [] |),
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [],
+                            "as_limbs",
+                            []
+                          |),
                           [ M.read (| top |) ]
                         |)
                       |) in
@@ -365,7 +372,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_mload : M.IsFunction "revm_interpreter::instructions::memory::mload" mload.
@@ -379,9 +386,9 @@ Module instructions.
         interpreter.shared_memory.set_u256(offset, value);
     }
     *)
-    Definition mstore (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition mstore (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -520,7 +527,10 @@ Module instructions.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "ruint::Uint",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
                                     "as_limbs",
                                     []
                                   |),
@@ -749,7 +759,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_mstore : M.IsFunction "revm_interpreter::instructions::memory::mstore" mstore.
@@ -763,9 +773,9 @@ Module instructions.
         interpreter.shared_memory.set_byte(offset, value.byte(0))
     }
     *)
-    Definition mstore8 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition mstore8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -904,7 +914,10 @@ Module instructions.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "ruint::Uint",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
                                     "as_limbs",
                                     []
                                   |),
@@ -1123,7 +1136,14 @@ Module instructions.
                               |);
                               M.read (| offset |);
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "ruint::Uint", "byte", [] |),
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [],
+                                  "byte",
+                                  []
+                                |),
                                 [ value; Value.Integer 0 ]
                               |)
                             ]
@@ -1133,7 +1153,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_mstore8 : M.IsFunction "revm_interpreter::instructions::memory::mstore8" mstore8.
@@ -1144,9 +1164,9 @@ Module instructions.
         push!(interpreter, U256::from(interpreter.shared_memory.len()));
     }
     *)
-    Definition msize (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition msize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1223,7 +1243,10 @@ Module instructions.
                           |);
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.path "ruint::Uint",
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [],
                               "from",
                               [ Ty.path "usize" ]
                             |),
@@ -1288,7 +1311,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_msize : M.IsFunction "revm_interpreter::instructions::memory::msize" msize.
@@ -1314,9 +1337,9 @@ Module instructions.
         interpreter.shared_memory.copy(dst, src, len);
     }
     *)
-    Definition mcopy (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; _host ] =>
+    Definition mcopy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1452,7 +1475,10 @@ Module instructions.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "ruint::Uint",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
                                     "as_limbs",
                                     []
                                   |),
@@ -1683,7 +1709,10 @@ Module instructions.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "ruint::Uint",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
                                     "as_limbs",
                                     []
                                   |),
@@ -1796,7 +1825,10 @@ Module instructions.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "ruint::Uint",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
                                     "as_limbs",
                                     []
                                   |),
@@ -2032,7 +2064,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_mcopy : M.IsFunction "revm_interpreter::instructions::memory::mcopy" mcopy.

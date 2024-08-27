@@ -60,9 +60,9 @@ Module opcode.
         }
     }
     *)
-    Definition print_eof_code (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ code ] =>
+    Definition print_eof_code (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ code ] =>
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           M.read (|
@@ -81,7 +81,7 @@ Module opcode.
                                 (M.read (| i |))
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
                                     []
                                   |),
@@ -166,6 +166,7 @@ Module opcode.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "slice")
+                                                                []
                                                                 [ Ty.path "u8" ],
                                                               "len",
                                                               []
@@ -254,7 +255,11 @@ Module opcode.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
-                                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
                                                           ]
                                                         |),
                                                         [
@@ -347,9 +352,11 @@ Module opcode.
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path "&")
+                                                                              []
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path "slice")
+                                                                                  []
                                                                                   [ Ty.path "u8" ]
                                                                               ]
                                                                           ]
@@ -360,11 +367,13 @@ Module opcode.
                                                                               "core::ops::index::Index",
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [ Ty.path "u8" ],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::ops::range::Range")
+                                                                                  []
                                                                                   [ Ty.path "usize"
                                                                                   ]
                                                                               ],
@@ -505,6 +514,7 @@ Module opcode.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [ Ty.path "u8" ],
                                                                 "len",
                                                                 []
@@ -571,6 +581,7 @@ Module opcode.
                                                     "core::iter::traits::collect::IntoIterator",
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::Range")
+                                                      []
                                                       [ Ty.path "usize" ],
                                                     [],
                                                     "into_iter",
@@ -601,6 +612,7 @@ Module opcode.
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "core::ops::range::Range")
+                                                                    []
                                                                     [ Ty.path "usize" ],
                                                                   [],
                                                                   "next",
@@ -645,6 +657,7 @@ Module opcode.
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path "*const")
+                                                                                  []
                                                                                   [ Ty.path "u8" ],
                                                                                 "add",
                                                                                 []
@@ -655,6 +668,7 @@ Module opcode.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "slice")
+                                                                                      []
                                                                                       [ Ty.path "u8"
                                                                                       ],
                                                                                     "as_ptr",
@@ -959,7 +973,7 @@ Module opcode.
                 |)))
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_print_eof_code :

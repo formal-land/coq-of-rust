@@ -6,6 +6,7 @@ Module precompile.
     (Ty.path "revm_primitives::precompile::PrecompileResult") =
       (Ty.apply
         (Ty.path "core::result::Result")
+        []
         [
           Ty.tuple [ Ty.path "u64"; Ty.path "alloy_primitives::bytes_::Bytes" ];
           Ty.path "revm_primitives::precompile::PrecompileError"
@@ -14,9 +15,10 @@ Module precompile.
   Axiom StandardPrecompileFn :
     (Ty.path "revm_primitives::precompile::StandardPrecompileFn") =
       (Ty.function
-        [ Ty.apply (Ty.path "&") [ Ty.path "alloy_primitives::bytes_::Bytes" ]; Ty.path "u64" ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ]; Ty.path "u64" ]
         (Ty.apply
           (Ty.path "core::result::Result")
+          []
           [
             Ty.tuple [ Ty.path "u64"; Ty.path "alloy_primitives::bytes_::Bytes" ];
             Ty.path "revm_primitives::precompile::PrecompileError"
@@ -26,12 +28,13 @@ Module precompile.
     (Ty.path "revm_primitives::precompile::EnvPrecompileFn") =
       (Ty.function
         [
-          Ty.apply (Ty.path "&") [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
           Ty.path "u64";
-          Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::env::Env" ]
+          Ty.apply (Ty.path "&") [] [ Ty.path "revm_primitives::env::Env" ]
         ]
         (Ty.apply
           (Ty.path "core::result::Result")
+          []
           [
             Ty.tuple [ Ty.path "u64"; Ty.path "alloy_primitives::bytes_::Bytes" ];
             Ty.path "revm_primitives::precompile::PrecompileError"
@@ -47,6 +50,7 @@ Module precompile.
     (Ty.path "revm_primitives::precompile::StatefulPrecompileArc") =
       (Ty.apply
         (Ty.path "alloc::sync::Arc")
+        []
         [
           Ty.dyn [ ("revm_primitives::precompile::StatefulPrecompile::Trait", []) ];
           Ty.path "alloc::alloc::Global"
@@ -56,6 +60,7 @@ Module precompile.
     (Ty.path "revm_primitives::precompile::StatefulPrecompileBox") =
       (Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [
           Ty.dyn [ ("revm_primitives::precompile::StatefulPrecompileMut::Trait", []) ];
           Ty.path "alloc::alloc::Global"
@@ -64,6 +69,7 @@ Module precompile.
   (*
   Enum Precompile
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -74,11 +80,12 @@ Module precompile.
               [
                 Ty.function
                   [
-                    Ty.apply (Ty.path "&") [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                     Ty.path "u64"
                   ]
                   (Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.tuple [ Ty.path "u64"; Ty.path "alloy_primitives::bytes_::Bytes" ];
                       Ty.path "revm_primitives::precompile::PrecompileError"
@@ -93,12 +100,13 @@ Module precompile.
               [
                 Ty.function
                   [
-                    Ty.apply (Ty.path "&") [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                     Ty.path "u64";
-                    Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::env::Env" ]
+                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_primitives::env::Env" ]
                   ]
                   (Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.tuple [ Ty.path "u64"; Ty.path "alloy_primitives::bytes_::Bytes" ];
                       Ty.path "revm_primitives::precompile::PrecompileError"
@@ -113,6 +121,7 @@ Module precompile.
               [
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn [ ("revm_primitives::precompile::StatefulPrecompile::Trait", []) ];
                     Ty.path "alloc::alloc::Global"
@@ -127,6 +136,7 @@ Module precompile.
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [
                     Ty.dyn [ ("revm_primitives::precompile::StatefulPrecompileMut::Trait", []) ];
                     Ty.path "alloc::alloc::Global"
@@ -142,9 +152,9 @@ Module precompile.
     Definition Self : Ty.t := Ty.path "revm_primitives::precompile::Precompile".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -172,11 +182,13 @@ Module precompile.
                                 [
                                   Ty.apply
                                     (Ty.path "&")
+                                    []
                                     [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                                   Ty.path "u64"
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.tuple
                                       [ Ty.path "u64"; Ty.path "alloy_primitives::bytes_::Bytes" ];
@@ -211,12 +223,14 @@ Module precompile.
                                 [
                                   Ty.apply
                                     (Ty.path "&")
+                                    []
                                     [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                                   Ty.path "u64";
-                                  Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::env::Env" ]
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_primitives::env::Env" ]
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.tuple
                                       [ Ty.path "u64"; Ty.path "alloy_primitives::bytes_::Bytes" ];
@@ -251,6 +265,7 @@ Module precompile.
                                 "core::clone::Clone",
                                 Ty.apply
                                   (Ty.path "alloc::sync::Arc")
+                                  []
                                   [
                                     Ty.dyn
                                       [
@@ -288,6 +303,7 @@ Module precompile.
                                 "core::clone::Clone",
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.dyn
                                       [
@@ -307,7 +323,7 @@ Module precompile.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -326,13 +342,13 @@ Module precompile.
             Precompile::Standard(p)
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ p ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ p ] =>
         ltac:(M.monadic
           (let p := M.alloc (| p |) in
           Value.StructTuple "revm_primitives::precompile::Precompile::Standard" [ M.read (| p |) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -343,9 +359,11 @@ Module precompile.
         [
           (* T *)
           Ty.function
-            [ Ty.apply (Ty.path "&") [ Ty.path "alloy_primitives::bytes_::Bytes" ]; Ty.path "u64" ]
+            [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ]; Ty.path "u64"
+            ]
             (Ty.apply
               (Ty.path "core::result::Result")
+              []
               [
                 Ty.tuple [ Ty.path "u64"; Ty.path "alloy_primitives::bytes_::Bytes" ];
                 Ty.path "revm_primitives::precompile::PrecompileError"
@@ -362,13 +380,13 @@ Module precompile.
             Precompile::Env(p)
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ p ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ p ] =>
         ltac:(M.monadic
           (let p := M.alloc (| p |) in
           Value.StructTuple "revm_primitives::precompile::Precompile::Env" [ M.read (| p |) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -380,12 +398,13 @@ Module precompile.
           (* T *)
           Ty.function
             [
-              Ty.apply (Ty.path "&") [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
               Ty.path "u64";
-              Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::env::Env" ]
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_primitives::env::Env" ]
             ]
             (Ty.apply
               (Ty.path "core::result::Result")
+              []
               [
                 Ty.tuple [ Ty.path "u64"; Ty.path "alloy_primitives::bytes_::Bytes" ];
                 Ty.path "revm_primitives::precompile::PrecompileError"
@@ -402,15 +421,15 @@ Module precompile.
             Precompile::Stateful(p)
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ p ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ p ] =>
         ltac:(M.monadic
           (let p := M.alloc (| p |) in
           Value.StructTuple
             "revm_primitives::precompile::Precompile::Stateful"
             [ (* Unsize *) M.pointer_coercion (M.read (| p |)) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -422,6 +441,7 @@ Module precompile.
           (* T *)
           Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn [ ("revm_primitives::precompile::StatefulPrecompile::Trait", []) ];
               Ty.path "alloc::alloc::Global"
@@ -438,15 +458,15 @@ Module precompile.
             Precompile::StatefulMut(p)
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ p ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ p ] =>
         ltac:(M.monadic
           (let p := M.alloc (| p |) in
           Value.StructTuple
             "revm_primitives::precompile::Precompile::StatefulMut"
             [ (* Unsize *) M.pointer_coercion (M.read (| p |)) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -458,6 +478,7 @@ Module precompile.
           (* T *)
           Ty.apply
             (Ty.path "alloc::boxed::Box")
+            []
             [
               Ty.dyn [ ("revm_primitives::precompile::StatefulPrecompileMut::Trait", []) ];
               Ty.path "alloc::alloc::Global"
@@ -479,9 +500,9 @@ Module precompile.
             }
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -568,7 +589,7 @@ Module precompile.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -587,9 +608,9 @@ Module precompile.
             Self::Stateful(Arc::new(p))
         }
     *)
-    Definition new_stateful (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ P ], [ p ] =>
+    Definition new_stateful (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ P ], [ p ] =>
         ltac:(M.monadic
           (let p := M.alloc (| p |) in
           Value.StructTuple
@@ -599,14 +620,14 @@ Module precompile.
               M.pointer_coercion
                 (M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::sync::Arc") [ P; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::sync::Arc") [] [ P; Ty.path "alloc::alloc::Global" ],
                     "new",
                     []
                   |),
                   [ M.read (| p |) ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_stateful : M.IsAssociatedFunction Self "new_stateful" new_stateful.
@@ -616,9 +637,9 @@ Module precompile.
             Self::StatefulMut(Box::new(p))
         }
     *)
-    Definition new_stateful_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ P ], [ p ] =>
+    Definition new_stateful_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ P ], [ p ] =>
         ltac:(M.monadic
           (let p := M.alloc (| p |) in
           Value.StructTuple
@@ -628,14 +649,14 @@ Module precompile.
               M.pointer_coercion
                 (M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [ P; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ P; Ty.path "alloc::alloc::Global" ],
                     "new",
                     []
                   |),
                   [ M.read (| p |) ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_stateful_mut :
@@ -651,9 +672,9 @@ Module precompile.
             }
         }
     *)
-    Definition call (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; bytes; gas_price; env ] =>
+    Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; bytes; gas_price; env ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let bytes := M.alloc (| bytes |) in
@@ -720,6 +741,7 @@ Module precompile.
                               "core::ops::deref::Deref",
                               Ty.apply
                                 (Ty.path "alloc::sync::Arc")
+                                []
                                 [
                                   Ty.dyn
                                     [ ("revm_primitives::precompile::StatefulPrecompile::Trait", [])
@@ -769,7 +791,7 @@ Module precompile.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_call : M.IsAssociatedFunction Self "call" call.
@@ -778,6 +800,7 @@ Module precompile.
   (*
   Enum PrecompileError
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -854,9 +877,9 @@ Module precompile.
     Definition Self : Ty.t := Ty.path "revm_primitives::precompile::PrecompileError".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1046,7 +1069,7 @@ Module precompile.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1061,9 +1084,9 @@ Module precompile.
     Definition Self : Ty.t := Ty.path "revm_primitives::precompile::PrecompileError".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1315,7 +1338,7 @@ Module precompile.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1341,9 +1364,9 @@ Module precompile.
     Definition Self : Ty.t := Ty.path "revm_primitives::precompile::PrecompileError".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1415,7 +1438,7 @@ Module precompile.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1441,9 +1464,13 @@ Module precompile.
     Definition Self : Ty.t := Ty.path "revm_primitives::precompile::PrecompileError".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1452,7 +1479,7 @@ Module precompile.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1468,9 +1495,9 @@ Module precompile.
     Definition Self : Ty.t := Ty.path "revm_primitives::precompile::PrecompileError".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -1521,7 +1548,7 @@ Module precompile.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1540,9 +1567,9 @@ Module precompile.
             Self::Other(err.into())
         }
     *)
-    Definition other (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ impl_Into_String_ ], [ err ] =>
+    Definition other (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ impl_Into_String_ ], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
           Value.StructTuple
@@ -1559,7 +1586,7 @@ Module precompile.
                 [ M.read (| err |) ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_other : M.IsAssociatedFunction Self "other" other.
@@ -1599,9 +1626,9 @@ Module precompile.
             f.write_str(s)
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1759,7 +1786,7 @@ Module precompile.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

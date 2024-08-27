@@ -349,18 +349,18 @@ Module Run.
       output_to_value
     }}
   | CallPrimitiveGetFunction
-      (name : string) (generic_tys : list Ty.t)
-      (function : list Ty.t -> list Value.t -> M)
+      (name : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
+      (function : PolymorphicFunction.t)
       (k : Value.t -> M) :
-    let closure := Value.Closure (existS (_, _) (function generic_tys)) in
+    let closure := Value.Closure (existS (_, _) (function generic_consts generic_tys)) in
     M.IsFunction name function ->
     {{ k closure ⇓ output_to_value }} ->
     {{ LowM.CallPrimitive (Primitive.GetFunction name generic_tys) k ⇓ output_to_value }}
   | CallPrimitiveGetAssociatedFunction
-      (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
-      (associated_function : list Ty.t -> list Value.t -> M)
+      (ty : Ty.t) (name : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
+      (associated_function : PolymorphicFunction.t)
       (k : Value.t -> M) :
-    let closure := Value.Closure (existS (_, _) (associated_function generic_tys)) in
+    let closure := Value.Closure (existS (_, _) (associated_function generic_consts generic_tys)) in
     M.IsAssociatedFunction ty name associated_function ->
     {{ k closure ⇓ output_to_value }} ->
     {{ LowM.CallPrimitive
@@ -369,10 +369,10 @@ Module Run.
     }}
   | CallPrimitiveGetTraitMethod
       (trait_name : string) (self_ty : Ty.t) (trait_tys : list Ty.t)
-      (method_name : string) (generic_tys : list Ty.t)
-      (method : list Ty.t -> list Value.t -> M)
+      (method_name : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
+      (method : PolymorphicFunction.t)
       (k : Value.t -> M) :
-    let closure := Value.Closure (existS (_, _) (method generic_tys)) in
+    let closure := Value.Closure (existS (_, _) (method generic_consts generic_tys)) in
     IsTraitMethod.t trait_name self_ty trait_tys method_name method ->
     {{ k closure ⇓ output_to_value }} ->
     {{ LowM.CallPrimitive

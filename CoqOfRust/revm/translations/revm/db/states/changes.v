@@ -7,18 +7,21 @@ Module db.
       (* StructRecord
         {
           name := "StateChangeset";
+          const_params := [];
           ty_params := [];
           fields :=
             [
               ("accounts",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.tuple
                       [
                         Ty.path "alloy_primitives::bits::address::Address";
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [ Ty.path "revm_primitives::state::AccountInfo" ]
                       ];
                     Ty.path "alloc::alloc::Global"
@@ -26,6 +29,7 @@ Module db.
               ("storage",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.path "revm::db::states::changes::PlainStorageChangeset";
                     Ty.path "alloc::alloc::Global"
@@ -33,10 +37,14 @@ Module db.
               ("contracts",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.tuple
                       [
-                        Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          [];
                         Ty.path "revm_primitives::bytecode::Bytecode"
                       ];
                     Ty.path "alloc::alloc::Global"
@@ -48,9 +56,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::StateChangeset".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -62,12 +70,14 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.tuple
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.path "revm_primitives::state::AccountInfo" ]
                               ];
                             Ty.path "alloc::alloc::Global"
@@ -90,6 +100,7 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm::db::states::changes::PlainStorageChangeset";
                             Ty.path "alloc::alloc::Global"
@@ -112,10 +123,14 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.tuple
                               [
-                                Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                  [ Value.Integer 32 ]
+                                  [];
                                 Ty.path "revm_primitives::bytecode::Bytecode"
                               ];
                             Ty.path "alloc::alloc::Global"
@@ -133,7 +148,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -148,9 +163,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::StateChangeset".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -191,7 +206,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -206,9 +221,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::StateChangeset".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm::db::states::changes::StateChangeset"
@@ -219,12 +234,14 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.tuple
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.path "revm_primitives::state::AccountInfo" ]
                               ];
                             Ty.path "alloc::alloc::Global"
@@ -241,6 +258,7 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm::db::states::changes::PlainStorageChangeset";
                             Ty.path "alloc::alloc::Global"
@@ -257,10 +275,14 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.tuple
                               [
-                                Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                  [ Value.Integer 32 ]
+                                  [];
                                 Ty.path "revm_primitives::bytecode::Bytecode"
                               ];
                             Ty.path "alloc::alloc::Global"
@@ -272,7 +294,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -286,6 +308,7 @@ Module db.
       (* StructRecord
         {
           name := "PlainStorageChangeset";
+          const_params := [];
           ty_params := [];
           fields :=
             [
@@ -294,8 +317,13 @@ Module db.
               ("storage",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
-                    Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      ];
                     Ty.path "alloc::alloc::Global"
                   ])
             ];
@@ -305,9 +333,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageChangeset".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -353,8 +381,19 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
-                            Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  []
+                              ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
@@ -370,7 +409,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -385,9 +424,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageChangeset".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -428,7 +467,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -454,9 +493,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageChangeset".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -506,15 +545,37 @@ Module db.
                       "core::cmp::PartialEq",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [
-                          Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ];
                           Ty.path "alloc::alloc::Global"
                         ],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
-                            Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  []
+                              ];
                             Ty.path "alloc::alloc::Global"
                           ]
                       ],
@@ -535,7 +596,7 @@ Module db.
                     ]
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -561,9 +622,13 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageChangeset".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -586,7 +651,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -602,9 +667,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageChangeset".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm::db::states::changes::PlainStorageChangeset"
@@ -637,8 +702,19 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
-                            Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  []
+                              ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
@@ -648,7 +724,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -662,6 +738,7 @@ Module db.
       (* StructRecord
         {
           name := "PlainStorageRevert";
+          const_params := [];
           ty_params := [];
           fields :=
             [
@@ -670,9 +747,13 @@ Module db.
               ("storage_revert",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.tuple
-                      [ Ty.path "ruint::Uint"; Ty.path "revm::db::states::reverts::RevertToSlot" ];
+                      [
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.path "revm::db::states::reverts::RevertToSlot"
+                      ];
                     Ty.path "alloc::alloc::Global"
                   ])
             ];
@@ -682,9 +763,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageRevert".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -730,10 +811,14 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.tuple
                               [
-                                Ty.path "ruint::Uint";
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
                                 Ty.path "revm::db::states::reverts::RevertToSlot"
                               ];
                             Ty.path "alloc::alloc::Global"
@@ -751,7 +836,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -766,9 +851,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageRevert".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -809,7 +894,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -835,9 +920,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageRevert".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -887,10 +972,14 @@ Module db.
                       "core::cmp::PartialEq",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [
                           Ty.tuple
                             [
-                              Ty.path "ruint::Uint";
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
                               Ty.path "revm::db::states::reverts::RevertToSlot"
                             ];
                           Ty.path "alloc::alloc::Global"
@@ -898,10 +987,14 @@ Module db.
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.tuple
                               [
-                                Ty.path "ruint::Uint";
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
                                 Ty.path "revm::db::states::reverts::RevertToSlot"
                               ];
                             Ty.path "alloc::alloc::Global"
@@ -924,7 +1017,7 @@ Module db.
                     ]
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -950,9 +1043,13 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageRevert".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -975,7 +1072,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -991,9 +1088,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageRevert".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm::db::states::changes::PlainStorageRevert"
@@ -1026,10 +1123,14 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.tuple
                               [
-                                Ty.path "ruint::Uint";
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
                                 Ty.path "revm::db::states::reverts::RevertToSlot"
                               ];
                             Ty.path "alloc::alloc::Global"
@@ -1041,7 +1142,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1055,21 +1156,25 @@ Module db.
       (* StructRecord
         {
           name := "PlainStateReverts";
+          const_params := [];
           ty_params := [];
           fields :=
             [
               ("accounts",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.tuple
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [ Ty.path "revm_primitives::state::AccountInfo" ]
                           ];
                         Ty.path "alloc::alloc::Global"
@@ -1079,9 +1184,11 @@ Module db.
               ("storage",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.path "revm::db::states::changes::PlainStorageRevert";
                         Ty.path "alloc::alloc::Global"
@@ -1095,9 +1202,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStateReverts".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -1109,15 +1216,18 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.tuple
                                   [
                                     Ty.path "alloy_primitives::bits::address::Address";
                                     Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [ Ty.path "revm_primitives::state::AccountInfo" ]
                                   ];
                                 Ty.path "alloc::alloc::Global"
@@ -1142,9 +1252,11 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path "revm::db::states::changes::PlainStorageRevert";
                                 Ty.path "alloc::alloc::Global"
@@ -1164,7 +1276,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1179,9 +1291,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStateReverts".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -1214,7 +1326,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1229,9 +1341,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStateReverts".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm::db::states::changes::PlainStateReverts"
@@ -1242,15 +1354,18 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.tuple
                                   [
                                     Ty.path "alloy_primitives::bits::address::Address";
                                     Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [ Ty.path "revm_primitives::state::AccountInfo" ]
                                   ];
                                 Ty.path "alloc::alloc::Global"
@@ -1269,9 +1384,11 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path "revm::db::states::changes::PlainStorageRevert";
                                 Ty.path "alloc::alloc::Global"
@@ -1285,7 +1402,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1307,9 +1424,9 @@ Module db.
                 }
             }
         *)
-        Definition with_capacity (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ capacity ] =>
+        Definition with_capacity (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ capacity ] =>
             ltac:(M.monadic
               (let capacity := M.alloc (| capacity |) in
               Value.StructRecord
@@ -1320,15 +1437,18 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.tuple
                                   [
                                     Ty.path "alloy_primitives::bits::address::Address";
                                     Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [ Ty.path "revm_primitives::state::AccountInfo" ]
                                   ];
                                 Ty.path "alloc::alloc::Global"
@@ -1345,9 +1465,11 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path "revm::db::states::changes::PlainStorageRevert";
                                 Ty.path "alloc::alloc::Global"
@@ -1360,7 +1482,7 @@ Module db.
                       [ M.read (| capacity |) ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_with_capacity :
@@ -1371,9 +1493,11 @@ Module db.
         (Ty.path "revm::db::states::changes::StorageRevert") =
           (Ty.apply
             (Ty.path "alloc::vec::Vec")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
+                []
                 [
                   Ty.tuple
                     [
@@ -1381,10 +1505,14 @@ Module db.
                       Ty.path "bool";
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [
                           Ty.tuple
                             [
-                              Ty.path "ruint::Uint";
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
                               Ty.path "revm::db::states::reverts::RevertToSlot"
                             ];
                           Ty.path "alloc::alloc::Global"

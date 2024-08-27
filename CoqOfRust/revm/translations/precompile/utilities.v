@@ -7,9 +7,9 @@ Module utilities.
       right_pad(data.get(offset..).unwrap_or_default())
   }
   *)
-  Definition right_pad_with_offset (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ data; offset ] =>
+  Definition right_pad_with_offset (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ LEN ], [], [ data; offset ] =>
       ltac:(M.monadic
         (let data := M.alloc (| data |) in
         let offset := M.alloc (| offset |) in
@@ -20,16 +20,17 @@ Module utilities.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
                 "unwrap_or_default",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "get",
-                    [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ] ]
+                    [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
                   |),
                   [
                     M.read (| data |);
@@ -42,7 +43,7 @@ Module utilities.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_right_pad_with_offset :
@@ -53,9 +54,9 @@ Module utilities.
       right_pad_vec(data.get(offset..).unwrap_or_default(), len)
   }
   *)
-  Definition right_pad_with_offset_vec (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ data; offset; len ] =>
+  Definition right_pad_with_offset_vec (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ data; offset; len ] =>
       ltac:(M.monadic
         (let data := M.alloc (| data |) in
         let offset := M.alloc (| offset |) in
@@ -67,16 +68,17 @@ Module utilities.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
                 "unwrap_or_default",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "get",
-                    [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ] ]
+                    [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
                   |),
                   [
                     M.read (| data |);
@@ -90,7 +92,7 @@ Module utilities.
             M.read (| len |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_right_pad_with_offset_vec :
@@ -107,9 +109,9 @@ Module utilities.
       }
   }
   *)
-  Definition right_pad (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ data ] =>
+  Definition right_pad (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ LEN ], [], [ data ] =>
       ltac:(M.monadic
         (let data := M.alloc (| data |) in
         M.read (|
@@ -122,9 +124,9 @@ Module utilities.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get",
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ]
+                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
                           M.read (| data |);
@@ -150,10 +152,12 @@ Module utilities.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "&")
-                                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ];
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ];
                                 Ty.path "core::array::TryFromSliceError"
                               ],
                             "unwrap",
@@ -165,11 +169,13 @@ Module utilities.
                                 "core::convert::TryInto",
                                 Ty.apply
                                   (Ty.path "&")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 [
                                   Ty.apply
                                     (Ty.path "&")
-                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
                                 ],
                                 "try_into",
                                 []
@@ -187,7 +193,7 @@ Module utilities.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
                           []
                         |),
@@ -195,8 +201,12 @@ Module utilities.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::IndexMut",
-                              Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                              [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ]
+                              Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ],
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ops::range::RangeTo")
+                                  []
+                                  [ Ty.path "usize" ]
                               ],
                               "index_mut",
                               []
@@ -209,7 +219,7 @@ Module utilities.
                                   ("end_",
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
@@ -228,7 +238,7 @@ Module utilities.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_right_pad : M.IsFunction "revm_precompile::utilities::right_pad" right_pad.
@@ -244,9 +254,9 @@ Module utilities.
       }
   }
   *)
-  Definition right_pad_vec (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ data; len ] =>
+  Definition right_pad_vec (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ data; len ] =>
       ltac:(M.monadic
         (let data := M.alloc (| data |) in
         let len := M.alloc (| len |) in
@@ -260,9 +270,9 @@ Module utilities.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get",
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ]
+                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
                           M.read (| data |);
@@ -291,7 +301,7 @@ Module utilities.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
                           []
                         |),
@@ -301,8 +311,13 @@ Module utilities.
                               "core::ops::index::IndexMut",
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                              [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ]
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ops::range::RangeTo")
+                                  []
+                                  [ Ty.path "usize" ]
                               ],
                               "index_mut",
                               []
@@ -315,7 +330,7 @@ Module utilities.
                                   ("end_",
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
@@ -334,7 +349,7 @@ Module utilities.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_right_pad_vec :
@@ -351,9 +366,9 @@ Module utilities.
       }
   }
   *)
-  Definition left_pad (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ data ] =>
+  Definition left_pad (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ LEN ], [], [ data ] =>
       ltac:(M.monadic
         (let data := M.alloc (| data |) in
         M.read (|
@@ -366,9 +381,9 @@ Module utilities.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get",
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ]
+                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
                           M.read (| data |);
@@ -394,10 +409,12 @@ Module utilities.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "&")
-                                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ];
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ];
                                 Ty.path "core::array::TryFromSliceError"
                               ],
                             "unwrap",
@@ -409,11 +426,13 @@ Module utilities.
                                 "core::convert::TryInto",
                                 Ty.apply
                                   (Ty.path "&")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 [
                                   Ty.apply
                                     (Ty.path "&")
-                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
                                 ],
                                 "try_into",
                                 []
@@ -431,7 +450,7 @@ Module utilities.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
                           []
                         |),
@@ -439,8 +458,12 @@ Module utilities.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::IndexMut",
-                              Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                              [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ]
+                              Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ],
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ops::range::RangeFrom")
+                                  []
+                                  [ Ty.path "usize" ]
                               ],
                               "index_mut",
                               []
@@ -460,7 +483,7 @@ Module utilities.
                                       |))
                                       (M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
@@ -479,7 +502,7 @@ Module utilities.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_left_pad : M.IsFunction "revm_precompile::utilities::left_pad" left_pad.
@@ -495,9 +518,9 @@ Module utilities.
       }
   }
   *)
-  Definition left_pad_vec (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ data; len ] =>
+  Definition left_pad_vec (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ data; len ] =>
       ltac:(M.monadic
         (let data := M.alloc (| data |) in
         let len := M.alloc (| len |) in
@@ -511,9 +534,9 @@ Module utilities.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get",
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ]
+                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
                           M.read (| data |);
@@ -542,7 +565,7 @@ Module utilities.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
                           []
                         |),
@@ -552,8 +575,13 @@ Module utilities.
                               "core::ops::index::IndexMut",
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                              [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ]
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ops::range::RangeFrom")
+                                  []
+                                  [ Ty.path "usize" ]
                               ],
                               "index_mut",
                               []
@@ -569,7 +597,7 @@ Module utilities.
                                       (M.read (| len |))
                                       (M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
@@ -588,7 +616,7 @@ Module utilities.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_left_pad_vec :
@@ -599,9 +627,9 @@ Module utilities.
       Bytes::from_static(&bool_to_b256(value).0)
   }
   *)
-  Definition bool_to_bytes32 (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ value ] =>
+  Definition bool_to_bytes32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         M.call_closure (|
@@ -623,7 +651,7 @@ Module utilities.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_bool_to_bytes32 :
@@ -640,9 +668,9 @@ Module utilities.
       }
   }
   *)
-  Definition bool_to_b256 (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ value ] =>
+  Definition bool_to_b256 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         M.read (|
@@ -660,7 +688,7 @@ Module utilities.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_bool_to_b256 :
@@ -674,7 +702,10 @@ Module utilities.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.path "alloy_primitives::bits::fixed::FixedBytes",
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer 32 ]
+                    [],
                   "new",
                   []
                 |),
@@ -694,7 +725,10 @@ Module utilities.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.path "alloy_primitives::bits::fixed::FixedBytes",
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer 32 ]
+                    [],
                   "new",
                   []
                 |),

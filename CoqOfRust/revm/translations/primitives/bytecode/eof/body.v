@@ -7,12 +7,14 @@ Module bytecode.
       (* StructRecord
         {
           name := "EofBody";
+          const_params := [];
           ty_params := [];
           fields :=
             [
               ("types_section",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection";
                     Ty.path "alloc::alloc::Global"
@@ -20,10 +22,12 @@ Module bytecode.
               ("code_section",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [ Ty.path "alloy_primitives::bytes_::Bytes"; Ty.path "alloc::alloc::Global" ]);
               ("container_section",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [ Ty.path "alloy_primitives::bytes_::Bytes"; Ty.path "alloc::alloc::Global" ]);
               ("data_section", Ty.path "alloy_primitives::bytes_::Bytes");
               ("is_data_filled", Ty.path "bool")
@@ -34,9 +38,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::body::EofBody".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -48,6 +52,7 @@ Module bytecode.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection";
                             Ty.path "alloc::alloc::Global"
@@ -70,6 +75,7 @@ Module bytecode.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "alloy_primitives::bytes_::Bytes";
                             Ty.path "alloc::alloc::Global"
@@ -92,6 +98,7 @@ Module bytecode.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "alloy_primitives::bytes_::Bytes";
                             Ty.path "alloc::alloc::Global"
@@ -143,7 +150,7 @@ Module bytecode.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -158,9 +165,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::body::EofBody".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -217,7 +224,7 @@ Module bytecode.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -232,9 +239,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::body::EofBody".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm_primitives::bytecode::eof::body::EofBody"
@@ -245,6 +252,7 @@ Module bytecode.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection";
                             Ty.path "alloc::alloc::Global"
@@ -261,6 +269,7 @@ Module bytecode.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "alloy_primitives::bytes_::Bytes";
                             Ty.path "alloc::alloc::Global"
@@ -277,6 +286,7 @@ Module bytecode.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "alloy_primitives::bytes_::Bytes";
                             Ty.path "alloc::alloc::Global"
@@ -310,7 +320,7 @@ Module bytecode.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -336,9 +346,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::body::EofBody".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -351,6 +361,7 @@ Module bytecode.
                           "core::cmp::PartialEq",
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection";
                               Ty.path "alloc::alloc::Global"
@@ -358,6 +369,7 @@ Module bytecode.
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path
                                   "revm_primitives::bytecode::eof::types_section::TypesSection";
@@ -386,6 +398,7 @@ Module bytecode.
                             "core::cmp::PartialEq",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path "alloy_primitives::bytes_::Bytes";
                                 Ty.path "alloc::alloc::Global"
@@ -393,6 +406,7 @@ Module bytecode.
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [
                                   Ty.path "alloy_primitives::bytes_::Bytes";
                                   Ty.path "alloc::alloc::Global"
@@ -421,6 +435,7 @@ Module bytecode.
                           "core::cmp::PartialEq",
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.path "alloy_primitives::bytes_::Bytes";
                               Ty.path "alloc::alloc::Global"
@@ -428,6 +443,7 @@ Module bytecode.
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path "alloy_primitives::bytes_::Bytes";
                                 Ty.path "alloc::alloc::Global"
@@ -490,7 +506,7 @@ Module bytecode.
                       |)
                     |))))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -516,9 +532,13 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::body::EofBody".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -559,7 +579,7 @@ Module bytecode.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -575,9 +595,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::body::EofBody".
         
         (* Hash *)
-        Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ __H ], [ self; state ] =>
+        Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ __H ], [ self; state ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
@@ -589,6 +609,7 @@ Module bytecode.
                         "core::hash::Hash",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection";
                             Ty.path "alloc::alloc::Global"
@@ -614,6 +635,7 @@ Module bytecode.
                         "core::hash::Hash",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "alloy_primitives::bytes_::Bytes";
                             Ty.path "alloc::alloc::Global"
@@ -639,6 +661,7 @@ Module bytecode.
                         "core::hash::Hash",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "alloy_primitives::bytes_::Bytes";
                             Ty.path "alloc::alloc::Global"
@@ -697,7 +720,7 @@ Module bytecode.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -716,15 +739,15 @@ Module bytecode.
                 self.code_section.get(index)
             }
         *)
-        Definition code (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; index ] =>
+        Definition code (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; index ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let index := M.alloc (| index |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "slice") [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                   "get",
                   [ Ty.path "usize" ]
                 |),
@@ -734,6 +757,7 @@ Module bytecode.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "alloy_primitives::bytes_::Bytes"; Ty.path "alloc::alloc::Global"
                         ],
                       [],
@@ -751,7 +775,7 @@ Module bytecode.
                   M.read (| index |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_code : M.IsAssociatedFunction Self "code" code.
@@ -781,9 +805,9 @@ Module bytecode.
                 }
             }
         *)
-        Definition into_eof (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition into_eof (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -800,6 +824,7 @@ Module bytecode.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [
                                       Ty.path
                                         "revm_primitives::bytecode::eof::types_section::TypesSection";
@@ -823,9 +848,11 @@ Module bytecode.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
                                 (Ty.path "core::iter::adapters::map::Map")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::slice::iter::Iter")
+                                    []
                                     [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                                   Ty.function
                                     [
@@ -833,6 +860,7 @@ Module bytecode.
                                         [
                                           Ty.apply
                                             (Ty.path "&")
+                                            []
                                             [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                         ]
                                     ]
@@ -843,6 +871,7 @@ Module bytecode.
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                               ]
                             |),
@@ -852,6 +881,7 @@ Module bytecode.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::slice::iter::Iter")
+                                    []
                                     [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                   [],
                                   "map",
@@ -863,6 +893,7 @@ Module bytecode.
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                           ]
                                       ]
@@ -874,6 +905,7 @@ Module bytecode.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                       "iter",
                                       []
@@ -884,6 +916,7 @@ Module bytecode.
                                           "core::ops::deref::Deref",
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
                                               Ty.path "alloy_primitives::bytes_::Bytes";
                                               Ty.path "alloc::alloc::Global"
@@ -948,9 +981,11 @@ Module bytecode.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
                                 (Ty.path "core::iter::adapters::map::Map")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::slice::iter::Iter")
+                                    []
                                     [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                                   Ty.function
                                     [
@@ -958,6 +993,7 @@ Module bytecode.
                                         [
                                           Ty.apply
                                             (Ty.path "&")
+                                            []
                                             [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                         ]
                                     ]
@@ -968,6 +1004,7 @@ Module bytecode.
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                               ]
                             |),
@@ -977,6 +1014,7 @@ Module bytecode.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::slice::iter::Iter")
+                                    []
                                     [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                   [],
                                   "map",
@@ -988,6 +1026,7 @@ Module bytecode.
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                           ]
                                       ]
@@ -999,6 +1038,7 @@ Module bytecode.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                       "iter",
                                       []
@@ -1009,6 +1049,7 @@ Module bytecode.
                                           "core::ops::deref::Deref",
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
                                               Ty.path "alloy_primitives::bytes_::Bytes";
                                               Ty.path "alloc::alloc::Global"
@@ -1100,9 +1141,11 @@ Module bytecode.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
                                 (Ty.path "core::iter::adapters::map::Map")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::slice::iter::Iter")
+                                    []
                                     [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                                   Ty.function
                                     [
@@ -1110,6 +1153,7 @@ Module bytecode.
                                         [
                                           Ty.apply
                                             (Ty.path "&")
+                                            []
                                             [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                         ]
                                     ]
@@ -1125,6 +1169,7 @@ Module bytecode.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::slice::iter::Iter")
+                                    []
                                     [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                   [],
                                   "map",
@@ -1136,6 +1181,7 @@ Module bytecode.
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                           ]
                                       ]
@@ -1147,6 +1193,7 @@ Module bytecode.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                       "iter",
                                       []
@@ -1157,6 +1204,7 @@ Module bytecode.
                                           "core::ops::deref::Deref",
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
                                               Ty.path "alloy_primitives::bytes_::Bytes";
                                               Ty.path "alloc::alloc::Global"
@@ -1219,9 +1267,11 @@ Module bytecode.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
                                 (Ty.path "core::iter::adapters::map::Map")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::slice::iter::Iter")
+                                    []
                                     [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                                   Ty.function
                                     [
@@ -1229,6 +1279,7 @@ Module bytecode.
                                         [
                                           Ty.apply
                                             (Ty.path "&")
+                                            []
                                             [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                         ]
                                     ]
@@ -1244,6 +1295,7 @@ Module bytecode.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::slice::iter::Iter")
+                                    []
                                     [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                   [],
                                   "map",
@@ -1255,6 +1307,7 @@ Module bytecode.
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                           ]
                                       ]
@@ -1266,6 +1319,7 @@ Module bytecode.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                       "iter",
                                       []
@@ -1276,6 +1330,7 @@ Module bytecode.
                                           "core::ops::deref::Deref",
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
                                               Ty.path "alloy_primitives::bytes_::Bytes";
                                               Ty.path "alloc::alloc::Global"
@@ -1340,6 +1395,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "new",
                         []
@@ -1381,6 +1437,7 @@ Module bytecode.
                             "core::convert::Into",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                             "into",
@@ -1391,7 +1448,7 @@ Module bytecode.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_eof : M.IsAssociatedFunction Self "into_eof" into_eof.
@@ -1413,9 +1470,9 @@ Module bytecode.
                 buffer.extend_from_slice(&self.data_section);
             }
         *)
-        Definition encode (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; buffer ] =>
+        Definition encode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; buffer ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let buffer := M.alloc (| buffer |) in
@@ -1429,9 +1486,11 @@ Module bytecode.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path
                                       "revm_primitives::bytecode::eof::types_section::TypesSection";
@@ -1465,6 +1524,7 @@ Module bytecode.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::Iter")
+                                            []
                                             [
                                               Ty.path
                                                 "revm_primitives::bytecode::eof::types_section::TypesSection"
@@ -1524,9 +1584,11 @@ Module bytecode.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "alloy_primitives::bytes_::Bytes";
                                     Ty.path "alloc::alloc::Global"
@@ -1559,6 +1621,7 @@ Module bytecode.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::Iter")
+                                            []
                                             [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                           [],
                                           "next",
@@ -1593,6 +1656,7 @@ Module bytecode.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "extend_from_slice",
@@ -1640,9 +1704,11 @@ Module bytecode.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "alloy_primitives::bytes_::Bytes";
                                     Ty.path "alloc::alloc::Global"
@@ -1675,6 +1741,7 @@ Module bytecode.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::Iter")
+                                            []
                                             [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                           [],
                                           "next",
@@ -1709,6 +1776,7 @@ Module bytecode.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "extend_from_slice",
@@ -1753,6 +1821,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "extend_from_slice",
                         []
@@ -1791,7 +1860,7 @@ Module bytecode.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_encode : M.IsAssociatedFunction Self "encode" encode.
@@ -1840,9 +1909,9 @@ Module bytecode.
                 Ok(body)
             }
         *)
-        Definition decode (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ input; header ] =>
+        Definition decode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ input; header ] =>
             ltac:(M.monadic
               (let input := M.alloc (| input |) in
               let header := M.alloc (| header |) in
@@ -2035,8 +2104,12 @@ Module bytecode.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::index::Index",
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ]
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                            [
+                              Ty.apply
+                                (Ty.path "core::ops::range::RangeFrom")
+                                []
+                                [ Ty.path "usize" ]
                             ],
                             "index",
                             []
@@ -2076,7 +2149,7 @@ Module bytecode.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [],
                                 "into_iter",
                                 []
@@ -2114,6 +2187,7 @@ Module bytecode.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "usize" ],
                                               [],
                                               "next",
@@ -2149,6 +2223,7 @@ Module bytecode.
                                                         "core::ops::try_trait::Try",
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
+                                                          []
                                                           [
                                                             Ty.tuple
                                                               [
@@ -2156,9 +2231,11 @@ Module bytecode.
                                                                   "revm_primitives::bytecode::eof::types_section::TypesSection";
                                                                 Ty.apply
                                                                   (Ty.path "&")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "slice")
+                                                                      []
                                                                       [ Ty.path "u8" ]
                                                                   ]
                                                               ];
@@ -2202,6 +2279,7 @@ Module bytecode.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "revm_primitives::bytecode::eof::body::EofBody";
@@ -2212,6 +2290,7 @@ Module bytecode.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "core::convert::Infallible";
@@ -2260,6 +2339,7 @@ Module bytecode.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "alloc::vec::Vec")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "revm_primitives::bytecode::eof::types_section::TypesSection";
@@ -2310,10 +2390,14 @@ Module bytecode.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::map::Map")
+                                  []
                                   [
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u16" ];
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "u16" ];
                                     Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ] ]
+                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
                                       (Ty.path "usize")
                                   ],
                                 [],
@@ -2324,20 +2408,23 @@ Module bytecode.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u16" ],
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "u16" ],
                                     [],
                                     "map",
                                     [
                                       Ty.path "usize";
                                       Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ] ]
+                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
                                         (Ty.path "usize")
                                     ]
                                   |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                         "iter",
                                         []
                                       |),
@@ -2347,6 +2434,7 @@ Module bytecode.
                                             "core::ops::deref::Deref",
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                             [],
                                             "deref",
@@ -2397,14 +2485,21 @@ Module bytecode.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::iter::adapters::map::Map")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::slice::iter::Iter")
+                                                    []
                                                     [ Ty.path "u16" ];
                                                   Ty.function
                                                     [
                                                       Ty.tuple
-                                                        [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "u16" ]
+                                                        ]
                                                     ]
                                                     (Ty.path "usize")
                                                 ],
@@ -2441,6 +2536,7 @@ Module bytecode.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::Vec")
+                                                        []
                                                         [
                                                           Ty.path "alloy_primitives::bytes_::Bytes";
                                                           Ty.path "alloc::alloc::Global"
@@ -2461,6 +2557,7 @@ Module bytecode.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::ops::range::Range")
+                                                              []
                                                               [ Ty.path "usize" ]
                                                           ]
                                                         |),
@@ -2506,10 +2603,14 @@ Module bytecode.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::map::Map")
+                                  []
                                   [
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u16" ];
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "u16" ];
                                     Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ] ]
+                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
                                       (Ty.path "usize")
                                   ],
                                 [],
@@ -2520,20 +2621,23 @@ Module bytecode.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u16" ],
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "u16" ],
                                     [],
                                     "map",
                                     [
                                       Ty.path "usize";
                                       Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ] ]
+                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
                                         (Ty.path "usize")
                                     ]
                                   |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                         "iter",
                                         []
                                       |),
@@ -2543,6 +2647,7 @@ Module bytecode.
                                             "core::ops::deref::Deref",
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                             [],
                                             "deref",
@@ -2593,14 +2698,21 @@ Module bytecode.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::iter::adapters::map::Map")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::slice::iter::Iter")
+                                                    []
                                                     [ Ty.path "u16" ];
                                                   Ty.function
                                                     [
                                                       Ty.tuple
-                                                        [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "u16" ]
+                                                        ]
                                                     ]
                                                     (Ty.path "usize")
                                                 ],
@@ -2637,6 +2749,7 @@ Module bytecode.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::Vec")
+                                                        []
                                                         [
                                                           Ty.path "alloy_primitives::bytes_::Bytes";
                                                           Ty.path "alloc::alloc::Global"
@@ -2657,6 +2770,7 @@ Module bytecode.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::ops::range::Range")
+                                                              []
                                                               [ Ty.path "usize" ]
                                                           ]
                                                         |),
@@ -2704,7 +2818,12 @@ Module bytecode.
                           M.get_associated_function (|
                             Ty.path "alloy_primitives::bytes_::Bytes",
                             "slice",
-                            [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ] ]
+                            [
+                              Ty.apply
+                                (Ty.path "core::ops::range::RangeFrom")
+                                []
+                                [ Ty.path "usize" ]
+                            ]
                           |),
                           [
                             M.read (| input |);
@@ -2759,7 +2878,7 @@ Module bytecode.
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| body |) ] |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.

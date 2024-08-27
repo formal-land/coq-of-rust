@@ -5,10 +5,11 @@ Module interpreter.
   (* StructRecord
     {
       name := "Interpreter";
+      const_params := [];
       ty_params := [];
       fields :=
         [
-          ("instruction_pointer", Ty.apply (Ty.path "*const") [ Ty.path "u8" ]);
+          ("instruction_pointer", Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]);
           ("gas", Ty.path "revm_interpreter::gas::Gas");
           ("contract", Ty.path "revm_interpreter::interpreter::contract::Contract");
           ("instruction_result", Ty.path "revm_interpreter::instruction_result::InstructionResult");
@@ -28,9 +29,9 @@ Module interpreter.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::Interpreter".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -175,7 +176,7 @@ Module interpreter.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -194,9 +195,9 @@ Module interpreter.
             Self::new(Contract::default(), 0, false)
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
@@ -219,7 +220,7 @@ Module interpreter.
               Value.Bool false
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -233,6 +234,7 @@ Module interpreter.
   (* StructRecord
     {
       name := "InterpreterResult";
+      const_params := [];
       ty_params := [];
       fields :=
         [
@@ -246,9 +248,9 @@ Module interpreter.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::InterpreterResult".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -306,7 +308,7 @@ Module interpreter.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -321,9 +323,9 @@ Module interpreter.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::InterpreterResult".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -364,7 +366,7 @@ Module interpreter.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -390,9 +392,9 @@ Module interpreter.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::InterpreterResult".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -465,7 +467,7 @@ Module interpreter.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -491,9 +493,13 @@ Module interpreter.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::InterpreterResult".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -516,7 +522,7 @@ Module interpreter.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -555,9 +561,9 @@ Module interpreter.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ contract; gas_limit; is_static ] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ contract; gas_limit; is_static ] =>
         ltac:(M.monadic
           (let contract := M.alloc (| contract |) in
           let gas_limit := M.alloc (| gas_limit |) in
@@ -693,7 +699,7 @@ Module interpreter.
                   ("instruction_pointer",
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
                         []
                       |),
@@ -781,7 +787,7 @@ Module interpreter.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -791,9 +797,9 @@ Module interpreter.
             self.is_eof_init = true;
         }
     *)
-    Definition set_is_eof_init (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition set_is_eof_init (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -808,7 +814,7 @@ Module interpreter.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_set_is_eof_init :
@@ -819,9 +825,9 @@ Module interpreter.
             self.contract.bytecode.eof()
         }
     *)
-    Definition eof (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition eof (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -842,7 +848,7 @@ Module interpreter.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_eof : M.IsAssociatedFunction Self "eof" eof.
@@ -860,9 +866,9 @@ Module interpreter.
             self.instruction_pointer = unsafe { self.bytecode.as_ptr().add(pc) };
         }
     *)
-    Definition load_eof_code (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; idx; pc ] =>
+    Definition load_eof_code (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; idx; pc ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let idx := M.alloc (| idx |) in
@@ -946,14 +952,14 @@ Module interpreter.
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                     "add",
                                     []
                                   |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "as_ptr",
                                         []
                                       |),
@@ -997,7 +1003,7 @@ Module interpreter.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_load_eof_code :
@@ -1036,9 +1042,9 @@ Module interpreter.
             }
         }
     *)
-    Definition insert_create_outcome (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; create_outcome ] =>
+    Definition insert_create_outcome (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; create_outcome ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let create_outcome := M.alloc (| create_outcome |) in
@@ -1231,6 +1237,7 @@ Module interpreter.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "alloy_primitives::bits::address::Address"
@@ -1590,7 +1597,7 @@ Module interpreter.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_insert_create_outcome :
@@ -1627,9 +1634,9 @@ Module interpreter.
             }
         }
     *)
-    Definition insert_eofcreate_outcome (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; create_outcome ] =>
+    Definition insert_eofcreate_outcome (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; create_outcome ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let create_outcome := M.alloc (| create_outcome |) in
@@ -2113,7 +2120,7 @@ Module interpreter.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_insert_eofcreate_outcome :
@@ -2156,9 +2163,9 @@ Module interpreter.
             }
         }
     *)
-    Definition insert_call_outcome (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; shared_memory; call_outcome ] =>
+    Definition insert_call_outcome (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; shared_memory; call_outcome ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let shared_memory := M.alloc (| shared_memory |) in
@@ -2422,10 +2429,11 @@ Module interpreter.
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::index::Index",
-                                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeTo")
+                                                  []
                                                   [ Ty.path "usize" ]
                                               ],
                                               "index",
@@ -2484,7 +2492,10 @@ Module interpreter.
                                             |);
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.path "ruint::Uint",
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [],
                                                 "from",
                                                 [ Ty.path "i32" ]
                                               |),
@@ -2624,10 +2635,11 @@ Module interpreter.
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::index::Index",
-                                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeTo")
+                                                  []
                                                   [ Ty.path "usize" ]
                                               ],
                                               "index",
@@ -2829,7 +2841,7 @@ Module interpreter.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_insert_call_outcome :
@@ -2840,9 +2852,9 @@ Module interpreter.
             unsafe { *self.instruction_pointer }
         }
     *)
-    Definition current_opcode (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition current_opcode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2854,7 +2866,7 @@ Module interpreter.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_current_opcode :
@@ -2865,9 +2877,9 @@ Module interpreter.
             &self.contract
         }
     *)
-    Definition contract (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition contract (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -2875,7 +2887,7 @@ Module interpreter.
             "revm_interpreter::interpreter::Interpreter",
             "contract"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_contract : M.IsAssociatedFunction Self "contract" contract.
@@ -2885,9 +2897,9 @@ Module interpreter.
             &self.gas
         }
     *)
-    Definition gas (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition gas (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -2895,7 +2907,7 @@ Module interpreter.
             "revm_interpreter::interpreter::Interpreter",
             "gas"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_gas : M.IsAssociatedFunction Self "gas" gas.
@@ -2905,9 +2917,9 @@ Module interpreter.
             &self.stack
         }
     *)
-    Definition stack (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition stack (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -2915,7 +2927,7 @@ Module interpreter.
             "revm_interpreter::interpreter::Interpreter",
             "stack"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_stack : M.IsAssociatedFunction Self "stack" stack.
@@ -2927,15 +2939,15 @@ Module interpreter.
             unsafe { self.instruction_pointer.offset_from(self.bytecode.as_ptr()) as usize }
         }
     *)
-    Definition program_counter (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition program_counter (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                 "offset_from",
                 []
               |),
@@ -2949,7 +2961,7 @@ Module interpreter.
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "as_ptr",
                     []
                   |),
@@ -2985,7 +2997,7 @@ Module interpreter.
                 |)
               ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_program_counter :
@@ -3008,9 +3020,9 @@ Module interpreter.
             (instruction_table[opcode as usize])(self, host)
         }
     *)
-    Definition step (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ FN; H ], [ self; instruction_table; host ] =>
+    Definition step (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ FN; H ], [ self; instruction_table; host ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let instruction_table := M.alloc (| instruction_table |) in
@@ -3035,7 +3047,7 @@ Module interpreter.
                 |),
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                     "offset",
                     []
                   |),
@@ -3061,8 +3073,9 @@ Module interpreter.
                       [
                         Ty.apply
                           (Ty.path "&mut")
+                          []
                           [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
-                        Ty.apply (Ty.path "&mut") [ H ]
+                        Ty.apply (Ty.path "&mut") [] [ H ]
                       ]
                   ],
                   "call",
@@ -3078,7 +3091,7 @@ Module interpreter.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_step : M.IsAssociatedFunction Self "step" step.
@@ -3088,9 +3101,9 @@ Module interpreter.
             core::mem::replace(&mut self.shared_memory, EMPTY_SHARED_MEMORY)
         }
     *)
-    Definition take_memory (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition take_memory (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -3111,7 +3124,7 @@ Module interpreter.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_take_memory : M.IsAssociatedFunction Self "take_memory" take_memory.
@@ -3148,9 +3161,9 @@ Module interpreter.
             }
         }
     *)
-    Definition run (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ FN; H ], [ self; shared_memory; instruction_table; host ] =>
+    Definition run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ FN; H ], [ self; shared_memory; instruction_table; host ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let shared_memory := M.alloc (| shared_memory |) in
@@ -3345,7 +3358,7 @@ Module interpreter.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_run : M.IsAssociatedFunction Self "run" run.
@@ -3355,9 +3368,9 @@ Module interpreter.
             resize_memory(&mut self.shared_memory, &mut self.gas, new_size)
         }
     *)
-    Definition resize_memory (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; new_size ] =>
+    Definition resize_memory (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; new_size ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let new_size := M.alloc (| new_size |) in
@@ -3377,7 +3390,7 @@ Module interpreter.
               M.read (| new_size |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_resize_memory :
@@ -3392,9 +3405,9 @@ Module interpreter.
             self.result.is_ok()
         }
     *)
-    Definition is_ok (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_ok (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -3413,7 +3426,7 @@ Module interpreter.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_ok : M.IsAssociatedFunction Self "is_ok" is_ok.
@@ -3423,9 +3436,9 @@ Module interpreter.
             self.result.is_revert()
         }
     *)
-    Definition is_revert (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_revert (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -3444,7 +3457,7 @@ Module interpreter.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_revert : M.IsAssociatedFunction Self "is_revert" is_revert.
@@ -3454,9 +3467,9 @@ Module interpreter.
             self.result.is_error()
         }
     *)
-    Definition is_error (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_error (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -3475,7 +3488,7 @@ Module interpreter.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_error : M.IsAssociatedFunction Self "is_error" is_error.
@@ -3494,9 +3507,9 @@ Module interpreter.
       success
   }
   *)
-  Definition resize_memory (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ memory; gas; new_size ] =>
+  Definition resize_memory (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ memory; gas; new_size ] =>
       ltac:(M.monadic
         (let memory := M.alloc (| memory |) in
         let gas := M.alloc (| gas |) in
@@ -3573,7 +3586,7 @@ Module interpreter.
             |) in
           success
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_resize_memory :

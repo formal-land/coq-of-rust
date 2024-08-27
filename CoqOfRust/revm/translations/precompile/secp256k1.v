@@ -38,9 +38,9 @@ Module secp256k1.
             Ok(hash)
         }
     *)
-    Definition ecrecover (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ sig; recid; msg ] =>
+    Definition ecrecover (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ sig; recid; msg ] =>
         ltac:(M.monadic
           (let sig := M.alloc (| sig |) in
           let recid := M.alloc (| recid |) in
@@ -54,6 +54,7 @@ Module secp256k1.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [
                             Ty.path "secp256k1::ecdsa::recovery::RecoveryId";
                             Ty.path "secp256k1::Error"
@@ -83,6 +84,7 @@ Module secp256k1.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.path "secp256k1::ecdsa::recovery::RecoverableSignature";
                                 Ty.path "secp256k1::Error"
@@ -101,7 +103,10 @@ Module secp256k1.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "alloy_primitives::bits::fixed::FixedBytes",
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                      [ Value.Integer 64 ]
+                                      [],
                                     "as_slice",
                                     []
                                   |),
@@ -132,13 +137,18 @@ Module secp256k1.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
-                                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                              [ Value.Integer 32 ]
+                                              [];
                                             Ty.path "secp256k1::Error"
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "secp256k1::Error"
@@ -172,6 +182,7 @@ Module secp256k1.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "secp256k1::Secp256k1")
+                          []
                           [ Ty.path "secp256k1::context::alloc_only::All" ],
                         "new",
                         []
@@ -207,6 +218,7 @@ Module secp256k1.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.path "secp256k1::key::PublicKey"; Ty.path "secp256k1::Error" ],
                             [],
                             "branch",
@@ -217,6 +229,7 @@ Module secp256k1.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "secp256k1::Secp256k1")
+                                  []
                                   [ Ty.path "secp256k1::context::alloc_only::All" ],
                                 "recover_ecdsa",
                                 []
@@ -245,13 +258,18 @@ Module secp256k1.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
-                                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                              [ Value.Integer 32 ]
+                                              [];
                                             Ty.path "secp256k1::Error"
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "secp256k1::Error"
@@ -284,14 +302,23 @@ Module secp256k1.
                     M.call_closure (|
                       M.get_function (|
                         "alloy_primitives::utils::keccak256",
-                        [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ]
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ]
                       |),
                       [
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::index::Index",
-                            Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ]
+                            Ty.apply (Ty.path "array") [ Value.Integer 65 ] [ Ty.path "u8" ],
+                            [
+                              Ty.apply
+                                (Ty.path "core::ops::range::RangeFrom")
+                                []
+                                [ Ty.path "usize" ]
                             ],
                             "index",
                             []
@@ -319,7 +346,7 @@ Module secp256k1.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "fill",
                         []
                       |),
@@ -327,8 +354,12 @@ Module secp256k1.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::index::IndexMut",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
+                            ],
                             "index_mut",
                             []
                           |),
@@ -346,7 +377,7 @@ Module secp256k1.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| hash |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_ecrecover :
@@ -378,9 +409,9 @@ Module secp256k1.
       Ok((ECRECOVER_BASE, out))
   }
   *)
-  Definition ec_recover_run (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input; gas_limit ] =>
+  Definition ec_recover_run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; gas_limit ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
@@ -467,12 +498,16 @@ Module secp256k1.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
-                                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "u8" ],
                                       [],
                                       "all",
                                       [
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] ]
+                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                          ]
                                           (Ty.path "bool")
                                       ]
                                     |),
@@ -480,7 +515,7 @@ Module secp256k1.
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "iter",
                                             []
                                           |),
@@ -488,10 +523,14 @@ Module secp256k1.
                                             M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::ops::index::Index",
-                                                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer 128 ]
+                                                  [ Ty.path "u8" ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::ops::range::Range")
+                                                    []
                                                     [ Ty.path "usize" ]
                                                 ],
                                                 "index",
@@ -503,7 +542,12 @@ Module secp256k1.
                                                     "core::ops::deref::Deref",
                                                     Ty.apply
                                                       (Ty.path "alloc::borrow::Cow")
-                                                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer 128 ]
+                                                          [ Ty.path "u8" ]
                                                       ],
                                                     [],
                                                     "deref",
@@ -552,7 +596,13 @@ Module secp256k1.
                                               "core::ops::deref::Deref",
                                               Ty.apply
                                                 (Ty.path "alloc::borrow::Cow")
-                                                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer 128 ]
+                                                    [ Ty.path "u8" ]
+                                                ],
                                               [],
                                               "deref",
                                               []
@@ -637,10 +687,17 @@ Module secp256k1.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [
                           Ty.apply
                             (Ty.path "&")
-                            [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ];
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 32 ]
+                                []
+                            ];
                           Ty.path "core::array::TryFromSliceError"
                         ],
                       "unwrap",
@@ -652,8 +709,18 @@ Module secp256k1.
                           "core::convert::TryFrom",
                           Ty.apply
                             (Ty.path "&")
-                            [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
-                          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 32 ]
+                                []
+                            ],
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                           ],
                           "try_from",
                           []
@@ -662,8 +729,9 @@ Module secp256k1.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::Index",
-                              Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                              Ty.apply (Ty.path "array") [ Value.Integer 128 ] [ Ty.path "u8" ],
+                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
+                              ],
                               "index",
                               []
                             |),
@@ -673,7 +741,13 @@ Module secp256k1.
                                   "core::ops::deref::Deref",
                                   Ty.apply
                                     (Ty.path "alloc::borrow::Cow")
-                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 128 ]
+                                        [ Ty.path "u8" ]
+                                    ],
                                   [],
                                   "deref",
                                   []
@@ -701,7 +775,8 @@ Module secp256k1.
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "alloc::borrow::Cow")
-                              [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                              []
+                              [ Ty.apply (Ty.path "array") [ Value.Integer 128 ] [ Ty.path "u8" ] ],
                             [],
                             "deref",
                             []
@@ -719,10 +794,17 @@ Module secp256k1.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [
                           Ty.apply
                             (Ty.path "&")
-                            [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ];
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 64 ]
+                                []
+                            ];
                           Ty.path "core::array::TryFromSliceError"
                         ],
                       "unwrap",
@@ -734,8 +816,18 @@ Module secp256k1.
                           "core::convert::TryFrom",
                           Ty.apply
                             (Ty.path "&")
-                            [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
-                          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 64 ]
+                                []
+                            ],
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                           ],
                           "try_from",
                           []
@@ -744,8 +836,9 @@ Module secp256k1.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::Index",
-                              Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                              Ty.apply (Ty.path "array") [ Value.Integer 128 ] [ Ty.path "u8" ],
+                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
+                              ],
                               "index",
                               []
                             |),
@@ -755,7 +848,13 @@ Module secp256k1.
                                   "core::ops::deref::Deref",
                                   Ty.apply
                                     (Ty.path "alloc::borrow::Cow")
-                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 128 ]
+                                        [ Ty.path "u8" ]
+                                    ],
                                   [],
                                   "deref",
                                   []
@@ -778,6 +877,7 @@ Module secp256k1.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.path "alloy_primitives::bytes_::Bytes"; Ty.path "secp256k1::Error" ],
                       "unwrap_or_default",
                       []
@@ -787,15 +887,27 @@ Module secp256k1.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
-                              Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 32 ]
+                                [];
                               Ty.path "secp256k1::Error"
                             ],
                           "map",
                           [
                             Ty.path "alloy_primitives::bytes_::Bytes";
                             Ty.function
-                              [ Ty.tuple [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ] ]
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                      [ Value.Integer 32 ]
+                                      []
+                                  ]
+                              ]
                               (Ty.path "alloy_primitives::bytes_::Bytes")
                           ]
                         |),
@@ -823,6 +935,7 @@ Module secp256k1.
                                               "core::convert::Into",
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                               [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                               "into",
@@ -831,7 +944,7 @@ Module secp256k1.
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "to_vec",
                                                   []
                                                 |),
@@ -841,8 +954,11 @@ Module secp256k1.
                                                     (M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path
-                                                          "alloy_primitives::bits::fixed::FixedBytes",
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloy_primitives::bits::fixed::FixedBytes")
+                                                          [ Value.Integer 32 ]
+                                                          [],
                                                         [],
                                                         "deref",
                                                         []
@@ -879,7 +995,7 @@ Module secp256k1.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_ec_recover_run :

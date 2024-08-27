@@ -4,33 +4,35 @@ Require Import CoqOfRust.CoqOfRust.
 Module opcode.
   Axiom Instruction :
     forall (H : Ty.t),
-    (Ty.apply (Ty.path "revm_interpreter::opcode::Instruction") [ H ]) =
+    (Ty.apply (Ty.path "revm_interpreter::opcode::Instruction") [] [ H ]) =
       (Ty.function
         [
-          Ty.apply (Ty.path "&mut") [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
-          Ty.apply (Ty.path "&mut") [ H ]
+          Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
+          Ty.apply (Ty.path "&mut") [] [ H ]
         ]
         (Ty.tuple [])).
   
   Axiom InstructionTable :
     forall (H : Ty.t),
-    (Ty.apply (Ty.path "revm_interpreter::opcode::InstructionTable") [ H ]) =
+    (Ty.apply (Ty.path "revm_interpreter::opcode::InstructionTable") [] [ H ]) =
       (Ty.apply
         (Ty.path "array")
+        [ Value.Integer 256 ]
         [
           Ty.function
             [
-              Ty.apply (Ty.path "&mut") [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
-              Ty.apply (Ty.path "&mut") [ H ]
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
+              Ty.apply (Ty.path "&mut") [] [ H ]
             ]
             (Ty.tuple [])
         ]).
   
   Axiom BoxedInstruction :
     forall (H : Ty.t),
-    (Ty.apply (Ty.path "revm_interpreter::opcode::BoxedInstruction") [ H ]) =
+    (Ty.apply (Ty.path "revm_interpreter::opcode::BoxedInstruction") [] [ H ]) =
       (Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [
           Ty.dyn
             [
@@ -42,12 +44,14 @@ Module opcode.
   
   Axiom BoxedInstructionTable :
     forall (H : Ty.t),
-    (Ty.apply (Ty.path "revm_interpreter::opcode::BoxedInstructionTable") [ H ]) =
+    (Ty.apply (Ty.path "revm_interpreter::opcode::BoxedInstructionTable") [] [ H ]) =
       (Ty.apply
         (Ty.path "array")
+        [ Value.Integer 256 ]
         [
           Ty.apply
             (Ty.path "alloc::boxed::Box")
+            []
             [
               Ty.dyn
                 [
@@ -61,6 +65,7 @@ Module opcode.
   (*
   Enum InstructionTables
   {
+    const_params := [];
     ty_params := [ "H" ];
     variants :=
       [
@@ -71,13 +76,15 @@ Module opcode.
               [
                 Ty.apply
                   (Ty.path "array")
+                  [ Value.Integer 256 ]
                   [
                     Ty.function
                       [
                         Ty.apply
                           (Ty.path "&mut")
+                          []
                           [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
-                        Ty.apply (Ty.path "&mut") [ H ]
+                        Ty.apply (Ty.path "&mut") [] [ H ]
                       ]
                       (Ty.tuple [])
                   ]
@@ -91,9 +98,11 @@ Module opcode.
               [
                 Ty.apply
                   (Ty.path "array")
+                  [ Value.Integer 256 ]
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [
                         Ty.dyn
                           [
@@ -112,17 +121,17 @@ Module opcode.
   
   Module Impl_revm_interpreter_opcode_InstructionTables_H.
     Definition Self (H : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_interpreter::opcode::InstructionTables") [ H ].
+      Ty.apply (Ty.path "revm_interpreter::opcode::InstructionTables") [] [ H ].
     
     (*
         pub const fn new_plain<SPEC: Spec>() -> Self {
             Self::Plain(make_instruction_table::<H, SPEC>())
         }
     *)
-    Definition new_plain (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_plain (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [ SPEC ], [] =>
+      match ε, τ, α with
+      | [], [ SPEC ], [] =>
         ltac:(M.monadic
           (Value.StructTuple
             "revm_interpreter::opcode::InstructionTables::Plain"
@@ -135,7 +144,7 @@ Module opcode.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_plain :
@@ -157,10 +166,10 @@ Module opcode.
             }
         }
     *)
-    Definition insert_boxed (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition insert_boxed (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; opcode; instruction ] =>
+      match ε, τ, α with
+      | [], [], [ self; opcode; instruction ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let opcode := M.alloc (| opcode |) in
@@ -170,7 +179,7 @@ Module opcode.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "revm_interpreter::opcode::InstructionTables") [ H ],
+                    Ty.apply (Ty.path "revm_interpreter::opcode::InstructionTables") [] [ H ],
                     "convert_boxed",
                     []
                   |),
@@ -252,9 +261,11 @@ Module opcode.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.dyn
                                         [
@@ -275,7 +286,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_insert_boxed :
@@ -294,10 +305,10 @@ Module opcode.
             }
         }
     *)
-    Definition insert (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition insert (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; opcode; instruction ] =>
+      match ε, τ, α with
+      | [], [], [ self; opcode; instruction ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let opcode := M.alloc (| opcode |) in
@@ -347,13 +358,15 @@ Module opcode.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
                                   Ty.function
                                     [
                                       Ty.apply
                                         (Ty.path "&mut")
+                                        []
                                         [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
-                                      Ty.apply (Ty.path "&mut") [ H ]
+                                      Ty.apply (Ty.path "&mut") [] [ H ]
                                     ]
                                     (Ty.tuple []);
                                   Ty.path "alloc::alloc::Global"
@@ -368,7 +381,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_insert :
@@ -388,10 +401,10 @@ Module opcode.
             };
         }
     *)
-    Definition convert_boxed (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition convert_boxed (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -421,6 +434,7 @@ Module opcode.
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.dyn
                                           [
@@ -433,6 +447,7 @@ Module opcode.
                                       [ Ty.tuple [ Ty.path "usize" ] ]
                                       (Ty.apply
                                         (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
                                           Ty.dyn
                                             [
@@ -466,17 +481,20 @@ Module opcode.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "alloc::boxed::Box")
+                                                                  []
                                                                   [
                                                                     Ty.function
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&mut")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "revm_interpreter::interpreter::Interpreter"
                                                                           ];
                                                                         Ty.apply
                                                                           (Ty.path "&mut")
+                                                                          []
                                                                           [ H ]
                                                                       ]
                                                                       (Ty.tuple []);
@@ -520,7 +538,7 @@ Module opcode.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_convert_boxed :
@@ -551,12 +569,12 @@ Module opcode.
       ConstTable::<H, SPEC>::NEW
   }
   *)
-  Definition make_instruction_table (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ H; SPEC ], [] =>
+  Definition make_instruction_table (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ H; SPEC ], [] =>
       ltac:(M.monadic
         (M.read (| M.get_constant (| "revm_interpreter::opcode::make_instruction_table::NEW" |) |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_make_instruction_table :
@@ -566,11 +584,12 @@ Module opcode.
     (* StructRecord
       {
         name := "ConstTable";
+        const_params := [];
         ty_params := [ "H"; "SPEC" ];
         fields :=
           [
-            ("_host", Ty.apply (Ty.path "core::marker::PhantomData") [ H ]);
-            ("_spec", Ty.apply (Ty.path "core::marker::PhantomData") [ SPEC ])
+            ("_host", Ty.apply (Ty.path "core::marker::PhantomData") [] [ H ]);
+            ("_spec", Ty.apply (Ty.path "core::marker::PhantomData") [] [ SPEC ])
           ];
       } *)
     
@@ -578,6 +597,7 @@ Module opcode.
       Definition Self (H SPEC : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "revm_interpreter::opcode::make_instruction_table::ConstTable")
+          []
           [ H; SPEC ].
       
       (*
@@ -593,11 +613,12 @@ Module opcode.
       *)
       (* Ty.apply
         (Ty.path "array")
+        [ Value.Integer 256 ]
         [
           Ty.function
             [
-              Ty.apply (Ty.path "&mut") [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
-              Ty.apply (Ty.path "&mut") [ H ]
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
+              Ty.apply (Ty.path "&mut") [] [ H ]
             ]
             (Ty.tuple [])
         ] *)
@@ -683,9 +704,13 @@ Module opcode.
       core::array::from_fn(|i| outer(table[i]))
   }
   *)
-  Definition make_boxed_instruction_table (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ H; SPEC; FN ], [ table; outer ] =>
+  Definition make_boxed_instruction_table
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [ H; SPEC; FN ], [ table; outer ] =>
       ltac:(M.monadic
         (let table := M.alloc (| table |) in
         let outer := M.alloc (| outer |) in
@@ -695,6 +720,7 @@ Module opcode.
             [
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
+                []
                 [
                   Ty.dyn
                     [
@@ -707,6 +733,7 @@ Module opcode.
                 [ Ty.tuple [ Ty.path "usize" ] ]
                 (Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [
                     Ty.dyn
                       [
@@ -740,9 +767,10 @@ Module opcode.
                                         [
                                           Ty.apply
                                             (Ty.path "&mut")
+                                            []
                                             [ Ty.path "revm_interpreter::interpreter::Interpreter"
                                             ];
-                                          Ty.apply (Ty.path "&mut") [ H ]
+                                          Ty.apply (Ty.path "&mut") [] [ H ]
                                         ]
                                         (Ty.tuple [])
                                     ]
@@ -762,7 +790,7 @@ Module opcode.
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_make_boxed_instruction_table :
@@ -773,6 +801,7 @@ Module opcode.
   (* StructTuple
     {
       name := "OpCodeError";
+      const_params := [];
       ty_params := [];
       fields := [ Ty.tuple [] ];
     } *)
@@ -781,9 +810,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeError".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -807,7 +836,7 @@ Module opcode.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -833,9 +862,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeError".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -854,7 +883,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -880,9 +909,13 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeError".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -891,7 +924,7 @@ Module opcode.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -911,9 +944,9 @@ Module opcode.
             f.write_str("invalid opcode")
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -921,7 +954,7 @@ Module opcode.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "invalid opcode" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -946,6 +979,7 @@ Module opcode.
   (* StructTuple
     {
       name := "OpCode";
+      const_params := [];
       ty_params := [];
       fields := [ Ty.path "u8" ];
     } *)
@@ -954,9 +988,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCode".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -965,7 +999,7 @@ Module opcode.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -991,9 +1025,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCode".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1017,7 +1051,7 @@ Module opcode.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1032,9 +1066,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCode".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructTuple
             "revm_interpreter::opcode::OpCode"
@@ -1044,7 +1078,7 @@ Module opcode.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1070,9 +1104,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCode".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1091,7 +1125,7 @@ Module opcode.
                 0
               |)
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1117,9 +1151,13 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCode".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1128,7 +1166,7 @@ Module opcode.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1144,9 +1182,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCode".
     
     (* PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1171,7 +1209,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1186,9 +1224,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCode".
     
     (* Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1207,7 +1245,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1222,9 +1260,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCode".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -1239,7 +1277,7 @@ Module opcode.
               M.read (| state |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1263,9 +1301,9 @@ Module opcode.
             }
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1400,7 +1438,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1422,15 +1460,16 @@ Module opcode.
             Self::parse(s).ok_or(OpCodeError(()))
         }
     *)
-    Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ s ] =>
+    Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [ Ty.path "revm_interpreter::opcode::OpCode" ],
               "ok_or",
               [ Ty.path "revm_interpreter::opcode::OpCodeError" ]
@@ -1447,7 +1486,7 @@ Module opcode.
               Value.StructTuple "revm_interpreter::opcode::OpCodeError" [ Value.Tuple [] ]
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1470,9 +1509,9 @@ Module opcode.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ opcode ] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ opcode ] =>
         ltac:(M.monadic
           (let opcode := M.alloc (| opcode |) in
           M.read (|
@@ -1506,7 +1545,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1516,16 +1555,17 @@ Module opcode.
             NAME_TO_OPCODE.get(s).copied()
         }
     *)
-    Definition parse (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ s ] =>
+    Definition parse (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
-                [ Ty.apply (Ty.path "&") [ Ty.path "revm_interpreter::opcode::OpCode" ] ],
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::opcode::OpCode" ] ],
               "copied",
               []
             |),
@@ -1534,8 +1574,9 @@ Module opcode.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "phf::map::Map")
+                    []
                     [
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                       Ty.path "revm_interpreter::opcode::OpCode"
                     ],
                   "get",
@@ -1548,7 +1589,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_parse : M.IsAssociatedFunction Self "parse" parse.
@@ -1558,9 +1599,9 @@ Module opcode.
             self.0 == JUMPDEST
         }
     *)
-    Definition is_jumpdest (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_jumpdest (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.eq
@@ -1572,7 +1613,7 @@ Module opcode.
               |)
             |))
             (M.read (| M.get_constant (| "revm_interpreter::opcode::JUMPDEST" |) |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_jumpdest : M.IsAssociatedFunction Self "is_jumpdest" is_jumpdest.
@@ -1586,9 +1627,9 @@ Module opcode.
             }
         }
     *)
-    Definition is_jumpdest_by_op (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ opcode ] =>
+    Definition is_jumpdest_by_op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ opcode ] =>
         ltac:(M.monadic
           (let opcode := M.alloc (| opcode |) in
           M.read (|
@@ -1629,7 +1670,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_jumpdest_by_op :
@@ -1640,9 +1681,9 @@ Module opcode.
             self.0 == JUMP
         }
     *)
-    Definition is_jump (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_jump (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.eq
@@ -1650,7 +1691,7 @@ Module opcode.
               M.SubPointer.get_struct_tuple_field (| self, "revm_interpreter::opcode::OpCode", 0 |)
             |))
             (M.read (| M.get_constant (| "revm_interpreter::opcode::JUMP" |) |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_jump : M.IsAssociatedFunction Self "is_jump" is_jump.
@@ -1664,9 +1705,9 @@ Module opcode.
             }
         }
     *)
-    Definition is_jump_by_op (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ opcode ] =>
+    Definition is_jump_by_op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ opcode ] =>
         ltac:(M.monadic
           (let opcode := M.alloc (| opcode |) in
           M.read (|
@@ -1707,7 +1748,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_jump_by_op :
@@ -1718,9 +1759,9 @@ Module opcode.
             self.0 >= PUSH1 && self.0 <= PUSH32
         }
     *)
-    Definition is_push (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_push (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           LogicalOp.and (|
@@ -1744,7 +1785,7 @@ Module opcode.
                 |))
                 (M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH32" |) |))))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_push : M.IsAssociatedFunction Self "is_push" is_push.
@@ -1758,9 +1799,9 @@ Module opcode.
             }
         }
     *)
-    Definition is_push_by_op (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ opcode ] =>
+    Definition is_push_by_op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ opcode ] =>
         ltac:(M.monadic
           (let opcode := M.alloc (| opcode |) in
           M.read (|
@@ -1801,7 +1842,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_push_by_op :
@@ -1812,13 +1853,13 @@ Module opcode.
             Self(opcode)
         }
     *)
-    Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ opcode ] =>
+    Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ opcode ] =>
         ltac:(M.monadic
           (let opcode := M.alloc (| opcode |) in
           Value.StructTuple "revm_interpreter::opcode::OpCode" [ M.read (| opcode |) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_unchecked :
@@ -1829,9 +1870,9 @@ Module opcode.
             self.info().name()
         }
     *)
-    Definition as_str (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1853,7 +1894,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
@@ -1867,9 +1908,9 @@ Module opcode.
             }
         }
     *)
-    Definition name_by_op (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ opcode ] =>
+    Definition name_by_op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ opcode ] =>
         ltac:(M.monadic
           (let opcode := M.alloc (| opcode |) in
           M.read (|
@@ -1910,7 +1951,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_name_by_op : M.IsAssociatedFunction Self "name_by_op" name_by_op.
@@ -1920,9 +1961,9 @@ Module opcode.
             self.info().inputs()
         }
     *)
-    Definition inputs (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition inputs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1944,7 +1985,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_inputs : M.IsAssociatedFunction Self "inputs" inputs.
@@ -1954,9 +1995,9 @@ Module opcode.
             self.info().outputs()
         }
     *)
-    Definition outputs (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition outputs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1978,7 +2019,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_outputs : M.IsAssociatedFunction Self "outputs" outputs.
@@ -1988,9 +2029,9 @@ Module opcode.
             self.info().io_diff()
         }
     *)
-    Definition io_diff (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition io_diff (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -2012,7 +2053,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_io_diff : M.IsAssociatedFunction Self "io_diff" io_diff.
@@ -2026,9 +2067,9 @@ Module opcode.
             }
         }
     *)
-    Definition info_by_op (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ opcode ] =>
+    Definition info_by_op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ opcode ] =>
         ltac:(M.monadic
           (let opcode := M.alloc (| opcode |) in
           M.read (|
@@ -2074,7 +2115,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_info_by_op : M.IsAssociatedFunction Self "info_by_op" info_by_op.
@@ -2088,9 +2129,9 @@ Module opcode.
             }
         }
     *)
-    Definition info (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition info (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2149,7 +2190,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_info : M.IsAssociatedFunction Self "info" info.
@@ -2160,9 +2201,9 @@ Module opcode.
             (info.inputs, info.outputs)
         }
     *)
-    Definition input_output (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition input_output (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2197,7 +2238,7 @@ Module opcode.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_input_output : M.IsAssociatedFunction Self "input_output" input_output.
@@ -2207,15 +2248,15 @@ Module opcode.
             self.0
         }
     *)
-    Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_tuple_field (| self, "revm_interpreter::opcode::OpCode", 0 |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -4108,10 +4149,11 @@ Module opcode.
   (* StructRecord
     {
       name := "OpCodeInfo";
+      const_params := [];
       ty_params := [];
       fields :=
         [
-          ("name_ptr", Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ]);
+          ("name_ptr", Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ]);
           ("name_len", Ty.path "u8");
           ("inputs", Ty.path "u8");
           ("outputs", Ty.path "u8");
@@ -4125,9 +4167,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeInfo".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4150,7 +4192,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4187,9 +4229,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeInfo".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -4202,8 +4244,8 @@ Module opcode.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
-                          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ] ],
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] ],
                           "eq",
                           []
                         |),
@@ -4322,7 +4364,7 @@ Module opcode.
                   |)
                 |))))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4348,9 +4390,13 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeInfo".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4373,7 +4419,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4389,9 +4435,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeInfo".
     
     (* PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -4401,8 +4447,8 @@ Module opcode.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
-                    [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ] ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                    [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] ],
                     "partial_cmp",
                     []
                   |),
@@ -4673,7 +4719,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4688,9 +4734,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeInfo".
     
     (* Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -4700,7 +4746,7 @@ Module opcode.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::Ord",
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                     [],
                     "cmp",
                     []
@@ -4930,7 +4976,7 @@ Module opcode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4945,9 +4991,9 @@ Module opcode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeInfo".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -4957,7 +5003,7 @@ Module opcode.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                     [],
                     "hash",
                     [ __H ]
@@ -5056,7 +5102,7 @@ Module opcode.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5082,9 +5128,9 @@ Module opcode.
                 .finish()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -5239,7 +5285,7 @@ Module opcode.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5267,9 +5313,9 @@ Module opcode.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ name ] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ name ] =>
         ltac:(M.monadic
           (let name := M.alloc (| name |) in
           M.read (|
@@ -5325,14 +5371,14 @@ Module opcode.
                   ("name_ptr",
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                         "new_unchecked",
                         []
                       |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                             "cast_mut",
                             []
                           |),
@@ -5359,7 +5405,7 @@ Module opcode.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -5374,9 +5420,9 @@ Module opcode.
             }
         }
     *)
-    Definition name (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition name (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5389,7 +5435,7 @@ Module opcode.
                     M.pointer_coercion
                       (M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                           "as_ptr",
                           []
                         |),
@@ -5421,7 +5467,7 @@ Module opcode.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
@@ -5431,9 +5477,9 @@ Module opcode.
             self.outputs as i16 - self.inputs as i16
         }
     *)
-    Definition io_diff (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition io_diff (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.sub
@@ -5454,7 +5500,7 @@ Module opcode.
                   "inputs"
                 |)
               |)))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_io_diff : M.IsAssociatedFunction Self "io_diff" io_diff.
@@ -5464,9 +5510,9 @@ Module opcode.
             self.inputs
         }
     *)
-    Definition inputs (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition inputs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5476,7 +5522,7 @@ Module opcode.
               "inputs"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_inputs : M.IsAssociatedFunction Self "inputs" inputs.
@@ -5486,9 +5532,9 @@ Module opcode.
             self.outputs
         }
     *)
-    Definition outputs (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition outputs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5498,7 +5544,7 @@ Module opcode.
               "outputs"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_outputs : M.IsAssociatedFunction Self "outputs" outputs.
@@ -5508,9 +5554,9 @@ Module opcode.
             self.not_eof
         }
     *)
-    Definition is_disabled_in_eof (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_disabled_in_eof (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5520,7 +5566,7 @@ Module opcode.
               "not_eof"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_disabled_in_eof :
@@ -5531,9 +5577,9 @@ Module opcode.
             self.terminating
         }
     *)
-    Definition is_terminating (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_terminating (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5543,7 +5589,7 @@ Module opcode.
               "terminating"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_terminating :
@@ -5554,9 +5600,9 @@ Module opcode.
             self.immediate_size
         }
     *)
-    Definition immediate_size (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition immediate_size (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5566,7 +5612,7 @@ Module opcode.
               "immediate_size"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_immediate_size :
@@ -5579,9 +5625,9 @@ Module opcode.
       op
   }
   *)
-  Definition not_eof (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ op ] =>
+  Definition not_eof (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ op ] =>
       ltac:(M.monadic
         (let op := M.alloc (| op |) in
         M.read (|
@@ -5596,7 +5642,7 @@ Module opcode.
             |) in
           op
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_not_eof : M.IsFunction "revm_interpreter::opcode::not_eof" not_eof.
@@ -5607,9 +5653,9 @@ Module opcode.
       op
   }
   *)
-  Definition immediate_size (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ op; n ] =>
+  Definition immediate_size (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ op; n ] =>
       ltac:(M.monadic
         (let op := M.alloc (| op |) in
         let n := M.alloc (| n |) in
@@ -5625,7 +5671,7 @@ Module opcode.
             |) in
           op
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_immediate_size :
@@ -5637,9 +5683,9 @@ Module opcode.
       op
   }
   *)
-  Definition terminating (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ op ] =>
+  Definition terminating (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ op ] =>
       ltac:(M.monadic
         (let op := M.alloc (| op |) in
         M.read (|
@@ -5654,7 +5700,7 @@ Module opcode.
             |) in
           op
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_terminating : M.IsFunction "revm_interpreter::opcode::terminating" terminating.
@@ -5666,9 +5712,9 @@ Module opcode.
       op
   }
   *)
-  Definition stack_io (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ op; inputs; outputs ] =>
+  Definition stack_io (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ op; inputs; outputs ] =>
       ltac:(M.monadic
         (let op := M.alloc (| op |) in
         let inputs := M.alloc (| inputs |) in
@@ -5694,7 +5740,7 @@ Module opcode.
             |) in
           op
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_stack_io : M.IsFunction "revm_interpreter::opcode::stack_io" stack_io.
@@ -19663,9 +19709,9 @@ Module opcode.
               }
           }
   *)
-  Definition instruction (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ H; SPEC ], [ opcode ] =>
+  Definition instruction (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ H; SPEC ], [ opcode ] =>
       ltac:(M.monadic
         (let opcode := M.alloc (| opcode |) in
         M.read (|
@@ -21262,7 +21308,7 @@ Module opcode.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_instruction : M.IsFunction "revm_interpreter::opcode::instruction" instruction.

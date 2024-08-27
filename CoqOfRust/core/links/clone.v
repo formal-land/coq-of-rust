@@ -18,7 +18,7 @@ Module Clone.
       IsTraitMethod.t "core::clone::Clone" Self_ty [] "clone" clone *
       forall (self : Ref.t Self),
         {{
-          clone [] [ φ self ] ⇓
+          clone [] [] [ φ self ] ⇓
           fun (v : Self) => inl (φ v)
         }}
     };

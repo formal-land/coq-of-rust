@@ -21,9 +21,9 @@ Module instructions.
         }
     }
     *)
-    Definition resize_memory (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ interpreter; offset; len ] =>
+    Definition resize_memory (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ interpreter; offset; len ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let offset := M.alloc (| offset |) in
@@ -36,7 +36,14 @@ Module instructions.
                     let~ x :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "ruint::Uint", "as_limbs", [] |),
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [],
+                            "as_limbs",
+                            []
+                          |),
                           [ len ]
                         |)
                       |) in
@@ -158,7 +165,10 @@ Module instructions.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "ruint::Uint",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
                                     "as_limbs",
                                     []
                                   |),
@@ -400,7 +410,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_resize_memory :
@@ -460,9 +470,9 @@ Module instructions.
         interpreter.instruction_pointer = unsafe { interpreter.instruction_pointer.offset(1) };
     }
     *)
-    Definition eofcreate (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition eofcreate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -656,6 +666,7 @@ Module instructions.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                 "expect",
                                 []
@@ -665,9 +676,11 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "&")
+                                          []
                                           [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                       ],
                                     "cloned",
@@ -678,6 +691,7 @@ Module instructions.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                         "get",
                                         [ Ty.path "usize" ]
@@ -688,6 +702,7 @@ Module instructions.
                                             "core::ops::deref::Deref",
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.path "alloy_primitives::bytes_::Bytes";
                                                 Ty.path "alloc::alloc::Global"
@@ -703,9 +718,11 @@ Module instructions.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "revm_primitives::bytecode::eof::Eof"
@@ -774,6 +791,7 @@ Module instructions.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "revm_primitives::bytecode::eof::Eof";
                                             Ty.path "revm_primitives::bytecode::eof::EofDecodeError"
@@ -1000,8 +1018,14 @@ Module instructions.
                                         Ty.path "alloy_primitives::bits::address::Address",
                                         "create2",
                                         [
-                                          Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-                                          Ty.path "alloy_primitives::bits::fixed::FixedBytes"
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 32 ]
+                                            [ Ty.path "u8" ];
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer 32 ]
+                                            []
                                         ]
                                       |),
                                       [
@@ -1016,7 +1040,10 @@ Module instructions.
                                         |);
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.path "ruint::Uint",
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [],
                                             "to_be_bytes",
                                             []
                                           |),
@@ -1047,6 +1074,7 @@ Module instructions.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
+                                                []
                                                 [
                                                   Ty.path
                                                     "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -1112,7 +1140,7 @@ Module instructions.
                                     |),
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                         "offset",
                                         []
                                       |),
@@ -1135,7 +1163,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_eofcreate :
@@ -1221,9 +1249,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::CallOrCreate;
     }
     *)
-    Definition txcreate (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; host ] =>
+    Definition txcreate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -1408,8 +1436,16 @@ Module instructions.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::convert::From",
-                                Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                                [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                  [ Value.Integer 32 ]
+                                  [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    []
+                                ],
                                 "from",
                                 []
                               |),
@@ -1446,9 +1482,11 @@ Module instructions.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                           ],
                                         "cloned",
@@ -1459,13 +1497,24 @@ Module instructions.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "std::collections::hash::map::HashMap")
+                                              []
                                               [
-                                                Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloy_primitives::bits::fixed::FixedBytes")
+                                                  [ Value.Integer 32 ]
+                                                  [];
                                                 Ty.path "alloy_primitives::bytes_::Bytes";
                                                 Ty.path "std::hash::random::RandomState"
                                               ],
                                             "get",
-                                            [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloy_primitives::bits::fixed::FixedBytes")
+                                                [ Value.Integer 32 ]
+                                                []
+                                            ]
                                           |),
                                           [
                                             M.SubPointer.get_struct_record_field (|
@@ -1915,6 +1964,7 @@ Module instructions.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.tuple [];
                                                                         Ty.path
@@ -2033,9 +2083,13 @@ Module instructions.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "array")
+                                                            [ Value.Integer 32 ]
                                                             [ Ty.path "u8" ];
-                                                          Ty.path
-                                                            "alloy_primitives::bits::fixed::FixedBytes"
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloy_primitives::bits::fixed::FixedBytes")
+                                                            [ Value.Integer 32 ]
+                                                            []
                                                         ]
                                                       |),
                                                       [
@@ -2050,7 +2104,10 @@ Module instructions.
                                                         |);
                                                         M.call_closure (|
                                                           M.get_associated_function (|
-                                                            Ty.path "ruint::Uint",
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [],
                                                             "to_be_bytes",
                                                             []
                                                           |),
@@ -2151,6 +2208,7 @@ Module instructions.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "alloc::boxed::Box")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -2212,7 +2270,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_txcreate :
@@ -2273,9 +2331,9 @@ Module instructions.
         };
     }
     *)
-    Definition return_contract (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition return_contract (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -2417,7 +2475,10 @@ Module instructions.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "ruint::Uint",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
                                     "as_limbs",
                                     []
                                   |),
@@ -2530,9 +2591,11 @@ Module instructions.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "&")
+                                      []
                                       [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                   ],
                                 "expect",
@@ -2543,6 +2606,7 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
+                                      []
                                       [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                     "get",
                                     [ Ty.path "usize" ]
@@ -2553,6 +2617,7 @@ Module instructions.
                                         "core::ops::deref::Deref",
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "alloy_primitives::bytes_::Bytes";
                                             Ty.path "alloc::alloc::Global"
@@ -2568,9 +2633,11 @@ Module instructions.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "&")
+                                                      []
                                                       [
                                                         Ty.path
                                                           "revm_primitives::bytecode::eof::Eof"
@@ -2613,6 +2680,7 @@ Module instructions.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.path "revm_primitives::bytecode::eof::Eof";
                                     Ty.path "revm_primitives::bytecode::eof::EofDecodeError"
@@ -2669,7 +2737,10 @@ Module instructions.
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.path "ruint::Uint",
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [],
                                                 "as_limbs",
                                                 []
                                               |),
@@ -2942,7 +3013,7 @@ Module instructions.
                               |))
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "len",
                                   []
                                 |),
@@ -3045,6 +3116,7 @@ Module instructions.
                                 "core::convert::Into",
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                 [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                 "into",
@@ -3055,10 +3127,12 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "&")
-                                          [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                       ],
                                     "concat",
                                     [ Ty.path "u8" ]
@@ -3155,7 +3229,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_return_contract :
@@ -3175,9 +3249,9 @@ Module instructions.
         ))
     }
     *)
-    Definition extcall_input (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ interpreter ] =>
+    Definition extcall_input (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ interpreter ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           M.catch_return (|
@@ -3265,9 +3339,11 @@ Module instructions.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ]
                                       ],
                                     [],
@@ -3308,10 +3384,12 @@ Module instructions.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
+                                                  []
                                                   [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [ Ty.path "core::convert::Infallible" ]
                                                 ],
                                                 "from_residual",
@@ -3365,6 +3443,7 @@ Module instructions.
                                           "core::clone::Clone",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ],
                                           [],
                                           "clone",
@@ -3382,7 +3461,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_extcall_input :
@@ -3431,9 +3510,9 @@ Module instructions.
         Some(gas_limit)
     }
     *)
-    Definition extcall_gas_calc (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; host; target; transfers_value ] =>
+    Definition extcall_gas_calc (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; host; target; transfers_value ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -3781,7 +3860,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_extcall_gas_calc :
@@ -3823,9 +3902,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::CallOrCreate;
     }
     *)
-    Definition extcall (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition extcall (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -3934,8 +4013,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::From",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "from",
                             []
                           |),
@@ -4053,8 +4140,16 @@ Module instructions.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
-                                Ty.path "ruint::Uint",
-                                [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    []
+                                ],
                                 "ne",
                                 []
                               |),
@@ -4101,6 +4196,7 @@ Module instructions.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
+                                                []
                                                 [
                                                   Ty.path
                                                     "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -4176,7 +4272,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_extcall :
@@ -4216,9 +4312,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::CallOrCreate;
     }
     *)
-    Definition extdcall (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition extdcall (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -4327,8 +4423,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::From",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "from",
                             []
                           |),
@@ -4412,6 +4516,7 @@ Module instructions.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
+                                                []
                                                 [
                                                   Ty.path
                                                     "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -4499,7 +4604,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_extdcall :
@@ -4537,9 +4642,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::CallOrCreate;
     }
     *)
-    Definition extscall (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; host ] =>
+    Definition extscall (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -4648,8 +4753,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::From",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "from",
                             []
                           |),
@@ -4733,6 +4846,7 @@ Module instructions.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
+                                                []
                                                 [
                                                   Ty.path
                                                     "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -4812,7 +4926,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_extscall :
@@ -4889,9 +5003,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::CallOrCreate;
     }
     *)
-    Definition create (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition create (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ IS_CREATE2 ], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -5083,7 +5197,10 @@ Module instructions.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "ruint::Uint",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
                                     "as_limbs",
                                     []
                                   |),
@@ -5252,6 +5369,7 @@ Module instructions.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [ Ty.path "usize" ],
                                                     "unwrap_or",
                                                     []
@@ -5261,6 +5379,7 @@ Module instructions.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [ Ty.path "usize" ],
                                                         "map",
                                                         [
@@ -5439,7 +5558,10 @@ Module instructions.
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path "ruint::Uint",
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [],
                                               "as_limbs",
                                               []
                                             |),
@@ -5782,6 +5904,7 @@ Module instructions.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "u64";
                                                       Ty.path "core::num::error::TryFromIntError"
@@ -6096,6 +6219,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
                                           Ty.path
                                             "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -6145,7 +6269,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_create : M.IsFunction "revm_interpreter::instructions::contract::create" create.
@@ -6207,9 +6331,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::CallOrCreate;
     }
     *)
-    Definition call (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -6343,8 +6467,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::From",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "from",
                             []
                           |),
@@ -6374,9 +6506,10 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [
                             Ty.path "u64";
-                            Ty.apply (Ty.path "ruint::from::FromUintError") [ Ty.path "u64" ]
+                            Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "u64" ]
                           ],
                         "unwrap_or",
                         []
@@ -6386,7 +6519,12 @@ Module instructions.
                           M.get_trait_method (|
                             "core::convert::TryFrom",
                             Ty.path "u64",
-                            [ Ty.path "ruint::Uint" ],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "try_from",
                             []
                           |),
@@ -6467,8 +6605,9 @@ Module instructions.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
-                        Ty.path "ruint::Uint",
-                        [ Ty.path "ruint::Uint" ],
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        ],
                         "ne",
                         []
                       |),
@@ -6707,6 +6846,7 @@ Module instructions.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "alloc::boxed::Box")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -6779,7 +6919,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_call : M.IsFunction "revm_interpreter::instructions::contract::call" call.
@@ -6836,9 +6976,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::CallOrCreate;
     }
     *)
-    Definition call_code (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition call_code (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -6972,8 +7112,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::From",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "from",
                             []
                           |),
@@ -7003,9 +7151,10 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [
                             Ty.path "u64";
-                            Ty.apply (Ty.path "ruint::from::FromUintError") [ Ty.path "u64" ]
+                            Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "u64" ]
                           ],
                         "unwrap_or",
                         []
@@ -7015,7 +7164,12 @@ Module instructions.
                           M.get_trait_method (|
                             "core::convert::TryFrom",
                             Ty.path "u64",
-                            [ Ty.path "ruint::Uint" ],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "try_from",
                             []
                           |),
@@ -7156,8 +7310,16 @@ Module instructions.
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
-                                            Ty.path "ruint::Uint",
-                                            [ Ty.path "ruint::Uint" ],
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                []
+                                            ],
                                             "ne",
                                             []
                                           |),
@@ -7243,8 +7405,17 @@ Module instructions.
                                                         M.call_closure (|
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialEq",
-                                                            Ty.path "ruint::Uint",
-                                                            [ Ty.path "ruint::Uint" ],
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [ Value.Integer 256; Value.Integer 4
+                                                                ]
+                                                                []
+                                                            ],
                                                             "ne",
                                                             []
                                                           |),
@@ -7298,6 +7469,7 @@ Module instructions.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "alloc::boxed::Box")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -7381,7 +7553,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_call_code :
@@ -7429,9 +7601,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::CallOrCreate;
     }
     *)
-    Definition delegate_call (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition delegate_call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -7613,8 +7785,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::From",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "from",
                             []
                           |),
@@ -7644,9 +7824,10 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [
                             Ty.path "u64";
-                            Ty.apply (Ty.path "ruint::from::FromUintError") [ Ty.path "u64" ]
+                            Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "u64" ]
                           ],
                         "unwrap_or",
                         []
@@ -7656,7 +7837,12 @@ Module instructions.
                           M.get_trait_method (|
                             "core::convert::TryFrom",
                             Ty.path "u64",
-                            [ Ty.path "ruint::Uint" ],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "try_from",
                             []
                           |),
@@ -7812,6 +7998,7 @@ Module instructions.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "alloc::boxed::Box")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -7907,7 +8094,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_delegate_call :
@@ -7955,9 +8142,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::CallOrCreate;
     }
     *)
-    Definition static_call (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition static_call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -8139,8 +8326,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::From",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "from",
                             []
                           |),
@@ -8170,9 +8365,10 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [
                             Ty.path "u64";
-                            Ty.apply (Ty.path "ruint::from::FromUintError") [ Ty.path "u64" ]
+                            Ty.apply (Ty.path "ruint::from::FromUintError") [] [ Ty.path "u64" ]
                           ],
                         "unwrap_or",
                         []
@@ -8182,7 +8378,12 @@ Module instructions.
                           M.get_trait_method (|
                             "core::convert::TryFrom",
                             Ty.path "u64",
-                            [ Ty.path "ruint::Uint" ],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "try_from",
                             []
                           |),
@@ -8338,6 +8539,7 @@ Module instructions.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "alloc::boxed::Box")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -8407,7 +8609,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_static_call :

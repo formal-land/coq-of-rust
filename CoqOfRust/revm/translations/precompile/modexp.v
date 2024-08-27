@@ -51,9 +51,9 @@ Module modexp.
       })
   }
   *)
-  Definition byzantium_run (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input; gas_limit ] =>
+  Definition byzantium_run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; gas_limit ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
@@ -68,7 +68,11 @@ Module modexp.
                       Ty.path "u64";
                       Ty.path "u64";
                       Ty.path "u64";
-                      Ty.apply (Ty.path "&") [ Ty.path "ruint::Uint" ]
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        ]
                     ]
                 ]
                 (Ty.path "u64")
@@ -151,7 +155,7 @@ Module modexp.
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_byzantium_run :
@@ -164,9 +168,9 @@ Module modexp.
       })
   }
   *)
-  Definition berlin_run (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input; gas_limit ] =>
+  Definition berlin_run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; gas_limit ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
@@ -181,7 +185,11 @@ Module modexp.
                       Ty.path "u64";
                       Ty.path "u64";
                       Ty.path "u64";
-                      Ty.apply (Ty.path "&") [ Ty.path "ruint::Uint" ]
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        ]
                     ]
                 ]
                 (Ty.path "u64")
@@ -264,7 +272,7 @@ Module modexp.
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_berlin_run : M.IsFunction "revm_precompile::modexp::berlin_run" berlin_run.
@@ -285,9 +293,9 @@ Module modexp.
       max(iteration_count, 1)
   }
   *)
-  Definition calculate_iteration_count (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ exp_length; exp_highp ] =>
+  Definition calculate_iteration_count (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ exp_length; exp_highp ] =>
       ltac:(M.monadic
         (let exp_length := M.alloc (| exp_length |) in
         let exp_highp := M.alloc (| exp_highp |) in
@@ -308,8 +316,16 @@ Module modexp.
                               (M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "ruint::Uint",
-                                  [ Ty.path "ruint::Uint" ],
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                   "eq",
                                   []
                                 |),
@@ -342,7 +358,10 @@ Module modexp.
                                   (M.rust_cast
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.path "ruint::Uint",
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [],
                                         "bit_len",
                                         []
                                       |),
@@ -404,7 +423,10 @@ Module modexp.
                                                   M.rust_cast
                                                     (M.call_closure (|
                                                       M.get_associated_function (|
-                                                        Ty.path "ruint::Uint",
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [],
                                                         "bit_len",
                                                         []
                                                       |),
@@ -431,7 +453,7 @@ Module modexp.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_calculate_iteration_count :
@@ -510,9 +532,9 @@ Module modexp.
       Ok((gas_cost, left_pad_vec(&output, mod_len).into_owned().into()))
   }
   *)
-  Definition run_inner (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ F ], [ input; gas_limit; min_gas; calc_gas ] =>
+  Definition run_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ F ], [ input; gas_limit; min_gas; calc_gas ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
@@ -555,13 +577,18 @@ Module modexp.
               let~ base_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "ruint::Uint", "from_be_bytes", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      "from_be_bytes",
+                      []
+                    |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::borrow::Cow")
-                            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                            []
+                            [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
                           "into_owned",
                           []
                         |),
@@ -581,13 +608,18 @@ Module modexp.
               let~ exp_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "ruint::Uint", "from_be_bytes", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      "from_be_bytes",
+                      []
+                    |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::borrow::Cow")
-                            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                            []
+                            [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
                           "into_owned",
                           []
                         |),
@@ -607,13 +639,18 @@ Module modexp.
               let~ mod_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "ruint::Uint", "from_be_bytes", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      "from_be_bytes",
+                      []
+                    |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::borrow::Cow")
-                            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                            []
+                            [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
                           "into_owned",
                           []
                         |),
@@ -636,7 +673,8 @@ Module modexp.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "usize",
-                      [ Ty.path "ruint::Uint" ],
+                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      ],
                       "try_from",
                       []
                     |),
@@ -659,7 +697,12 @@ Module modexp.
                             M.get_trait_method (|
                               "core::convert::TryFrom",
                               Ty.path "usize",
-                              [ Ty.path "ruint::Uint" ],
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  []
+                              ],
                               "try_from",
                               []
                             |),
@@ -734,7 +777,12 @@ Module modexp.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
-                                      [ Ty.path "ruint::Uint" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          []
+                                      ],
                                       "try_from",
                                       []
                                     |),
@@ -767,10 +815,13 @@ Module modexp.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
-                                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ]
                                                 ],
                                               "unwrap_or_default",
                                               []
@@ -778,11 +829,12 @@ Module modexp.
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "get",
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::RangeFrom")
+                                                      []
                                                       [ Ty.path "usize" ]
                                                   ]
                                                 |),
@@ -826,10 +878,14 @@ Module modexp.
                                                   M.call_closure (|
                                                     M.get_trait_method (|
                                                       "core::ops::index::Index",
-                                                      Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer 32 ]
+                                                        [ Ty.path "u8" ],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::ops::range::RangeTo")
+                                                          []
                                                           [ Ty.path "usize" ]
                                                       ],
                                                       "index",
@@ -841,9 +897,11 @@ Module modexp.
                                                           "core::ops::deref::Deref",
                                                           Ty.apply
                                                             (Ty.path "alloc::borrow::Cow")
+                                                            []
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "array")
+                                                                [ Value.Integer 32 ]
                                                                 [ Ty.path "u8" ]
                                                             ],
                                                           [],
@@ -863,7 +921,10 @@ Module modexp.
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.path "ruint::Uint",
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [],
                                                 "from_be_bytes",
                                                 []
                                               |),
@@ -872,7 +933,12 @@ Module modexp.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::borrow::Cow")
-                                                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer 32 ]
+                                                          [ Ty.path "u8" ]
                                                       ],
                                                     "into_owned",
                                                     []
@@ -895,7 +961,15 @@ Module modexp.
                                                     Ty.path "u64";
                                                     Ty.path "u64";
                                                     Ty.path "u64";
-                                                    Ty.apply (Ty.path "&") [ Ty.path "ruint::Uint" ]
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          []
+                                                      ]
                                                   ]
                                               ],
                                               "call_once",
@@ -984,7 +1058,7 @@ Module modexp.
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               "split_at",
                                               []
                                             |),
@@ -994,7 +1068,9 @@ Module modexp.
                                                   "core::ops::deref::Deref",
                                                   Ty.apply
                                                     (Ty.path "alloc::borrow::Cow")
-                                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
                                                   [],
                                                   "deref",
                                                   []
@@ -1017,7 +1093,10 @@ Module modexp.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "split_at",
                                                       []
                                                     |),
@@ -1059,6 +1138,7 @@ Module modexp.
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path "slice")
+                                                                                  []
                                                                                   [ Ty.path "u8" ],
                                                                                 "len",
                                                                                 []
@@ -1198,6 +1278,7 @@ Module modexp.
                                                                     "core::convert::Into",
                                                                     Ty.apply
                                                                       (Ty.path "alloc::vec::Vec")
+                                                                      []
                                                                       [
                                                                         Ty.path "u8";
                                                                         Ty.path
@@ -1216,9 +1297,11 @@ Module modexp.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "alloc::borrow::Cow")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path "slice")
+                                                                              []
                                                                               [ Ty.path "u8" ]
                                                                           ],
                                                                         "into_owned",
@@ -1237,6 +1320,7 @@ Module modexp.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "alloc::vec::Vec")
+                                                                                  []
                                                                                   [
                                                                                     Ty.path "u8";
                                                                                     Ty.path
@@ -1270,7 +1354,7 @@ Module modexp.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_run_inner : M.IsFunction "revm_precompile::modexp::run_inner" run_inner.
@@ -1303,9 +1387,9 @@ Module modexp.
       gas.saturating_to()
   }
   *)
-  Definition byzantium_gas_calc (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ base_len; exp_len; mod_len; exp_highp ] =>
+  Definition byzantium_gas_calc (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ base_len; exp_len; mod_len; exp_highp ] =>
       ltac:(M.monadic
         (let base_len := M.alloc (| base_len |) in
         let exp_len := M.alloc (| exp_len |) in
@@ -1330,7 +1414,11 @@ Module modexp.
           let~ iter_count :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "ruint::Uint", "from", [ Ty.path "u64" ] |),
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                  "from",
+                  [ Ty.path "u64" ]
+                |),
                 [
                   M.call_closure (|
                     M.get_function (| "revm_precompile::modexp::calculate_iteration_count", [] |),
@@ -1344,8 +1432,8 @@ Module modexp.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::arith::Div",
-                  Ty.path "ruint::Uint",
-                  [ Ty.path "ruint::Uint" ],
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                   "div",
                   []
                 |),
@@ -1353,8 +1441,9 @@ Module modexp.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.path "ruint::Uint",
-                      [ Ty.path "ruint::Uint" ],
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      ],
                       "mul",
                       []
                     |),
@@ -1362,7 +1451,7 @@ Module modexp.
                   |);
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.path "ruint::Uint",
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                       "from",
                       [ Ty.path "i32" ]
                     |),
@@ -1374,7 +1463,7 @@ Module modexp.
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.path "ruint::Uint",
+                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                 "saturating_to",
                 [ Ty.path "u64" ]
               |),
@@ -1382,7 +1471,7 @@ Module modexp.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_byzantium_gas_calc :
@@ -1403,9 +1492,9 @@ Module modexp.
             }
         }
     *)
-    Definition mul_complexity (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ x ] =>
+    Definition mul_complexity (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.read (|
@@ -1420,7 +1509,10 @@ Module modexp.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.path "ruint::Uint",
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [],
                           "from",
                           [ Ty.path "u64" ]
                         |),
@@ -1444,7 +1536,10 @@ Module modexp.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "ruint::Uint",
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [],
                                   "from",
                                   [ Ty.path "u64" ]
                                 |),
@@ -1474,7 +1569,10 @@ Module modexp.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "ruint::Uint",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
                                     "from",
                                     [ Ty.path "u64" ]
                                   |),
@@ -1486,8 +1584,16 @@ Module modexp.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::ops::arith::Mul",
-                                    Ty.path "ruint::Uint",
-                                    [ Ty.path "ruint::Uint" ],
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ],
                                     "mul",
                                     []
                                   |),
@@ -1498,8 +1604,16 @@ Module modexp.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::arith::Sub",
-                                  Ty.path "ruint::Uint",
-                                  [ Ty.path "ruint::Uint" ],
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                   "sub",
                                   []
                                 |),
@@ -1507,8 +1621,16 @@ Module modexp.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::arith::Add",
-                                      Ty.path "ruint::Uint",
-                                      [ Ty.path "ruint::Uint" ],
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          []
+                                      ],
                                       "add",
                                       []
                                     |),
@@ -1516,8 +1638,16 @@ Module modexp.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::ops::arith::Div",
-                                          Ty.path "ruint::Uint",
-                                          [ Ty.path "ruint::Uint" ],
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ],
                                           "div",
                                           []
                                         |),
@@ -1525,7 +1655,10 @@ Module modexp.
                                           M.read (| x_sq |);
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path "ruint::Uint",
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [],
                                               "from",
                                               [ Ty.path "i32" ]
                                             |),
@@ -1536,15 +1669,26 @@ Module modexp.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::ops::arith::Mul",
-                                          Ty.path "ruint::Uint",
-                                          [ Ty.path "ruint::Uint" ],
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ],
                                           "mul",
                                           []
                                         |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path "ruint::Uint",
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [],
                                               "from",
                                               [ Ty.path "i32" ]
                                             |),
@@ -1557,7 +1701,10 @@ Module modexp.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "ruint::Uint",
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
                                       "from",
                                       [ Ty.path "i32" ]
                                     |),
@@ -1571,7 +1718,7 @@ Module modexp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_mul_complexity :
@@ -1601,9 +1748,9 @@ Module modexp.
       max(200, gas.saturating_to())
   }
   *)
-  Definition berlin_gas_calc (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ base_length; exp_length; mod_length; exp_highp ] =>
+  Definition berlin_gas_calc (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ base_length; exp_length; mod_length; exp_highp ] =>
       ltac:(M.monadic
         (let base_length := M.alloc (| base_length |) in
         let exp_length := M.alloc (| exp_length |) in
@@ -1632,8 +1779,8 @@ Module modexp.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::arith::Div",
-                  Ty.path "ruint::Uint",
-                  [ Ty.path "ruint::Uint" ],
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                   "div",
                   []
                 |),
@@ -1641,8 +1788,9 @@ Module modexp.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.path "ruint::Uint",
-                      [ Ty.path "ruint::Uint" ],
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      ],
                       "mul",
                       []
                     |),
@@ -1650,7 +1798,10 @@ Module modexp.
                       M.read (| multiplication_complexity |);
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.path "ruint::Uint",
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [],
                           "from",
                           [ Ty.path "u64" ]
                         |),
@@ -1660,7 +1811,7 @@ Module modexp.
                   |);
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.path "ruint::Uint",
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                       "from",
                       [ Ty.path "i32" ]
                     |),
@@ -1676,7 +1827,7 @@ Module modexp.
                 Value.Integer 200;
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     "saturating_to",
                     [ Ty.path "u64" ]
                   |),
@@ -1686,7 +1837,7 @@ Module modexp.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_berlin_gas_calc :
@@ -1704,9 +1855,13 @@ Module modexp.
             words * words
         }
     *)
-    Definition calculate_multiplication_complexity (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ base_length; mod_length ] =>
+    Definition calculate_multiplication_complexity
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ base_length; mod_length ] =>
         ltac:(M.monadic
           (let base_length := M.alloc (| base_length |) in
           let mod_length := M.alloc (| mod_length |) in
@@ -1752,7 +1907,11 @@ Module modexp.
             let~ words :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "ruint::Uint", "from", [ Ty.path "u64" ] |),
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    "from",
+                    [ Ty.path "u64" ]
+                  |),
                   [ M.read (| words |) ]
                 |)
               |) in
@@ -1760,8 +1919,8 @@ Module modexp.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::arith::Mul",
-                  Ty.path "ruint::Uint",
-                  [ Ty.path "ruint::Uint" ],
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                   "mul",
                   []
                 |),
@@ -1769,7 +1928,7 @@ Module modexp.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_calculate_multiplication_complexity :

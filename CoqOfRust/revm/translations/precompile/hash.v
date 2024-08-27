@@ -54,9 +54,9 @@ Module hash.
       }
   }
   *)
-  Definition sha256_run (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input; gas_limit ] =>
+  Definition sha256_run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; gas_limit ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
@@ -113,28 +113,36 @@ Module hash.
                           "digest::digest::Digest",
                           Ty.apply
                             (Ty.path "digest::core_api::wrapper::CoreWrapper")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "digest::core_api::ct_variable::CtVariableCoreWrapper")
+                                []
                                 [
                                   Ty.path "sha2::core_api::Sha256VarCore";
                                   Ty.apply
                                     (Ty.path "typenum::uint::UInt")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "typenum::uint::UInt")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "typenum::uint::UInt")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "typenum::uint::UInt")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "typenum::uint::UInt")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "typenum::uint::UInt")
+                                                        []
                                                         [
                                                           Ty.path "typenum::uint::UTerm";
                                                           Ty.path "typenum::bit::B1"
@@ -154,7 +162,8 @@ Module hash.
                             ],
                           [],
                           "digest",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                          ]
                         |),
                         [ M.read (| input |) ]
                       |)
@@ -171,6 +180,7 @@ Module hash.
                                 "core::convert::Into",
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                 [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                 "into",
@@ -179,7 +189,7 @@ Module hash.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "to_vec",
                                     []
                                   |),
@@ -189,25 +199,32 @@ Module hash.
                                         "core::ops::deref::Deref",
                                         Ty.apply
                                           (Ty.path "generic_array::GenericArray")
+                                          []
                                           [
                                             Ty.path "u8";
                                             Ty.apply
                                               (Ty.path "typenum::uint::UInt")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "typenum::uint::UInt")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "typenum::uint::UInt")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "typenum::uint::UInt")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "typenum::uint::UInt")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "typenum::uint::UInt")
+                                                                  []
                                                                   [
                                                                     Ty.path "typenum::uint::UTerm";
                                                                     Ty.path "typenum::bit::B1"
@@ -239,7 +256,7 @@ Module hash.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_sha256_run : M.IsFunction "revm_precompile::hash::sha256_run" sha256_run.
@@ -259,9 +276,9 @@ Module hash.
       }
   }
   *)
-  Definition ripemd160_run (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input; gas_limit ] =>
+  Definition ripemd160_run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; gas_limit ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
@@ -320,6 +337,7 @@ Module hash.
                           "digest::digest::Digest",
                           Ty.apply
                             (Ty.path "digest::core_api::wrapper::CoreWrapper")
+                            []
                             [ Ty.path "ripemd::Ripemd160Core" ],
                           [],
                           "new",
@@ -335,10 +353,12 @@ Module hash.
                           "digest::digest::Digest",
                           Ty.apply
                             (Ty.path "digest::core_api::wrapper::CoreWrapper")
+                            []
                             [ Ty.path "ripemd::Ripemd160Core" ],
                           [],
                           "update",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                          ]
                         |),
                         [ hasher; M.read (| input |) ]
                       |)
@@ -351,6 +371,7 @@ Module hash.
                           "digest::digest::Digest",
                           Ty.apply
                             (Ty.path "digest::core_api::wrapper::CoreWrapper")
+                            []
                             [ Ty.path "ripemd::Ripemd160Core" ],
                           [],
                           "finalize_into",
@@ -363,29 +384,37 @@ Module hash.
                               "core::convert::Into",
                               Ty.apply
                                 (Ty.path "&mut")
-                                [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               [
                                 Ty.apply
                                   (Ty.path "&mut")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "generic_array::GenericArray")
+                                      []
                                       [
                                         Ty.path "u8";
                                         Ty.apply
                                           (Ty.path "typenum::uint::UInt")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "typenum::uint::UInt")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "typenum::uint::UInt")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "typenum::uint::UInt")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "typenum::uint::UInt")
+                                                          []
                                                           [
                                                             Ty.path "typenum::uint::UTerm";
                                                             Ty.path "typenum::bit::B1"
@@ -408,10 +437,11 @@ Module hash.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::IndexMut",
-                                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeFrom")
+                                      []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index_mut",
@@ -441,6 +471,7 @@ Module hash.
                                 "core::convert::Into",
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                 [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                 "into",
@@ -449,7 +480,7 @@ Module hash.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "to_vec",
                                     []
                                   |),
@@ -463,7 +494,7 @@ Module hash.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_ripemd160_run : M.IsFunction "revm_precompile::hash::ripemd160_run" ripemd160_run.

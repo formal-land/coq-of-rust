@@ -10,9 +10,9 @@ Module instructions.
         *op2 = U256::from(op1 < *op2);
     }
     *)
-    Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -150,7 +150,10 @@ Module instructions.
                             M.read (| op2 |),
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 "from",
                                 [ Ty.path "bool" ]
                               |),
@@ -158,8 +161,16 @@ Module instructions.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
-                                    Ty.path "ruint::Uint",
-                                    [ Ty.path "ruint::Uint" ],
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ],
                                     "lt",
                                     []
                                   |),
@@ -173,7 +184,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_lt : M.IsFunction "revm_interpreter::instructions::bitwise::lt" lt.
@@ -185,9 +196,9 @@ Module instructions.
         *op2 = U256::from(op1 > *op2);
     }
     *)
-    Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -325,7 +336,10 @@ Module instructions.
                             M.read (| op2 |),
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 "from",
                                 [ Ty.path "bool" ]
                               |),
@@ -333,8 +347,16 @@ Module instructions.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
-                                    Ty.path "ruint::Uint",
-                                    [ Ty.path "ruint::Uint" ],
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ],
                                     "gt",
                                     []
                                   |),
@@ -348,7 +370,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_gt : M.IsFunction "revm_interpreter::instructions::bitwise::gt" gt.
@@ -360,9 +382,9 @@ Module instructions.
         *op2 = U256::from(i256_cmp(&op1, op2) == Ordering::Less);
     }
     *)
-    Definition slt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition slt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -500,7 +522,10 @@ Module instructions.
                             M.read (| op2 |),
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 "from",
                                 [ Ty.path "bool" ]
                               |),
@@ -534,7 +559,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_slt : M.IsFunction "revm_interpreter::instructions::bitwise::slt" slt.
@@ -546,9 +571,9 @@ Module instructions.
         *op2 = U256::from(i256_cmp(&op1, op2) == Ordering::Greater);
     }
     *)
-    Definition sgt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition sgt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -686,7 +711,10 @@ Module instructions.
                             M.read (| op2 |),
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 "from",
                                 [ Ty.path "bool" ]
                               |),
@@ -722,7 +750,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_sgt : M.IsFunction "revm_interpreter::instructions::bitwise::sgt" sgt.
@@ -734,9 +762,9 @@ Module instructions.
         *op2 = U256::from(op1 == *op2);
     }
     *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -874,7 +902,10 @@ Module instructions.
                             M.read (| op2 |),
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 "from",
                                 [ Ty.path "bool" ]
                               |),
@@ -882,8 +913,16 @@ Module instructions.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "ruint::Uint",
-                                    [ Ty.path "ruint::Uint" ],
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ],
                                     "eq",
                                     []
                                   |),
@@ -897,7 +936,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_eq : M.IsFunction "revm_interpreter::instructions::bitwise::eq" eq.
@@ -909,9 +948,9 @@ Module instructions.
         *op1 = U256::from( *op1 == U256::ZERO);
     }
     *)
-    Definition iszero (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition iszero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1042,7 +1081,7 @@ Module instructions.
                     M.read (| op1 |),
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "ruint::Uint",
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                         "from",
                         [ Ty.path "bool" ]
                       |),
@@ -1050,8 +1089,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.path "ruint::Uint",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "eq",
                             []
                           |),
@@ -1063,7 +1110,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_iszero : M.IsFunction "revm_interpreter::instructions::bitwise::iszero" iszero.
@@ -1075,9 +1122,9 @@ Module instructions.
         *op2 = op1 & *op2;
     }
     *)
-    Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1216,8 +1263,16 @@ Module instructions.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::bit::BitAnd",
-                                Ty.path "ruint::Uint",
-                                [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    []
+                                ],
                                 "bitand",
                                 []
                               |),
@@ -1229,7 +1284,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_bitand : M.IsFunction "revm_interpreter::instructions::bitwise::bitand" bitand.
@@ -1241,9 +1296,9 @@ Module instructions.
         *op2 = op1 | *op2;
     }
     *)
-    Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1382,8 +1437,16 @@ Module instructions.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::bit::BitOr",
-                                Ty.path "ruint::Uint",
-                                [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    []
+                                ],
                                 "bitor",
                                 []
                               |),
@@ -1395,7 +1458,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_bitor : M.IsFunction "revm_interpreter::instructions::bitwise::bitor" bitor.
@@ -1407,9 +1470,9 @@ Module instructions.
         *op2 = op1 ^ *op2;
     }
     *)
-    Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1548,8 +1611,16 @@ Module instructions.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::bit::BitXor",
-                                Ty.path "ruint::Uint",
-                                [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    []
+                                ],
                                 "bitxor",
                                 []
                               |),
@@ -1561,7 +1632,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_bitxor : M.IsFunction "revm_interpreter::instructions::bitwise::bitxor" bitxor.
@@ -1573,9 +1644,9 @@ Module instructions.
         *op1 = !*op1;
     }
     *)
-    Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1707,7 +1778,7 @@ Module instructions.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::bit::Not",
-                        Ty.path "ruint::Uint",
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                         [],
                         "not",
                         []
@@ -1718,7 +1789,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_not : M.IsFunction "revm_interpreter::instructions::bitwise::not" not.
@@ -1737,9 +1808,9 @@ Module instructions.
         };
     }
     *)
-    Definition byte (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition byte (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1878,6 +1949,7 @@ Module instructions.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                                 "unwrap_or",
                                 []
@@ -1897,7 +1969,10 @@ Module instructions.
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path "ruint::Uint",
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [],
                                               "as_limbs",
                                               []
                                             |),
@@ -1985,14 +2060,20 @@ Module instructions.
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.path "ruint::Uint",
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [],
                                             "from",
                                             [ Ty.path "u8" ]
                                           |),
                                           [
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.path "ruint::Uint",
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [],
                                                 "byte",
                                                 []
                                               |),
@@ -2017,7 +2098,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_byte : M.IsFunction "revm_interpreter::instructions::bitwise::byte" byte.
@@ -2030,9 +2111,9 @@ Module instructions.
         *op2 <<= as_usize_saturated!(op1);
     }
     *)
-    Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; _host ] =>
+    Definition shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -2218,7 +2299,10 @@ Module instructions.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::bit::ShlAssign",
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 [ Ty.path "usize" ],
                                 "shl_assign",
                                 []
@@ -2229,6 +2313,7 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                       ],
                                     "unwrap_or",
@@ -2249,7 +2334,10 @@ Module instructions.
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.path "ruint::Uint",
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [],
                                                   "as_limbs",
                                                   []
                                                 |),
@@ -2323,7 +2411,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_shl : M.IsFunction "revm_interpreter::instructions::bitwise::shl" shl.
@@ -2336,9 +2424,9 @@ Module instructions.
         *op2 >>= as_usize_saturated!(op1);
     }
     *)
-    Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; _host ] =>
+    Definition shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -2524,7 +2612,10 @@ Module instructions.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::bit::ShrAssign",
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 [ Ty.path "usize" ],
                                 "shr_assign",
                                 []
@@ -2535,6 +2626,7 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                       ],
                                     "unwrap_or",
@@ -2555,7 +2647,10 @@ Module instructions.
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.path "ruint::Uint",
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [],
                                                   "as_limbs",
                                                   []
                                                 |),
@@ -2629,7 +2724,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_shr : M.IsFunction "revm_interpreter::instructions::bitwise::shr" shr.
@@ -2664,9 +2759,9 @@ Module instructions.
         };
     }
     *)
-    Definition sar (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; _host ] =>
+    Definition sar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -2895,8 +2990,16 @@ Module instructions.
                                                 (M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
-                                                    Ty.path "ruint::Uint",
-                                                    [ Ty.path "ruint::Uint" ],
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        []
+                                                    ],
                                                     "ge",
                                                     []
                                                   |),
@@ -2905,7 +3008,10 @@ Module instructions.
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         M.get_associated_function (|
-                                                          Ty.path "ruint::Uint",
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [],
                                                           "from",
                                                           [ Ty.path "i32" ]
                                                         |),
@@ -2972,10 +3078,12 @@ Module instructions.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "usize";
                                                   Ty.apply
                                                     (Ty.path "ruint::from::FromUintError")
+                                                    []
                                                     [ Ty.path "usize" ]
                                                 ],
                                               "unwrap",
@@ -2986,7 +3094,12 @@ Module instructions.
                                                 M.get_trait_method (|
                                                   "core::convert::TryFrom",
                                                   Ty.path "usize",
-                                                  [ Ty.path "ruint::Uint" ],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      []
+                                                  ],
                                                   "try_from",
                                                   []
                                                 |),
@@ -3028,7 +3141,11 @@ Module instructions.
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             M.get_associated_function (|
-                                                              Ty.path "ruint::Uint",
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [ Value.Integer 256; Value.Integer 4
+                                                                ]
+                                                                [],
                                                               "wrapping_shr",
                                                               []
                                                             |),
@@ -3057,21 +3174,33 @@ Module instructions.
                                                   [
                                                     M.call_closure (|
                                                       M.get_associated_function (|
-                                                        Ty.path "ruint::Uint",
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [],
                                                         "wrapping_add",
                                                         []
                                                       |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
-                                                            Ty.path "ruint::Uint",
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [],
                                                             "wrapping_shr",
                                                             []
                                                           |),
                                                           [
                                                             M.call_closure (|
                                                               M.get_associated_function (|
-                                                                Ty.path "ruint::Uint",
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [],
                                                                 "wrapping_sub",
                                                                 []
                                                               |),
@@ -3108,7 +3237,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_sar : M.IsFunction "revm_interpreter::instructions::bitwise::sar" sar.
@@ -3119,7 +3248,11 @@ Module instructions.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "ruint::Uint", "from_limbs", [] |),
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                  "from_limbs",
+                  []
+                |),
                 [ Value.Array [ Value.Integer 1; Value.Integer 0; Value.Integer 0; Value.Integer 0 ]
                 ]
               |)

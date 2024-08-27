@@ -5,6 +5,7 @@ Module function_stack.
   (* StructRecord
     {
       name := "FunctionReturnFrame";
+      const_params := [];
       ty_params := [];
       fields := [ ("idx", Ty.path "usize"); ("pc", Ty.path "usize") ];
     } *)
@@ -13,9 +14,9 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -48,7 +49,7 @@ Module function_stack.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -63,9 +64,9 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_interpreter::function_stack::FunctionReturnFrame"
@@ -93,7 +94,7 @@ Module function_stack.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -108,9 +109,9 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -119,7 +120,7 @@ Module function_stack.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -156,9 +157,9 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -195,7 +196,7 @@ Module function_stack.
                   |)
                 |))))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -221,9 +222,13 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -232,7 +237,7 @@ Module function_stack.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -248,9 +253,9 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -283,7 +288,7 @@ Module function_stack.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -302,16 +307,16 @@ Module function_stack.
             Self { idx, pc }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ idx; pc ] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ idx; pc ] =>
         ltac:(M.monadic
           (let idx := M.alloc (| idx |) in
           let pc := M.alloc (| pc |) in
           Value.StructRecord
             "revm_interpreter::function_stack::FunctionReturnFrame"
             [ ("idx", M.read (| idx |)); ("pc", M.read (| pc |)) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -320,12 +325,14 @@ Module function_stack.
   (* StructRecord
     {
       name := "FunctionStack";
+      const_params := [];
       ty_params := [];
       fields :=
         [
           ("return_stack",
             Ty.apply
               (Ty.path "alloc::vec::Vec")
+              []
               [
                 Ty.path "revm_interpreter::function_stack::FunctionReturnFrame";
                 Ty.path "alloc::alloc::Global"
@@ -338,9 +345,9 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionStack".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -373,7 +380,7 @@ Module function_stack.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -388,9 +395,9 @@ Module function_stack.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionStack".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_interpreter::function_stack::FunctionStack"
@@ -401,6 +408,7 @@ Module function_stack.
                     "core::default::Default",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.path "revm_interpreter::function_stack::FunctionReturnFrame";
                         Ty.path "alloc::alloc::Global"
@@ -423,7 +431,7 @@ Module function_stack.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -445,9 +453,9 @@ Module function_stack.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_interpreter::function_stack::FunctionStack"
@@ -457,6 +465,7 @@ Module function_stack.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.path "revm_interpreter::function_stack::FunctionReturnFrame";
                         Ty.path "alloc::alloc::Global"
@@ -468,7 +477,7 @@ Module function_stack.
                 |));
               ("current_code_idx", Value.Integer 0)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -482,9 +491,9 @@ Module function_stack.
             self.current_code_idx = new_idx;
         }
     *)
-    Definition push (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; program_counter; new_idx ] =>
+    Definition push (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; program_counter; new_idx ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let program_counter := M.alloc (| program_counter |) in
@@ -496,6 +505,7 @@ Module function_stack.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.path "revm_interpreter::function_stack::FunctionReturnFrame";
                         Ty.path "alloc::alloc::Global"
@@ -536,7 +546,7 @@ Module function_stack.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
@@ -546,15 +556,16 @@ Module function_stack.
             self.return_stack.len()
         }
     *)
-    Definition return_stack_len (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition return_stack_len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
+                []
                 [
                   Ty.path "revm_interpreter::function_stack::FunctionReturnFrame";
                   Ty.path "alloc::alloc::Global"
@@ -570,7 +581,7 @@ Module function_stack.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_return_stack_len :
@@ -584,15 +595,16 @@ Module function_stack.
             })
         }
     *)
-    Definition pop (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition pop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [ Ty.path "revm_interpreter::function_stack::FunctionReturnFrame" ],
               "map",
               [
@@ -607,6 +619,7 @@ Module function_stack.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [
                       Ty.path "revm_interpreter::function_stack::FunctionReturnFrame";
                       Ty.path "alloc::alloc::Global"
@@ -657,7 +670,7 @@ Module function_stack.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_pop : M.IsAssociatedFunction Self "pop" pop.
@@ -667,9 +680,9 @@ Module function_stack.
             self.current_code_idx = idx;
         }
     *)
-    Definition set_current_code_idx (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; idx ] =>
+    Definition set_current_code_idx (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; idx ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let idx := M.alloc (| idx |) in
@@ -685,7 +698,7 @@ Module function_stack.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_set_current_code_idx :

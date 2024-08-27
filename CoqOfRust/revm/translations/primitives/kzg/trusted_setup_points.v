@@ -12,17 +12,39 @@ Module kzg.
     (* StructTuple
       {
         name := "G1Points";
+        const_params := [];
         ty_params := [];
-        fields := [ Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] ];
+        fields :=
+          [
+            Ty.apply
+              (Ty.path "array")
+              [
+                M.unevaluated_const
+                  (M.get_constant (|
+                    "revm_primitives::kzg::trusted_setup_points::G1Points::0_discriminant"
+                  |))
+              ]
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [
+                    M.unevaluated_const
+                      (M.get_constant (|
+                        "revm_primitives::kzg::trusted_setup_points::G1Points::0_discriminant"
+                      |))
+                  ]
+                  [ Ty.path "u8" ]
+              ]
+          ];
       } *)
     
     Module Impl_core_fmt_Debug_for_revm_primitives_kzg_trusted_setup_points_G1Points.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G1Points".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -46,7 +68,7 @@ Module kzg.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -61,9 +83,9 @@ Module kzg.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G1Points".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -72,7 +94,10 @@ Module kzg.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer 4096 ]
+                      [ Ty.apply (Ty.path "array") [ Value.Integer 48 ] [ Ty.path "u8" ] ],
                     [],
                     "clone",
                     []
@@ -86,7 +111,7 @@ Module kzg.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -112,17 +137,25 @@ Module kzg.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G1Points".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
-                [ Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] ],
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer 4096 ]
+                  [ Ty.apply (Ty.path "array") [ Value.Integer 48 ] [ Ty.path "u8" ] ],
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer 4096 ]
+                    [ Ty.apply (Ty.path "array") [ Value.Integer 48 ] [ Ty.path "u8" ] ]
+                ],
                 "eq",
                 []
               |),
@@ -139,7 +172,7 @@ Module kzg.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -150,13 +183,13 @@ Module kzg.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_primitives_kzg_trusted_setup_points_G1Points.
     
-    Module Impl_core_convert_AsRef_array_array_u8_for_revm_primitives_kzg_trusted_setup_points_G1Points.
+    Module Impl_core_convert_AsRef_array_expr_array_expr_u8_for_revm_primitives_kzg_trusted_setup_points_G1Points.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G1Points".
       
       (* AsRef *)
-      Definition as_ref (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_tuple_field (|
@@ -164,7 +197,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G1Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -172,17 +205,36 @@ Module kzg.
           "core::convert::AsRef"
           Self
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] ]
+          [
+            (* T *)
+            Ty.apply
+              (Ty.path "array")
+              [
+                M.unevaluated_const
+                  (M.get_constant (| "revm_primitives::kzg::trusted_setup_points_discriminant" |))
+              ]
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [
+                    M.unevaluated_const
+                      (M.get_constant (|
+                        "revm_primitives::kzg::trusted_setup_points_discriminant"
+                      |))
+                  ]
+                  [ Ty.path "u8" ]
+              ]
+          ]
           (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
-    End Impl_core_convert_AsRef_array_array_u8_for_revm_primitives_kzg_trusted_setup_points_G1Points.
+    End Impl_core_convert_AsRef_array_expr_array_expr_u8_for_revm_primitives_kzg_trusted_setup_points_G1Points.
     
-    Module Impl_core_convert_AsMut_array_array_u8_for_revm_primitives_kzg_trusted_setup_points_G1Points.
+    Module Impl_core_convert_AsMut_array_expr_array_expr_u8_for_revm_primitives_kzg_trusted_setup_points_G1Points.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G1Points".
       
       (* AsMut *)
-      Definition as_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_tuple_field (|
@@ -190,7 +242,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G1Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -198,21 +250,58 @@ Module kzg.
           "core::convert::AsMut"
           Self
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] ]
+          [
+            (* T *)
+            Ty.apply
+              (Ty.path "array")
+              [
+                M.unevaluated_const
+                  (M.get_constant (| "revm_primitives::kzg::trusted_setup_points_discriminant" |))
+              ]
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [
+                    M.unevaluated_const
+                      (M.get_constant (|
+                        "revm_primitives::kzg::trusted_setup_points_discriminant"
+                      |))
+                  ]
+                  [ Ty.path "u8" ]
+              ]
+          ]
           (* Instance *) [ ("as_mut", InstanceField.Method as_mut) ].
-    End Impl_core_convert_AsMut_array_array_u8_for_revm_primitives_kzg_trusted_setup_points_G1Points.
+    End Impl_core_convert_AsMut_array_expr_array_expr_u8_for_revm_primitives_kzg_trusted_setup_points_G1Points.
     
     Module Impl_core_ops_deref_Deref_for_revm_primitives_kzg_trusted_setup_points_G1Points.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G1Points".
       
       (* Deref *)
       Definition _Target : Ty.t :=
-        Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ].
+        Ty.apply
+          (Ty.path "array")
+          [
+            M.unevaluated_const
+              (M.get_constant (|
+                "revm_primitives::kzg::trusted_setup_points::Target_discriminant"
+              |))
+          ]
+          [
+            Ty.apply
+              (Ty.path "array")
+              [
+                M.unevaluated_const
+                  (M.get_constant (|
+                    "revm_primitives::kzg::trusted_setup_points::Target_discriminant"
+                  |))
+              ]
+              [ Ty.path "u8" ]
+          ].
       
       (* Deref *)
-      Definition deref (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition deref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_tuple_field (|
@@ -220,7 +309,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G1Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -236,9 +325,9 @@ Module kzg.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G1Points".
       
       (* DerefMut *)
-      Definition deref_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition deref_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_tuple_field (|
@@ -246,7 +335,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G1Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -265,14 +354,14 @@ Module kzg.
               Self([[0; BYTES_PER_G1_POINT]; NUM_G1_POINTS])
           }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructTuple
               "revm_primitives::kzg::trusted_setup_points::G1Points"
               [ repeat (repeat (Value.Integer 0) 48) 4096 ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -286,17 +375,39 @@ Module kzg.
     (* StructTuple
       {
         name := "G2Points";
+        const_params := [];
         ty_params := [];
-        fields := [ Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] ];
+        fields :=
+          [
+            Ty.apply
+              (Ty.path "array")
+              [
+                M.unevaluated_const
+                  (M.get_constant (|
+                    "revm_primitives::kzg::trusted_setup_points::G2Points::0_discriminant"
+                  |))
+              ]
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [
+                    M.unevaluated_const
+                      (M.get_constant (|
+                        "revm_primitives::kzg::trusted_setup_points::G2Points::0_discriminant"
+                      |))
+                  ]
+                  [ Ty.path "u8" ]
+              ]
+          ];
       } *)
     
     Module Impl_core_fmt_Debug_for_revm_primitives_kzg_trusted_setup_points_G2Points.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G2Points".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -320,7 +431,7 @@ Module kzg.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -335,9 +446,9 @@ Module kzg.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G2Points".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -346,7 +457,10 @@ Module kzg.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer 65 ]
+                      [ Ty.apply (Ty.path "array") [ Value.Integer 96 ] [ Ty.path "u8" ] ],
                     [],
                     "clone",
                     []
@@ -360,7 +474,7 @@ Module kzg.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -386,9 +500,13 @@ Module kzg.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G2Points".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -397,7 +515,7 @@ Module kzg.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -424,17 +542,25 @@ Module kzg.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G2Points".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
-                [ Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] ],
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer 65 ]
+                  [ Ty.apply (Ty.path "array") [ Value.Integer 96 ] [ Ty.path "u8" ] ],
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer 65 ]
+                    [ Ty.apply (Ty.path "array") [ Value.Integer 96 ] [ Ty.path "u8" ] ]
+                ],
                 "eq",
                 []
               |),
@@ -451,7 +577,7 @@ Module kzg.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -462,13 +588,13 @@ Module kzg.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_primitives_kzg_trusted_setup_points_G2Points.
     
-    Module Impl_core_convert_AsRef_array_array_u8_for_revm_primitives_kzg_trusted_setup_points_G2Points.
+    Module Impl_core_convert_AsRef_array_expr_array_expr_u8_for_revm_primitives_kzg_trusted_setup_points_G2Points.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G2Points".
       
       (* AsRef *)
-      Definition as_ref (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_tuple_field (|
@@ -476,7 +602,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G2Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -484,17 +610,36 @@ Module kzg.
           "core::convert::AsRef"
           Self
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] ]
+          [
+            (* T *)
+            Ty.apply
+              (Ty.path "array")
+              [
+                M.unevaluated_const
+                  (M.get_constant (| "revm_primitives::kzg::trusted_setup_points_discriminant" |))
+              ]
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [
+                    M.unevaluated_const
+                      (M.get_constant (|
+                        "revm_primitives::kzg::trusted_setup_points_discriminant"
+                      |))
+                  ]
+                  [ Ty.path "u8" ]
+              ]
+          ]
           (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
-    End Impl_core_convert_AsRef_array_array_u8_for_revm_primitives_kzg_trusted_setup_points_G2Points.
+    End Impl_core_convert_AsRef_array_expr_array_expr_u8_for_revm_primitives_kzg_trusted_setup_points_G2Points.
     
-    Module Impl_core_convert_AsMut_array_array_u8_for_revm_primitives_kzg_trusted_setup_points_G2Points.
+    Module Impl_core_convert_AsMut_array_expr_array_expr_u8_for_revm_primitives_kzg_trusted_setup_points_G2Points.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G2Points".
       
       (* AsMut *)
-      Definition as_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_tuple_field (|
@@ -502,7 +647,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G2Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -510,21 +655,58 @@ Module kzg.
           "core::convert::AsMut"
           Self
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] ]
+          [
+            (* T *)
+            Ty.apply
+              (Ty.path "array")
+              [
+                M.unevaluated_const
+                  (M.get_constant (| "revm_primitives::kzg::trusted_setup_points_discriminant" |))
+              ]
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [
+                    M.unevaluated_const
+                      (M.get_constant (|
+                        "revm_primitives::kzg::trusted_setup_points_discriminant"
+                      |))
+                  ]
+                  [ Ty.path "u8" ]
+              ]
+          ]
           (* Instance *) [ ("as_mut", InstanceField.Method as_mut) ].
-    End Impl_core_convert_AsMut_array_array_u8_for_revm_primitives_kzg_trusted_setup_points_G2Points.
+    End Impl_core_convert_AsMut_array_expr_array_expr_u8_for_revm_primitives_kzg_trusted_setup_points_G2Points.
     
     Module Impl_core_ops_deref_Deref_for_revm_primitives_kzg_trusted_setup_points_G2Points.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G2Points".
       
       (* Deref *)
       Definition _Target : Ty.t :=
-        Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ].
+        Ty.apply
+          (Ty.path "array")
+          [
+            M.unevaluated_const
+              (M.get_constant (|
+                "revm_primitives::kzg::trusted_setup_points::Target_discriminant"
+              |))
+          ]
+          [
+            Ty.apply
+              (Ty.path "array")
+              [
+                M.unevaluated_const
+                  (M.get_constant (|
+                    "revm_primitives::kzg::trusted_setup_points::Target_discriminant"
+                  |))
+              ]
+              [ Ty.path "u8" ]
+          ].
       
       (* Deref *)
-      Definition deref (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition deref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_tuple_field (|
@@ -532,7 +714,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G2Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -548,9 +730,9 @@ Module kzg.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::G2Points".
       
       (* DerefMut *)
-      Definition deref_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition deref_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_tuple_field (|
@@ -558,7 +740,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G2Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -577,14 +759,14 @@ Module kzg.
               Self([[0; BYTES_PER_G2_POINT]; NUM_G2_POINTS])
           }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructTuple
               "revm_primitives::kzg::trusted_setup_points::G2Points"
               [ repeat (repeat (Value.Integer 0) 96) 65 ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -611,7 +793,7 @@ Module kzg.
                             (BinOp.Pure.eq
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "len",
                                   []
                                 |),
@@ -651,14 +833,14 @@ Module kzg.
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                 "cast",
                 [ Ty.path "revm_primitives::kzg::trusted_setup_points::G1Points" ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "as_ptr",
                     []
                   |),
@@ -697,7 +879,7 @@ Module kzg.
                             (BinOp.Pure.eq
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "len",
                                   []
                                 |),
@@ -737,14 +919,14 @@ Module kzg.
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                 "cast",
                 [ Ty.path "revm_primitives::kzg::trusted_setup_points::G2Points" ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "as_ptr",
                     []
                   |),
@@ -814,9 +996,9 @@ Module kzg.
         Ok((g1_points, g2_points))
     }
     *)
-    Definition parse_kzg_trusted_setup (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ trusted_setup ] =>
+    Definition parse_kzg_trusted_setup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ trusted_setup ] =>
         ltac:(M.monadic
           (let trusted_setup := M.alloc (| trusted_setup |) in
           M.catch_return (|
@@ -838,6 +1020,7 @@ Module kzg.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.path "usize";
                                 Ty.path "revm_primitives::kzg::trusted_setup_points::KzgErrors"
@@ -851,6 +1034,7 @@ Module kzg.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.path "usize"; Ty.path "core::num::error::ParseIntError" ],
                                 "map_err",
                                 [
@@ -877,8 +1061,9 @@ Module kzg.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
-                                                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                                                   Ty.path
                                                     "revm_primitives::kzg::trusted_setup_points::KzgErrors"
                                                 ],
@@ -891,7 +1076,8 @@ Module kzg.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
-                                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                                                    []
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                   "ok_or",
                                                   [
                                                     Ty.path
@@ -936,11 +1122,13 @@ Module kzg.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "alloc::boxed::Box")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm_primitives::kzg::trusted_setup_points::G1Points";
@@ -948,6 +1136,7 @@ Module kzg.
                                                                     ];
                                                                   Ty.apply
                                                                     (Ty.path "alloc::boxed::Box")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm_primitives::kzg::trusted_setup_points::G2Points";
@@ -960,6 +1149,7 @@ Module kzg.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.path "core::convert::Infallible";
                                                                 Ty.path
@@ -1031,11 +1221,13 @@ Module kzg.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm_primitives::kzg::trusted_setup_points::G1Points";
@@ -1043,6 +1235,7 @@ Module kzg.
                                                   ];
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm_primitives::kzg::trusted_setup_points::G2Points";
@@ -1055,6 +1248,7 @@ Module kzg.
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path
@@ -1092,6 +1286,7 @@ Module kzg.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.path "usize";
                                 Ty.path "revm_primitives::kzg::trusted_setup_points::KzgErrors"
@@ -1105,6 +1300,7 @@ Module kzg.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.path "usize"; Ty.path "core::num::error::ParseIntError" ],
                                 "map_err",
                                 [
@@ -1131,8 +1327,9 @@ Module kzg.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
-                                                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                                                   Ty.path
                                                     "revm_primitives::kzg::trusted_setup_points::KzgErrors"
                                                 ],
@@ -1145,7 +1342,8 @@ Module kzg.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
-                                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                                                    []
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                   "ok_or",
                                                   [
                                                     Ty.path
@@ -1190,11 +1388,13 @@ Module kzg.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "alloc::boxed::Box")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm_primitives::kzg::trusted_setup_points::G1Points";
@@ -1202,6 +1402,7 @@ Module kzg.
                                                                     ];
                                                                   Ty.apply
                                                                     (Ty.path "alloc::boxed::Box")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm_primitives::kzg::trusted_setup_points::G2Points";
@@ -1214,6 +1415,7 @@ Module kzg.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.path "core::convert::Infallible";
                                                                 Ty.path
@@ -1285,11 +1487,13 @@ Module kzg.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm_primitives::kzg::trusted_setup_points::G1Points";
@@ -1297,6 +1501,7 @@ Module kzg.
                                                   ];
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm_primitives::kzg::trusted_setup_points::G2Points";
@@ -1309,6 +1514,7 @@ Module kzg.
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path
@@ -1418,6 +1624,7 @@ Module kzg.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
                             Ty.path "revm_primitives::kzg::trusted_setup_points::G1Points";
                             Ty.path "alloc::alloc::Global"
@@ -1438,10 +1645,13 @@ Module kzg.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "&mut")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "array")
-                                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                  [ Value.Integer 4096 ]
+                                  [ Ty.apply (Ty.path "array") [ Value.Integer 48 ] [ Ty.path "u8" ]
+                                  ]
                               ],
                             [],
                             "into_iter",
@@ -1470,7 +1680,13 @@ Module kzg.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::IterMut")
-                                            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer 48 ]
+                                                [ Ty.path "u8" ]
+                                            ],
                                           [],
                                           "next",
                                           []
@@ -1507,8 +1723,12 @@ Module kzg.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
-                                                          Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ];
                                                           Ty.path
                                                             "revm_primitives::kzg::trusted_setup_points::KzgErrors"
                                                         ],
@@ -1521,9 +1741,11 @@ Module kzg.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [ Ty.path "str" ]
                                                             ],
                                                           "ok_or",
@@ -1570,12 +1792,14 @@ Module kzg.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.tuple
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::boxed::Box")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "revm_primitives::kzg::trusted_setup_points::G1Points";
@@ -1585,6 +1809,7 @@ Module kzg.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::boxed::Box")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "revm_primitives::kzg::trusted_setup_points::G2Points";
@@ -1599,6 +1824,7 @@ Module kzg.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
@@ -1636,6 +1862,7 @@ Module kzg.
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.tuple [];
                                                         Ty.path
@@ -1650,6 +1877,7 @@ Module kzg.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
+                                                          []
                                                           [
                                                             Ty.tuple [];
                                                             Ty.path "const_hex::error::FromHexError"
@@ -1677,6 +1905,7 @@ Module kzg.
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [ Ty.path "str" ]
                                                             ]
                                                           |),
@@ -1727,12 +1956,14 @@ Module kzg.
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.tuple
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "alloc::boxed::Box")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "revm_primitives::kzg::trusted_setup_points::G1Points";
@@ -1742,6 +1973,7 @@ Module kzg.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "alloc::boxed::Box")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "revm_primitives::kzg::trusted_setup_points::G2Points";
@@ -1755,6 +1987,7 @@ Module kzg.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "core::convert::Infallible";
@@ -1797,6 +2030,7 @@ Module kzg.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
                             Ty.path "revm_primitives::kzg::trusted_setup_points::G2Points";
                             Ty.path "alloc::alloc::Global"
@@ -1817,10 +2051,13 @@ Module kzg.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "&mut")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "array")
-                                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                  [ Value.Integer 65 ]
+                                  [ Ty.apply (Ty.path "array") [ Value.Integer 96 ] [ Ty.path "u8" ]
+                                  ]
                               ],
                             [],
                             "into_iter",
@@ -1849,7 +2086,13 @@ Module kzg.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::IterMut")
-                                            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer 96 ]
+                                                [ Ty.path "u8" ]
+                                            ],
                                           [],
                                           "next",
                                           []
@@ -1886,8 +2129,12 @@ Module kzg.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
-                                                          Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ];
                                                           Ty.path
                                                             "revm_primitives::kzg::trusted_setup_points::KzgErrors"
                                                         ],
@@ -1900,9 +2147,11 @@ Module kzg.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [ Ty.path "str" ]
                                                             ],
                                                           "ok_or",
@@ -1949,12 +2198,14 @@ Module kzg.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.tuple
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::boxed::Box")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "revm_primitives::kzg::trusted_setup_points::G1Points";
@@ -1964,6 +2215,7 @@ Module kzg.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::boxed::Box")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "revm_primitives::kzg::trusted_setup_points::G2Points";
@@ -1978,6 +2230,7 @@ Module kzg.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
@@ -2015,6 +2268,7 @@ Module kzg.
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.tuple [];
                                                         Ty.path
@@ -2029,6 +2283,7 @@ Module kzg.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
+                                                          []
                                                           [
                                                             Ty.tuple [];
                                                             Ty.path "const_hex::error::FromHexError"
@@ -2056,6 +2311,7 @@ Module kzg.
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [ Ty.path "str" ]
                                                             ]
                                                           |),
@@ -2106,12 +2362,14 @@ Module kzg.
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.tuple
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "alloc::boxed::Box")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "revm_primitives::kzg::trusted_setup_points::G1Points";
@@ -2121,6 +2379,7 @@ Module kzg.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "alloc::boxed::Box")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "revm_primitives::kzg::trusted_setup_points::G2Points";
@@ -2134,6 +2393,7 @@ Module kzg.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "core::convert::Infallible";
@@ -2182,7 +2442,8 @@ Module kzg.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
-                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                     "is_some",
                                     []
                                   |),
@@ -2229,7 +2490,7 @@ Module kzg.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_parse_kzg_trusted_setup :
@@ -2240,6 +2501,7 @@ Module kzg.
     (*
     Enum KzgErrors
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -2286,9 +2548,9 @@ Module kzg.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::trusted_setup_points::KzgErrors".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -2368,7 +2630,7 @@ Module kzg.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2396,9 +2658,9 @@ Module kzg.
               f.write_str(s)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -2489,7 +2751,7 @@ Module kzg.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

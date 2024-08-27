@@ -6,6 +6,7 @@ Module inspector.
     (* StructRecord
       {
         name := "GasInspector";
+        const_params := [];
         ty_params := [];
         fields := [ ("gas_remaining", Ty.path "u64"); ("last_gas_cost", Ty.path "u64") ];
       } *)
@@ -14,9 +15,9 @@ Module inspector.
       Definition Self : Ty.t := Ty.path "revm::inspector::gas::GasInspector".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -25,7 +26,7 @@ Module inspector.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -51,9 +52,9 @@ Module inspector.
       Definition Self : Ty.t := Ty.path "revm::inspector::gas::GasInspector".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -86,7 +87,7 @@ Module inspector.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -101,9 +102,9 @@ Module inspector.
       Definition Self : Ty.t := Ty.path "revm::inspector::gas::GasInspector".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "revm::inspector::gas::GasInspector"
@@ -131,7 +132,7 @@ Module inspector.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -150,9 +151,9 @@ Module inspector.
               self.gas_remaining
           }
       *)
-      Definition gas_remaining (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition gas_remaining (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -162,7 +163,7 @@ Module inspector.
                 "gas_remaining"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_gas_remaining :
@@ -173,9 +174,9 @@ Module inspector.
               self.last_gas_cost
           }
       *)
-      Definition last_gas_cost (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition last_gas_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -185,7 +186,7 @@ Module inspector.
                 "last_gas_cost"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_last_gas_cost :
@@ -204,10 +205,15 @@ Module inspector.
               self.gas_remaining = interp.gas.limit();
           }
       *)
-      Definition initialize_interp (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition initialize_interp
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; interp; _context ] =>
+        match ε, τ, α with
+        | [], [], [ self; interp; _context ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interp := M.alloc (| interp |) in
@@ -237,7 +243,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -249,10 +255,10 @@ Module inspector.
               self.gas_remaining = interp.gas.remaining();
           }
       *)
-      Definition step (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition step (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; interp; _context ] =>
+        match ε, τ, α with
+        | [], [], [ self; interp; _context ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interp := M.alloc (| interp |) in
@@ -282,7 +288,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -296,10 +302,10 @@ Module inspector.
               self.gas_remaining = remaining;
           }
       *)
-      Definition step_end (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition step_end (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; interp; _context ] =>
+        match ε, τ, α with
+        | [], [], [ self; interp; _context ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interp := M.alloc (| interp |) in
@@ -354,7 +360,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -371,10 +377,10 @@ Module inspector.
               outcome
           }
       *)
-      Definition call_end (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call_end (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; _context; _inputs; outcome ] =>
+        match ε, τ, α with
+        | [], [], [ self; _context; _inputs; outcome ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _context := M.alloc (| _context |) in
@@ -449,7 +455,7 @@ Module inspector.
                 |) in
               outcome
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -466,10 +472,10 @@ Module inspector.
               outcome
           }
       *)
-      Definition create_end (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition create_end (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; _context; _inputs; outcome ] =>
+        match ε, τ, α with
+        | [], [], [ self; _context; _inputs; outcome ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _context := M.alloc (| _context |) in
@@ -544,7 +550,7 @@ Module inspector.
                 |) in
               outcome
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

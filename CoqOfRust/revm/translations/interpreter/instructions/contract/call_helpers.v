@@ -21,9 +21,13 @@ Module instructions.
           Some((input, ret_range))
       }
       *)
-      Definition get_memory_input_and_out_ranges (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ interpreter ] =>
+      Definition get_memory_input_and_out_ranges
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ interpreter ] =>
           ltac:(M.monadic
             (let interpreter := M.alloc (| interpreter |) in
             M.catch_return (|
@@ -115,9 +119,11 @@ Module instructions.
                                       "core::ops::try_trait::Try",
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                       [],
@@ -158,18 +164,21 @@ Module instructions.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [
                                                       Ty.tuple
                                                         [
                                                           Ty.path "alloy_primitives::bytes_::Bytes";
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::Range")
+                                                            []
                                                             [ Ty.path "usize" ]
                                                         ]
                                                     ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [ Ty.path "core::convert::Infallible" ]
                                                   ],
                                                   "from_residual",
@@ -219,6 +228,7 @@ Module instructions.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::Range")
+                                                  []
                                                   [ Ty.path "usize" ],
                                                 "is_empty",
                                                 []
@@ -273,9 +283,11 @@ Module instructions.
                                       "core::ops::try_trait::Try",
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                       [],
@@ -316,18 +328,21 @@ Module instructions.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [
                                                       Ty.tuple
                                                         [
                                                           Ty.path "alloy_primitives::bytes_::Bytes";
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::Range")
+                                                            []
                                                             [ Ty.path "usize" ]
                                                         ]
                                                     ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [ Ty.path "core::convert::Infallible" ]
                                                   ],
                                                   "from_residual",
@@ -361,7 +376,7 @@ Module instructions.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_get_memory_input_and_out_ranges :
@@ -386,9 +401,13 @@ Module instructions.
           Some(offset..offset + len)
       }
       *)
-      Definition resize_memory_and_return_range (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ interpreter; offset; len ] =>
+      Definition resize_memory_and_return_range
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ interpreter; offset; len ] =>
           ltac:(M.monadic
             (let interpreter := M.alloc (| interpreter |) in
             let offset := M.alloc (| offset |) in
@@ -401,7 +420,14 @@ Module instructions.
                       let~ x :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "ruint::Uint", "as_limbs", [] |),
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [],
+                              "as_limbs",
+                              []
+                            |),
                             [ len ]
                           |)
                         |) in
@@ -530,7 +556,10 @@ Module instructions.
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.path "ruint::Uint",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [],
                                           "as_limbs",
                                           []
                                         |),
@@ -766,7 +795,7 @@ Module instructions.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_resize_memory_and_return_range :
@@ -798,9 +827,10 @@ Module instructions.
           Some(gas_limit)
       }
       *)
-      Definition calc_call_gas (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H; SPEC ],
+      Definition calc_call_gas (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [],
+            [ H; SPEC ],
             [ interpreter; is_cold; has_transfer; new_account_accounting; local_gas_limit ] =>
           ltac:(M.monadic
             (let interpreter := M.alloc (| interpreter |) in
@@ -948,7 +978,7 @@ Module instructions.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_calc_call_gas :

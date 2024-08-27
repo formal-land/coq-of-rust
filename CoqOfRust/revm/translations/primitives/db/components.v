@@ -6,19 +6,20 @@ Module db.
     (* StructRecord
       {
         name := "DatabaseComponents";
+        const_params := [];
         ty_params := [ "S"; "BH" ];
         fields := [ ("state", S); ("block_hash", BH) ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_S_where_core_fmt_Debug_BH_for_revm_primitives_db_components_DatabaseComponents_S_BH.
       Definition Self (S BH : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm_primitives::db::components::DatabaseComponents") [ S; BH ].
+        Ty.apply (Ty.path "revm_primitives::db::components::DatabaseComponents") [] [ S; BH ].
       
       (* Debug *)
-      Definition fmt (S BH : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (S BH : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self S BH in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -51,7 +52,7 @@ Module db.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -66,6 +67,7 @@ Module db.
     (*
     Enum DatabaseComponentError
     {
+      const_params := [];
       ty_params := [ "SE"; "BHE" ];
       variants :=
         [
@@ -85,13 +87,13 @@ Module db.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_SE_where_core_fmt_Debug_BHE_for_revm_primitives_db_components_DatabaseComponentError_SE_BHE.
       Definition Self (SE BHE : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm_primitives::db::components::DatabaseComponentError") [ SE; BHE ].
+        Ty.apply (Ty.path "revm_primitives::db::components::DatabaseComponentError") [] [ SE; BHE ].
       
       (* Debug *)
-      Definition fmt (SE BHE : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (SE BHE : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self SE BHE in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -150,7 +152,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -164,12 +166,13 @@ Module db.
     
     Module Impl_revm_primitives_db_Database_where_revm_primitives_db_components_state_State_S_where_revm_primitives_db_components_block_hash_BlockHash_BH_for_revm_primitives_db_components_DatabaseComponents_S_BH.
       Definition Self (S BH : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm_primitives::db::components::DatabaseComponents") [ S; BH ].
+        Ty.apply (Ty.path "revm_primitives::db::components::DatabaseComponents") [] [ S; BH ].
       
       (*     type Error = DatabaseComponentError<S::Error, BH::Error>; *)
       Definition _Error (S BH : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+          []
           [ Ty.associated; Ty.associated ].
       
       (*
@@ -177,10 +180,10 @@ Module db.
               self.state.basic(address).map_err(Self::Error::State)
           }
       *)
-      Definition basic (S BH : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic (S BH : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self S BH in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -188,9 +191,11 @@ Module db.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "revm_primitives::state::AccountInfo" ];
                     Ty.associated
                   ],
@@ -198,11 +203,13 @@ Module db.
                 [
                   Ty.apply
                     (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                    []
                     [ Ty.associated; Ty.associated ];
                   Ty.function
                     [ Ty.associated ]
                     (Ty.apply
                       (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                      []
                       [ Ty.associated; Ty.associated ])
                 ]
               |),
@@ -228,7 +235,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -238,10 +245,15 @@ Module db.
                   .map_err(Self::Error::State)
           }
       *)
-      Definition code_by_hash (S BH : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash
+          (S BH : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self S BH in
-        match τ, α with
-        | [], [ self; code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let code_hash := M.alloc (| code_hash |) in
@@ -249,16 +261,19 @@ Module db.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.path "revm_primitives::bytecode::Bytecode"; Ty.associated ],
                 "map_err",
                 [
                   Ty.apply
                     (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                    []
                     [ Ty.associated; Ty.associated ];
                   Ty.function
                     [ Ty.associated ]
                     (Ty.apply
                       (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                      []
                       [ Ty.associated; Ty.associated ])
                 ]
               |),
@@ -284,7 +299,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -294,26 +309,34 @@ Module db.
                   .map_err(Self::Error::State)
           }
       *)
-      Definition storage (S BH : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage (S BH : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self S BH in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
             let index := M.alloc (| index |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::result::Result") [ Ty.path "ruint::Uint"; Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                    Ty.associated
+                  ],
                 "map_err",
                 [
                   Ty.apply
                     (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                    []
                     [ Ty.associated; Ty.associated ];
                   Ty.function
                     [ Ty.associated ]
                     (Ty.apply
                       (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                      []
                       [ Ty.associated; Ty.associated ])
                 ]
               |),
@@ -340,7 +363,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -350,10 +373,15 @@ Module db.
                   .map_err(Self::Error::BlockHash)
           }
       *)
-      Definition block_hash (S BH : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash
+          (S BH : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self S BH in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -361,16 +389,25 @@ Module db.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [ Ty.path "alloy_primitives::bits::fixed::FixedBytes"; Ty.associated ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [];
+                    Ty.associated
+                  ],
                 "map_err",
                 [
                   Ty.apply
                     (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                    []
                     [ Ty.associated; Ty.associated ];
                   Ty.function
                     [ Ty.associated ]
                     (Ty.apply
                       (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                      []
                       [ Ty.associated; Ty.associated ])
                 ]
               |),
@@ -396,7 +433,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::BlockHash"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -417,12 +454,13 @@ Module db.
     
     Module Impl_revm_primitives_db_DatabaseRef_where_revm_primitives_db_components_state_StateRef_S_where_revm_primitives_db_components_block_hash_BlockHashRef_BH_for_revm_primitives_db_components_DatabaseComponents_S_BH.
       Definition Self (S BH : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm_primitives::db::components::DatabaseComponents") [ S; BH ].
+        Ty.apply (Ty.path "revm_primitives::db::components::DatabaseComponents") [] [ S; BH ].
       
       (*     type Error = DatabaseComponentError<S::Error, BH::Error>; *)
       Definition _Error (S BH : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+          []
           [ Ty.associated; Ty.associated ].
       
       (*
@@ -430,10 +468,15 @@ Module db.
               self.state.basic(address).map_err(Self::Error::State)
           }
       *)
-      Definition basic_ref (S BH : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic_ref
+          (S BH : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self S BH in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -441,9 +484,11 @@ Module db.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "revm_primitives::state::AccountInfo" ];
                     Ty.associated
                   ],
@@ -451,11 +496,13 @@ Module db.
                 [
                   Ty.apply
                     (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                    []
                     [ Ty.associated; Ty.associated ];
                   Ty.function
                     [ Ty.associated ]
                     (Ty.apply
                       (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                      []
                       [ Ty.associated; Ty.associated ])
                 ]
               |),
@@ -481,7 +528,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -491,10 +538,15 @@ Module db.
                   .map_err(Self::Error::State)
           }
       *)
-      Definition code_by_hash_ref (S BH : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash_ref
+          (S BH : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self S BH in
-        match τ, α with
-        | [], [ self; code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let code_hash := M.alloc (| code_hash |) in
@@ -502,16 +554,19 @@ Module db.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.path "revm_primitives::bytecode::Bytecode"; Ty.associated ],
                 "map_err",
                 [
                   Ty.apply
                     (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                    []
                     [ Ty.associated; Ty.associated ];
                   Ty.function
                     [ Ty.associated ]
                     (Ty.apply
                       (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                      []
                       [ Ty.associated; Ty.associated ])
                 ]
               |),
@@ -537,7 +592,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -547,26 +602,39 @@ Module db.
                   .map_err(Self::Error::State)
           }
       *)
-      Definition storage_ref (S BH : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage_ref
+          (S BH : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self S BH in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
             let index := M.alloc (| index |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::result::Result") [ Ty.path "ruint::Uint"; Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                    Ty.associated
+                  ],
                 "map_err",
                 [
                   Ty.apply
                     (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                    []
                     [ Ty.associated; Ty.associated ];
                   Ty.function
                     [ Ty.associated ]
                     (Ty.apply
                       (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                      []
                       [ Ty.associated; Ty.associated ])
                 ]
               |),
@@ -593,7 +661,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -603,10 +671,15 @@ Module db.
                   .map_err(Self::Error::BlockHash)
           }
       *)
-      Definition block_hash_ref (S BH : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash_ref
+          (S BH : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self S BH in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -614,16 +687,25 @@ Module db.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [ Ty.path "alloy_primitives::bits::fixed::FixedBytes"; Ty.associated ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [];
+                    Ty.associated
+                  ],
                 "map_err",
                 [
                   Ty.apply
                     (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                    []
                     [ Ty.associated; Ty.associated ];
                   Ty.function
                     [ Ty.associated ]
                     (Ty.apply
                       (Ty.path "revm_primitives::db::components::DatabaseComponentError")
+                      []
                       [ Ty.associated; Ty.associated ])
                 ]
               |),
@@ -649,7 +731,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::BlockHash"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -670,17 +752,17 @@ Module db.
     
     Module Impl_revm_primitives_db_DatabaseCommit_where_revm_primitives_db_DatabaseCommit_S_where_revm_primitives_db_components_block_hash_BlockHashRef_BH_for_revm_primitives_db_components_DatabaseComponents_S_BH.
       Definition Self (S BH : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm_primitives::db::components::DatabaseComponents") [ S; BH ].
+        Ty.apply (Ty.path "revm_primitives::db::components::DatabaseComponents") [] [ S; BH ].
       
       (*
           fn commit(&mut self, changes: HashMap<Address, Account>) {
               self.state.commit(changes);
           }
       *)
-      Definition commit (S BH : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition commit (S BH : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self S BH in
-        match τ, α with
-        | [], [ self; changes ] =>
+        match ε, τ, α with
+        | [], [], [ self; changes ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let changes := M.alloc (| changes |) in
@@ -707,7 +789,7 @@ Module db.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

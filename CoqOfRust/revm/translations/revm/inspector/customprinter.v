@@ -6,6 +6,7 @@ Module inspector.
     (* StructRecord
       {
         name := "CustomPrintTracer";
+        const_params := [];
         ty_params := [];
         fields := [ ("gas_inspector", Ty.path "revm::inspector::gas::GasInspector") ];
       } *)
@@ -14,9 +15,9 @@ Module inspector.
       Definition Self : Ty.t := Ty.path "revm::inspector::customprinter::CustomPrintTracer".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -40,7 +41,7 @@ Module inspector.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -55,9 +56,9 @@ Module inspector.
       Definition Self : Ty.t := Ty.path "revm::inspector::customprinter::CustomPrintTracer".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -82,7 +83,7 @@ Module inspector.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -97,9 +98,9 @@ Module inspector.
       Definition Self : Ty.t := Ty.path "revm::inspector::customprinter::CustomPrintTracer".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "revm::inspector::customprinter::CustomPrintTracer"
@@ -116,7 +117,7 @@ Module inspector.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -136,10 +137,15 @@ Module inspector.
               self.gas_inspector.initialize_interp(interp, context);
           }
       *)
-      Definition initialize_interp (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition initialize_interp
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; interp; context ] =>
+        match ε, τ, α with
+        | [], [], [ self; interp; context ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interp := M.alloc (| interp |) in
@@ -168,7 +174,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -197,10 +203,10 @@ Module inspector.
               self.gas_inspector.step(interp, context);
           }
       *)
-      Definition step (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition step (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; interp; context ] =>
+        match ε, τ, α with
+        | [], [], [ self; interp; context ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interp := M.alloc (| interp |) in
@@ -321,6 +327,7 @@ Module inspector.
                                                     Ty.apply
                                                       (Ty.path
                                                         "revm::context::evm_context::EvmContext")
+                                                      []
                                                       [ DB ],
                                                     [],
                                                     "deref",
@@ -375,7 +382,7 @@ Module inspector.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [ name ]
                                     |);
@@ -444,11 +451,16 @@ Module inspector.
                                         [
                                           Ty.apply
                                             (Ty.path "&")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
-                                                  Ty.path "ruint::Uint";
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
                                                   Ty.path "alloc::alloc::Global"
                                                 ]
                                             ]
@@ -677,7 +689,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -685,10 +697,10 @@ Module inspector.
               self.gas_inspector.step_end(interp, context);
           }
       *)
-      Definition step_end (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition step_end (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; interp; context ] =>
+        match ε, τ, α with
+        | [], [], [ self; interp; context ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interp := M.alloc (| interp |) in
@@ -717,7 +729,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -730,10 +742,10 @@ Module inspector.
               self.gas_inspector.call_end(context, inputs, outcome)
           }
       *)
-      Definition call_end (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call_end (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; context; inputs; outcome ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs; outcome ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -758,7 +770,7 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -771,10 +783,10 @@ Module inspector.
               self.gas_inspector.create_end(context, inputs, outcome)
           }
       *)
-      Definition create_end (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition create_end (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; context; inputs; outcome ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs; outcome ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -799,7 +811,7 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -820,10 +832,10 @@ Module inspector.
               None
           }
       *)
-      Definition call (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; _context; inputs ] =>
+        match ε, τ, α with
+        | [], [], [ self; _context; inputs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _context := M.alloc (| _context |) in
@@ -981,7 +993,7 @@ Module inspector.
                 M.alloc (| Value.Tuple [] |) in
               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -997,10 +1009,10 @@ Module inspector.
               None
           }
       *)
-      Definition create (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition create (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; _context; inputs ] =>
+        match ε, τ, α with
+        | [], [], [ self; _context; inputs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _context := M.alloc (| _context |) in
@@ -1070,7 +1082,12 @@ Module inspector.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
-                                        [ Ty.path "ruint::Uint" ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ]
                                       |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
@@ -1118,7 +1135,7 @@ Module inspector.
                 M.alloc (| Value.Tuple [] |) in
               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1129,10 +1146,15 @@ Module inspector.
               );
           }
       *)
-      Definition selfdestruct (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition selfdestruct
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; contract; target; value ] =>
+        match ε, τ, α with
+        | [], [], [ self; contract; target; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let contract := M.alloc (| contract |) in
@@ -1189,7 +1211,12 @@ Module inspector.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
-                                        [ Ty.path "ruint::Uint" ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ]
                                       |),
                                       [ value ]
                                     |)
@@ -1203,7 +1230,7 @@ Module inspector.
                 M.alloc (| Value.Tuple [] |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
