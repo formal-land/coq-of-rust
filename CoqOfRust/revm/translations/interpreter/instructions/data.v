@@ -337,7 +337,7 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ word := M.alloc (| repeat (Value.Integer 0) 32 |) in
+                let~ word := M.alloc (| repeat (| Value.Integer 0, Value.Integer 32 |) |) in
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
@@ -592,7 +592,7 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ word := M.alloc (| repeat (Value.Integer 0) 32 |) in
+                let~ word := M.alloc (| repeat (| Value.Integer 0, Value.Integer 32 |) |) in
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|

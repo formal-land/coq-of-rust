@@ -3740,7 +3740,8 @@ Module string.
                                 [
                                   M.read (| ch |);
                                   (* Unsize *)
-                                  M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                                  M.pointer_coercion
+                                    (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
                                 ]
                               |)
                             ]
@@ -5296,7 +5297,7 @@ Module string.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ bits := M.alloc (| repeat (Value.Integer 0) 4 |) in
+            let~ bits := M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) in
             let~ bits :=
               M.alloc (|
                 M.call_closure (|
@@ -10501,7 +10502,8 @@ Module string.
                 M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                 [
                   M.read (| M.read (| self |) |);
-                  (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                  (* Unsize *)
+                  M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
                 ]
               |)
             ]

@@ -176,7 +176,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer 1; Value.Integer 2; Value.Integer 3; Value.Integer 4; Value.Integer 5
               ]
           |) in
-        let~ ys := M.alloc (| repeat (Value.Integer 0) 500 |) in
+        let~ ys := M.alloc (| repeat (| Value.Integer 0, Value.Integer 500 |) |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|

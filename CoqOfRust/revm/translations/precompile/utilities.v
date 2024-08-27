@@ -188,7 +188,7 @@ Module utilities.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ padded := M.alloc (| repeat (Value.Integer 0) LEN |) in
+                  (let~ padded := M.alloc (| repeat (| Value.Integer 0, LEN |) |) in
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
@@ -445,7 +445,7 @@ Module utilities.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ padded := M.alloc (| repeat (Value.Integer 0) LEN |) in
+                  (let~ padded := M.alloc (| repeat (| Value.Integer 0, LEN |) |) in
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|

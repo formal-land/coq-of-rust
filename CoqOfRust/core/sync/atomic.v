@@ -1867,7 +1867,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3177,7 +3177,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3228,7 +3228,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -4276,7 +4276,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -4327,7 +4327,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5375,7 +5375,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5426,7 +5426,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -6474,7 +6474,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -6525,7 +6525,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -7573,7 +7573,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -7624,7 +7624,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -8672,7 +8672,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -8723,7 +8723,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -9771,7 +9771,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -9822,7 +9822,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -10870,7 +10870,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -10921,7 +10921,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -11969,7 +11969,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -12020,7 +12020,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -13071,7 +13071,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -13122,7 +13122,7 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic

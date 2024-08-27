@@ -474,7 +474,7 @@ Module num.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
-              let~ base := M.alloc (| repeat (Value.Integer 0) 40 |) in
+              let~ base := M.alloc (| repeat (| Value.Integer 0, Value.Integer 40 |) |) in
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_array_field (| base, M.alloc (| Value.Integer 0 |) |),
@@ -509,7 +509,7 @@ Module num.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
-              let~ base := M.alloc (| repeat (Value.Integer 0) 40 |) in
+              let~ base := M.alloc (| repeat (| Value.Integer 0, Value.Integer 40 |) |) in
               let~ sz := M.alloc (| Value.Integer 0 |) in
               let~ _ :=
                 M.loop (|
@@ -2784,7 +2784,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ ret := M.alloc (| repeat (Value.Integer 0) 40 |) in
+              let~ ret := M.alloc (| repeat (| Value.Integer 0, Value.Integer 40 |) |) in
               let~ retsz :=
                 M.copy (|
                   M.match_operator (|
@@ -4813,7 +4813,7 @@ Module num.
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.read (|
-                let~ base := M.alloc (| repeat (Value.Integer 0) 3 |) in
+                let~ base := M.alloc (| repeat (| Value.Integer 0, Value.Integer 3 |) |) in
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_array_field (| base, M.alloc (| Value.Integer 0 |) |),
@@ -4848,7 +4848,7 @@ Module num.
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.read (|
-                let~ base := M.alloc (| repeat (Value.Integer 0) 3 |) in
+                let~ base := M.alloc (| repeat (| Value.Integer 0, Value.Integer 3 |) |) in
                 let~ sz := M.alloc (| Value.Integer 0 |) in
                 let~ _ :=
                   M.loop (|
@@ -7155,7 +7155,7 @@ Module num.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let~ ret := M.alloc (| repeat (Value.Integer 0) 3 |) in
+                let~ ret := M.alloc (| repeat (| Value.Integer 0, Value.Integer 3 |) |) in
                 let~ retsz :=
                   M.copy (|
                     M.match_operator (|

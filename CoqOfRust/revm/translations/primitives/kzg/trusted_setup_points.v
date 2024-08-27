@@ -360,7 +360,7 @@ Module kzg.
           ltac:(M.monadic
             (Value.StructTuple
               "revm_primitives::kzg::trusted_setup_points::G1Points"
-              [ repeat (repeat (Value.Integer 0) 48) 4096 ]))
+              [ repeat (| repeat (| Value.Integer 0, Value.Integer 48 |), Value.Integer 4096 |) ]))
         | _, _, _ => M.impossible
         end.
       
@@ -765,7 +765,7 @@ Module kzg.
           ltac:(M.monadic
             (Value.StructTuple
               "revm_primitives::kzg::trusted_setup_points::G2Points"
-              [ repeat (repeat (Value.Integer 0) 96) 65 ]))
+              [ repeat (| repeat (| Value.Integer 0, Value.Integer 96 |), Value.Integer 65 |) ]))
         | _, _, _ => M.impossible
         end.
       

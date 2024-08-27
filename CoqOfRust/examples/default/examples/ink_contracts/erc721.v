@@ -893,7 +893,7 @@ Module Impl_erc721_Erc721.
                             "from",
                             []
                           |),
-                          [ repeat (Value.Integer 0) 32 ]
+                          [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
                         |)
                       ]
                   |)
@@ -1565,7 +1565,7 @@ Module Impl_erc721_Erc721.
                                         "from",
                                         []
                                       |),
-                                      [ repeat (Value.Integer 0) 32 ]
+                                      [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
                                     |)
                                   |)
                                 ]
@@ -2491,7 +2491,7 @@ Module Impl_erc721_Erc721.
                                         "from",
                                         []
                                       |),
-                                      [ repeat (Value.Integer 0) 32 ]
+                                      [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
                                     |)
                                   ]);
                               ("to",

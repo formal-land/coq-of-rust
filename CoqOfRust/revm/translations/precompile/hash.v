@@ -363,7 +363,7 @@ Module hash.
                         [ hasher; M.read (| input |) ]
                       |)
                     |) in
-                  let~ output := M.alloc (| repeat (Value.Integer 0) 32 |) in
+                  let~ output := M.alloc (| repeat (| Value.Integer 0, Value.Integer 32 |) |) in
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|

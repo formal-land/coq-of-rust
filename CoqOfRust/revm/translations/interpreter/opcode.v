@@ -628,14 +628,15 @@ Module opcode.
           ltac:(M.monadic
             (let~ tables :=
               M.alloc (|
-                repeat
+                repeat (|
                   (* ReifyFnPointer *)
-                  (M.pointer_coercion
+                  M.pointer_coercion
                     (M.get_function (|
                       "revm_interpreter::instructions::control::unknown",
                       [ H ]
-                    |)))
-                  256
+                    |)),
+                  Value.Integer 256
+                |)
               |) in
             let~ i := M.alloc (| Value.Integer 0 |) in
             let~ _ :=
@@ -6099,7 +6100,10 @@ Module opcode.
   Definition value_OPCODE_INFO_JUMPTABLE : Value.t :=
     M.run
       ltac:(M.monadic
-        (let~ map := M.alloc (| repeat (Value.StructTuple "core::option::Option::None" []) 256 |) in
+        (let~ map :=
+          M.alloc (|
+            repeat (| Value.StructTuple "core::option::Option::None" [], Value.Integer 256 |)
+          |) in
         let~ prev := M.alloc (| Value.Integer 0 |) in
         let~ val := M.alloc (| Value.Integer 0 |) in
         let~ _ :=

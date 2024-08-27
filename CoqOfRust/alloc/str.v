@@ -5101,7 +5101,7 @@ Module str.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [] |),
-              [ repeat (Value.Integer 128) 8 ]
+              [ repeat (| Value.Integer 128, Value.Integer 8 |) ]
             |)
           |))).
   End convert_while_ascii.

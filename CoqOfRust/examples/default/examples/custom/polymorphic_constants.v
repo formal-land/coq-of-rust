@@ -77,7 +77,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "polymorphic_constants::Foo"
-              [ ("data", Value.Integer 42); ("array", repeat (Value.Integer 42) 3) ]
+              [
+                ("data", Value.Integer 42);
+                ("array", repeat (| Value.Integer 42, Value.Integer 3 |))
+              ]
           |) in
         let~ bar :=
           M.alloc (|

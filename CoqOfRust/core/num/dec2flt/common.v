@@ -23,7 +23,7 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ tmp := M.alloc (| repeat (Value.Integer 0) 8 |) in
+                let~ tmp := M.alloc (| repeat (| Value.Integer 0, Value.Integer 8 |) |) in
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|

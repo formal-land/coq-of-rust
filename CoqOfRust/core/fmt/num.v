@@ -812,8 +812,8 @@ Module fmt.
                 |) in
               let~ buf :=
                 M.alloc (|
-                  repeat
-                    (M.call_closure (|
+                  repeat (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -823,8 +823,9 @@ Module fmt.
                         []
                       |),
                       []
-                    |))
-                    128
+                    |),
+                    Value.Integer 128
+                  |)
                 |) in
               let~ curr :=
                 M.alloc (|
@@ -5522,8 +5523,8 @@ Module fmt.
             M.read (|
               let~ buf :=
                 M.alloc (|
-                  repeat
-                    (M.call_closure (|
+                  repeat (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -5533,8 +5534,9 @@ Module fmt.
                         []
                       |),
                       []
-                    |))
-                    39
+                    |),
+                    Value.Integer 39
+                  |)
                 |) in
               let~ curr :=
                 M.alloc (|
@@ -7409,8 +7411,8 @@ Module fmt.
                       let added_precision := M.copy (| γ0_3 |) in
                       let~ buf :=
                         M.alloc (|
-                          repeat
-                            (M.call_closure (|
+                          repeat (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -7420,8 +7422,9 @@ Module fmt.
                                 []
                               |),
                               []
-                            |))
-                            40
+                            |),
+                            Value.Integer 40
+                          |)
                         |) in
                       let~ curr :=
                         M.alloc (|
@@ -7749,8 +7752,8 @@ Module fmt.
                         |) in
                       let~ exp_buf :=
                         M.alloc (|
-                          repeat
-                            (M.call_closure (|
+                          repeat (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -7760,8 +7763,9 @@ Module fmt.
                                 []
                               |),
                               []
-                            |))
-                            3
+                            |),
+                            Value.Integer 3
+                          |)
                         |) in
                       let~ exp_ptr :=
                         M.alloc (|
@@ -10326,8 +10330,8 @@ Module fmt.
                     let added_precision := M.copy (| γ0_3 |) in
                     let~ buf :=
                       M.alloc (|
-                        repeat
-                          (M.call_closure (|
+                        repeat (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -10337,8 +10341,9 @@ Module fmt.
                               []
                             |),
                             []
-                          |))
-                          40
+                          |),
+                          Value.Integer 40
+                        |)
                       |) in
                     let~ curr :=
                       M.alloc (|
@@ -10666,8 +10671,8 @@ Module fmt.
                       |) in
                     let~ exp_buf :=
                       M.alloc (|
-                        repeat
-                          (M.call_closure (|
+                        repeat (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -10677,8 +10682,9 @@ Module fmt.
                               []
                             |),
                             []
-                          |))
-                          3
+                          |),
+                          Value.Integer 3
+                        |)
                       |) in
                     let~ exp_ptr :=
                       M.alloc (|
@@ -12472,16 +12478,17 @@ Module fmt.
           M.read (|
             let~ buf :=
               M.alloc (|
-                repeat
-                  (M.call_closure (|
+                repeat (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit",
                       []
                     |),
                     []
-                  |))
-                  39
+                  |),
+                  Value.Integer 39
+                |)
               |) in
             let~ curr :=
               M.alloc (|

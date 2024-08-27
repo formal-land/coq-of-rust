@@ -1321,7 +1321,7 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ output := M.alloc (| repeat (Value.Integer 0) 64 |) in
+              let~ output := M.alloc (| repeat (| Value.Integer 0, Value.Integer 64 |) |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -1751,7 +1751,7 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ output := M.alloc (| repeat (Value.Integer 0) 64 |) in
+              let~ output := M.alloc (| repeat (| Value.Integer 0, Value.Integer 64 |) |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),

@@ -834,7 +834,7 @@ Module escape.
             let~ _ := M.get_constant (| "core::escape::from_array_discriminant" |) in
             let~ data :=
               M.alloc (|
-                repeat (Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []) N
+                repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [], N |)
               |) in
             let~ _ :=
               M.alloc (|

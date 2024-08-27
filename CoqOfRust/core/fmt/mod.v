@@ -442,7 +442,8 @@ Module fmt.
                 M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                 [
                   M.read (| c |);
-                  (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                  (* Unsize *)
+                  M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
                 ]
               |)
             ]
@@ -3834,7 +3835,9 @@ Module fmt.
                                                     |) in
                                                   let v := M.copy (| γ0_0 |) in
                                                   let~ s :=
-                                                    M.alloc (| repeat (Value.Integer 0) 5 |) in
+                                                    M.alloc (|
+                                                      repeat (| Value.Integer 0, Value.Integer 5 |)
+                                                    |) in
                                                   let~ len :=
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -10181,7 +10184,8 @@ Module fmt.
                             [
                               M.read (| M.read (| self |) |);
                               (* Unsize *)
-                              M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                              M.pointer_coercion
+                                (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
                             ]
                           |)
                         ]

@@ -3122,7 +3122,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.read (|
-              let~ utf8_encoded := M.alloc (| repeat (Value.Integer 0) 4 |) in
+              let~ utf8_encoded := M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) in
               let~ utf8_size :=
                 M.alloc (|
                   M.call_closure (|
@@ -3201,7 +3201,7 @@ Module str.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ buffer := M.alloc (| repeat (Value.Integer 0) 4 |) in
+                      (let~ buffer := M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -3250,7 +3250,8 @@ Module str.
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                   [
                     M.read (| self |);
-                    (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
                   ]
                 |);
                 M.read (| haystack |)
@@ -3283,7 +3284,8 @@ Module str.
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                   [
                     M.read (| self |);
-                    (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
                   ]
                 |);
                 M.read (| haystack |)
@@ -3319,7 +3321,8 @@ Module str.
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                   [
                     M.read (| self |);
-                    (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
                   ]
                 |);
                 M.read (| haystack |)
@@ -3355,7 +3358,8 @@ Module str.
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                   [
                     M.read (| self |);
-                    (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
                   ]
                 |);
                 M.read (| haystack |)
@@ -14718,7 +14722,8 @@ Module str.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ masks := M.alloc (| repeat (Value.Integer 0) 4 |) in
+                              let~ masks :=
+                                M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) in
                               let~ _ :=
                                 M.use
                                   (M.match_operator (|

@@ -11,11 +11,6 @@ move/
 revm/translations/precompile/utilities.v
 # This file works but is taking a very long time (ten minutes)
 revm/translations/interpreter/opcode.v
-core/any.v
 core/array/mod.v
-core/cmp/bytewise.v
-core/error.v
-core/escape.v
 core/iter/adapters/flatten.v
-core/net/ip_addr.v
 token-2022

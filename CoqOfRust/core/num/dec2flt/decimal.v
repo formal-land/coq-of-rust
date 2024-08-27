@@ -131,7 +131,7 @@ Module num.
                   ("num_digits", Value.Integer 0);
                   ("decimal_point", Value.Integer 0);
                   ("truncated", Value.Bool false);
-                  ("digits", repeat (Value.Integer 0) 768)
+                  ("digits", repeat (| Value.Integer 0, Value.Integer 768 |))
                 ]))
           | _, _, _ => M.impossible
           end.

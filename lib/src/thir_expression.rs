@@ -797,13 +797,13 @@ pub(crate) fn compile_expr<'a>(
             let func = Expr::local_var("repeat");
             let args = vec![
                 compile_expr(env, generics, thir, value).read(),
-                Expr::local_var(&count.to_string()),
+                compile_const(env, count),
             ];
 
             Rc::new(Expr::Call {
                 func,
                 args,
-                kind: CallKind::Pure,
+                kind: CallKind::Effectful,
             })
             .alloc()
         }

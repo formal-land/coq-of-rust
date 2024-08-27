@@ -65,7 +65,10 @@ Module ascii.
         M.read (|
           let~ data :=
             M.alloc (|
-              repeat (Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []) 4
+              repeat (|
+                Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [],
+                Value.Integer 4
+              |)
             |) in
           let~ range :=
             M.alloc (|

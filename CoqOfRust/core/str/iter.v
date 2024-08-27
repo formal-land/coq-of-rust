@@ -304,7 +304,9 @@ Module str.
                                             |))
                                         |) in
                                       let~ start_bytes :=
-                                        M.alloc (| repeat (Value.Bool false) 32 |) in
+                                        M.alloc (|
+                                          repeat (| Value.Bool false, Value.Integer 32 |)
+                                        |) in
                                       let~ _ :=
                                         M.use
                                           (M.match_operator (|
@@ -9267,7 +9269,7 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ buf := M.alloc (| repeat (Value.Integer 0) 2 |) in
+                  let~ buf := M.alloc (| repeat (| Value.Integer 0, Value.Integer 2 |) |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|

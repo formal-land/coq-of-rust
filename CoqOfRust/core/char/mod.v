@@ -213,7 +213,10 @@ Module char.
           M.read (|
             let~ data :=
               M.alloc (|
-                repeat (Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []) 10
+                repeat (|
+                  Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [],
+                  Value.Integer 10
+                |)
               |) in
             let~ range :=
               M.alloc (|

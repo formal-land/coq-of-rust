@@ -56130,7 +56130,7 @@ Module num.
           (let x := M.alloc (| x |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [] |),
-            [ repeat (M.read (| x |)) 8 ]
+            [ repeat (| M.read (| x |), Value.Integer 8 |) ]
           |)))
       | _, _, _ => M.impossible
       end.

@@ -283,7 +283,7 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
           "into",
           []
         |),
-        [ repeat (Value.Integer 0) 32 ]
+        [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
       |)))
   | _, _, _ => M.impossible
   end.

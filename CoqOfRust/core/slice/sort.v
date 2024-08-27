@@ -2698,16 +2698,17 @@ Module slice.
               |) in
             let~ offsets_l :=
               M.alloc (|
-                repeat
-                  (M.call_closure (|
+                repeat (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit",
                       []
                     |),
                     []
-                  |))
-                  128
+                  |),
+                  Value.Integer 128
+                |)
               |) in
             let~ r :=
               M.alloc (|
@@ -2744,16 +2745,17 @@ Module slice.
               |) in
             let~ offsets_r :=
               M.alloc (|
-                repeat
-                  (M.call_closure (|
+                repeat (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit",
                       []
                     |),
                     []
-                  |))
-                  128
+                  |),
+                  Value.Integer 128
+                |)
               |) in
             let~ _ :=
               M.loop (|

@@ -749,7 +749,7 @@ Module Impl_payment_channel_PaymentChannel.
                 [ encodable; message ]
               |)
             |) in
-          let~ pub_key := M.alloc (| repeat (Value.Integer 0) 33 |) in
+          let~ pub_key := M.alloc (| repeat (| Value.Integer 0, Value.Integer 33 |) |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
@@ -793,7 +793,8 @@ Module Impl_payment_channel_PaymentChannel.
                 ]
               |)
             |) in
-          let~ signature_account_id := M.alloc (| repeat (Value.Integer 0) 32 |) in
+          let~ signature_account_id :=
+            M.alloc (| repeat (| Value.Integer 0, Value.Integer 32 |) |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|

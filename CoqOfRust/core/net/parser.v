@@ -2082,7 +2082,8 @@ Module net.
                               ltac:(M.monadic
                                 (let p := M.copy (| γ |) in
                                 M.read (|
-                                  let~ groups := M.alloc (| repeat (Value.Integer 0) 4 |) in
+                                  let~ groups :=
+                                    M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) in
                                   let~ _ :=
                                     M.use
                                       (M.match_operator (|
@@ -2507,7 +2508,8 @@ Module net.
                               ltac:(M.monadic
                                 (let p := M.copy (| γ |) in
                                 M.read (|
-                                  let~ head := M.alloc (| repeat (Value.Integer 0) 8 |) in
+                                  let~ head :=
+                                    M.alloc (| repeat (| Value.Integer 0, Value.Integer 8 |) |) in
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
@@ -2763,7 +2765,10 @@ Module net.
                                                     val))
                                               ]
                                             |) in
-                                          let~ tail := M.alloc (| repeat (Value.Integer 0) 7 |) in
+                                          let~ tail :=
+                                            M.alloc (|
+                                              repeat (| Value.Integer 0, Value.Integer 7 |)
+                                            |) in
                                           let~ limit :=
                                             M.alloc (|
                                               BinOp.Wrap.sub

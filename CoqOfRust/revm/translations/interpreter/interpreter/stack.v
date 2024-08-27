@@ -3376,7 +3376,8 @@ Module interpreter.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ tmp := M.alloc (| repeat (Value.Integer 0) 8 |) in
+                              let~ tmp :=
+                                M.alloc (| repeat (| Value.Integer 0, Value.Integer 8 |) |) in
                               let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|

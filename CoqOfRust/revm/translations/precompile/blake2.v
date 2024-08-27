@@ -293,8 +293,8 @@ Module blake2.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ h := M.alloc (| repeat (Value.Integer 0) 8 |) in
-              let~ m := M.alloc (| repeat (Value.Integer 0) 16 |) in
+              let~ h := M.alloc (| repeat (| Value.Integer 0, Value.Integer 8 |) |) in
+              let~ m := M.alloc (| repeat (| Value.Integer 0, Value.Integer 16 |) |) in
               let~ _ :=
                 M.use
                   (M.match_operator (|
@@ -854,7 +854,7 @@ Module blake2.
                     [ M.read (| rounds |); h; M.read (| m |); M.read (| t |); M.read (| f |) ]
                   |)
                 |) in
-              let~ out := M.alloc (| repeat (Value.Integer 0) 64 |) in
+              let~ out := M.alloc (| repeat (| Value.Integer 0, Value.Integer 64 |) |) in
               let~ _ :=
                 M.use
                   (M.match_operator (|
@@ -1472,7 +1472,7 @@ Module blake2.
           let t := M.alloc (| t |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ v := M.alloc (| repeat (Value.Integer 0) 16 |) in
+            let~ v := M.alloc (| repeat (| Value.Integer 0, Value.Integer 16 |) |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|

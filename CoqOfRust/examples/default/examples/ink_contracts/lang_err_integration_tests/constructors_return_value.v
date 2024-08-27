@@ -317,7 +317,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                         "from",
                         []
                       |),
-                      [ repeat (Value.Integer 0) 32 ]
+                      [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
                     |)
                   ]
               |)
@@ -378,7 +378,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                                     "from",
                                     []
                                   |),
-                                  [ repeat (Value.Integer 0) 32 ]
+                                  [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
                                 |)
                               ]
                           ]
