@@ -5,6 +5,7 @@ Module gas.
   (* StructRecord
     {
       name := "Gas";
+      const_params := [];
       ty_params := [];
       fields :=
         [ ("limit", Ty.path "u64"); ("remaining", Ty.path "u64"); ("refunded", Ty.path "i64") ];
@@ -14,9 +15,9 @@ Module gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -32,7 +33,7 @@ Module gas.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -58,9 +59,9 @@ Module gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -101,7 +102,7 @@ Module gas.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -116,9 +117,9 @@ Module gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_interpreter::gas::Gas"
@@ -157,7 +158,7 @@ Module gas.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -183,9 +184,9 @@ Module gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -240,7 +241,7 @@ Module gas.
                   |)
                 |))))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -266,9 +267,13 @@ Module gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -284,7 +289,7 @@ Module gas.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -300,9 +305,9 @@ Module gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -349,7 +354,7 @@ Module gas.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -372,9 +377,9 @@ Module gas.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ limit ] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ limit ] =>
         ltac:(M.monadic
           (let limit := M.alloc (| limit |) in
           Value.StructRecord
@@ -384,7 +389,7 @@ Module gas.
               ("remaining", M.read (| limit |));
               ("refunded", Value.Integer 0)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -398,9 +403,9 @@ Module gas.
             }
         }
     *)
-    Definition new_spent (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ limit ] =>
+    Definition new_spent (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ limit ] =>
         ltac:(M.monadic
           (let limit := M.alloc (| limit |) in
           Value.StructRecord
@@ -410,7 +415,7 @@ Module gas.
               ("remaining", Value.Integer 0);
               ("refunded", Value.Integer 0)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_spent : M.IsAssociatedFunction Self "new_spent" new_spent.
@@ -420,9 +425,9 @@ Module gas.
             self.limit
         }
     *)
-    Definition limit (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition limit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -432,7 +437,7 @@ Module gas.
               "limit"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_limit : M.IsAssociatedFunction Self "limit" limit.
@@ -442,13 +447,13 @@ Module gas.
             0
         }
     *)
-    Definition memory (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition memory (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Integer 0))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_memory : M.IsAssociatedFunction Self "memory" memory.
@@ -458,9 +463,9 @@ Module gas.
             self.refunded
         }
     *)
-    Definition refunded (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition refunded (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -470,7 +475,7 @@ Module gas.
               "refunded"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_refunded : M.IsAssociatedFunction Self "refunded" refunded.
@@ -480,9 +485,9 @@ Module gas.
             self.limit - self.remaining
         }
     *)
-    Definition spent (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition spent (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.sub
@@ -501,7 +506,7 @@ Module gas.
                 "remaining"
               |)
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_spent : M.IsAssociatedFunction Self "spent" spent.
@@ -511,16 +516,16 @@ Module gas.
             self.spent()
         }
     *)
-    Definition spend (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition spend (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "revm_interpreter::gas::Gas", "spent", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_spend : M.IsAssociatedFunction Self "spend" spend.
@@ -530,9 +535,9 @@ Module gas.
             self.remaining
         }
     *)
-    Definition remaining (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition remaining (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -542,7 +547,7 @@ Module gas.
               "remaining"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_remaining : M.IsAssociatedFunction Self "remaining" remaining.
@@ -552,9 +557,9 @@ Module gas.
             self.remaining += returned;
         }
     *)
-    Definition erase_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; returned ] =>
+    Definition erase_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; returned ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let returned := M.alloc (| returned |) in
@@ -572,7 +577,7 @@ Module gas.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_erase_cost : M.IsAssociatedFunction Self "erase_cost" erase_cost.
@@ -582,9 +587,9 @@ Module gas.
             self.remaining = 0;
         }
     *)
-    Definition spend_all (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition spend_all (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -599,7 +604,7 @@ Module gas.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_spend_all : M.IsAssociatedFunction Self "spend_all" spend_all.
@@ -609,9 +614,9 @@ Module gas.
             self.refunded += refund;
         }
     *)
-    Definition record_refund (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; refund ] =>
+    Definition record_refund (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; refund ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let refund := M.alloc (| refund |) in
@@ -626,7 +631,7 @@ Module gas.
               M.write (| β, BinOp.Wrap.add Integer.I64 (M.read (| β |)) (M.read (| refund |)) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_record_refund :
@@ -638,9 +643,9 @@ Module gas.
             self.refunded = (self.refunded() as u64).min(self.spent() / max_refund_quotient) as i64;
         }
     *)
-    Definition set_final_refund (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; is_london ] =>
+    Definition set_final_refund (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; is_london ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let is_london := M.alloc (| is_london |) in
@@ -696,7 +701,7 @@ Module gas.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_set_final_refund :
@@ -707,9 +712,9 @@ Module gas.
             self.refunded = refund;
         }
     *)
-    Definition set_refund (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; refund ] =>
+    Definition set_refund (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; refund ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let refund := M.alloc (| refund |) in
@@ -725,7 +730,7 @@ Module gas.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_set_refund : M.IsAssociatedFunction Self "set_refund" set_refund.
@@ -740,9 +745,9 @@ Module gas.
             success
         }
     *)
-    Definition record_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; cost ] =>
+    Definition record_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; cost ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let cost := M.alloc (| cost |) in
@@ -800,7 +805,7 @@ Module gas.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_record_cost : M.IsAssociatedFunction Self "record_cost" record_cost.

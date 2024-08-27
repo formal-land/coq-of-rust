@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Foo";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -11,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Bar";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -18,6 +20,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "FooBar";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -26,9 +29,9 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Definition Self : Ty.t := Ty.path "operator_overloading::FooBar".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -36,7 +39,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "FooBar" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -50,6 +53,7 @@ End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 (* StructTuple
   {
     name := "BarFoo";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -58,9 +62,9 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Definition Self : Ty.t := Ty.path "operator_overloading::BarFoo".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -68,7 +72,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "BarFoo" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -92,9 +96,9 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
           FooBar
       }
   *)
-  Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; _rhs ] =>
+  Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _rhs ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let _rhs := M.alloc (| _rhs |) in
@@ -126,7 +130,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.StructTuple "operator_overloading::FooBar" [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -150,9 +154,9 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
           BarFoo
       }
   *)
-  Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; _rhs ] =>
+  Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _rhs ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let _rhs := M.alloc (| _rhs |) in
@@ -184,7 +188,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.StructTuple "operator_overloading::BarFoo" [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -201,9 +205,9 @@ fn main() {
     println!("Bar + Foo = {:?}", Bar + Foo);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -320,7 +324,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "operator_overloading::main" main.

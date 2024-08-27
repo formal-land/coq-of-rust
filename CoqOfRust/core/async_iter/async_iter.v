@@ -5,13 +5,18 @@ Module async_iter.
   Module async_iter.
     (* Trait *)
     Module AsyncIterator.
-      Definition size_hint (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint
+          (Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple [ Value.Integer 0; Value.StructTuple "core::option::Option::None" [] ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_size_hint :
@@ -19,7 +24,7 @@ Module async_iter.
     End AsyncIterator.
     
     Module Impl_core_async_iter_async_iter_AsyncIterator_where_core_marker_Sized_S_where_core_async_iter_async_iter_AsyncIterator_S_where_core_marker_Unpin_S_for_ref_mut_S.
-      Definition Self (S : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ S ].
+      Definition Self (S : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ S ].
       
       (*     type Item = S::Item; *)
       Definition _Item (S : Ty.t) : Ty.t := Ty.associated.
@@ -29,10 +34,10 @@ Module async_iter.
               S::poll_next(Pin::new(&mut **self), cx)
           }
       *)
-      Definition poll_next (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll_next (S : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self S in
-        match τ, α with
-        | [], [ self; cx ] =>
+        match ε, τ, α with
+        | [], [], [ self; cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
@@ -47,7 +52,7 @@ Module async_iter.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ S ] ],
+                    Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ S ] ],
                     "new",
                     []
                   |),
@@ -58,7 +63,8 @@ Module async_iter.
                           "core::ops::deref::DerefMut",
                           Ty.apply
                             (Ty.path "core::pin::Pin")
-                            [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "&mut") [ S ] ] ],
+                            []
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ S ] ] ],
                           [],
                           "deref_mut",
                           []
@@ -71,7 +77,7 @@ Module async_iter.
                 M.read (| cx |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -79,10 +85,10 @@ Module async_iter.
               ( **self).size_hint()
           }
       *)
-      Definition size_hint (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (S : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self S in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -95,7 +101,7 @@ Module async_iter.
               |),
               [ M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -113,7 +119,7 @@ Module async_iter.
     End Impl_core_async_iter_async_iter_AsyncIterator_where_core_marker_Sized_S_where_core_async_iter_async_iter_AsyncIterator_S_where_core_marker_Unpin_S_for_ref_mut_S.
     
     Module Impl_core_async_iter_async_iter_AsyncIterator_where_core_ops_deref_DerefMut_P_where_core_async_iter_async_iter_AsyncIterator_associated_type_for_core_pin_Pin_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
       
       (*     type Item = <P::Target as AsyncIterator>::Item; *)
       Definition _Item (P : Ty.t) : Ty.t := Ty.associated.
@@ -123,10 +129,10 @@ Module async_iter.
               <P::Target as AsyncIterator>::poll_next(self.as_deref_mut(), cx)
           }
       *)
-      Definition poll_next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll_next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; cx ] =>
+        match ε, τ, α with
+        | [], [], [ self; cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
@@ -143,7 +149,13 @@ Module async_iter.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::pin::Pin")
-                      [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "core::pin::Pin") [ P ] ] ],
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::pin::Pin") [] [ P ] ]
+                      ],
                     "as_deref_mut",
                     []
                   |),
@@ -152,7 +164,7 @@ Module async_iter.
                 M.read (| cx |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -160,10 +172,10 @@ Module async_iter.
               ( **self).size_hint()
           }
       *)
-      Definition size_hint (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -178,7 +190,7 @@ Module async_iter.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                    Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                     [],
                     "deref",
                     []
@@ -187,7 +199,7 @@ Module async_iter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -208,23 +220,29 @@ Module async_iter.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::task::poll::Poll")
-          [ Ty.apply (Ty.path "core::option::Option") [ T ] ].
+          []
+          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ].
       
       (*
           pub fn async_gen_ready(t: T) -> Self {
               Poll::Ready(Some(t))
           }
       *)
-      Definition async_gen_ready (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition async_gen_ready
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ t ] =>
+        match ε, τ, α with
+        | [], [], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             Value.StructTuple
               "core::task::poll::Poll::Ready"
               [ Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ] ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_async_gen_ready :
@@ -234,7 +252,8 @@ Module async_iter.
       (*     pub const PENDING: Self = Poll::Pending; *)
       (* Ty.apply
         (Ty.path "core::task::poll::Poll")
-        [ Ty.apply (Ty.path "core::option::Option") [ T ] ] *)
+        []
+        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] *)
       Definition value_PENDING (T : Ty.t) : Value.t :=
         let Self : Ty.t := Self T in
         M.run
@@ -247,7 +266,8 @@ Module async_iter.
       (*     pub const FINISHED: Self = Poll::Ready(None); *)
       (* Ty.apply
         (Ty.path "core::task::poll::Poll")
-        [ Ty.apply (Ty.path "core::option::Option") [ T ] ] *)
+        []
+        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] *)
       Definition value_FINISHED (T : Ty.t) : Value.t :=
         let Self : Ty.t := Self T in
         M.run

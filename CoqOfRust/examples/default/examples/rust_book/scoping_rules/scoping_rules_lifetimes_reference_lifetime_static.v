@@ -9,9 +9,9 @@ fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
     &NUM
 }
 *)
-Definition coerce_static (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ β0 ] =>
+Definition coerce_static (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       M.match_operator (|
@@ -24,7 +24,7 @@ Definition coerce_static (τ : list Ty.t) (α : list Value.t) : M :=
               |)))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_coerce_static :
@@ -54,9 +54,9 @@ fn main() {
     println!("NUM: {} stays accessible!", NUM);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -89,7 +89,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                   |),
                                   [ static_string ]
                                 |)
@@ -142,7 +142,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                   |),
                                   [ coerced_static ]
                                 |)
@@ -203,7 +203,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_reference_lifetime_static::main" main.

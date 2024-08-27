@@ -4,11 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "CustomAllocator";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("value",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            []
+            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
       ];
   } *)
 
@@ -22,9 +26,9 @@ Module Impl_custom_allocator_CustomAllocator.
           }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ init_value ] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord
@@ -33,7 +37,7 @@ Module Impl_custom_allocator_CustomAllocator.
             ("value",
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "slice") [ Ty.path "bool" ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "bool" ],
                   "into_vec",
                   [ Ty.path "alloc::alloc::Global" ]
                 |),
@@ -45,8 +49,9 @@ Module Impl_custom_allocator_CustomAllocator.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
+                            []
                             [
-                              Ty.apply (Ty.path "array") [ Ty.path "bool" ];
+                              Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "bool" ];
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
@@ -58,7 +63,7 @@ Module Impl_custom_allocator_CustomAllocator.
                 ]
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -68,9 +73,9 @@ Module Impl_custom_allocator_CustomAllocator.
           Self::new(Default::default())
       }
   *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_associated_function (| Ty.path "custom_allocator::CustomAllocator", "new", [] |),
@@ -81,7 +86,7 @@ Module Impl_custom_allocator_CustomAllocator.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_default : M.IsAssociatedFunction Self "default" default.
@@ -91,9 +96,9 @@ Module Impl_custom_allocator_CustomAllocator.
           self.value[0] = !self.value[0];
       }
   *)
-  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition flip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -104,6 +109,7 @@ Module Impl_custom_allocator_CustomAllocator.
                   "core::ops::index::IndexMut",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
                   [ Ty.path "usize" ],
                   "index_mut",
@@ -125,6 +131,7 @@ Module Impl_custom_allocator_CustomAllocator.
                       "core::ops::index::Index",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
                       [ Ty.path "usize" ],
                       "index",
@@ -143,7 +150,7 @@ Module Impl_custom_allocator_CustomAllocator.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
@@ -153,9 +160,9 @@ Module Impl_custom_allocator_CustomAllocator.
           self.value[0]
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -164,6 +171,7 @@ Module Impl_custom_allocator_CustomAllocator.
               "core::ops::index::Index",
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
+                []
                 [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
               [ Ty.path "usize" ],
               "index",
@@ -179,7 +187,7 @@ Module Impl_custom_allocator_CustomAllocator.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.

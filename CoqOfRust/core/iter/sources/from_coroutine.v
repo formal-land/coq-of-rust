@@ -9,15 +9,15 @@ Module iter.
           FromCoroutine(coroutine)
       }
       *)
-      Definition from_coroutine (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ G ], [ coroutine ] =>
+      Definition from_coroutine (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ G ], [ coroutine ] =>
           ltac:(M.monadic
             (let coroutine := M.alloc (| coroutine |) in
             Value.StructTuple
               "core::iter::sources::from_coroutine::FromCoroutine"
               [ M.read (| coroutine |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_from_coroutine :
@@ -26,19 +26,20 @@ Module iter.
       (* StructTuple
         {
           name := "FromCoroutine";
+          const_params := [];
           ty_params := [ "G" ];
           fields := [ G ];
         } *)
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_G_for_core_iter_sources_from_coroutine_FromCoroutine_G.
         Definition Self (G : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::from_coroutine::FromCoroutine") [ G ].
+          Ty.apply (Ty.path "core::iter::sources::from_coroutine::FromCoroutine") [] [ G ].
         
         (* Clone *)
-        Definition clone (G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (G : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self G in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple
@@ -55,7 +56,7 @@ Module iter.
                     ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -69,7 +70,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_coroutine_Coroutine_G_where_core_marker_Unpin_G_for_core_iter_sources_from_coroutine_FromCoroutine_G.
         Definition Self (G : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::from_coroutine::FromCoroutine") [ G ].
+          Ty.apply (Ty.path "core::iter::sources::from_coroutine::FromCoroutine") [] [ G ].
         
         (*     type Item = G::Yield; *)
         Definition _Item (G : Ty.t) : Ty.t := Ty.associated.
@@ -82,10 +83,10 @@ Module iter.
                 }
             }
         *)
-        Definition next (G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (G : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self G in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -102,7 +103,10 @@ Module iter.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ G ] ],
+                            Ty.apply
+                              (Ty.path "core::pin::Pin")
+                              []
+                              [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                             "new",
                             []
                           |),
@@ -143,7 +147,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -158,17 +162,17 @@ Module iter.
       
       Module Impl_core_fmt_Debug_for_core_iter_sources_from_coroutine_FromCoroutine_G.
         Definition Self (G : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::from_coroutine::FromCoroutine") [ G ].
+          Ty.apply (Ty.path "core::iter::sources::from_coroutine::FromCoroutine") [] [ G ].
         
         (*
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 f.debug_struct("FromCoroutine").finish()
             }
         *)
-        Definition fmt (G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (G : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self G in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -191,7 +195,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

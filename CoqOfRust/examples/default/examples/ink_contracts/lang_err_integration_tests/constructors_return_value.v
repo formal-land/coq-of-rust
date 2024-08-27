@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -12,9 +13,9 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
   Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "constructors_return_value::AccountId"
@@ -24,7 +25,7 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -39,9 +40,9 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
   Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -50,7 +51,7 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -68,7 +69,7 @@ Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
     M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId.
 
-Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
+Module Impl_core_convert_From_array_32_u8_for_constructors_return_value_AccountId.
   Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
   
   (*
@@ -76,21 +77,23 @@ Module Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
           unimplemented!()
       }
   *)
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *)
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_u8_for_constructors_return_value_AccountId.
+End Impl_core_convert_From_array_32_u8_for_constructors_return_value_AccountId.
 
 Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128").
 
 (* StructRecord
   {
     name := "ConstructorsReturnValue";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "bool") ];
   } *)
@@ -98,6 +101,7 @@ Axiom Balance : (Ty.path "constructors_return_value::Balance") = (Ty.path "u128"
 (*
 Enum LangError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -112,14 +116,16 @@ Enum LangError
 
 Axiom ConstructorResult :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "constructors_return_value::ConstructorResult") [ T ]) =
+  (Ty.apply (Ty.path "constructors_return_value::ConstructorResult") [] [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
+      []
       [ T; Ty.path "constructors_return_value::LangError" ]).
 
 (* StructTuple
   {
     name := "ConstructorError";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -128,9 +134,9 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
   Definition Self : Ty.t := Ty.path "constructors_return_value::ConstructorError".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -138,7 +144,7 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "ConstructorError" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -152,6 +158,7 @@ End Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
 (* StructTuple
   {
     name := "ReturnFlags";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -164,7 +171,7 @@ Module Impl_constructors_return_value_ReturnFlags.
           unimplemented!()
       }
   *)
-  Parameter new_with_reverted : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new_with_reverted : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new_with_reverted :
     M.IsAssociatedFunction Self "new_with_reverted" new_with_reverted.
@@ -175,9 +182,9 @@ fn return_value<R>(return_flags: ReturnFlags, return_value: &R) -> ! {
     unimplemented!()
 }
 *)
-Definition return_value (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ R ], [ return_flags; return_value ] =>
+Definition return_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ R ], [ return_flags; return_value ] =>
     ltac:(M.monadic
       (let return_flags := M.alloc (| return_flags |) in
       let return_value := M.alloc (| return_value |) in
@@ -185,7 +192,7 @@ Definition return_value (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_function (| "core::panicking::panic", [] |),
         [ M.read (| Value.String "not implemented" |) ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_return_value : M.IsFunction "constructors_return_value::return_value" return_value.
@@ -198,15 +205,15 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           Self { value: init_value }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ init_value ] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord
           "constructors_return_value::ConstructorsReturnValue"
           [ ("value", M.read (| init_value |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -220,9 +227,9 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           }
       }
   *)
-  Definition try_new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ succeed ] =>
+  Definition try_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ succeed ] =>
       ltac:(M.monadic
         (let succeed := M.alloc (| succeed |) in
         M.read (|
@@ -257,7 +264,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
@@ -270,9 +277,9 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           )
       }
   *)
-  Definition revert_new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ _init_value ] =>
+  Definition revert_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _init_value ] =>
       ltac:(M.monadic
         (let _init_value := M.alloc (| _init_value |) in
         M.never_to_any (|
@@ -282,6 +289,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
               [
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [
                     Ty.path "constructors_return_value::AccountId";
                     Ty.path "constructors_return_value::LangError"
@@ -305,18 +313,18 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.path "constructors_return_value::AccountId",
-                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                        [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
                         "from",
                         []
                       |),
-                      [ repeat (Value.Integer 0) 32 ]
+                      [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
                     |)
                   ]
               |)
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_revert_new : M.IsAssociatedFunction Self "revert_new" revert_new.
@@ -335,9 +343,9 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           )
       }
   *)
-  Definition try_revert_new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ init_value ] =>
+  Definition try_revert_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         M.read (|
@@ -361,11 +369,16 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "constructors_return_value::AccountId",
-                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 32 ]
+                                        [ Ty.path "u8" ]
+                                    ],
                                     "from",
                                     []
                                   |),
-                                  [ repeat (Value.Integer 0) 32 ]
+                                  [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
                                 |)
                               ]
                           ]
@@ -392,9 +405,11 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                   [
                     Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [
                             Ty.path "constructors_return_value::AccountId";
                             Ty.path "constructors_return_value::ConstructorError"
@@ -418,7 +433,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_try_revert_new :
@@ -429,9 +444,9 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           self.value
       }
   *)
-  Definition get_value (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -441,7 +456,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             "value"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_value : M.IsAssociatedFunction Self "get_value" get_value.

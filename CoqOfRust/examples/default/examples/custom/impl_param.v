@@ -14,9 +14,9 @@ fn with_impls<A>(func: impl Default, func2: impl Default, foo: A) {
     let b = Box::new((x, y, z));
 }
 *)
-Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ A; impl_Default; impl_Default'1 ], [ func; func2; foo ] =>
+Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ A; impl_Default; impl_Default'1 ], [ func; func2; foo ] =>
     ltac:(M.monadic
       (let func := M.alloc (| func |) in
       let func2 := M.alloc (| func2 |) in
@@ -47,6 +47,7 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
@@ -56,7 +57,7 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_with_impls : M.IsFunction "impl_param::with_impls" with_impls.

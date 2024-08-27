@@ -8,9 +8,9 @@ fn create_fn() -> impl Fn() {
     move || println!("This is a: {}", text)
 }
 *)
-Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ text :=
@@ -82,7 +82,7 @@ Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
                 end))
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_create_fn :
@@ -99,9 +99,9 @@ fn create_fnmut() -> impl FnMut() {
     move || println!("This is a: {}", text)
 }
 *)
-Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ text :=
@@ -173,7 +173,7 @@ Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
                 end))
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_create_fnmut :
@@ -190,9 +190,9 @@ fn create_fnonce() -> impl FnOnce() {
     move || println!("This is a: {}", text)
 }
 *)
-Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ text :=
@@ -264,7 +264,7 @@ Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
                 end))
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_create_fnonce :
@@ -285,9 +285,9 @@ fn main() {
     fn_once();
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ fn_plain :=
@@ -352,7 +352,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_as_output_parameters::main" main.

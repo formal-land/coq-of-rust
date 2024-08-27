@@ -6,6 +6,7 @@ Module host.
     (* StructRecord
       {
         name := "DummyHost";
+        const_params := [];
         ty_params := [];
         fields :=
           [
@@ -13,25 +14,29 @@ Module host.
             ("storage",
               Ty.apply
                 (Ty.path "std::collections::hash::map::HashMap")
+                []
                 [
-                  Ty.path "ruint::Uint";
-                  Ty.path "ruint::Uint";
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                   Ty.path "std::hash::random::RandomState"
                 ]);
             ("transient_storage",
               Ty.apply
                 (Ty.path "std::collections::hash::map::HashMap")
+                []
                 [
-                  Ty.path "ruint::Uint";
-                  Ty.path "ruint::Uint";
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                   Ty.path "std::hash::random::RandomState"
                 ]);
             ("log",
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
+                []
                 [
                   Ty.apply
                     (Ty.path "alloy_primitives::log::Log")
+                    []
                     [ Ty.path "alloy_primitives::log::LogData" ];
                   Ty.path "alloc::alloc::Global"
                 ])
@@ -42,9 +47,9 @@ Module host.
       Definition Self : Ty.t := Ty.path "revm_interpreter::host::dummy::DummyHost".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -73,9 +78,16 @@ Module host.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       [],
@@ -96,9 +108,16 @@ Module host.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       [],
@@ -119,9 +138,11 @@ Module host.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::log::Log")
+                            []
                             [ Ty.path "alloy_primitives::log::LogData" ];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -138,7 +159,7 @@ Module host.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -153,9 +174,9 @@ Module host.
       Definition Self : Ty.t := Ty.path "revm_interpreter::host::dummy::DummyHost".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -204,7 +225,7 @@ Module host.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -219,9 +240,9 @@ Module host.
       Definition Self : Ty.t := Ty.path "revm_interpreter::host::dummy::DummyHost".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "revm_interpreter::host::dummy::DummyHost"
@@ -243,9 +264,16 @@ Module host.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       [],
@@ -260,9 +288,16 @@ Module host.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       [],
@@ -277,9 +312,11 @@ Module host.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::log::Log")
+                            []
                             [ Ty.path "alloy_primitives::log::LogData" ];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -290,7 +327,7 @@ Module host.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -316,9 +353,9 @@ Module host.
       Definition Self : Ty.t := Ty.path "revm_interpreter::host::dummy::DummyHost".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -352,17 +389,31 @@ Module host.
                         "core::cmp::PartialEq",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "ruint::Uint";
-                            Ty.path "ruint::Uint";
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
                             Ty.path "std::hash::random::RandomState"
                           ],
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
-                              Ty.path "ruint::Uint";
-                              Ty.path "ruint::Uint";
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
                               Ty.path "std::hash::random::RandomState"
                             ]
                         ],
@@ -389,17 +440,31 @@ Module host.
                       "core::cmp::PartialEq",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       [
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "ruint::Uint";
-                            Ty.path "ruint::Uint";
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
                             Ty.path "std::hash::random::RandomState"
                           ]
                       ],
@@ -426,18 +491,22 @@ Module host.
                     "core::cmp::PartialEq",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::log::Log")
+                          []
                           [ Ty.path "alloy_primitives::log::LogData" ];
                         Ty.path "alloc::alloc::Global"
                       ],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::log::Log")
+                            []
                             [ Ty.path "alloy_primitives::log::LogData" ];
                           Ty.path "alloc::alloc::Global"
                         ]
@@ -459,7 +528,7 @@ Module host.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -485,9 +554,13 @@ Module host.
       Definition Self : Ty.t := Ty.path "revm_interpreter::host::dummy::DummyHost".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -517,7 +590,7 @@ Module host.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -540,9 +613,9 @@ Module host.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ env ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ env ] =>
           ltac:(M.monadic
             (let env := M.alloc (| env |) in
             M.struct_record_update
@@ -557,7 +630,7 @@ Module host.
                 []
               |))
               [ ("env", M.read (| env |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -568,9 +641,9 @@ Module host.
               self.log.clear();
           }
       *)
-      Definition clear (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clear (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -580,9 +653,16 @@ Module host.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       "clear",
@@ -603,9 +683,11 @@ Module host.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::log::Log")
+                            []
                             [ Ty.path "alloy_primitives::log::LogData" ];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -623,7 +705,7 @@ Module host.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -637,9 +719,9 @@ Module host.
               &self.env
           }
       *)
-      Definition env (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -647,7 +729,7 @@ Module host.
               "revm_interpreter::host::dummy::DummyHost",
               "env"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -655,9 +737,9 @@ Module host.
               &mut self.env
           }
       *)
-      Definition env_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition env_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -665,7 +747,7 @@ Module host.
               "revm_interpreter::host::dummy::DummyHost",
               "env"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -673,9 +755,9 @@ Module host.
               Some(LoadAccountResult::default())
           }
       *)
-      Definition load_account (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _address ] =>
+      Definition load_account (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
@@ -693,7 +775,7 @@ Module host.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -701,16 +783,16 @@ Module host.
               Some(B256::ZERO)
           }
       *)
-      Definition block_hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _number ] =>
+      Definition block_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _number := M.alloc (| _number |) in
             Value.StructTuple
               "core::option::Option::Some"
               [ M.read (| M.get_constant (| "alloy_primitives::bits::fixed::ZERO" |) |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -718,9 +800,9 @@ Module host.
               Some((U256::ZERO, false))
           }
       *)
-      Definition balance (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _address ] =>
+      Definition balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
@@ -728,7 +810,7 @@ Module host.
               "core::option::Option::Some"
               [ Value.Tuple [ M.read (| M.get_constant (| "ruint::ZERO" |) |); Value.Bool false ]
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -736,9 +818,9 @@ Module host.
               Some((Bytecode::default(), false))
           }
       *)
-      Definition code (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _address ] =>
+      Definition code (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
@@ -760,7 +842,7 @@ Module host.
                     Value.Bool false
                   ]
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -768,9 +850,9 @@ Module host.
               Some((KECCAK_EMPTY, false))
           }
       *)
-      Definition code_hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; __address ] =>
+      Definition code_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; __address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __address := M.alloc (| __address |) in
@@ -783,7 +865,7 @@ Module host.
                     Value.Bool false
                   ]
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -797,9 +879,9 @@ Module host.
               }
           }
       *)
-      Definition sload (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; __address; index ] =>
+      Definition sload (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; __address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let __address := M.alloc (| __address |) in
@@ -811,9 +893,16 @@ Module host.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       "entry",
@@ -850,7 +939,17 @@ Module host.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "std::collections::hash::map::OccupiedEntry")
-                                        [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ],
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
                                       "get",
                                       []
                                     |),
@@ -876,7 +975,17 @@ Module host.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::VacantEntry")
-                                [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ],
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [];
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    []
+                                ],
                               "insert",
                               []
                             |),
@@ -894,7 +1003,7 @@ Module host.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -915,9 +1024,9 @@ Module host.
               })
           }
       *)
-      Definition sstore (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _address; index; value ] =>
+      Definition sstore (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _address; index; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
@@ -931,9 +1040,16 @@ Module host.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "ruint::Uint";
-                            Ty.path "ruint::Uint";
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
                             Ty.path "std::hash::random::RandomState"
                           ],
                         "entry",
@@ -966,7 +1082,17 @@ Module host.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "std::collections::hash::map::OccupiedEntry")
-                                    [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ],
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [];
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ],
                                   "insert",
                                   []
                                 |),
@@ -990,7 +1116,17 @@ Module host.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "std::collections::hash::map::VacantEntry")
-                                  [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ],
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [];
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                 "insert",
                                 []
                               |),
@@ -1027,7 +1163,7 @@ Module host.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1038,16 +1174,19 @@ Module host.
                   .unwrap_or_default()
           }
       *)
-      Definition tload (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _address; index ] =>
+      Definition tload (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
             let index := M.alloc (| index |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                 "unwrap_or_default",
                 []
               |),
@@ -1056,7 +1195,18 @@ Module host.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
-                      [ Ty.apply (Ty.path "&") [ Ty.path "ruint::Uint" ] ],
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              []
+                          ]
+                      ],
                     "copied",
                     []
                   |),
@@ -1065,13 +1215,21 @@ Module host.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "ruint::Uint";
-                            Ty.path "ruint::Uint";
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
                             Ty.path "std::hash::random::RandomState"
                           ],
                         "get",
-                        [ Ty.path "ruint::Uint" ]
+                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        ]
                       |),
                       [
                         M.SubPointer.get_struct_record_field (|
@@ -1086,7 +1244,7 @@ Module host.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1094,9 +1252,9 @@ Module host.
               self.transient_storage.insert(index, value);
           }
       *)
-      Definition tstore (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _address; index; value ] =>
+      Definition tstore (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _address; index; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
@@ -1109,9 +1267,16 @@ Module host.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       "insert",
@@ -1130,7 +1295,7 @@ Module host.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1138,9 +1303,9 @@ Module host.
               self.log.push(log)
           }
       *)
-      Definition log (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; log ] =>
+      Definition log (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; log ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let log := M.alloc (| log |) in
@@ -1148,9 +1313,11 @@ Module host.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloy_primitives::log::Log")
+                      []
                       [ Ty.path "alloy_primitives::log::LogData" ];
                     Ty.path "alloc::alloc::Global"
                   ],
@@ -1166,7 +1333,7 @@ Module host.
                 M.read (| log |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1174,9 +1341,9 @@ Module host.
               panic!("Selfdestruct is not supported for this host")
           }
       *)
-      Definition selfdestruct (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _address; _target ] =>
+      Definition selfdestruct (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _address; _target ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
@@ -1203,7 +1370,7 @@ Module host.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

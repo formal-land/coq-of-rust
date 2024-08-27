@@ -12,9 +12,9 @@ fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
     lhs % rhs == 0
 }
 *)
-Definition is_divisible_by (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ lhs; rhs ] =>
+Definition is_divisible_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ lhs; rhs ] =>
     ltac:(M.monadic
       (let lhs := M.alloc (| lhs |) in
       let rhs := M.alloc (| rhs |) in
@@ -43,7 +43,7 @@ Definition is_divisible_by (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_is_divisible_by : M.IsFunction "functions::is_divisible_by" is_divisible_by.
@@ -61,9 +61,9 @@ fn fizzbuzz(n: u32) -> () {
     }
 }
 *)
-Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ n ] =>
+Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ n ] =>
     ltac:(M.monadic
       (let n := M.alloc (| n |) in
       M.read (|
@@ -250,7 +250,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_fizzbuzz : M.IsFunction "functions::fizzbuzz" fizzbuzz.
@@ -262,9 +262,9 @@ fn fizzbuzz_to(n: u32) {
     }
 }
 *)
-Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ n ] =>
+Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ n ] =>
     ltac:(M.monadic
       (let n := M.alloc (| n |) in
       M.read (|
@@ -274,7 +274,7 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
-                  Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u32" ],
+                  Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
                   [],
                   "into_iter",
                   []
@@ -282,7 +282,7 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u32" ],
+                      Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
                       "new",
                       []
                     |),
@@ -305,6 +305,7 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeInclusive")
+                                  []
                                   [ Ty.path "u32" ],
                                 [],
                                 "next",
@@ -342,7 +343,7 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_fizzbuzz_to : M.IsFunction "functions::fizzbuzz_to" fizzbuzz_to.
@@ -353,9 +354,9 @@ fn main() {
     fizzbuzz_to(100);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -367,7 +368,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "functions::main" main.

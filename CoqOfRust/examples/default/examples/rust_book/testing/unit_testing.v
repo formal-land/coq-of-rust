@@ -6,14 +6,14 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 *)
-Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ a; b ] =>
+Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ a; b ] =>
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
       BinOp.Wrap.add Integer.I32 (M.read (| a |)) (M.read (| b |))))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_add : M.IsFunction "unit_testing::add" add.
@@ -23,14 +23,14 @@ fn bad_add(a: i32, b: i32) -> i32 {
     a - b
 }
 *)
-Definition bad_add (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ a; b ] =>
+Definition bad_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ a; b ] =>
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
       BinOp.Wrap.sub Integer.I32 (M.read (| a |)) (M.read (| b |))))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_bad_add : M.IsFunction "unit_testing::bad_add" bad_add.
@@ -41,9 +41,9 @@ Module tests.
           assert_eq!(add(1, 2), 3);
       }
   *)
-  Definition test_add (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition test_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -113,7 +113,7 @@ Module tests.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_test_add : M.IsFunction "unit_testing::tests::test_add'1" test_add.
@@ -125,9 +125,9 @@ Module tests.
           assert_eq!(bad_add(1, 2), 3);
       }
   *)
-  Definition test_bad_add (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition test_bad_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -197,7 +197,7 @@ Module tests.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_test_bad_add : M.IsFunction "unit_testing::tests::test_bad_add'1" test_bad_add.

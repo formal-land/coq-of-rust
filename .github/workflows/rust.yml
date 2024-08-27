@@ -64,7 +64,7 @@ jobs:
             cargo build
             touch src/lib.rs
             cargo coq-of-rust
-            rsync -av src/ ../../../../CoqOfRust/alloc/ --include='*/' --include='*.v' --exclude='*'
+            rsync -acv src/ ../../../../CoqOfRust/alloc/ --include='*/' --include='*.v' --exclude='*'
             cd ../../../..
           endGroup
           startGroup "Translate the core library"
@@ -73,7 +73,7 @@ jobs:
             cargo build
             touch src/lib.rs
             cargo coq-of-rust
-            rsync -av src/ ../../../../CoqOfRust/core/ --include='*/' --include='*.v' --exclude='*'
+            rsync -acv src/ ../../../../CoqOfRust/core/ --include='*/' --include='*.v' --exclude='*'
             cd ../../../..
           endGroup
           startGroup "Translate Revm"
@@ -86,28 +86,28 @@ jobs:
             cargo coq-of-rust
             touch src/lib.rs
             cargo coq-of-rust
-            rsync -av src/ ../../../../CoqOfRust/revm/translations/interpreter/ --include='*/' --include='*.v' --exclude='*'
+            rsync -acv src/ ../../../../CoqOfRust/revm/translations/interpreter/ --include='*/' --include='*.v' --exclude='*'
             cd ..
             # precompile
             cd precompile
             cargo coq-of-rust
             touch src/lib.rs
             cargo coq-of-rust
-            rsync -av src/ ../../../../CoqOfRust/revm/translations/precompile/ --include='*/' --include='*.v' --exclude='*'
+            rsync -acv src/ ../../../../CoqOfRust/revm/translations/precompile/ --include='*/' --include='*.v' --exclude='*'
             cd ..
             # primitives
             cd primitives
             cargo coq-of-rust
             touch src/lib.rs
             cargo coq-of-rust
-            rsync -av src/ ../../../../CoqOfRust/revm/translations/primitives/ --include='*/' --include='*.v' --exclude='*'
+            rsync -acv src/ ../../../../CoqOfRust/revm/translations/primitives/ --include='*/' --include='*.v' --exclude='*'
             cd ..
             # revm
             cd revm
             cargo coq-of-rust
             touch src/lib.rs
             cargo coq-of-rust
-            rsync -av src/ ../../../../CoqOfRust/revm/translations/revm/ --include='*/' --include='*.v' --exclude='*'
+            rsync -acv src/ ../../../../CoqOfRust/revm/translations/revm/ --include='*/' --include='*.v' --exclude='*'
             cd ..
             cd ../../..
           endGroup

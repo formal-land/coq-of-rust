@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -12,9 +13,9 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
   Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "updated_incrementer::AccountId"
@@ -24,7 +25,7 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -39,9 +40,9 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
   Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -50,7 +51,7 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -68,11 +69,14 @@ Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
     M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
 
-Axiom Hash : (Ty.path "updated_incrementer::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash :
+  (Ty.path "updated_incrementer::Hash") =
+    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
 
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -81,6 +85,7 @@ Enum Error
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "updated_incrementer::AccountId") ];
   } *)
@@ -93,7 +98,7 @@ Module Impl_updated_incrementer_Env.
           unimplemented!()
       }
   *)
-  Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
+  Parameter set_code_hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_set_code_hash :
     M.IsAssociatedFunction Self "set_code_hash" set_code_hash.
@@ -102,6 +107,7 @@ End Impl_updated_incrementer_Env.
 (* StructRecord
   {
     name := "Incrementer";
+    const_params := [];
     ty_params := [];
     fields := [ ("count", Ty.path "u32") ];
   } *)
@@ -114,7 +120,7 @@ Module Impl_updated_incrementer_Incrementer.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -123,9 +129,9 @@ Module Impl_updated_incrementer_Incrementer.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
@@ -136,7 +142,7 @@ Module Impl_updated_incrementer_Incrementer.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -146,20 +152,20 @@ Module Impl_updated_incrementer_Incrementer.
           unreachable!("Constructors are not called when upgrading using `set_code_hash`.")
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.never_to_any (|
           M.call_closure (|
             M.get_function (|
               "core::panicking::unreachable_display",
-              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
             |),
             [ Value.String "Constructors are not called when upgrading using `set_code_hash`." ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -173,9 +179,9 @@ Module Impl_updated_incrementer_Incrementer.
           );
       }
   *)
-  Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition inc (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -238,7 +244,7 @@ Module Impl_updated_incrementer_Incrementer.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
@@ -248,9 +254,9 @@ Module Impl_updated_incrementer_Incrementer.
           self.count
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -260,7 +266,7 @@ Module Impl_updated_incrementer_Incrementer.
             "count"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -273,9 +279,9 @@ Module Impl_updated_incrementer_Incrementer.
           println!("Switched code hash to {:?}.", code_hash);
       }
   *)
-  Definition set_code (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; code_hash ] =>
+  Definition set_code (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; code_hash ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let code_hash := M.alloc (| code_hash |) in
@@ -286,6 +292,7 @@ Module Impl_updated_incrementer_Incrementer.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.tuple []; Ty.path "updated_incrementer::Error" ],
                   "unwrap_or_else",
                   [ Ty.function [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ] (Ty.tuple [])
@@ -296,7 +303,7 @@ Module Impl_updated_incrementer_Incrementer.
                     M.get_associated_function (|
                       Ty.path "updated_incrementer::Env",
                       "set_code_hash",
-                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                      [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
                     |),
                     [
                       M.alloc (|
@@ -327,7 +334,7 @@ Module Impl_updated_incrementer_Incrementer.
                                     M.call_closure (|
                                       M.get_function (|
                                         "std::panicking::begin_panic",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [
                                         M.read (|
@@ -372,7 +379,12 @@ Module Impl_updated_incrementer_Incrementer.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_debug",
-                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 32 ]
+                                        [ Ty.path "u8" ]
+                                    ]
                                   |),
                                   [ code_hash ]
                                 |)
@@ -386,7 +398,7 @@ Module Impl_updated_incrementer_Incrementer.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.

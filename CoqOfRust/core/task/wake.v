@@ -6,11 +6,12 @@ Module task.
     (* StructRecord
       {
         name := "RawWaker";
+        const_params := [];
         ty_params := [];
         fields :=
           [
-            ("data", Ty.apply (Ty.path "*const") [ Ty.tuple [] ]);
-            ("vtable", Ty.apply (Ty.path "&") [ Ty.path "core::task::wake::RawWakerVTable" ])
+            ("data", Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]);
+            ("vtable", Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ])
           ];
       } *)
     
@@ -29,9 +30,9 @@ Module task.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWaker".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -55,8 +56,8 @@ Module task.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
-                    Ty.apply (Ty.path "&") [ Ty.path "core::task::wake::RawWakerVTable" ],
-                    [ Ty.apply (Ty.path "&") [ Ty.path "core::task::wake::RawWakerVTable" ] ],
+                    Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ] ],
                     "eq",
                     []
                   |),
@@ -74,7 +75,7 @@ Module task.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -89,9 +90,9 @@ Module task.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWaker".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -124,7 +125,7 @@ Module task.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -143,16 +144,16 @@ Module task.
               RawWaker { data, vtable }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ data; vtable ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ data; vtable ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let vtable := M.alloc (| vtable |) in
             Value.StructRecord
               "core::task::wake::RawWaker"
               [ ("data", M.read (| data |)); ("vtable", M.read (| vtable |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -162,9 +163,9 @@ Module task.
               self.data
           }
       *)
-      Definition data (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition data (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -174,7 +175,7 @@ Module task.
                 "data"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
@@ -184,9 +185,9 @@ Module task.
               self.vtable
           }
       *)
-      Definition vtable (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition vtable (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -196,7 +197,7 @@ Module task.
                 "vtable"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_vtable : M.IsAssociatedFunction Self "vtable" vtable.
@@ -205,17 +206,18 @@ Module task.
     (* StructRecord
       {
         name := "RawWakerVTable";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("clone",
               Ty.function
-                [ Ty.apply (Ty.path "*const") [ Ty.tuple [] ] ]
+                [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ]
                 (Ty.path "core::task::wake::RawWaker"));
-            ("wake", Ty.function [ Ty.apply (Ty.path "*const") [ Ty.tuple [] ] ] (Ty.tuple []));
+            ("wake", Ty.function [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ] (Ty.tuple []));
             ("wake_by_ref",
-              Ty.function [ Ty.apply (Ty.path "*const") [ Ty.tuple [] ] ] (Ty.tuple []));
-            ("drop", Ty.function [ Ty.apply (Ty.path "*const") [ Ty.tuple [] ] ] (Ty.tuple []))
+              Ty.function [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ] (Ty.tuple []));
+            ("drop", Ty.function [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ] (Ty.tuple []))
           ];
       } *)
     
@@ -234,9 +236,9 @@ Module task.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWakerVTable".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -309,7 +311,7 @@ Module task.
                     |)
                   |))))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -335,9 +337,9 @@ Module task.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWakerVTable".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -367,7 +369,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -382,9 +384,9 @@ Module task.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWakerVTable".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -433,7 +435,7 @@ Module task.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -457,9 +459,9 @@ Module task.
               Self { clone, wake, wake_by_ref, drop }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ clone; wake; wake_by_ref; drop ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ clone; wake; wake_by_ref; drop ] =>
           ltac:(M.monadic
             (let clone := M.alloc (| clone |) in
             let wake := M.alloc (| wake |) in
@@ -473,7 +475,7 @@ Module task.
                 ("wake_by_ref", M.read (| wake_by_ref |));
                 ("drop", M.read (| drop |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -482,22 +484,25 @@ Module task.
     (* StructRecord
       {
         name := "Context";
+        const_params := [];
         ty_params := [];
         fields :=
           [
-            ("waker", Ty.apply (Ty.path "&") [ Ty.path "core::task::wake::Waker" ]);
+            ("waker", Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ]);
             ("_marker",
               Ty.apply
                 (Ty.path "core::marker::PhantomData")
+                []
                 [
                   Ty.function
-                    [ Ty.apply (Ty.path "&") [ Ty.tuple [] ] ]
-                    (Ty.apply (Ty.path "&") [ Ty.tuple [] ])
+                    [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                    (Ty.apply (Ty.path "&") [] [ Ty.tuple [] ])
                 ]);
             ("_marker2",
               Ty.apply
                 (Ty.path "core::marker::PhantomData")
-                [ Ty.apply (Ty.path "*mut") [ Ty.tuple [] ] ])
+                []
+                [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ])
           ];
       } *)
     
@@ -509,9 +514,9 @@ Module task.
               Context { waker, _marker: PhantomData, _marker2: PhantomData }
           }
       *)
-      Definition from_waker (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ waker ] =>
+      Definition from_waker (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ waker ] =>
           ltac:(M.monadic
             (let waker := M.alloc (| waker |) in
             Value.StructRecord
@@ -521,7 +526,7 @@ Module task.
                 ("_marker", Value.StructTuple "core::marker::PhantomData" []);
                 ("_marker2", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_waker : M.IsAssociatedFunction Self "from_waker" from_waker.
@@ -531,9 +536,9 @@ Module task.
               &self.waker
           }
       *)
-      Definition waker (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition waker (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -543,7 +548,7 @@ Module task.
                 "waker"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_waker : M.IsAssociatedFunction Self "waker" waker.
@@ -557,9 +562,9 @@ Module task.
               f.debug_struct("Context").field("waker", &self.waker).finish()
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -599,7 +604,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -613,6 +618,7 @@ Module task.
     (* StructRecord
       {
         name := "Waker";
+        const_params := [];
         ty_params := [];
         fields := [ ("waker", Ty.path "core::task::wake::RawWaker") ];
       } *)
@@ -669,9 +675,9 @@ Module task.
               unsafe { (wake)(data) };
           }
       *)
-      Definition wake (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wake (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -716,7 +722,7 @@ Module task.
                 M.alloc (| M.call_closure (| M.read (| wake |), [ M.read (| data |) ] |) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wake : M.IsAssociatedFunction Self "wake" wake.
@@ -730,9 +736,9 @@ Module task.
               unsafe { (self.waker.vtable.wake_by_ref)(self.waker.data) }
           }
       *)
-      Definition wake_by_ref (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wake_by_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -767,7 +773,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wake_by_ref : M.IsAssociatedFunction Self "wake_by_ref" wake_by_ref.
@@ -777,9 +783,9 @@ Module task.
               self.waker == other.waker
           }
       *)
-      Definition will_wake (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition will_wake (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -804,7 +810,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_will_wake : M.IsAssociatedFunction Self "will_wake" will_wake.
@@ -814,13 +820,13 @@ Module task.
               Waker { waker }
           }
       *)
-      Definition from_raw (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ waker ] =>
+      Definition from_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ waker ] =>
           ltac:(M.monadic
             (let waker := M.alloc (| waker |) in
             Value.StructRecord "core::task::wake::Waker" [ ("waker", M.read (| waker |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_raw : M.IsAssociatedFunction Self "from_raw" from_raw.
@@ -842,14 +848,14 @@ Module task.
               Waker { waker: RAW }
           }
       *)
-      Definition noop (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition noop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::task::wake::Waker"
               [ ("waker", M.read (| M.get_constant (| "core::task::wake::noop::RAW" |) |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_noop : M.IsAssociatedFunction Self "noop" noop.
@@ -859,9 +865,9 @@ Module task.
               &self.waker
           }
       *)
-      Definition as_raw (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -869,7 +875,7 @@ Module task.
               "core::task::wake::Waker",
               "waker"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_raw : M.IsAssociatedFunction Self "as_raw" as_raw.
@@ -888,9 +894,9 @@ Module task.
               }
           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -930,7 +936,7 @@ Module task.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -940,9 +946,9 @@ Module task.
               }
           }
       *)
-      Definition clone_from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; source ] =>
+      Definition clone_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; source ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let source := M.alloc (| source |) in
@@ -985,7 +991,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1009,9 +1015,9 @@ Module task.
               unsafe { (self.waker.vtable.drop)(self.waker.data) }
           }
       *)
-      Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1046,7 +1052,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1069,9 +1075,9 @@ Module task.
                   .finish()
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1147,7 +1153,7 @@ Module task.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

@@ -5,9 +5,14 @@ Module alloc.
   Module global.
     (* Trait *)
     Module GlobalAlloc.
-      Definition alloc_zeroed (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; layout ] =>
+      Definition alloc_zeroed
+          (Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self; layout ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let layout := M.alloc (| layout |) in
@@ -48,7 +53,7 @@ Module alloc.
                               UnOp.Pure.not
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "is_null",
                                     []
                                   |),
@@ -73,14 +78,14 @@ Module alloc.
                 |) in
               ptr
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_alloc_zeroed :
         M.IsProvidedMethod "core::alloc::global::GlobalAlloc" "alloc_zeroed" alloc_zeroed.
-      Definition realloc (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; ptr; layout; new_size ] =>
+      Definition realloc (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; ptr; layout; new_size ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let ptr := M.alloc (| ptr |) in
@@ -133,7 +138,7 @@ Module alloc.
                               UnOp.Pure.not
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "is_null",
                                     []
                                   |),
@@ -188,7 +193,7 @@ Module alloc.
                 |) in
               new_ptr
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_realloc :

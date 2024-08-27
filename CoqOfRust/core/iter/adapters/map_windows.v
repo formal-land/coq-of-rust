@@ -7,26 +7,33 @@ Module iter.
       (* StructRecord
         {
           name := "MapWindows";
+          const_params := [ "N" ];
           ty_params := [ "I"; "F" ];
           fields :=
             [
               ("f", F);
               ("inner",
-                Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindowsInner") [ I ])
+                Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindowsInner") [ N ] [ I ])
             ];
         } *)
       
       (* StructRecord
         {
           name := "MapWindowsInner";
+          const_params := [ "N" ];
           ty_params := [ "I" ];
           fields :=
             [
-              ("iter", Ty.apply (Ty.path "core::option::Option") [ I ]);
+              ("iter", Ty.apply (Ty.path "core::option::Option") [] [ I ]);
               ("buffer",
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [ Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ Ty.associated ]
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::map_windows::Buffer")
+                      [ N ]
+                      [ Ty.associated ]
                   ])
             ];
         } *)
@@ -34,24 +41,27 @@ Module iter.
       (* StructRecord
         {
           name := "Buffer";
+          const_params := [ "N" ];
           ty_params := [ "T" ];
           fields :=
             [
               ("buffer",
                 Ty.apply
                   (Ty.path "array")
+                  [ Value.Integer 2 ]
                   [
                     Ty.apply
                       (Ty.path "array")
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                      [ N ]
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   ]);
               ("start", Ty.path "usize")
             ];
         } *)
       
-      Module Impl_core_iter_adapters_map_windows_MapWindows_I_F.
-        Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ I; F ].
+      Module Impl_core_iter_adapters_map_windows_MapWindows_N_I_F.
+        Definition Self (N : Value.t) (I F : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ N ] [ I; F ].
         
         (*
             pub(in crate::iter) fn new(iter: I, f: F) -> Self {
@@ -68,10 +78,16 @@ Module iter.
                 Self { inner: MapWindowsInner::new(iter), f }
             }
         *)
-        Definition new (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ iter; f ] =>
+        Definition new
+            (N : Value.t)
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I F in
+          match ε, τ, α with
+          | [], [], [ iter; f ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               let f := M.alloc (| f |) in
@@ -158,6 +174,7 @@ Module iter.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
+                                                  []
                                                   [ Ty.path "usize" ],
                                                 "is_some",
                                                 []
@@ -233,6 +250,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::iter::adapters::map_windows::MapWindowsInner")
+                              [ N ]
                               [ I ],
                             "new",
                             []
@@ -243,27 +261,33 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
-          forall (I F : Ty.t),
-          M.IsAssociatedFunction (Self I F) "new" (new I F).
-      End Impl_core_iter_adapters_map_windows_MapWindows_I_F.
+          forall (N : Value.t) (I F : Ty.t),
+          M.IsAssociatedFunction (Self N I F) "new" (new N I F).
+      End Impl_core_iter_adapters_map_windows_MapWindows_N_I_F.
       
-      Module Impl_core_iter_adapters_map_windows_MapWindowsInner_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindowsInner") [ I ].
+      Module Impl_core_iter_adapters_map_windows_MapWindowsInner_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindowsInner") [ N ] [ I ].
         
         (*
             fn new(iter: I) -> Self {
                 Self { iter: Some(iter), buffer: None }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ iter ] =>
+        Definition new
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
@@ -272,12 +296,12 @@ Module iter.
                   ("iter", Value.StructTuple "core::option::Option::Some" [ M.read (| iter |) ]);
                   ("buffer", Value.StructTuple "core::option::Option::None" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
-          forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "new" (new I).
+          forall (N : Value.t) (I : Ty.t),
+          M.IsAssociatedFunction (Self N I) "new" (new N I).
         
         (*
             fn next_window(&mut self) -> Option<&[I::Item; N]> {
@@ -301,10 +325,16 @@ Module iter.
                 self.buffer.as_ref().map(Buffer::as_array_ref)
             }
         *)
-        Definition next_window (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition next_window
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -319,7 +349,8 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply
                                   (Ty.path "core::option::Option")
-                                  [ Ty.apply (Ty.path "&mut") [ I ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ I ] ],
                                 [],
                                 "branch",
                                 []
@@ -327,7 +358,7 @@ Module iter.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::option::Option") [ I ],
+                                    Ty.apply (Ty.path "core::option::Option") [] [ I ],
                                     "as_mut",
                                     []
                                   |),
@@ -361,14 +392,22 @@ Module iter.
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
-                                                  [ Ty.apply (Ty.path "array") [ Ty.associated ] ]
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ N ]
+                                                      [ Ty.associated ]
+                                                  ]
                                               ],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
@@ -414,6 +453,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                      [ N ]
                                       [ Ty.associated ],
                                     "try_from_iter",
                                     [ I ]
@@ -452,7 +492,7 @@ Module iter.
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "core::option::Option") [ I ],
+                                              Ty.apply (Ty.path "core::option::Option") [] [ I ],
                                               "take",
                                               []
                                             |),
@@ -471,10 +511,12 @@ Module iter.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "core::iter::adapters::map_windows::Buffer")
+                                                    [ N ]
                                                     [ Ty.associated ]
                                                 ],
                                               "take",
@@ -504,6 +546,7 @@ Module iter.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                              [ N ]
                                               [ Ty.associated ],
                                             "push",
                                             []
@@ -520,31 +563,40 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "&")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                    [ N ]
                                     [ Ty.associated ]
                                 ]
                             ],
                           "map",
                           [
-                            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.associated ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ];
                             Ty.function
                               [
                                 Ty.apply
                                   (Ty.path "&")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                      [ N ]
                                       [ Ty.associated ]
                                   ]
                               ]
                               (Ty.apply
                                 (Ty.path "&")
-                                [ Ty.apply (Ty.path "array") [ Ty.associated ] ])
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ])
                           ]
                         |),
                         [
@@ -552,9 +604,11 @@ Module iter.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                    [ N ]
                                     [ Ty.associated ]
                                 ],
                               "as_ref",
@@ -571,6 +625,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::iter::adapters::map_windows::Buffer")
+                              [ N ]
                               [ Ty.associated ],
                             "as_array_ref",
                             []
@@ -580,12 +635,12 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_next_window :
-          forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "next_window" (next_window I).
+          forall (N : Value.t) (I : Ty.t),
+          M.IsAssociatedFunction (Self N I) "next_window" (next_window N I).
         
         (*
             fn size_hint(&self) -> (usize, Option<usize>) {
@@ -603,10 +658,16 @@ Module iter.
                 }
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition size_hint
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -658,10 +719,12 @@ Module iter.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path
                                                           "core::iter::adapters::map_windows::Buffer")
+                                                        [ N ]
                                                         [ Ty.associated ]
                                                     ],
                                                   "is_some",
@@ -711,6 +774,7 @@ Module iter.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [ Ty.path "usize" ],
                                                   "map",
                                                   [
@@ -766,17 +830,17 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_size_hint :
-          forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "size_hint" (size_hint I).
-      End Impl_core_iter_adapters_map_windows_MapWindowsInner_I.
+          forall (N : Value.t) (I : Ty.t),
+          M.IsAssociatedFunction (Self N I) "size_hint" (size_hint N I).
+      End Impl_core_iter_adapters_map_windows_MapWindowsInner_N_I.
       
-      Module Impl_core_iter_adapters_map_windows_Buffer_T.
-        Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ T ].
+      Module Impl_core_iter_adapters_map_windows_Buffer_N_T.
+        Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ N ] [ T ].
         
         (*
             fn try_from_iter(iter: &mut impl Iterator<Item = T>) -> Option<Self> {
@@ -785,10 +849,16 @@ Module iter.
                 Some(Self { buffer, start: 0 })
             }
         *)
-        Definition try_from_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self T in
-          match τ, α with
-          | [ impl_Iterator_Item___T_ ], [ iter ] =>
+        Definition try_from_iter
+            (N : Value.t)
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N T in
+          match ε, τ, α with
+          | [], [ impl_Iterator_Item___T_ ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.catch_return (|
@@ -803,7 +873,8 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply
                                   (Ty.path "core::option::Option")
-                                  [ Ty.apply (Ty.path "array") [ T ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                                 [],
                                 "branch",
                                 []
@@ -813,9 +884,10 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.apply (Ty.path "array") [ T ];
-                                        Ty.apply (Ty.path "core::array::iter::IntoIter") [ T ]
+                                        Ty.apply (Ty.path "array") [ N ] [ T ];
+                                        Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ]
                                       ],
                                     "ok",
                                     []
@@ -852,15 +924,18 @@ Module iter.
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path
                                                     "core::iter::adapters::map_windows::Buffer")
+                                                  [ N ]
                                                   [ T ]
                                               ],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
@@ -893,7 +968,8 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                  [ Ty.apply (Ty.path "array") [ T ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                                 "transpose",
                                 []
                               |),
@@ -902,7 +978,8 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                      [ Ty.apply (Ty.path "array") [ T ] ],
+                                      []
+                                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                                     "new",
                                     []
                                   |),
@@ -912,7 +989,7 @@ Module iter.
                             |);
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                                 "uninit_array",
                                 []
                               |),
@@ -931,45 +1008,55 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_try_from_iter :
-          forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "try_from_iter" (try_from_iter T).
+          forall (N : Value.t) (T : Ty.t),
+          M.IsAssociatedFunction (Self N T) "try_from_iter" (try_from_iter N T).
         
         (*
             fn buffer_ptr(&self) -> *const MaybeUninit<T> {
                 self.buffer.as_ptr().cast()
             }
         *)
-        Definition buffer_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+        Definition buffer_ptr
+            (N : Value.t)
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N T in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "*const")
+                    []
                     [
                       Ty.apply
                         (Ty.path "array")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                        [ N ]
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     ],
                   "cast",
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                 |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "slice")
+                        []
                         [
                           Ty.apply
                             (Ty.path "array")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                            [ N ]
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         ],
                       "as_ptr",
                       []
@@ -986,45 +1073,55 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_buffer_ptr :
-          forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "buffer_ptr" (buffer_ptr T).
+          forall (N : Value.t) (T : Ty.t),
+          M.IsAssociatedFunction (Self N T) "buffer_ptr" (buffer_ptr N T).
         
         (*
             fn buffer_mut_ptr(&mut self) -> *mut MaybeUninit<T> {
                 self.buffer.as_mut_ptr().cast()
             }
         *)
-        Definition buffer_mut_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+        Definition buffer_mut_ptr
+            (N : Value.t)
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N T in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "*mut")
+                    []
                     [
                       Ty.apply
                         (Ty.path "array")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                        [ N ]
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     ],
                   "cast",
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                 |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "slice")
+                        []
                         [
                           Ty.apply
                             (Ty.path "array")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                            [ N ]
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         ],
                       "as_mut_ptr",
                       []
@@ -1041,12 +1138,12 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_buffer_mut_ptr :
-          forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "buffer_mut_ptr" (buffer_mut_ptr T).
+          forall (N : Value.t) (T : Ty.t),
+          M.IsAssociatedFunction (Self N T) "buffer_mut_ptr" (buffer_mut_ptr N T).
         
         (*
             fn as_array_ref(&self) -> &[T; N] {
@@ -1056,10 +1153,16 @@ Module iter.
                 unsafe { &*self.buffer_ptr().add(self.start).cast() }
             }
         *)
-        Definition as_array_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+        Definition as_array_ref
+            (N : Value.t)
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N T in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -1136,23 +1239,28 @@ Module iter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "*const")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "cast",
-                      [ Ty.apply (Ty.path "array") [ T ] ]
+                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "*const")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "add",
                           []
                         |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ T ],
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                [ N ]
+                                [ T ],
                               "buffer_ptr",
                               []
                             |),
@@ -1171,12 +1279,12 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_as_array_ref :
-          forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "as_array_ref" (as_array_ref T).
+          forall (N : Value.t) (T : Ty.t),
+          M.IsAssociatedFunction (Self N T) "as_array_ref" (as_array_ref N T).
         
         (*
             fn as_uninit_array_mut(&mut self) -> &mut MaybeUninit<[T; N]> {
@@ -1186,10 +1294,16 @@ Module iter.
                 unsafe { &mut *self.buffer_mut_ptr().add(self.start).cast() }
             }
         *)
-        Definition as_uninit_array_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+        Definition as_uninit_array_mut
+            (N : Value.t)
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N T in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -1266,12 +1380,14 @@ Module iter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "*mut")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "cast",
                       [
                         Ty.apply
                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          [ Ty.apply (Ty.path "array") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                       ]
                     |),
                     [
@@ -1279,14 +1395,18 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "*mut")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "add",
                           []
                         |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ T ],
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                [ N ]
+                                [ T ],
                               "buffer_mut_ptr",
                               []
                             |),
@@ -1305,12 +1425,12 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_as_uninit_array_mut :
-          forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "as_uninit_array_mut" (as_uninit_array_mut T).
+          forall (N : Value.t) (T : Ty.t),
+          M.IsAssociatedFunction (Self N T) "as_uninit_array_mut" (as_uninit_array_mut N T).
         
         (*
             fn push(&mut self, next: T) {
@@ -1369,10 +1489,16 @@ Module iter.
                 unsafe { ptr::drop_in_place(to_drop.cast::<T>()) };
             }
         *)
-        Definition push (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; next ] =>
+        Definition push
+            (N : Value.t)
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N T in
+          match ε, τ, α with
+          | [], [], [ self; next ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let next := M.alloc (| next |) in
@@ -1381,7 +1507,7 @@ Module iter.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ T ],
+                        Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ N ] [ T ],
                         "buffer_mut_ptr",
                         []
                       |),
@@ -1490,6 +1616,7 @@ Module iter.
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ T ]
                                         ]
                                       |),
@@ -1500,9 +1627,11 @@ Module iter.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "*mut")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
                                                     [ T ]
                                                 ],
                                               "add",
@@ -1540,6 +1669,7 @@ Module iter.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ T ],
                                         "write",
                                         []
@@ -1549,9 +1679,11 @@ Module iter.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "*mut")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
                                                   [ T ]
                                               ],
                                             "add",
@@ -1578,9 +1710,11 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "*mut")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ T ]
                                         ],
                                       "add",
@@ -1619,6 +1753,7 @@ Module iter.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ T ],
                                         "write",
                                         []
@@ -1628,9 +1763,11 @@ Module iter.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "*mut")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
                                                   [ T ]
                                               ],
                                             "add",
@@ -1663,9 +1800,11 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "*mut")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ T ]
                                         ],
                                       "add",
@@ -1708,7 +1847,9 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "*mut")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
                             "cast",
                             [ T ]
                           |),
@@ -1719,17 +1860,17 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_push :
-          forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "push" (push T).
-      End Impl_core_iter_adapters_map_windows_Buffer_T.
+          forall (N : Value.t) (T : Ty.t),
+          M.IsAssociatedFunction (Self N T) "push" (push N T).
+      End Impl_core_iter_adapters_map_windows_Buffer_N_T.
       
-      Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_iter_adapters_map_windows_Buffer_T.
-        Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ T ].
+      Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_iter_adapters_map_windows_Buffer_N_T.
+        Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ N ] [ T ].
         
         (*
             fn clone(&self) -> Self {
@@ -1741,10 +1882,16 @@ Module iter.
                 buffer
             }
         *)
-        Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone
+            (N : Value.t)
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N T in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -1758,7 +1905,10 @@ Module iter.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ T ],
                                   "uninit_array",
                                   []
                                 |),
@@ -1766,7 +1916,10 @@ Module iter.
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ T ],
                                   "uninit_array",
                                   []
                                 |),
@@ -1789,14 +1942,18 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          [ Ty.apply (Ty.path "array") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                         "write",
                         []
                       |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ T ],
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::map_windows::Buffer")
+                              [ N ]
+                              [ T ],
                             "as_uninit_array_mut",
                             []
                           |),
@@ -1805,7 +1962,7 @@ Module iter.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::clone::Clone",
-                            Ty.apply (Ty.path "array") [ T ],
+                            Ty.apply (Ty.path "array") [ N ] [ T ],
                             [],
                             "clone",
                             []
@@ -1815,6 +1972,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                  [ N ]
                                   [ T ],
                                 "as_array_ref",
                                 []
@@ -1828,31 +1986,37 @@ Module iter.
                   |) in
                 buffer
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (T : Ty.t),
+          forall (N : Value.t) (T : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self T)
+            (Self N T)
             (* Trait polymorphic types *) []
-            (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
-      End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_iter_adapters_map_windows_Buffer_T.
+            (* Instance *) [ ("clone", InstanceField.Method (clone N T)) ].
+      End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_iter_adapters_map_windows_Buffer_N_T.
       
-      Module Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_map_windows_MapWindowsInner_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindowsInner") [ I ].
+      Module Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_map_windows_MapWindowsInner_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindowsInner") [ N ] [ I ].
         
         (*
             fn clone(&self) -> Self {
                 Self { iter: self.iter.clone(), buffer: self.buffer.clone() }
             }
         *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -1862,7 +2026,7 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::clone::Clone",
-                        Ty.apply (Ty.path "core::option::Option") [ I ],
+                        Ty.apply (Ty.path "core::option::Option") [] [ I ],
                         [],
                         "clone",
                         []
@@ -1881,9 +2045,11 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [
                             Ty.apply
                               (Ty.path "core::iter::adapters::map_windows::Buffer")
+                              [ N ]
                               [ Ty.associated ]
                           ],
                         [],
@@ -1899,21 +2065,21 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (I : Ty.t),
+          forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self I)
+            (Self N I)
             (* Trait polymorphic types *) []
-            (* Instance *) [ ("clone", InstanceField.Method (clone I)) ].
-      End Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_map_windows_MapWindowsInner_I.
+            (* Instance *) [ ("clone", InstanceField.Method (clone N I)) ].
+      End Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_map_windows_MapWindowsInner_N_I.
       
-      Module Impl_core_ops_drop_Drop_for_core_iter_adapters_map_windows_Buffer_T.
-        Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ T ].
+      Module Impl_core_ops_drop_Drop_for_core_iter_adapters_map_windows_Buffer_N_T.
+        Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ N ] [ T ].
         
         (*
             fn drop(&mut self) {
@@ -1928,10 +2094,16 @@ Module iter.
                 }
             }
         *)
-        Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+        Definition drop
+            (N : Value.t)
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N T in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -1944,7 +2116,9 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "*mut")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
                             "cast",
                             [ T ]
                           |),
@@ -1953,7 +2127,12 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "*mut")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
                                   ],
                                 "add",
                                 []
@@ -1963,6 +2142,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::map_windows::Buffer")
+                                      [ N ]
                                       [ T ],
                                     "buffer_mut_ptr",
                                     []
@@ -1989,31 +2169,31 @@ Module iter.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::drop_in_place",
-                        [ Ty.apply (Ty.path "slice") [ T ] ]
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
                       |),
                       [ M.read (| initialized_part |) ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (T : Ty.t),
+          forall (N : Value.t) (T : Ty.t),
           M.IsTraitInstance
             "core::ops::drop::Drop"
-            (Self T)
+            (Self N T)
             (* Trait polymorphic types *) []
-            (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
-      End Impl_core_ops_drop_Drop_for_core_iter_adapters_map_windows_Buffer_T.
+            (* Instance *) [ ("drop", InstanceField.Method (drop N T)) ].
+      End Impl_core_ops_drop_Drop_for_core_iter_adapters_map_windows_Buffer_N_T.
       
-      Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_associated_type__for_core_iter_adapters_map_windows_MapWindows_I_F.
-        Definition Self (I F R : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ I; F ].
+      Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_type__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+        Definition Self (N : Value.t) (I F R : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ N ] [ I; F ].
         
         (*     type Item = R; *)
-        Definition _Item (I F R : Ty.t) : Ty.t := R.
+        Definition _Item (N : Value.t) (I F R : Ty.t) : Ty.t := R.
         
         (*
             fn next(&mut self) -> Option<Self::Item> {
@@ -2022,10 +2202,16 @@ Module iter.
                 Some(out)
             }
         *)
-        Definition next (I F R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I F R in
-          match τ, α with
-          | [], [ self ] =>
+        Definition next
+            (N : Value.t)
+            (I F R : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I F R in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -2040,10 +2226,12 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "&")
-                                      [ Ty.apply (Ty.path "array") [ Ty.associated ] ]
+                                      []
+                                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ]
                                   ],
                                 [],
                                 "branch",
@@ -2054,6 +2242,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::map_windows::MapWindowsInner")
+                                      [ N ]
                                       [ I ],
                                     "next_window",
                                     []
@@ -2086,10 +2275,11 @@ Module iter.
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
-                                            Ty.apply (Ty.path "core::option::Option") [ R ],
+                                            Ty.apply (Ty.path "core::option::Option") [] [ R ],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
@@ -2125,7 +2315,8 @@ Module iter.
                                 [
                                   Ty.apply
                                     (Ty.path "&")
-                                    [ Ty.apply (Ty.path "array") [ Ty.associated ] ]
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ]
                                 ]
                             ],
                             "call_mut",
@@ -2146,7 +2337,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -2154,15 +2345,24 @@ Module iter.
                 self.inner.size_hint()
             }
         *)
-        Definition size_hint (I F R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I F R in
-          match τ, α with
-          | [], [ self ] =>
+        Definition size_hint
+            (N : Value.t)
+            (I F R : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I F R in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindowsInner") [ I ],
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::map_windows::MapWindowsInner")
+                    [ N ]
+                    [ I ],
                   "size_hint",
                   []
                 |),
@@ -2174,62 +2374,68 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (I F R : Ty.t),
+          forall (N : Value.t) (I F R : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self I F R)
+            (Self N I F R)
             (* Trait polymorphic types *) []
             (* Instance *)
             [
-              ("Item", InstanceField.Ty (_Item I F R));
-              ("next", InstanceField.Method (next I F R));
-              ("size_hint", InstanceField.Method (size_hint I F R))
+              ("Item", InstanceField.Ty (_Item N I F R));
+              ("next", InstanceField.Method (next N I F R));
+              ("size_hint", InstanceField.Method (size_hint N I F R))
             ].
-      End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_associated_type__for_core_iter_adapters_map_windows_MapWindows_I_F.
+      End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_type__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
       
-      Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_associated_type__for_core_iter_adapters_map_windows_MapWindows_I_F.
-        Definition Self (I F R : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ I; F ].
+      Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_type__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+        Definition Self (N : Value.t) (I F R : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ N ] [ I; F ].
         
         Axiom Implements :
-          forall (I F R : Ty.t),
+          forall (N : Value.t) (I F R : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self I F R)
+            (Self N I F R)
             (* Trait polymorphic types *) []
             (* Instance *) [].
-      End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_associated_type__for_core_iter_adapters_map_windows_MapWindows_I_F.
+      End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_type__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
       
-      Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_associated_type__for_core_iter_adapters_map_windows_MapWindows_I_F.
-        Definition Self (I F R : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ I; F ].
+      Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_type__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+        Definition Self (N : Value.t) (I F R : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ N ] [ I; F ].
         
         Axiom Implements :
-          forall (I F R : Ty.t),
+          forall (N : Value.t) (I F R : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::exact_size::ExactSizeIterator"
-            (Self I F R)
+            (Self N I F R)
             (* Trait polymorphic types *) []
             (* Instance *) [].
-      End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_associated_type__for_core_iter_adapters_map_windows_MapWindows_I_F.
+      End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_type__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
       
-      Module Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_for_core_iter_adapters_map_windows_MapWindows_I_F.
-        Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ I; F ].
+      Module Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+        Definition Self (N : Value.t) (I F : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ N ] [ I; F ].
         
         (*
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 f.debug_struct("MapWindows").field("iter", &self.inner.iter).finish()
             }
         *)
-        Definition fmt (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt
+            (N : Value.t)
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I F in
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -2273,31 +2479,37 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (I F : Ty.t),
+          forall (N : Value.t) (I F : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self I F)
+            (Self N I F)
             (* Trait polymorphic types *) []
-            (* Instance *) [ ("fmt", InstanceField.Method (fmt I F)) ].
-      End Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_for_core_iter_adapters_map_windows_MapWindows_I_F.
+            (* Instance *) [ ("fmt", InstanceField.Method (fmt N I F)) ].
+      End Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_for_core_iter_adapters_map_windows_MapWindows_N_I_F.
       
-      Module Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_F_where_core_clone_Clone_associated_type_for_core_iter_adapters_map_windows_MapWindows_I_F.
-        Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ I; F ].
+      Module Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_F_where_core_clone_Clone_associated_type_for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+        Definition Self (N : Value.t) (I F : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ N ] [ I; F ].
         
         (*
             fn clone(&self) -> Self {
                 Self { f: self.f.clone(), inner: self.inner.clone() }
             }
         *)
-        Definition clone (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone
+            (N : Value.t)
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I F in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -2320,6 +2532,7 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "core::iter::adapters::map_windows::MapWindowsInner")
+                          [ N ]
                           [ I ],
                         [],
                         "clone",
@@ -2334,17 +2547,17 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (I F : Ty.t),
+          forall (N : Value.t) (I F : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self I F)
+            (Self N I F)
             (* Trait polymorphic types *) []
-            (* Instance *) [ ("clone", InstanceField.Method (clone I F)) ].
-      End Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_F_where_core_clone_Clone_associated_type_for_core_iter_adapters_map_windows_MapWindows_I_F.
+            (* Instance *) [ ("clone", InstanceField.Method (clone N I F)) ].
+      End Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_F_where_core_clone_Clone_associated_type_for_core_iter_adapters_map_windows_MapWindows_N_I_F.
     End map_windows.
   End adapters.
 End iter.

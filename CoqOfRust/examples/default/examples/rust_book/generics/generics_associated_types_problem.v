@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Container";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i32"; Ty.path "i32" ];
   } *)
@@ -19,9 +20,9 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
           (&self.0 == number_1) && (&self.1 == number_2)
       }
   *)
-  Definition contains (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; number_1; number_2 ] =>
+  Definition contains (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; number_1; number_2 ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let number_1 := M.alloc (| number_1 |) in
@@ -30,8 +31,8 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialEq",
-              Ty.apply (Ty.path "&") [ Ty.path "i32" ],
-              [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
+              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
               "eq",
               []
             |),
@@ -50,8 +51,8 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
             (M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "&") [ Ty.path "i32" ],
-                [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
                 "eq",
                 []
               |),
@@ -67,7 +68,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
               ]
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -75,9 +76,9 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
           self.0
       }
   *)
-  Definition first (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -87,7 +88,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
             0
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -95,9 +96,9 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
           self.1
       }
   *)
-  Definition last (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -107,7 +108,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
             1
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -131,9 +132,9 @@ where
     container.last() - container.first()
 }
 *)
-Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ A; B; C ], [ container ] =>
+Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ A; B; C ], [ container ] =>
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
       BinOp.Wrap.sub
@@ -158,7 +159,7 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
           |),
           [ M.read (| container |) ]
         |))))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_difference : M.IsFunction "generics_associated_types_problem::difference" difference.
@@ -182,9 +183,9 @@ fn main() {
     println!("The difference is: {}", difference(&container));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ number_1 := M.alloc (| Value.Integer 3 |) in
@@ -225,7 +226,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [ M.alloc (| number_1 |) ]
                               |);
@@ -233,7 +234,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [ M.alloc (| number_2 |) ]
                               |);
@@ -428,7 +429,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_associated_types_problem::main" main.

@@ -4,9 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Module clone.
   (* Trait *)
   Module Clone.
-    Definition clone_from (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; source ] =>
+    Definition clone_from (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; source ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let source := M.alloc (| source |) in
@@ -19,7 +19,7 @@ Module clone.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_clone_from :
@@ -29,15 +29,17 @@ Module clone.
   (* StructRecord
     {
       name := "AssertParamIsClone";
+      const_params := [];
       ty_params := [ "T" ];
-      fields := [ ("_field", Ty.apply (Ty.path "core::marker::PhantomData") [ T ]) ];
+      fields := [ ("_field", Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ]) ];
     } *)
   
   (* StructRecord
     {
       name := "AssertParamIsCopy";
+      const_params := [];
       ty_params := [ "T" ];
-      fields := [ ("_field", Ty.apply (Ty.path "core::marker::PhantomData") [ T ]) ];
+      fields := [ ("_field", Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ]) ];
     } *)
   
   Module impls.
@@ -49,13 +51,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -74,13 +76,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -99,13 +101,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -124,13 +126,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -149,13 +151,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -174,13 +176,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -199,13 +201,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -224,13 +226,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -249,13 +251,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -274,13 +276,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -299,13 +301,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -324,13 +326,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -349,13 +351,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -374,13 +376,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -399,13 +401,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -424,13 +426,13 @@ Module clone.
                               *self
                           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -449,13 +451,13 @@ Module clone.
                   *self
               }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -467,21 +469,21 @@ Module clone.
     End Impl_core_clone_Clone_for_never.
     
     Module Impl_core_clone_Clone_where_core_marker_Sized_T_for_pointer_const_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
       
       (*
               fn clone(&self) -> Self {
                   *self
               }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -494,21 +496,21 @@ Module clone.
     End Impl_core_clone_Clone_where_core_marker_Sized_T_for_pointer_const_T.
     
     Module Impl_core_clone_Clone_where_core_marker_Sized_T_for_pointer_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
       
       (*
               fn clone(&self) -> Self {
                   *self
               }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -521,21 +523,21 @@ Module clone.
     End Impl_core_clone_Clone_where_core_marker_Sized_T_for_pointer_mut_T.
     
     Module Impl_core_clone_Clone_where_core_marker_Sized_T_for_ref__T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (*
               fn clone(&self) -> Self {
                   *self
               }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -548,7 +550,7 @@ Module clone.
     End Impl_core_clone_Clone_where_core_marker_Sized_T_for_ref__T.
     
     Module Impl_core_clone_Clone_where_core_marker_Sized_T_for_ref_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),

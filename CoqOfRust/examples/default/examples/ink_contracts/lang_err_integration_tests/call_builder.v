@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -12,9 +13,9 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
   Definition Self : Ty.t := Ty.path "call_builder::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "call_builder::AccountId"
@@ -24,7 +25,7 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -39,9 +40,9 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
   Definition Self : Ty.t := Ty.path "call_builder::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -50,7 +51,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -70,11 +71,14 @@ End Impl_core_marker_Copy_for_call_builder_AccountId.
 
 Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
 
-Axiom Hash : (Ty.path "call_builder::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash :
+  (Ty.path "call_builder::Hash") =
+    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
 
 (*
 Enum LangError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -95,6 +99,7 @@ Enum LangError
 (* StructTuple
   {
     name := "Selector";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -107,7 +112,7 @@ Module Impl_call_builder_Selector.
           unimplemented!()
       }
   *)
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
 End Impl_call_builder_Selector.
@@ -115,6 +120,7 @@ End Impl_call_builder_Selector.
 (* StructTuple
   {
     name := "CallBuilderTest";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -123,10 +129,10 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
   Definition Self : Ty.t := Ty.path "call_builder::CallBuilderTest".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] => ltac:(M.monadic (Value.StructTuple "call_builder::CallBuilderTest" []))
-    | _, _ => M.impossible
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "call_builder::CallBuilderTest" []))
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -145,9 +151,9 @@ Module Impl_call_builder_CallBuilderTest.
           Default::default()
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_trait_method (|
@@ -159,7 +165,7 @@ Module Impl_call_builder_CallBuilderTest.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -183,9 +189,9 @@ Module Impl_call_builder_CallBuilderTest.
           }
       }
   *)
-  Definition call (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; address; selector ] =>
+  Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; address; selector ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let address := M.alloc (| address |) in
@@ -264,7 +270,7 @@ Module Impl_call_builder_CallBuilderTest.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_call : M.IsAssociatedFunction Self "call" call.
@@ -280,15 +286,15 @@ Module Impl_call_builder_CallBuilderTest.
           //     .invoke()
       }
   *)
-  Definition invoke (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; address; selector ] =>
+  Definition invoke (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; address; selector ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let address := M.alloc (| address |) in
         let selector := M.alloc (| selector |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.
@@ -323,16 +329,16 @@ Module Impl_call_builder_CallBuilderTest.
           None
       }
   *)
-  Definition call_instantiate (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; code_hash; selector; init_value ] =>
+  Definition call_instantiate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; code_hash; selector; init_value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let code_hash := M.alloc (| code_hash |) in
         let selector := M.alloc (| selector |) in
         let init_value := M.alloc (| init_value |) in
         Value.StructTuple "core::option::Option::None" []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_call_instantiate :
@@ -365,16 +371,16 @@ Module Impl_call_builder_CallBuilderTest.
           None
       }
   *)
-  Definition call_instantiate_fallible (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; code_hash; selector; init_value ] =>
+  Definition call_instantiate_fallible (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; code_hash; selector; init_value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let code_hash := M.alloc (| code_hash |) in
         let selector := M.alloc (| selector |) in
         let init_value := M.alloc (| init_value |) in
         Value.StructTuple "core::option::Option::None" []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_call_instantiate_fallible :

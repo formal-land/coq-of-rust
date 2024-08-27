@@ -6,16 +6,18 @@ Module boxed.
     (* StructRecord
       {
         name := "ThinBox";
+        const_params := [];
         ty_params := [ "T" ];
         fields :=
           [
             ("ptr", Ty.path "alloc::boxed::thin::WithOpaqueHeader");
-            ("_marker", Ty.apply (Ty.path "core::marker::PhantomData") [ T ])
+            ("_marker", Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ])
           ];
       } *)
     
     Module Impl_core_marker_Send_where_core_marker_Sized_T_where_core_marker_Send_T_for_alloc_boxed_thin_ThinBox_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -27,7 +29,8 @@ Module boxed.
     End Impl_core_marker_Send_where_core_marker_Sized_T_where_core_marker_Send_T_for_alloc_boxed_thin_ThinBox_T.
     
     Module Impl_core_marker_Sync_where_core_marker_Sized_T_where_core_marker_Sync_T_for_alloc_boxed_thin_ThinBox_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -39,7 +42,8 @@ Module boxed.
     End Impl_core_marker_Sync_where_core_marker_Sized_T_where_core_marker_Sync_T_for_alloc_boxed_thin_ThinBox_T.
     
     Module Impl_alloc_boxed_thin_ThinBox_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ].
       
       (*
           pub fn new(value: T) -> Self {
@@ -48,10 +52,10 @@ Module boxed.
               ThinBox { ptr, _marker: PhantomData }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ value ] =>
+        match ε, τ, α with
+        | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.read (|
@@ -82,7 +86,7 @@ Module boxed.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -95,23 +99,23 @@ Module boxed.
               unsafe { *self.with_header().header() }
           }
       *)
-      Definition meta (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition meta (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [ Ty.associated ],
+                  Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
                   "header",
                   []
                 |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ],
+                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "with_header",
                       []
                     |),
@@ -120,7 +124,7 @@ Module boxed.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_meta :
@@ -132,22 +136,22 @@ Module boxed.
               self.with_header().value()
           }
       *)
-      Definition data (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition data (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [ Ty.associated ],
+                Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
                 "value",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ],
+                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                     "with_header",
                     []
                   |),
@@ -155,7 +159,7 @@ Module boxed.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_data :
@@ -168,10 +172,10 @@ Module boxed.
               unsafe { &*((&self.ptr) as *const WithOpaqueHeader as *const WithHeader<_>) }
           }
       *)
-      Definition with_header (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition with_header (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -185,7 +189,7 @@ Module boxed.
                     |)
                   |))
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_with_header :
@@ -195,7 +199,7 @@ Module boxed.
     
     Module Impl_alloc_boxed_thin_ThinBox_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ Dyn ].
+        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ Dyn ].
       
       (*
           pub fn new_unsize<T>(value: T) -> Self
@@ -207,10 +211,15 @@ Module boxed.
               ThinBox { ptr, _marker: PhantomData }
           }
       *)
-      Definition new_unsize (Dyn : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_unsize
+          (Dyn : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self Dyn in
-        match τ, α with
-        | [ T ], [ value ] =>
+        match ε, τ, α with
+        | [], [ T ], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.read (|
@@ -241,7 +250,7 @@ Module boxed.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unsize :
@@ -250,17 +259,18 @@ Module boxed.
     End Impl_alloc_boxed_thin_ThinBox_Dyn.
     
     Module Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_fmt_Debug_T_for_alloc_boxed_thin_ThinBox_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
               Debug::fmt(self.deref(), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -270,7 +280,7 @@ Module boxed.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ],
+                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                     [],
                     "deref",
                     []
@@ -280,7 +290,7 @@ Module boxed.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -293,17 +303,18 @@ Module boxed.
     End Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_fmt_Debug_T_for_alloc_boxed_thin_ThinBox_T.
     
     Module Impl_core_fmt_Display_where_core_marker_Sized_T_where_core_fmt_Display_T_for_alloc_boxed_thin_ThinBox_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
               Display::fmt(self.deref(), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -313,7 +324,7 @@ Module boxed.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ],
+                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                     [],
                     "deref",
                     []
@@ -323,7 +334,7 @@ Module boxed.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -336,7 +347,8 @@ Module boxed.
     End Impl_core_fmt_Display_where_core_marker_Sized_T_where_core_fmt_Display_T_for_alloc_boxed_thin_ThinBox_T.
     
     Module Impl_core_ops_deref_Deref_where_core_marker_Sized_T_for_alloc_boxed_thin_ThinBox_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ].
       
       (*     type Target = T; *)
       Definition _Target (T : Ty.t) : Ty.t := T.
@@ -349,10 +361,10 @@ Module boxed.
               unsafe { &*pointer }
           }
       *)
-      Definition deref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -360,7 +372,7 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ],
+                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "data",
                       []
                     |),
@@ -371,7 +383,7 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ],
+                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "meta",
                       []
                     |),
@@ -387,7 +399,7 @@ Module boxed.
                 |) in
               M.alloc (| M.read (| pointer |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -401,7 +413,8 @@ Module boxed.
     End Impl_core_ops_deref_Deref_where_core_marker_Sized_T_for_alloc_boxed_thin_ThinBox_T.
     
     Module Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_alloc_boxed_thin_ThinBox_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ].
       
       (*
           fn deref_mut(&mut self) -> &mut T {
@@ -411,10 +424,10 @@ Module boxed.
               unsafe { &mut *pointer }
           }
       *)
-      Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -422,7 +435,7 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ],
+                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "data",
                       []
                     |),
@@ -433,7 +446,7 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ],
+                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "meta",
                       []
                     |),
@@ -449,7 +462,7 @@ Module boxed.
                 |) in
               M.alloc (| M.read (| pointer |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -462,7 +475,8 @@ Module boxed.
     End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_alloc_boxed_thin_ThinBox_T.
     
     Module Impl_core_ops_drop_Drop_where_core_marker_Sized_T_for_alloc_boxed_thin_ThinBox_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ].
       
       (*
           fn drop(&mut self) {
@@ -473,10 +487,10 @@ Module boxed.
               }
           }
       *)
-      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -485,7 +499,7 @@ Module boxed.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::deref::DerefMut",
-                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ],
+                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       [],
                       "deref_mut",
                       []
@@ -498,14 +512,14 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [ Ty.associated ],
+                      Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
                       "drop",
                       [ T ]
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ],
+                          Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                           "with_header",
                           []
                         |),
@@ -517,7 +531,7 @@ Module boxed.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -533,19 +547,21 @@ Module boxed.
     (* StructTuple
       {
         name := "WithHeader";
+        const_params := [];
         ty_params := [ "H" ];
         fields :=
           [
-            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ];
-            Ty.apply (Ty.path "core::marker::PhantomData") [ H ]
+            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ];
+            Ty.apply (Ty.path "core::marker::PhantomData") [] [ H ]
           ];
       } *)
     
     (* StructTuple
       {
         name := "WithOpaqueHeader";
+        const_params := [];
         ty_params := [];
-        fields := [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ] ];
+        fields := [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] ];
       } *)
     
     Module Impl_alloc_boxed_thin_WithOpaqueHeader.
@@ -557,9 +573,9 @@ Module boxed.
               Self(ptr.0)
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H; T ], [ header; value ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H; T ], [ header; value ] =>
           ltac:(M.monadic
             (let header := M.alloc (| header |) in
             let value := M.alloc (| value |) in
@@ -568,7 +584,7 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [ H ],
+                      Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                       "new",
                       [ T ]
                     |),
@@ -589,7 +605,7 @@ Module boxed.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -597,7 +613,7 @@ Module boxed.
     
     Module Impl_alloc_boxed_thin_WithHeader_H.
       Definition Self (H : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [ H ].
+        Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ].
       
       (*
           fn new<T>(header: H, value: T) -> WithHeader<H> {
@@ -641,10 +657,10 @@ Module boxed.
               }
           }
       *)
-      Definition new (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self H in
-        match τ, α with
-        | [ T ], [ header; value ] =>
+        match ε, τ, α with
+        | [], [ T ], [ header; value ] =>
           ltac:(M.monadic
             (let header := M.alloc (| header |) in
             let value := M.alloc (| value |) in
@@ -664,7 +680,7 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [ H ],
+                      Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                       "alloc_layout",
                       []
                     |),
@@ -811,7 +827,7 @@ Module boxed.
                                                 (M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                                       "is_null",
                                                       []
                                                     |),
@@ -842,7 +858,7 @@ Module boxed.
                                       M.rust_cast
                                         (M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                             "add",
                                             []
                                           |),
@@ -854,6 +870,7 @@ Module boxed.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::ptr::non_null::NonNull")
+                                          []
                                           [ Ty.path "u8" ],
                                         "new_unchecked",
                                         []
@@ -877,7 +894,7 @@ Module boxed.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [ H ],
+                                  Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                                   "header",
                                   []
                                 |),
@@ -894,14 +911,14 @@ Module boxed.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "cast",
                                   [ T ]
                                 |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [ H ],
+                                      Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                                       "value",
                                       []
                                     |),
@@ -917,7 +934,7 @@ Module boxed.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -966,10 +983,10 @@ Module boxed.
               }
           }
       *)
-      Definition drop (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self H in
-        match τ, α with
-        | [ T ], [ self; value ] =>
+        match ε, τ, α with
+        | [], [ T ], [ self; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let value := M.alloc (| value |) in
@@ -1008,7 +1025,7 @@ Module boxed.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_drop :
@@ -1029,10 +1046,10 @@ Module boxed.
               hp
           }
       *)
-      Definition header (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition header (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self H in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1041,14 +1058,14 @@ Module boxed.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                         "sub",
                         []
                       |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                             "as_ptr",
                             []
                           |),
@@ -1064,7 +1081,7 @@ Module boxed.
                         |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [ H ],
+                            Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                             "header_size",
                             []
                           |),
@@ -1094,7 +1111,7 @@ Module boxed.
                                         UnOp.Pure.not
                                           (M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "*mut") [ H ],
+                                              Ty.apply (Ty.path "*mut") [] [ H ],
                                               "is_aligned",
                                               []
                                             |),
@@ -1127,7 +1144,7 @@ Module boxed.
                 |) in
               hp
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_header :
@@ -1139,15 +1156,15 @@ Module boxed.
               self.0.as_ptr()
           }
       *)
-      Definition value (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition value (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self H in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                 "as_ptr",
                 []
               |),
@@ -1161,7 +1178,7 @@ Module boxed.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_value :
@@ -1173,13 +1190,13 @@ Module boxed.
               mem::size_of::<H>()
           }
       *)
-      Definition header_size (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition header_size (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self H in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::mem::size_of", [ H ] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_header_size :
@@ -1191,10 +1208,15 @@ Module boxed.
               Layout::new::<H>().extend(value_layout)
           }
       *)
-      Definition alloc_layout (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition alloc_layout
+          (H : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self H in
-        match τ, α with
-        | [], [ value_layout ] =>
+        match ε, τ, α with
+        | [], [], [ value_layout ] =>
           ltac:(M.monadic
             (let value_layout := M.alloc (| value_layout |) in
             M.call_closure (|
@@ -1213,7 +1235,7 @@ Module boxed.
                 M.read (| value_layout |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_alloc_layout :
@@ -1222,17 +1244,18 @@ Module boxed.
     End Impl_alloc_boxed_thin_WithHeader_H.
     
     Module Impl_core_error_Error_where_core_marker_Sized_T_where_core_error_Error_T_for_alloc_boxed_thin_ThinBox_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ].
       
       (*
           fn source(&self) -> Option<&(dyn Error + 'static)> {
               self.deref().source()
           }
       *)
-      Definition source (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition source (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1241,7 +1264,7 @@ Module boxed.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [ T ],
+                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                     [],
                     "deref",
                     []
@@ -1250,7 +1273,7 @@ Module boxed.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

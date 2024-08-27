@@ -23,9 +23,9 @@ fn main() {
     // Please note that warnings may not be shown in a browser
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ an_integer := M.alloc (| Value.Integer 1 |) in
@@ -154,7 +154,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _noisy_unused_variable := M.alloc (| Value.Integer 2 |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "variable_bindings::main" main.

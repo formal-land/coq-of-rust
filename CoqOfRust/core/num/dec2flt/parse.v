@@ -19,9 +19,9 @@ Module num.
           ((v1.wrapping_add(v2) >> 32) as u32) as u64
       }
       *)
-      Definition parse_8digits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition parse_8digits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
@@ -82,7 +82,7 @@ Module num.
                       (Value.Integer 32)))
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_parse_8digits :
@@ -120,9 +120,9 @@ Module num.
           (s, x)
       }
       *)
-      Definition try_parse_digits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s; x ] =>
+      Definition try_parse_digits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s; x ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             let x := M.alloc (| x |) in
@@ -141,7 +141,7 @@ Module num.
                                   BinOp.Pure.ge
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
@@ -156,7 +156,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::num::dec2flt::common::ByteSlice",
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     [],
                                     "read_u64",
                                     []
@@ -219,10 +219,11 @@ Module num.
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::ops::index::Index",
-                                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeFrom")
+                                                []
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
@@ -262,7 +263,7 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::num::dec2flt::common::ByteSlice",
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       [],
                       "parse_digits",
                       [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
@@ -314,7 +315,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [ M.read (| s |); M.read (| x |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_try_parse_digits :
@@ -344,9 +345,9 @@ Module num.
           *s_ref = s;
       }
       *)
-      Definition try_parse_19digits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s_ref; x ] =>
+      Definition try_parse_19digits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s_ref; x ] =>
           ltac:(M.monadic
             (let s_ref := M.alloc (| s_ref |) in
             let x := M.alloc (| x |) in
@@ -457,7 +458,7 @@ Module num.
               let~ _ := M.write (| M.read (| s_ref |), M.read (| s |) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_try_parse_19digits :
@@ -491,9 +492,9 @@ Module num.
           }
       }
       *)
-      Definition parse_scientific (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s_ref ] =>
+      Definition parse_scientific (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s_ref ] =>
           ltac:(M.monadic
             (let s_ref := M.alloc (| s_ref |) in
             M.read (|
@@ -510,7 +511,7 @@ Module num.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "split_first",
                                 []
                               |),
@@ -575,7 +576,7 @@ Module num.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "first",
                                   []
                                 |),
@@ -620,7 +621,7 @@ Module num.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::num::dec2flt::common::ByteSlice",
-                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               [],
                               "parse_digits",
                               [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
@@ -713,7 +714,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_parse_scientific :
@@ -802,9 +803,9 @@ Module num.
           Some((Number { exponent, mantissa, negative: false, many_digits }, len))
       }
       *)
-      Definition parse_partial_number (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s ] =>
+      Definition parse_partial_number (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.catch_return (|
@@ -832,7 +833,7 @@ Module num.
                                               (UnOp.Pure.not
                                                 (M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "is_empty",
                                                     []
                                                   |),
@@ -884,7 +885,7 @@ Module num.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::num::dec2flt::common::ByteSlice",
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           [],
                           "offset_from",
                           []
@@ -905,7 +906,7 @@ Module num.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "split_first",
                                     []
                                   |),
@@ -955,7 +956,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::num::dec2flt::common::ByteSlice",
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     [],
                                     "offset_from",
                                     []
@@ -1013,7 +1014,7 @@ Module num.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "split_first",
                                     []
                                   |),
@@ -1066,6 +1067,7 @@ Module num.
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [ Ty.path "i64" ],
                                                   [],
                                                   "branch",
@@ -1101,6 +1103,7 @@ Module num.
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
+                                                                []
                                                                 [
                                                                   Ty.tuple
                                                                     [
@@ -1112,6 +1115,7 @@ Module num.
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "core::convert::Infallible"
@@ -1162,7 +1166,7 @@ Module num.
                         (M.call_closure (|
                           M.get_trait_method (|
                             "core::num::dec2flt::common::ByteSlice",
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             [],
                             "offset_from",
                             []
@@ -1230,7 +1234,7 @@ Module num.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "split_first",
                                         []
                                       |),
@@ -1375,7 +1379,7 @@ Module num.
                                               M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::num::dec2flt::common::ByteSlice",
-                                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   [],
                                                   "offset_from",
                                                   []
@@ -1391,10 +1395,11 @@ Module num.
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::ops::index::Index",
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::RangeFrom")
+                                                        []
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index",
@@ -1425,7 +1430,7 @@ Module num.
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::num::dec2flt::common::ByteSlice",
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     [],
                                                     "offset_from",
                                                     []
@@ -1471,7 +1476,7 @@ Module num.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_parse_partial_number :
@@ -1487,9 +1492,9 @@ Module num.
           None
       }
       *)
-      Definition parse_number (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s ] =>
+      Definition parse_number (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.catch_return (|
@@ -1533,7 +1538,7 @@ Module num.
                                             (M.read (| rest |))
                                             (M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "len",
                                                 []
                                               |),
@@ -1565,7 +1570,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_parse_number :
@@ -1617,9 +1622,9 @@ Module num.
           if negative { Some(-float) } else { Some(float) }
       }
       *)
-      Definition parse_inf_nan (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ s; negative ] =>
+      Definition parse_inf_nan (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ s; negative ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             let negative := M.alloc (| negative |) in
@@ -1640,7 +1645,7 @@ Module num.
                                   BinOp.Pure.eq
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
@@ -1656,7 +1661,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::num::dec2flt::common::ByteSlice",
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     [],
                                     "read_u64",
                                     []
@@ -1679,7 +1684,7 @@ Module num.
                                           BinOp.Pure.eq
                                             (M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "len",
                                                 []
                                               |),
@@ -1855,7 +1860,7 @@ Module num.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_parse_inf_nan :

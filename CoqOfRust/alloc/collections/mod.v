@@ -5,6 +5,7 @@ Module collections.
   (* StructRecord
     {
       name := "TryReserveError";
+      const_params := [];
       ty_params := [];
       fields := [ ("kind", Ty.path "alloc::collections::TryReserveErrorKind") ];
     } *)
@@ -13,9 +14,9 @@ Module collections.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveError".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -39,7 +40,7 @@ Module collections.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -65,9 +66,9 @@ Module collections.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveError".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -92,7 +93,7 @@ Module collections.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -118,9 +119,13 @@ Module collections.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveError".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -129,7 +134,7 @@ Module collections.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -145,9 +150,9 @@ Module collections.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveError".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -172,7 +177,7 @@ Module collections.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -191,9 +196,9 @@ Module collections.
             self.kind.clone()
         }
     *)
-    Definition kind (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition kind (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -212,7 +217,7 @@ Module collections.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_kind : M.IsAssociatedFunction Self "kind" kind.
@@ -221,6 +226,7 @@ Module collections.
   (*
   Enum TryReserveErrorKind
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -245,9 +251,9 @@ Module collections.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveErrorKind".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -315,7 +321,7 @@ Module collections.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -341,9 +347,9 @@ Module collections.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveErrorKind".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -442,7 +448,7 @@ Module collections.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -468,9 +474,13 @@ Module collections.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveErrorKind".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -486,7 +496,7 @@ Module collections.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -502,9 +512,9 @@ Module collections.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveErrorKind".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -567,7 +577,7 @@ Module collections.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -586,13 +596,13 @@ Module collections.
             Self { kind }
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ kind ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ kind ] =>
         ltac:(M.monadic
           (let kind := M.alloc (| kind |) in
           Value.StructRecord "alloc::collections::TryReserveError" [ ("kind", M.read (| kind |)) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -611,9 +621,9 @@ Module collections.
             TryReserveErrorKind::CapacityOverflow
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ β0 ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (|
@@ -626,7 +636,7 @@ Module collections.
                     []))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -657,9 +667,9 @@ Module collections.
             fmt.write_str(reason)
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; fmt ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; fmt ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let fmt := M.alloc (| fmt |) in
@@ -674,6 +684,7 @@ Module collections.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
                           "branch",
@@ -711,10 +722,12 @@ Module collections.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.path "core::fmt::Error"
@@ -782,7 +795,7 @@ Module collections.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "SomeType";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u32" ];
   } *)
@@ -11,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "OtherType";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "bool" ];
   } *)
@@ -23,9 +25,9 @@ Module Impl_functions_order_SomeType.
           self.meth2();
       }
   *)
-  Definition meth1 (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition meth1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -38,19 +40,19 @@ Module Impl_functions_order_SomeType.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1.
   
   (*     fn meth2(self) {} *)
-  Definition meth2 (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition meth2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2.
@@ -62,9 +64,9 @@ fn depends_on_trait_impl(u: u32, b: bool) {
     SomeType(u).some_trait_foo();
 }
 *)
-Definition depends_on_trait_impl (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ u; b ] =>
+Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ u; b ] =>
     ltac:(M.monadic
       (let u := M.alloc (| u |) in
       let b := M.alloc (| b |) in
@@ -97,7 +99,7 @@ Definition depends_on_trait_impl (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_depends_on_trait_impl :
@@ -114,9 +116,9 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
           self.some_trait_bar()
       }
   *)
-  Definition some_trait_foo (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition some_trait_foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
@@ -129,17 +131,17 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
           |),
           [ M.read (| self |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*     fn some_trait_bar(&self) {} *)
-  Definition some_trait_bar (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition some_trait_bar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -158,23 +160,23 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   Definition Self : Ty.t := Ty.path "functions_order::OtherType".
   
   (*     fn some_trait_foo(&self) {} *)
-  Definition some_trait_foo (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition some_trait_foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*     fn some_trait_bar(&self) {} *)
-  Definition some_trait_bar (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition some_trait_bar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -196,9 +198,9 @@ Module inner_mod.
           tar();
       }
   *)
-  Definition bar (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition bar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -207,14 +209,17 @@ Module inner_mod.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_bar : M.IsFunction "functions_order::inner_mod::bar" bar.
   
   (*     fn tar() {} *)
-  Definition tar (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+  Definition tar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] => ltac:(M.monadic (Value.Tuple []))
+    | _, _, _ => M.impossible
+    end.
   
   Axiom Function_tar : M.IsFunction "functions_order::inner_mod::tar" tar.
   
@@ -224,9 +229,9 @@ Module inner_mod.
                 tack();
             }
     *)
-    Definition tick (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition tick (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ _ :=
@@ -238,14 +243,17 @@ Module inner_mod.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_tick : M.IsFunction "functions_order::inner_mod::nested_mod::tick" tick.
     
     (*         fn tack() {} *)
-    Definition tack (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+    Definition tack (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] => ltac:(M.monadic (Value.Tuple []))
+      | _, _, _ => M.impossible
+      end.
     
     Axiom Function_tack : M.IsFunction "functions_order::inner_mod::nested_mod::tack" tack.
   End nested_mod.
@@ -259,9 +267,9 @@ fn main() {
     SomeType(0).meth1();
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -279,13 +287,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "functions_order::main" main.
 
 (* fn foo() {} *)
-Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] => ltac:(M.monadic (Value.Tuple []))
+  | _, _, _ => M.impossible
+  end.
 
 Axiom Function_foo : M.IsFunction "functions_order::foo" foo.

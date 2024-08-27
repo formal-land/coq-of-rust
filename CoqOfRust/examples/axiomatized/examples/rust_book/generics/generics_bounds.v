@@ -7,6 +7,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Rectangle";
+    const_params := [];
     ty_params := [];
     fields := [ ("length", Ty.path "f64"); ("height", Ty.path "f64") ];
   } *)
@@ -14,7 +15,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Definition Self : Ty.t := Ty.path "generics_bounds::Rectangle".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -27,6 +28,7 @@ End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 (* StructRecord
   {
     name := "Triangle";
+    const_params := [];
     ty_params := [];
     fields := [ ("length", Ty.path "f64"); ("height", Ty.path "f64") ];
   } *)
@@ -34,7 +36,7 @@ End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Definition Self : Ty.t := Ty.path "generics_bounds::Rectangle".
   
-  Parameter area : (list Ty.t) -> (list Value.t) -> M.
+  Parameter area : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -44,14 +46,14 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       (* Instance *) [ ("area", InstanceField.Method area) ].
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
-Parameter print_debug : (list Ty.t) -> (list Value.t) -> M.
+Parameter print_debug : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_print_debug : M.IsFunction "generics_bounds::print_debug" print_debug.
 
-Parameter area : (list Ty.t) -> (list Value.t) -> M.
+Parameter area : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_area : M.IsFunction "generics_bounds::area" area.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "generics_bounds::main" main.

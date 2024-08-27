@@ -12,9 +12,9 @@ Module hint.
       }
   }
   *)
-  Definition unreachable_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition unreachable_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -52,7 +52,7 @@ Module hint.
             M.call_closure (| M.get_function (| "core::intrinsics::unreachable", [] |), [] |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_unreachable_unchecked :
@@ -96,9 +96,9 @@ Module hint.
       }
   }
   *)
-  Definition spin_loop (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition spin_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -110,7 +110,7 @@ Module hint.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_spin_loop : M.IsFunction "core::hint::spin_loop" spin_loop.
@@ -120,16 +120,16 @@ Module hint.
       crate::intrinsics::black_box(dummy)
   }
   *)
-  Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ dummy ] =>
+  Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ dummy ] =>
       ltac:(M.monadic
         (let dummy := M.alloc (| dummy |) in
         M.call_closure (|
           M.get_function (| "core::intrinsics::black_box", [ T ] |),
           [ M.read (| dummy |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_black_box : M.IsFunction "core::hint::black_box" black_box.
@@ -139,13 +139,13 @@ Module hint.
       value
   }
   *)
-  Definition must_use (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ value ] =>
+  Definition must_use (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         M.read (| value |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_must_use : M.IsFunction "core::hint::must_use" must_use.

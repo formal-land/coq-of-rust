@@ -11,13 +11,13 @@ fn is_big(n: i32) -> bool {
     n > THRESHOLD
 }
 *)
-Definition is_big (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ n ] =>
+Definition is_big (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ n ] =>
     ltac:(M.monadic
       (let n := M.alloc (| n |) in
       BinOp.Pure.gt (M.read (| n |)) (M.read (| M.get_constant (| "constants::THRESHOLD" |) |))))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_is_big : M.IsFunction "constants::is_big" is_big.
@@ -36,9 +36,9 @@ fn main() {
     // FIXME ^ Comment out this line
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ n := M.alloc (| Value.Integer 16 |) in
@@ -67,7 +67,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [ M.read (| M.get_constant (| "constants::LANGUAGE" |) |) ]
                               |)
@@ -156,7 +156,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
                                   M.match_operator (|
@@ -195,7 +195,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "constants::main" main.

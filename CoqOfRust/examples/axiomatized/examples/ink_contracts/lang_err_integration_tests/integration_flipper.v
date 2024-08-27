@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Flipper";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "bool") ];
   } *)
@@ -11,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "FlipperError";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -18,7 +20,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
   Definition Self : Ty.t := Ty.path "integration_flipper::FlipperError".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -31,27 +33,27 @@ End Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
 Module Impl_integration_flipper_Flipper.
   Definition Self : Ty.t := Ty.path "integration_flipper::Flipper".
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter new_default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new_default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   
-  Parameter try_new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter try_new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
   
-  Parameter flip : (list Ty.t) -> (list Value.t) -> M.
+  Parameter flip : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   
-  Parameter err_flip : (list Ty.t) -> (list Value.t) -> M.
+  Parameter err_flip : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_err_flip : M.IsAssociatedFunction Self "err_flip" err_flip.
 End Impl_integration_flipper_Flipper.

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Point";
+    const_params := [];
     ty_params := [];
     fields := [ ("x", Ty.path "f64"); ("y", Ty.path "f64") ];
   } *)
@@ -11,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -24,7 +25,7 @@ End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -44,6 +45,7 @@ End Impl_core_marker_Copy_for_box_stack_heap_Point.
 (* StructRecord
   {
     name := "Rectangle";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -52,14 +54,14 @@ End Impl_core_marker_Copy_for_box_stack_heap_Point.
       ];
   } *)
 
-Parameter origin : (list Ty.t) -> (list Value.t) -> M.
+Parameter origin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_origin : M.IsFunction "box_stack_heap::origin" origin.
 
-Parameter boxed_origin : (list Ty.t) -> (list Value.t) -> M.
+Parameter boxed_origin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_boxed_origin : M.IsFunction "box_stack_heap::boxed_origin" boxed_origin.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "box_stack_heap::main" main.

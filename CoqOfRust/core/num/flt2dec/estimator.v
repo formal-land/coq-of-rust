@@ -13,9 +13,13 @@ Module num.
           (((nbits + exp as i64) * 1292913986) >> 32) as i16
       }
       *)
-      Definition estimate_scaling_factor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ mant; exp ] =>
+      Definition estimate_scaling_factor
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ mant; exp ] =>
           ltac:(M.monadic
             (let mant := M.alloc (| mant |) in
             let exp := M.alloc (| exp |) in
@@ -44,7 +48,7 @@ Module num.
                     (Value.Integer 32))
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_estimate_scaling_factor :

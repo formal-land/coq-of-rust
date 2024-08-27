@@ -7,19 +7,20 @@ Module iter.
       (* StructRecord
         {
           name := "StepBy";
+          const_params := [];
           ty_params := [ "I" ];
           fields := [ ("iter", I); ("step", Ty.path "usize"); ("first_take", Ty.path "bool") ];
         } *)
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_I_for_core_iter_adapters_step_by_StepBy_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ].
         
         (* Clone *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -71,7 +72,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -85,13 +86,13 @@ Module iter.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_step_by_StepBy_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ].
         
         (* Debug *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -132,7 +133,7 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -146,7 +147,7 @@ Module iter.
       
       Module Impl_core_iter_adapters_step_by_StepBy_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ].
         
         (*
             pub(in crate::iter) fn new(iter: I, step: usize) -> StepBy<I> {
@@ -155,10 +156,10 @@ Module iter.
                 StepBy { iter, step: step - 1, first_take: true }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ iter; step ] =>
+          match ε, τ, α with
+          | [], [], [ iter; step ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               let step := M.alloc (| step |) in
@@ -210,7 +211,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -222,10 +223,15 @@ Module iter.
                 if self.first_take { if rem == 0 { self.step } else { rem - 1 } } else { rem }
             }
         *)
-        Definition next_back_index (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back_index
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -305,7 +311,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_next_back_index :
@@ -315,7 +321,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_step_by_StepBy_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ].
         
         (*     type Item = I::Item; *)
         Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
@@ -325,23 +331,23 @@ Module iter.
                 self.spec_next()
             }
         *)
-        Definition next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::adapters::step_by::StepByImpl",
-                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                   [ I ],
                   "spec_next",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -349,23 +355,23 @@ Module iter.
                 self.spec_size_hint()
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::adapters::step_by::StepByImpl",
-                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                   [ I ],
                   "spec_size_hint",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -373,24 +379,24 @@ Module iter.
                 self.spec_nth(n)
             }
         *)
-        Definition nth (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::adapters::step_by::StepByImpl",
-                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                   [ I ],
                   "spec_nth",
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -402,10 +408,10 @@ Module iter.
                 self.spec_try_fold(acc, f)
             }
         *)
-        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Acc; F; R ], [ self; acc; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; acc; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let acc := M.alloc (| acc |) in
@@ -413,14 +419,14 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::adapters::step_by::StepByImpl",
-                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                   [ I ],
                   "spec_try_fold",
                   [ Acc; F; R ]
                 |),
                 [ M.read (| self |); M.read (| acc |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -431,10 +437,10 @@ Module iter.
                 self.spec_fold(acc, f)
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Acc; F ], [ self; acc; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; acc; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let acc := M.alloc (| acc |) in
@@ -442,14 +448,14 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::adapters::step_by::StepByImpl",
-                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                   [ I ],
                   "spec_fold",
                   [ Acc; F ]
                 |),
                 [ M.read (| self |); M.read (| acc |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -472,30 +478,30 @@ Module iter.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_iter_traits_exact_size_ExactSizeIterator_I_for_core_iter_adapters_step_by_StepBy_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ].
         
         (*
             fn next_back(&mut self) -> Option<Self::Item> {
                 self.spec_next_back()
             }
         *)
-        Definition next_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::adapters::step_by::StepByBackImpl",
-                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                   [ I ],
                   "spec_next_back",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -503,24 +509,24 @@ Module iter.
                 self.spec_nth_back(n)
             }
         *)
-        Definition nth_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth_back (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::adapters::step_by::StepByBackImpl",
-                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                   [ I ],
                   "spec_nth_back",
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -532,10 +538,10 @@ Module iter.
                 self.spec_try_rfold(init, f)
             }
         *)
-        Definition try_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_rfold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Acc; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -543,14 +549,14 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::adapters::step_by::StepByBackImpl",
-                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                   [ I ],
                   "spec_try_rfold",
                   [ Acc; F; R ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -562,10 +568,10 @@ Module iter.
                 self.spec_rfold(init, f)
             }
         *)
-        Definition rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -573,14 +579,14 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::adapters::step_by::StepByBackImpl",
-                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                   [ I ],
                   "spec_rfold",
                   [ Acc; F ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -600,7 +606,7 @@ Module iter.
       
       Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_for_core_iter_adapters_step_by_StepBy_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ].
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -622,15 +628,15 @@ Module iter.
                 inner
             }
         *)
-        Definition setup (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition setup (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ inner; _step ] =>
+          match ε, τ, α with
+          | [], [], [ inner; _step ] =>
             ltac:(M.monadic
               (let inner := M.alloc (| inner |) in
               let _step := M.alloc (| _step |) in
               M.read (| inner |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -650,7 +656,7 @@ Module iter.
       
       Module Impl_core_iter_adapters_step_by_StepByImpl_where_core_iter_traits_iterator_Iterator_I_I_for_core_iter_adapters_step_by_StepBy_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ].
         
         (*     type Item = I::Item; *)
         Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
@@ -662,10 +668,10 @@ Module iter.
                 self.iter.nth(step_size)
             }
         *)
-        Definition spec_next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_next (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -725,7 +731,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -751,10 +757,15 @@ Module iter.
                 }
             }
         *)
-        Definition spec_size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_size_hint
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -837,6 +848,7 @@ Module iter.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "usize" ],
                                           "map",
                                           [ Ty.path "usize"; Ty.associated ]
@@ -883,6 +895,7 @@ Module iter.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "usize" ],
                                           "map",
                                           [ Ty.path "usize"; Ty.associated ]
@@ -896,7 +909,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -944,10 +957,10 @@ Module iter.
                 }
             }
         *)
-        Definition spec_nth (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_nth (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -1132,6 +1145,7 @@ Module iter.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
+                                                        []
                                                         [ Ty.path "usize" ],
                                                       "is_some",
                                                       []
@@ -1170,6 +1184,7 @@ Module iter.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [ Ty.path "usize" ],
                                                           "unwrap",
                                                           []
@@ -1285,7 +1300,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1309,10 +1324,15 @@ Module iter.
                 from_fn(nth(&mut self.iter, self.step)).try_fold(acc, f)
             }
         *)
-        Definition spec_try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_try_fold
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Acc; F; R ], [ self; acc; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; acc; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let acc := M.alloc (| acc |) in
@@ -1482,6 +1502,7 @@ Module iter.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
                             (Ty.path "core::iter::sources::from_fn::FromFn")
+                            []
                             [ Ty.associated ],
                           [],
                           "try_fold",
@@ -1522,7 +1543,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1545,10 +1566,10 @@ Module iter.
                 from_fn(nth(&mut self.iter, self.step)).fold(acc, f)
             }
         *)
-        Definition spec_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Acc; F ], [ self; acc; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; acc; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let acc := M.alloc (| acc |) in
@@ -1645,6 +1666,7 @@ Module iter.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
                             (Ty.path "core::iter::sources::from_fn::FromFn")
+                            []
                             [ Ty.associated ],
                           [],
                           "fold",
@@ -1683,7 +1705,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1705,7 +1727,7 @@ Module iter.
       
       Module Impl_core_iter_adapters_step_by_StepByBackImpl_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_iter_traits_exact_size_ExactSizeIterator_I_I_for_core_iter_adapters_step_by_StepBy_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ].
         
         (*     type Item = I::Item; *)
         Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
@@ -1715,10 +1737,15 @@ Module iter.
                 self.iter.nth_back(self.next_back_index())
             }
         *)
-        Definition spec_next_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_next_back
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -1737,7 +1764,7 @@ Module iter.
                   |);
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                      Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                       "next_back_index",
                       []
                     |),
@@ -1745,7 +1772,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1758,10 +1785,15 @@ Module iter.
                 self.iter.nth_back(n)
             }
         *)
-        Definition spec_nth_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_nth_back
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -1789,7 +1821,7 @@ Module iter.
                         |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                            Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                             "next_back_index",
                             []
                           |),
@@ -1818,7 +1850,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1844,10 +1876,15 @@ Module iter.
                 }
             }
         *)
-        Definition spec_try_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_try_rfold
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Acc; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -1860,7 +1897,7 @@ Module iter.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::double_ended::DoubleEndedIterator",
-                            Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                            Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                             [],
                             "next_back",
                             []
@@ -1966,6 +2003,7 @@ Module iter.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::iter::sources::from_fn::FromFn")
+                                    []
                                     [ Ty.associated ],
                                   [],
                                   "try_fold",
@@ -2012,7 +2050,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -2038,10 +2076,15 @@ Module iter.
                 }
             }
         *)
-        Definition spec_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_rfold
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -2052,7 +2095,7 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::double_ended::DoubleEndedIterator",
-                        Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ I ],
+                        Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
                         [],
                         "next_back",
                         []
@@ -2093,6 +2136,7 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
                                 (Ty.path "core::iter::sources::from_fn::FromFn")
+                                []
                                 [ Ty.associated ],
                               [],
                               "fold",
@@ -2132,7 +2176,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -2152,7 +2196,7 @@ Module iter.
       End Impl_core_iter_adapters_step_by_StepByBackImpl_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_iter_traits_exact_size_ExactSizeIterator_I_I_for_core_iter_adapters_step_by_StepBy_I.
       
       Module Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_u8_for_core_ops_range_Range_u8.
-        Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ].
+        Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ].
         
         (*
                     fn setup(mut r: Range<$t>, step: usize) -> Range<$t> {
@@ -2165,9 +2209,9 @@ Module iter.
                         r
                     }
         *)
-        Definition setup (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ r; step ] =>
+        Definition setup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ r; step ] =>
             ltac:(M.monadic
               (let r := M.alloc (| r |) in
               let step := M.alloc (| step |) in
@@ -2179,7 +2223,7 @@ Module iter.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
                             [],
                             "size_hint",
                             []
@@ -2204,7 +2248,7 @@ Module iter.
                   |) in
                 r
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -2212,7 +2256,7 @@ Module iter.
             "core::iter::adapters::step_by::SpecRangeSetup"
             Self
             (* Trait polymorphic types *)
-            [ (* T *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ] ]
+            [ (* T *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ] ]
             (* Instance *) [ ("setup", InstanceField.Method setup) ].
       End Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_u8_for_core_ops_range_Range_u8.
       
@@ -2220,7 +2264,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ] ].
         
         (*
                     fn spec_next(&mut self) -> Option<$t> {
@@ -2241,9 +2286,9 @@ Module iter.
                         }
                     }
         *)
-        Definition spec_next (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -2253,6 +2298,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         "unwrap_or",
                         []
@@ -2357,7 +2403,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -2366,9 +2412,9 @@ Module iter.
                         (remaining, Some(remaining))
                     }
         *)
-        Definition spec_size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -2395,7 +2441,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -2404,9 +2450,9 @@ Module iter.
                         self.next()
                     }
         *)
-        Definition spec_nth (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition spec_nth (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -2419,7 +2465,7 @@ Module iter.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.tuple [] ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ],
                               [],
                               "branch",
                               []
@@ -2429,6 +2475,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
                                   "ok",
                                   []
@@ -2439,9 +2486,11 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::step_by::StepBy")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
@@ -2474,10 +2523,12 @@ Module iter.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u8" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -2507,7 +2558,8 @@ Module iter.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::step_by::StepBy")
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ] ],
                           [],
                           "next",
                           []
@@ -2517,7 +2569,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -2533,9 +2585,9 @@ Module iter.
                         try { accum }
                     }
         *)
-        Definition spec_try_fold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F; R ], [ self; init; f ] =>
+        Definition spec_try_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -2559,9 +2611,11 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::step_by::StepBy")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "u8" ]
                                             ],
                                           [],
@@ -2683,7 +2737,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -2706,9 +2760,9 @@ Module iter.
                         acc
                     }
         *)
-        Definition spec_fold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+        Definition spec_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -2720,6 +2774,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         "unwrap_or",
                         []
@@ -2782,7 +2837,7 @@ Module iter.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
                             [],
                             "into_iter",
                             []
@@ -2808,6 +2863,7 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "u8" ],
                                           [],
                                           "next",
@@ -2873,7 +2929,7 @@ Module iter.
                     |)) in
                 acc
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -2881,7 +2937,7 @@ Module iter.
             "core::iter::adapters::step_by::StepByImpl"
             Self
             (* Trait polymorphic types *)
-            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ] ]
+            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ] ]
             (* Instance *)
             [
               ("spec_next", InstanceField.Method spec_next);
@@ -2896,7 +2952,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ] ].
         
         Axiom Implements :
           M.IsTraitInstance
@@ -2907,7 +2964,7 @@ Module iter.
       End Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u8.
       
       Module Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_u16_for_core_ops_range_Range_u16.
-        Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u16" ].
+        Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ].
         
         (*
                     fn setup(mut r: Range<$t>, step: usize) -> Range<$t> {
@@ -2920,9 +2977,9 @@ Module iter.
                         r
                     }
         *)
-        Definition setup (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ r; step ] =>
+        Definition setup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ r; step ] =>
             ltac:(M.monadic
               (let r := M.alloc (| r |) in
               let step := M.alloc (| step |) in
@@ -2934,7 +2991,7 @@ Module iter.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u16" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ],
                             [],
                             "size_hint",
                             []
@@ -2959,7 +3016,7 @@ Module iter.
                   |) in
                 r
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -2967,7 +3024,7 @@ Module iter.
             "core::iter::adapters::step_by::SpecRangeSetup"
             Self
             (* Trait polymorphic types *)
-            [ (* T *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u16" ] ]
+            [ (* T *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ] ]
             (* Instance *) [ ("setup", InstanceField.Method setup) ].
       End Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_u16_for_core_ops_range_Range_u16.
       
@@ -2975,7 +3032,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u16" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ] ].
         
         (*
                     fn spec_next(&mut self) -> Option<$t> {
@@ -2996,9 +3054,9 @@ Module iter.
                         }
                     }
         *)
-        Definition spec_next (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -3008,6 +3066,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         "unwrap_or",
                         []
@@ -3112,7 +3171,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -3121,9 +3180,9 @@ Module iter.
                         (remaining, Some(remaining))
                     }
         *)
-        Definition spec_size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -3150,7 +3209,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -3159,9 +3218,9 @@ Module iter.
                         self.next()
                     }
         *)
-        Definition spec_nth (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition spec_nth (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -3174,7 +3233,7 @@ Module iter.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.tuple [] ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ],
                               [],
                               "branch",
                               []
@@ -3184,6 +3243,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
                                   "ok",
                                   []
@@ -3194,9 +3254,11 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::step_by::StepBy")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "u16" ]
                                         ],
                                       [],
@@ -3229,10 +3291,12 @@ Module iter.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u16" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -3262,7 +3326,8 @@ Module iter.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::step_by::StepBy")
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u16" ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ] ],
                           [],
                           "next",
                           []
@@ -3272,7 +3337,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -3288,9 +3353,9 @@ Module iter.
                         try { accum }
                     }
         *)
-        Definition spec_try_fold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F; R ], [ self; init; f ] =>
+        Definition spec_try_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -3314,9 +3379,11 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::step_by::StepBy")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "u16" ]
                                             ],
                                           [],
@@ -3438,7 +3505,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -3461,9 +3528,9 @@ Module iter.
                         acc
                     }
         *)
-        Definition spec_fold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+        Definition spec_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -3475,6 +3542,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         "unwrap_or",
                         []
@@ -3537,7 +3605,7 @@ Module iter.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u16" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ],
                             [],
                             "into_iter",
                             []
@@ -3563,6 +3631,7 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "u16" ],
                                           [],
                                           "next",
@@ -3628,7 +3697,7 @@ Module iter.
                     |)) in
                 acc
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3636,7 +3705,7 @@ Module iter.
             "core::iter::adapters::step_by::StepByImpl"
             Self
             (* Trait polymorphic types *)
-            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u16" ] ]
+            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ] ]
             (* Instance *)
             [
               ("spec_next", InstanceField.Method spec_next);
@@ -3651,7 +3720,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u16" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ] ].
         
         Axiom Implements :
           M.IsTraitInstance
@@ -3662,7 +3732,7 @@ Module iter.
       End Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u16.
       
       Module Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_u32_for_core_ops_range_Range_u32.
-        Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ].
+        Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ].
         
         (*
                     fn setup(mut r: Range<$t>, step: usize) -> Range<$t> {
@@ -3675,9 +3745,9 @@ Module iter.
                         r
                     }
         *)
-        Definition setup (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ r; step ] =>
+        Definition setup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ r; step ] =>
             ltac:(M.monadic
               (let r := M.alloc (| r |) in
               let step := M.alloc (| step |) in
@@ -3689,7 +3759,7 @@ Module iter.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                             [],
                             "size_hint",
                             []
@@ -3714,7 +3784,7 @@ Module iter.
                   |) in
                 r
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3722,7 +3792,7 @@ Module iter.
             "core::iter::adapters::step_by::SpecRangeSetup"
             Self
             (* Trait polymorphic types *)
-            [ (* T *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] ]
+            [ (* T *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ] ]
             (* Instance *) [ ("setup", InstanceField.Method setup) ].
       End Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_u32_for_core_ops_range_Range_u32.
       
@@ -3730,7 +3800,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ] ].
         
         (*
                     fn spec_next(&mut self) -> Option<$t> {
@@ -3751,9 +3822,9 @@ Module iter.
                         }
                     }
         *)
-        Definition spec_next (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -3763,6 +3834,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         "unwrap_or",
                         []
@@ -3867,7 +3939,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -3876,9 +3948,9 @@ Module iter.
                         (remaining, Some(remaining))
                     }
         *)
-        Definition spec_size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -3905,7 +3977,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -3914,9 +3986,9 @@ Module iter.
                         self.next()
                     }
         *)
-        Definition spec_nth (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition spec_nth (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -3929,7 +4001,7 @@ Module iter.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.tuple [] ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ],
                               [],
                               "branch",
                               []
@@ -3939,6 +4011,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
                                   "ok",
                                   []
@@ -3949,9 +4022,11 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::step_by::StepBy")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "u32" ]
                                         ],
                                       [],
@@ -3984,10 +4059,12 @@ Module iter.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u32" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -4017,7 +4094,8 @@ Module iter.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::step_by::StepBy")
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ] ],
                           [],
                           "next",
                           []
@@ -4027,7 +4105,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -4043,9 +4121,9 @@ Module iter.
                         try { accum }
                     }
         *)
-        Definition spec_try_fold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F; R ], [ self; init; f ] =>
+        Definition spec_try_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -4069,9 +4147,11 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::step_by::StepBy")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "u32" ]
                                             ],
                                           [],
@@ -4193,7 +4273,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -4216,9 +4296,9 @@ Module iter.
                         acc
                     }
         *)
-        Definition spec_fold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+        Definition spec_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -4230,6 +4310,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         "unwrap_or",
                         []
@@ -4292,7 +4373,7 @@ Module iter.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                             [],
                             "into_iter",
                             []
@@ -4318,6 +4399,7 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "u32" ],
                                           [],
                                           "next",
@@ -4383,7 +4465,7 @@ Module iter.
                     |)) in
                 acc
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4391,7 +4473,7 @@ Module iter.
             "core::iter::adapters::step_by::StepByImpl"
             Self
             (* Trait polymorphic types *)
-            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] ]
+            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ] ]
             (* Instance *)
             [
               ("spec_next", InstanceField.Method spec_next);
@@ -4406,7 +4488,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ] ].
         
         Axiom Implements :
           M.IsTraitInstance
@@ -4417,7 +4500,7 @@ Module iter.
       End Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u32.
       
       Module Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_u64_for_core_ops_range_Range_u64.
-        Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u64" ].
+        Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ].
         
         (*
                     fn setup(mut r: Range<$t>, step: usize) -> Range<$t> {
@@ -4430,9 +4513,9 @@ Module iter.
                         r
                     }
         *)
-        Definition setup (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ r; step ] =>
+        Definition setup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ r; step ] =>
             ltac:(M.monadic
               (let r := M.alloc (| r |) in
               let step := M.alloc (| step |) in
@@ -4444,7 +4527,7 @@ Module iter.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u64" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ],
                             [],
                             "size_hint",
                             []
@@ -4469,7 +4552,7 @@ Module iter.
                   |) in
                 r
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4477,7 +4560,7 @@ Module iter.
             "core::iter::adapters::step_by::SpecRangeSetup"
             Self
             (* Trait polymorphic types *)
-            [ (* T *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u64" ] ]
+            [ (* T *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ] ]
             (* Instance *) [ ("setup", InstanceField.Method setup) ].
       End Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_u64_for_core_ops_range_Range_u64.
       
@@ -4485,7 +4568,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u64" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ] ].
         
         (*
                     fn spec_next(&mut self) -> Option<$t> {
@@ -4506,9 +4590,9 @@ Module iter.
                         }
                     }
         *)
-        Definition spec_next (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -4518,6 +4602,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         "unwrap_or",
                         []
@@ -4622,7 +4707,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -4631,9 +4716,9 @@ Module iter.
                         (remaining, Some(remaining))
                     }
         *)
-        Definition spec_size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -4660,7 +4745,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -4669,9 +4754,9 @@ Module iter.
                         self.next()
                     }
         *)
-        Definition spec_nth (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition spec_nth (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -4684,7 +4769,7 @@ Module iter.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.tuple [] ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ],
                               [],
                               "branch",
                               []
@@ -4694,6 +4779,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
                                   "ok",
                                   []
@@ -4704,9 +4790,11 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::step_by::StepBy")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "u64" ]
                                         ],
                                       [],
@@ -4739,10 +4827,12 @@ Module iter.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u64" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -4772,7 +4862,8 @@ Module iter.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::step_by::StepBy")
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u64" ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ] ],
                           [],
                           "next",
                           []
@@ -4782,7 +4873,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -4798,9 +4889,9 @@ Module iter.
                         try { accum }
                     }
         *)
-        Definition spec_try_fold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F; R ], [ self; init; f ] =>
+        Definition spec_try_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -4824,9 +4915,11 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::step_by::StepBy")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "u64" ]
                                             ],
                                           [],
@@ -4948,7 +5041,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -4971,9 +5064,9 @@ Module iter.
                         acc
                     }
         *)
-        Definition spec_fold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+        Definition spec_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -4985,6 +5078,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         "unwrap_or",
                         []
@@ -5047,7 +5141,7 @@ Module iter.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u64" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ],
                             [],
                             "into_iter",
                             []
@@ -5073,6 +5167,7 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "u64" ],
                                           [],
                                           "next",
@@ -5138,7 +5233,7 @@ Module iter.
                     |)) in
                 acc
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5146,7 +5241,7 @@ Module iter.
             "core::iter::adapters::step_by::StepByImpl"
             Self
             (* Trait polymorphic types *)
-            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u64" ] ]
+            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ] ]
             (* Instance *)
             [
               ("spec_next", InstanceField.Method spec_next);
@@ -5161,7 +5256,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u64" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ] ].
         
         Axiom Implements :
           M.IsTraitInstance
@@ -5172,7 +5268,8 @@ Module iter.
       End Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u64.
       
       Module Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_usize_for_core_ops_range_Range_usize.
-        Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ].
+        Definition Self : Ty.t :=
+          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ].
         
         (*
                     fn setup(mut r: Range<$t>, step: usize) -> Range<$t> {
@@ -5185,9 +5282,9 @@ Module iter.
                         r
                     }
         *)
-        Definition setup (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ r; step ] =>
+        Definition setup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ r; step ] =>
             ltac:(M.monadic
               (let r := M.alloc (| r |) in
               let step := M.alloc (| step |) in
@@ -5199,7 +5296,7 @@ Module iter.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
                             "size_hint",
                             []
@@ -5224,7 +5321,7 @@ Module iter.
                   |) in
                 r
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5232,7 +5329,7 @@ Module iter.
             "core::iter::adapters::step_by::SpecRangeSetup"
             Self
             (* Trait polymorphic types *)
-            [ (* T *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+            [ (* T *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
             (* Instance *) [ ("setup", InstanceField.Method setup) ].
       End Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_usize_for_core_ops_range_Range_usize.
       
@@ -5240,7 +5337,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ].
         
         (*
                     fn spec_next(&mut self) -> Option<$t> {
@@ -5261,9 +5359,9 @@ Module iter.
                         }
                     }
         *)
-        Definition spec_next (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -5273,6 +5371,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "usize"; Ty.path "core::convert::Infallible" ],
                         "unwrap_or",
                         []
@@ -5377,7 +5476,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -5386,9 +5485,9 @@ Module iter.
                         (remaining, Some(remaining))
                     }
         *)
-        Definition spec_size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -5413,7 +5512,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -5422,9 +5521,9 @@ Module iter.
                         self.next()
                     }
         *)
-        Definition spec_nth (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition spec_nth (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -5437,7 +5536,7 @@ Module iter.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.tuple [] ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ],
                               [],
                               "branch",
                               []
@@ -5447,6 +5546,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
                                   "ok",
                                   []
@@ -5457,9 +5557,11 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::step_by::StepBy")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                       [],
@@ -5492,10 +5594,12 @@ Module iter.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "usize" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -5525,7 +5629,8 @@ Module iter.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::step_by::StepBy")
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                           [],
                           "next",
                           []
@@ -5535,7 +5640,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -5551,9 +5656,9 @@ Module iter.
                         try { accum }
                     }
         *)
-        Definition spec_try_fold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F; R ], [ self; init; f ] =>
+        Definition spec_try_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -5577,9 +5682,11 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::step_by::StepBy")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "usize" ]
                                             ],
                                           [],
@@ -5701,7 +5808,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -5724,9 +5831,9 @@ Module iter.
                         acc
                     }
         *)
-        Definition spec_fold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+        Definition spec_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -5738,6 +5845,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "usize"; Ty.path "core::convert::Infallible" ],
                         "unwrap_or",
                         []
@@ -5800,7 +5908,7 @@ Module iter.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
                             "into_iter",
                             []
@@ -5826,6 +5934,7 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ],
                                           [],
                                           "next",
@@ -5891,7 +6000,7 @@ Module iter.
                     |)) in
                 acc
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5899,7 +6008,7 @@ Module iter.
             "core::iter::adapters::step_by::StepByImpl"
             Self
             (* Trait polymorphic types *)
-            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
             (* Instance *)
             [
               ("spec_next", InstanceField.Method spec_next);
@@ -5914,7 +6023,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ].
         
         Axiom Implements :
           M.IsTraitInstance
@@ -5928,7 +6038,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ] ].
         
         (*
                     fn spec_next_back(&mut self) -> Option<Self::Item>
@@ -5945,9 +6056,9 @@ Module iter.
                         }
                     }
         *)
-        Definition spec_next_back (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -6036,7 +6147,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -6049,9 +6160,9 @@ Module iter.
                         self.next_back()
                     }
         *)
-        Definition spec_nth_back (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition spec_nth_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -6071,6 +6182,7 @@ Module iter.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize"
                                           ],
                                         "is_err",
@@ -6083,9 +6195,11 @@ Module iter.
                                               "core::iter::traits::double_ended::DoubleEndedIterator",
                                               Ty.apply
                                                 (Ty.path "core::iter::adapters::step_by::StepBy")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::ops::range::Range")
+                                                    []
                                                     [ Ty.path "u8" ]
                                                 ],
                                               [],
@@ -6121,7 +6235,8 @@ Module iter.
                           "core::iter::traits::double_ended::DoubleEndedIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::step_by::StepBy")
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ] ],
                           [],
                           "next_back",
                           []
@@ -6131,7 +6246,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -6148,9 +6263,9 @@ Module iter.
                         try { accum }
                     }
         *)
-        Definition spec_try_rfold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F; R ], [ self; init; f ] =>
+        Definition spec_try_rfold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -6174,9 +6289,11 @@ Module iter.
                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::step_by::StepBy")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "u8" ]
                                             ],
                                           [],
@@ -6298,7 +6415,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -6314,9 +6431,9 @@ Module iter.
                         accum
                     }
         *)
-        Definition spec_rfold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+        Definition spec_rfold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -6338,9 +6455,11 @@ Module iter.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::step_by::StepBy")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
@@ -6390,7 +6509,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6398,7 +6517,7 @@ Module iter.
             "core::iter::adapters::step_by::StepByBackImpl"
             Self
             (* Trait polymorphic types *)
-            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ] ]
+            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ] ]
             (* Instance *)
             [
               ("spec_next_back", InstanceField.Method spec_next_back);
@@ -6412,7 +6531,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u16" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ] ].
         
         (*
                     fn spec_next_back(&mut self) -> Option<Self::Item>
@@ -6429,9 +6549,9 @@ Module iter.
                         }
                     }
         *)
-        Definition spec_next_back (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -6520,7 +6640,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -6533,9 +6653,9 @@ Module iter.
                         self.next_back()
                     }
         *)
-        Definition spec_nth_back (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition spec_nth_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -6555,6 +6675,7 @@ Module iter.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize"
                                           ],
                                         "is_err",
@@ -6567,9 +6688,11 @@ Module iter.
                                               "core::iter::traits::double_ended::DoubleEndedIterator",
                                               Ty.apply
                                                 (Ty.path "core::iter::adapters::step_by::StepBy")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::ops::range::Range")
+                                                    []
                                                     [ Ty.path "u16" ]
                                                 ],
                                               [],
@@ -6605,7 +6728,8 @@ Module iter.
                           "core::iter::traits::double_ended::DoubleEndedIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::step_by::StepBy")
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u16" ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ] ],
                           [],
                           "next_back",
                           []
@@ -6615,7 +6739,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -6632,9 +6756,9 @@ Module iter.
                         try { accum }
                     }
         *)
-        Definition spec_try_rfold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F; R ], [ self; init; f ] =>
+        Definition spec_try_rfold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -6658,9 +6782,11 @@ Module iter.
                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::step_by::StepBy")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "u16" ]
                                             ],
                                           [],
@@ -6782,7 +6908,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -6798,9 +6924,9 @@ Module iter.
                         accum
                     }
         *)
-        Definition spec_rfold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+        Definition spec_rfold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -6822,9 +6948,11 @@ Module iter.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::step_by::StepBy")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "u16" ]
                                         ],
                                       [],
@@ -6874,7 +7002,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6882,7 +7010,7 @@ Module iter.
             "core::iter::adapters::step_by::StepByBackImpl"
             Self
             (* Trait polymorphic types *)
-            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u16" ] ]
+            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ] ]
             (* Instance *)
             [
               ("spec_next_back", InstanceField.Method spec_next_back);
@@ -6896,7 +7024,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ] ].
         
         (*
                     fn spec_next_back(&mut self) -> Option<Self::Item>
@@ -6913,9 +7042,9 @@ Module iter.
                         }
                     }
         *)
-        Definition spec_next_back (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -7004,7 +7133,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -7017,9 +7146,9 @@ Module iter.
                         self.next_back()
                     }
         *)
-        Definition spec_nth_back (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition spec_nth_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -7039,6 +7168,7 @@ Module iter.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize"
                                           ],
                                         "is_err",
@@ -7051,9 +7181,11 @@ Module iter.
                                               "core::iter::traits::double_ended::DoubleEndedIterator",
                                               Ty.apply
                                                 (Ty.path "core::iter::adapters::step_by::StepBy")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::ops::range::Range")
+                                                    []
                                                     [ Ty.path "u32" ]
                                                 ],
                                               [],
@@ -7089,7 +7221,8 @@ Module iter.
                           "core::iter::traits::double_ended::DoubleEndedIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::step_by::StepBy")
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ] ],
                           [],
                           "next_back",
                           []
@@ -7099,7 +7232,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -7116,9 +7249,9 @@ Module iter.
                         try { accum }
                     }
         *)
-        Definition spec_try_rfold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F; R ], [ self; init; f ] =>
+        Definition spec_try_rfold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -7142,9 +7275,11 @@ Module iter.
                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::step_by::StepBy")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "u32" ]
                                             ],
                                           [],
@@ -7266,7 +7401,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -7282,9 +7417,9 @@ Module iter.
                         accum
                     }
         *)
-        Definition spec_rfold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+        Definition spec_rfold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -7306,9 +7441,11 @@ Module iter.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::step_by::StepBy")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "u32" ]
                                         ],
                                       [],
@@ -7358,7 +7495,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -7366,7 +7503,7 @@ Module iter.
             "core::iter::adapters::step_by::StepByBackImpl"
             Self
             (* Trait polymorphic types *)
-            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ] ]
+            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ] ]
             (* Instance *)
             [
               ("spec_next_back", InstanceField.Method spec_next_back);
@@ -7380,7 +7517,8 @@ Module iter.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "core::iter::adapters::step_by::StepBy")
-            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ].
+            []
+            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ].
         
         (*
                     fn spec_next_back(&mut self) -> Option<Self::Item>
@@ -7397,9 +7535,9 @@ Module iter.
                         }
                     }
         *)
-        Definition spec_next_back (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition spec_next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -7490,7 +7628,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -7503,9 +7641,9 @@ Module iter.
                         self.next_back()
                     }
         *)
-        Definition spec_nth_back (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition spec_nth_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -7525,6 +7663,7 @@ Module iter.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize"
                                           ],
                                         "is_err",
@@ -7537,9 +7676,11 @@ Module iter.
                                               "core::iter::traits::double_ended::DoubleEndedIterator",
                                               Ty.apply
                                                 (Ty.path "core::iter::adapters::step_by::StepBy")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::ops::range::Range")
+                                                    []
                                                     [ Ty.path "usize" ]
                                                 ],
                                               [],
@@ -7575,7 +7716,8 @@ Module iter.
                           "core::iter::traits::double_ended::DoubleEndedIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::step_by::StepBy")
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                           [],
                           "next_back",
                           []
@@ -7585,7 +7727,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -7602,9 +7744,9 @@ Module iter.
                         try { accum }
                     }
         *)
-        Definition spec_try_rfold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F; R ], [ self; init; f ] =>
+        Definition spec_try_rfold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -7628,9 +7770,11 @@ Module iter.
                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::step_by::StepBy")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "usize" ]
                                             ],
                                           [],
@@ -7752,7 +7896,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -7768,9 +7912,9 @@ Module iter.
                         accum
                     }
         *)
-        Definition spec_rfold (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+        Definition spec_rfold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -7792,9 +7936,11 @@ Module iter.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::step_by::StepBy")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                       [],
@@ -7844,7 +7990,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -7852,7 +7998,7 @@ Module iter.
             "core::iter::adapters::step_by::StepByBackImpl"
             Self
             (* Trait polymorphic types *)
-            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+            [ (* I *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
             (* Instance *)
             [
               ("spec_next_back", InstanceField.Method spec_next_back);

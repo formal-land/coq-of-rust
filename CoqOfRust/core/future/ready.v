@@ -6,18 +6,19 @@ Module future.
     (* StructTuple
       {
         name := "Ready";
+        const_params := [];
         ty_params := [ "T" ];
-        fields := [ Ty.apply (Ty.path "core::option::Option") [ T ] ];
+        fields := [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_future_ready_Ready_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::ready::Ready") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::ready::Ready") [] [ T ].
       
       (* Debug *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -41,7 +42,7 @@ Module future.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -54,13 +55,13 @@ Module future.
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_future_ready_Ready_T.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_future_ready_Ready_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::ready::Ready") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::ready::Ready") [] [ T ].
       
       (* Clone *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -69,7 +70,7 @@ Module future.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::option::Option") [ T ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     [],
                     "clone",
                     []
@@ -83,7 +84,7 @@ Module future.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -96,7 +97,7 @@ Module future.
     End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_future_ready_Ready_T.
     
     Module Impl_core_marker_Unpin_for_core_future_ready_Ready_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::ready::Ready") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::ready::Ready") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -108,7 +109,7 @@ Module future.
     End Impl_core_marker_Unpin_for_core_future_ready_Ready_T.
     
     Module Impl_core_future_future_Future_for_core_future_ready_Ready_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::ready::Ready") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::ready::Ready") [] [ T ].
       
       (*     type Output = T; *)
       Definition _Output (T : Ty.t) : Ty.t := T.
@@ -118,10 +119,10 @@ Module future.
               Poll::Ready(self.0.take().expect("`Ready` polled after completion"))
           }
       *)
-      Definition poll (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; _cx ] =>
+        match ε, τ, α with
+        | [], [], [ self; _cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _cx := M.alloc (| _cx |) in
@@ -130,14 +131,14 @@ Module future.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ T ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     "expect",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::option::Option") [ T ],
+                        Ty.apply (Ty.path "core::option::Option") [] [ T ],
                         "take",
                         []
                       |),
@@ -148,10 +149,12 @@ Module future.
                               "core::ops::deref::DerefMut",
                               Ty.apply
                                 (Ty.path "core::pin::Pin")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "core::future::ready::Ready") [ T ] ]
+                                    []
+                                    [ Ty.apply (Ty.path "core::future::ready::Ready") [] [ T ] ]
                                 ],
                               [],
                               "deref_mut",
@@ -168,7 +171,7 @@ Module future.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -182,22 +185,22 @@ Module future.
     End Impl_core_future_future_Future_for_core_future_ready_Ready_T.
     
     Module Impl_core_future_ready_Ready_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::ready::Ready") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::ready::Ready") [] [ T ].
       
       (*
           pub fn into_inner(self) -> T {
               self.0.expect("Called `into_inner()` on `Ready` after completion")
           }
       *)
-      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ T ],
+                Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "expect",
                 []
               |),
@@ -208,7 +211,7 @@ Module future.
                 M.read (| Value.String "Called `into_inner()` on `Ready` after completion" |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -221,15 +224,15 @@ Module future.
         Ready(Some(t))
     }
     *)
-    Definition ready (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ t ] =>
+    Definition ready (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ t ] =>
         ltac:(M.monadic
           (let t := M.alloc (| t |) in
           Value.StructTuple
             "core::future::ready::Ready"
             [ Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_ready : M.IsFunction "core::future::ready::ready" ready.

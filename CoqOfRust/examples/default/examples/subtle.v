@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Choice";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u8" ];
   } *)
@@ -19,9 +20,9 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -30,7 +31,7 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -45,9 +46,9 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -67,7 +68,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -86,15 +87,15 @@ Module Impl_subtle_Choice.
           self.0
       }
   *)
-  Definition unwrap_u8 (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition unwrap_u8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_tuple_field (| M.read (| self |), "subtle::Choice", 0 |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_unwrap_u8 : M.IsAssociatedFunction Self "unwrap_u8" unwrap_u8.
@@ -109,9 +110,9 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
           source.0 != 0
       }
   *)
-  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ source ] =>
+  Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ source ] =>
       ltac:(M.monadic
         (let source := M.alloc (| source |) in
         M.read (|
@@ -184,7 +185,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
               (Value.Integer 0)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -206,9 +207,9 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
           (self.0 & rhs.0).into()
       }
   *)
-  Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; rhs ] =>
+  Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; rhs ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
@@ -226,7 +227,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
               (M.read (| M.SubPointer.get_struct_tuple_field (| rhs, "subtle::Choice", 0 |) |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -246,9 +247,9 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
           *self = *self & rhs;
       }
   *)
-  Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; rhs ] =>
+  Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; rhs ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
@@ -269,7 +270,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -291,9 +292,9 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
           (self.0 | rhs.0).into()
       }
   *)
-  Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; rhs ] =>
+  Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; rhs ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
@@ -311,7 +312,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
               (M.read (| M.SubPointer.get_struct_tuple_field (| rhs, "subtle::Choice", 0 |) |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -331,9 +332,9 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
           *self = *self | rhs;
       }
   *)
-  Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; rhs ] =>
+  Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; rhs ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
@@ -354,7 +355,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -376,9 +377,9 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
           (self.0 ^ rhs.0).into()
       }
   *)
-  Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; rhs ] =>
+  Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; rhs ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
@@ -396,7 +397,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
               (M.read (| M.SubPointer.get_struct_tuple_field (| rhs, "subtle::Choice", 0 |) |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -416,9 +417,9 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
           *self = *self ^ rhs;
       }
   *)
-  Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; rhs ] =>
+  Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; rhs ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
@@ -439,7 +440,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -461,9 +462,9 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
           (1u8 & (!self.0)).into()
       }
   *)
-  Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
@@ -481,7 +482,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
                 (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |)))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -509,9 +510,9 @@ fn black_box(input: u8) -> u8 {
     }
 }
 *)
-Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ input ] =>
+Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ input ] =>
     ltac:(M.monadic
       (let input := M.alloc (| input |) in
       M.read (|
@@ -566,7 +567,7 @@ Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
           |)
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_black_box : M.IsFunction "subtle::black_box" black_box.
@@ -581,9 +582,9 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
           Choice(black_box(input))
       }
   *)
-  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input ] =>
+  Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         Value.StructTuple
@@ -594,7 +595,7 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
               [ M.read (| input |) ]
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -607,9 +608,9 @@ End Impl_core_convert_From_u8_for_subtle_Choice.
 
 (* Trait *)
 Module ConstantTimeEq.
-  Definition ct_ne (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_ne (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -622,14 +623,14 @@ Module ConstantTimeEq.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom ProvidedMethod_ct_ne : M.IsProvidedMethod "subtle::ConstantTimeEq" "ct_ne" ct_ne.
 End ConstantTimeEq.
 
 Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
   
   (*
       fn ct_eq(&self, _rhs: &[T]) -> Choice {
@@ -652,10 +653,10 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
           x.into()
       }
   *)
-  Definition ct_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition ct_eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self; _rhs ] =>
+    match ε, τ, α with
+    | [], [], [ self; _rhs ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let _rhs := M.alloc (| _rhs |) in
@@ -665,7 +666,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
+                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
                     [ M.read (| self |) ]
                   |)
                 |) in
@@ -682,7 +683,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                 (M.read (| len |))
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ T ],
+                                    Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
                                     []
                                   |),
@@ -722,9 +723,10 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::zip::Zip")
+                            []
                             [
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
                             ],
                           [],
                           "into_iter",
@@ -734,15 +736,15 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                               [],
                               "zip",
-                              [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ]
+                              [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                             |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ T ],
+                                  Ty.apply (Ty.path "slice") [] [ T ],
                                   "iter",
                                   []
                                 |),
@@ -750,7 +752,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ T ],
+                                  Ty.apply (Ty.path "slice") [] [ T ],
                                   "iter",
                                   []
                                 |),
@@ -775,9 +777,10 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::zip::Zip")
+                                          []
                                           [
-                                            Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
-                                            Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
+                                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
+                                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
                                           ],
                                         [],
                                         "next",
@@ -855,7 +858,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -875,9 +878,9 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
           !( *self ^ *rhs)
       }
   *)
-  Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; rhs ] =>
+  Definition ct_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; rhs ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
@@ -896,7 +899,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -923,9 +926,9 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
                   ((y ^ (1 as $t_u)) as u8).into()
               }
   *)
-  Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -935,8 +938,8 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::bit::BitXor",
-                  Ty.apply (Ty.path "&") [ Ty.path "u8" ],
-                  [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                   "bitxor",
                   []
                 |),
@@ -976,7 +979,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -996,9 +999,9 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
                   ( *self as $t_u).ct_eq(&( *other as $t_u))
               }
   *)
-  Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1009,7 +1012,7 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1036,9 +1039,9 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
                   ((y ^ (1 as $t_u)) as u8).into()
               }
   *)
-  Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1048,8 +1051,8 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::bit::BitXor",
-                  Ty.apply (Ty.path "&") [ Ty.path "u16" ],
-                  [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                   "bitxor",
                   []
                 |),
@@ -1085,7 +1088,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1105,9 +1108,9 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
                   ( *self as $t_u).ct_eq(&( *other as $t_u))
               }
   *)
-  Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1118,7 +1121,7 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1145,9 +1148,9 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
                   ((y ^ (1 as $t_u)) as u8).into()
               }
   *)
-  Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1157,8 +1160,8 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::bit::BitXor",
-                  Ty.apply (Ty.path "&") [ Ty.path "u32" ],
-                  [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                   "bitxor",
                   []
                 |),
@@ -1194,7 +1197,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1214,9 +1217,9 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
                   ( *self as $t_u).ct_eq(&( *other as $t_u))
               }
   *)
-  Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1227,7 +1230,7 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1254,9 +1257,9 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
                   ((y ^ (1 as $t_u)) as u8).into()
               }
   *)
-  Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1266,8 +1269,8 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::bit::BitXor",
-                  Ty.apply (Ty.path "&") [ Ty.path "u64" ],
-                  [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                   "bitxor",
                   []
                 |),
@@ -1303,7 +1306,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1323,9 +1326,9 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
                   ( *self as $t_u).ct_eq(&( *other as $t_u))
               }
   *)
-  Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1336,7 +1339,7 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1363,9 +1366,9 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
                   ((y ^ (1 as $t_u)) as u8).into()
               }
   *)
-  Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1375,8 +1378,8 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::bit::BitXor",
-                  Ty.apply (Ty.path "&") [ Ty.path "usize" ],
-                  [ Ty.apply (Ty.path "&") [ Ty.path "usize" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                   "bitxor",
                   []
                 |),
@@ -1421,7 +1424,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1441,9 +1444,9 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
                   ( *self as $t_u).ct_eq(&( *other as $t_u))
               }
   *)
-  Definition ct_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1454,7 +1457,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1467,9 +1470,14 @@ End Impl_subtle_ConstantTimeEq_for_isize.
 
 (* Trait *)
 Module ConditionallySelectable.
-  Definition conditional_assign (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other; choice ] =>
+  Definition conditional_assign
+      (Self : Ty.t)
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1491,14 +1499,19 @@ Module ConditionallySelectable.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom ProvidedMethod_conditional_assign :
     M.IsProvidedMethod "subtle::ConditionallySelectable" "conditional_assign" conditional_assign.
-  Definition conditional_swap (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_swap
+      (Self : Ty.t)
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -1533,7 +1546,7 @@ Module ConditionallySelectable.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom ProvidedMethod_conditional_swap :
@@ -1551,9 +1564,9 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                   a ^ (mask & (a ^ b))
               }
   *)
-  Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_select (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -1575,7 +1588,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
-                Ty.apply (Ty.path "&") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                 [ Ty.path "u8" ],
                 "bitxor",
                 []
@@ -1587,8 +1600,8 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "&") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                       "bitxor",
                       []
                     |),
@@ -1598,7 +1611,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -1609,9 +1622,9 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                   *self ^= mask & ( *self ^ *other);
               }
   *)
-  Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other; choice ] =>
+  Definition conditional_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1643,7 +1656,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -1656,9 +1669,9 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                   *b ^= t;
               }
   *)
-  Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -1690,7 +1703,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1717,9 +1730,9 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                   a ^ (mask & (a ^ b))
               }
   *)
-  Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_select (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -1743,7 +1756,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
-                Ty.apply (Ty.path "&") [ Ty.path "i8" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "i8" ],
                 [ Ty.path "i8" ],
                 "bitxor",
                 []
@@ -1755,8 +1768,8 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "&") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "&") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ],
                       "bitxor",
                       []
                     |),
@@ -1766,7 +1779,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -1777,9 +1790,9 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                   *self ^= mask & ( *self ^ *other);
               }
   *)
-  Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other; choice ] =>
+  Definition conditional_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1813,7 +1826,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -1826,9 +1839,9 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                   *b ^= t;
               }
   *)
-  Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -1862,7 +1875,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1889,9 +1902,9 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                   a ^ (mask & (a ^ b))
               }
   *)
-  Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_select (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -1913,7 +1926,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
-                Ty.apply (Ty.path "&") [ Ty.path "u16" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                 [ Ty.path "u16" ],
                 "bitxor",
                 []
@@ -1925,8 +1938,8 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "&") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                       "bitxor",
                       []
                     |),
@@ -1936,7 +1949,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -1947,9 +1960,9 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                   *self ^= mask & ( *self ^ *other);
               }
   *)
-  Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other; choice ] =>
+  Definition conditional_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1981,7 +1994,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -1994,9 +2007,9 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                   *b ^= t;
               }
   *)
-  Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -2028,7 +2041,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2055,9 +2068,9 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                   a ^ (mask & (a ^ b))
               }
   *)
-  Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_select (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -2081,7 +2094,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
-                Ty.apply (Ty.path "&") [ Ty.path "i16" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "i16" ],
                 [ Ty.path "i16" ],
                 "bitxor",
                 []
@@ -2093,8 +2106,8 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "&") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "&") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ],
                       "bitxor",
                       []
                     |),
@@ -2104,7 +2117,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2115,9 +2128,9 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                   *self ^= mask & ( *self ^ *other);
               }
   *)
-  Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other; choice ] =>
+  Definition conditional_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -2151,7 +2164,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2164,9 +2177,9 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                   *b ^= t;
               }
   *)
-  Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -2200,7 +2213,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2227,9 +2240,9 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                   a ^ (mask & (a ^ b))
               }
   *)
-  Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_select (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -2251,7 +2264,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
-                Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
                 [ Ty.path "u32" ],
                 "bitxor",
                 []
@@ -2263,8 +2276,8 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "&") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                       "bitxor",
                       []
                     |),
@@ -2274,7 +2287,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2285,9 +2298,9 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                   *self ^= mask & ( *self ^ *other);
               }
   *)
-  Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other; choice ] =>
+  Definition conditional_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -2319,7 +2332,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2332,9 +2345,9 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                   *b ^= t;
               }
   *)
-  Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -2366,7 +2379,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2393,9 +2406,9 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                   a ^ (mask & (a ^ b))
               }
   *)
-  Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_select (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -2419,7 +2432,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
-                Ty.apply (Ty.path "&") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
                 [ Ty.path "i32" ],
                 "bitxor",
                 []
@@ -2431,8 +2444,8 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "&") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
                       "bitxor",
                       []
                     |),
@@ -2442,7 +2455,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2453,9 +2466,9 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                   *self ^= mask & ( *self ^ *other);
               }
   *)
-  Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other; choice ] =>
+  Definition conditional_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -2489,7 +2502,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2502,9 +2515,9 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                   *b ^= t;
               }
   *)
-  Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -2538,7 +2551,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2565,9 +2578,9 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                   a ^ (mask & (a ^ b))
               }
   *)
-  Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_select (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -2589,7 +2602,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
-                Ty.apply (Ty.path "&") [ Ty.path "u64" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
                 [ Ty.path "u64" ],
                 "bitxor",
                 []
@@ -2601,8 +2614,8 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "&") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                       "bitxor",
                       []
                     |),
@@ -2612,7 +2625,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2623,9 +2636,9 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                   *self ^= mask & ( *self ^ *other);
               }
   *)
-  Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other; choice ] =>
+  Definition conditional_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -2657,7 +2670,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2670,9 +2683,9 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                   *b ^= t;
               }
   *)
-  Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -2704,7 +2717,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2731,9 +2744,9 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                   a ^ (mask & (a ^ b))
               }
   *)
-  Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_select (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -2757,7 +2770,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
-                Ty.apply (Ty.path "&") [ Ty.path "i64" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "i64" ],
                 [ Ty.path "i64" ],
                 "bitxor",
                 []
@@ -2769,8 +2782,8 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "&") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "&") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ],
                       "bitxor",
                       []
                     |),
@@ -2780,7 +2793,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2791,9 +2804,9 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                   *self ^= mask & ( *self ^ *other);
               }
   *)
-  Definition conditional_assign (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other; choice ] =>
+  Definition conditional_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -2827,7 +2840,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2840,9 +2853,9 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                   *b ^= t;
               }
   *)
-  Definition conditional_swap (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -2876,7 +2889,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2900,9 +2913,9 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
           Choice(u8::conditional_select(&a.0, &b.0, choice))
       }
   *)
-  Definition conditional_select (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b; choice ] =>
+  Definition conditional_select (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -2925,7 +2938,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
               ]
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2949,10 +2962,15 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
           self.conditional_assign(&self_neg, choice);
       }
   *)
-  Definition conditional_negate (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition conditional_negate
+      (T : Ty.t)
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self; choice ] =>
+    match ε, τ, α with
+    | [], [], [ self; choice ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let choice := M.alloc (| choice |) in
@@ -2962,7 +2980,7 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::arith::Neg",
-                  Ty.apply (Ty.path "&") [ T ],
+                  Ty.apply (Ty.path "&") [] [ T ],
                   [],
                   "neg",
                   []
@@ -2985,7 +3003,7 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -3000,18 +3018,19 @@ End Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T_wh
 (* StructRecord
   {
     name := "CtOption";
+    const_params := [];
     ty_params := [ "T" ];
     fields := [ ("value", T); ("is_some", Ty.path "subtle::Choice") ];
   } *)
 
 Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [] [ T ].
   
   (* Clone *)
-  Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self ] =>
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructRecord
@@ -3046,7 +3065,7 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
                 ]
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -3059,7 +3078,7 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
 End Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [] [ T ].
   
   Axiom Implements :
     forall (T : Ty.t),
@@ -3071,13 +3090,13 @@ Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_subtle_CtOption_T.
 End Impl_core_marker_Copy_where_core_marker_Copy_T_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [] [ T ].
   
   (* Debug *)
-  Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self; f ] =>
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -3110,7 +3129,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -3123,7 +3142,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
 End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
   
   (*
       fn from(source: CtOption<T>) -> Option<T> {
@@ -3134,10 +3153,10 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
           }
       }
   *)
-  Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ source ] =>
+    match ε, τ, α with
+    | [], [], [ source ] =>
       ltac:(M.monadic
         (let source := M.alloc (| source |) in
         M.read (|
@@ -3160,7 +3179,7 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "subtle::CtOption") [ T ],
+                                    Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
                                     "is_some",
                                     []
                                   |),
@@ -3190,7 +3209,7 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -3198,12 +3217,12 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
     M.IsTraitInstance
       "core::convert::From"
       (Self T)
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "subtle::CtOption") [ T ] ]
+      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "subtle::CtOption") [] [ T ] ]
       (* Instance *) [ ("from", InstanceField.Method (from T)) ].
 End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [] [ T ].
   
   (*
       pub fn new(value: T, is_some: Choice) -> CtOption<T> {
@@ -3213,17 +3232,17 @@ Module Impl_subtle_CtOption_T.
           }
       }
   *)
-  Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ value; is_some ] =>
+    match ε, τ, α with
+    | [], [], [ value; is_some ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         let is_some := M.alloc (| is_some |) in
         Value.StructRecord
           "subtle::CtOption"
           [ ("value", M.read (| value |)); ("is_some", M.read (| is_some |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -3235,10 +3254,10 @@ Module Impl_subtle_CtOption_T.
           self.value
       }
   *)
-  Definition expect (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition expect (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self; msg ] =>
+    match ε, τ, α with
+    | [], [], [ self; msg ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let msg := M.alloc (| msg |) in
@@ -3329,6 +3348,7 @@ Module Impl_subtle_CtOption_T.
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [ Ty.path "str" ]
                                                             ]
                                                           |),
@@ -3352,7 +3372,7 @@ Module Impl_subtle_CtOption_T.
             |) in
           M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_expect :
@@ -3366,10 +3386,10 @@ Module Impl_subtle_CtOption_T.
           self.value
       }
   *)
-  Definition unwrap (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition unwrap (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self ] =>
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -3446,7 +3466,7 @@ Module Impl_subtle_CtOption_T.
             |) in
           M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_unwrap :
@@ -3461,10 +3481,10 @@ Module Impl_subtle_CtOption_T.
           T::conditional_select(&def, &self.value, self.is_some)
       }
   *)
-  Definition unwrap_or (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition unwrap_or (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self; def ] =>
+    match ε, τ, α with
+    | [], [], [ self; def ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let def := M.alloc (| def |) in
@@ -3484,7 +3504,7 @@ Module Impl_subtle_CtOption_T.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_unwrap_or :
@@ -3500,10 +3520,10 @@ Module Impl_subtle_CtOption_T.
           T::conditional_select(&f(), &self.value, self.is_some)
       }
   *)
-  Definition unwrap_or_else (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition unwrap_or_else (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [ F ], [ self; f ] =>
+    match ε, τ, α with
+    | [], [ F ], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -3534,7 +3554,7 @@ Module Impl_subtle_CtOption_T.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_unwrap_or_else :
@@ -3546,10 +3566,10 @@ Module Impl_subtle_CtOption_T.
           self.is_some
       }
   *)
-  Definition is_some (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition is_some (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self ] =>
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -3559,7 +3579,7 @@ Module Impl_subtle_CtOption_T.
             "is_some"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_is_some :
@@ -3571,10 +3591,10 @@ Module Impl_subtle_CtOption_T.
           !self.is_some
       }
   *)
-  Definition is_none (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition is_none (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self ] =>
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
@@ -3589,7 +3609,7 @@ Module Impl_subtle_CtOption_T.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_is_none :
@@ -3612,15 +3632,15 @@ Module Impl_subtle_CtOption_T.
           )
       }
   *)
-  Definition map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition map (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [ U; F ], [ self; f ] =>
+    match ε, τ, α with
+    | [], [ U; F ], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.apply (Ty.path "subtle::CtOption") [ U ], "new", [] |),
+          M.get_associated_function (| Ty.apply (Ty.path "subtle::CtOption") [] [ U ], "new", [] |),
           [
             M.call_closure (|
               M.get_trait_method (|
@@ -3671,7 +3691,7 @@ Module Impl_subtle_CtOption_T.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
@@ -3692,10 +3712,10 @@ Module Impl_subtle_CtOption_T.
           tmp
       }
   *)
-  Definition and_then (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition and_then (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [ U; F ], [ self; f ] =>
+    match ε, τ, α with
+    | [], [ U; F ], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -3773,7 +3793,7 @@ Module Impl_subtle_CtOption_T.
             |) in
           tmp
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_and_then :
@@ -3792,10 +3812,10 @@ Module Impl_subtle_CtOption_T.
           Self::conditional_select(&self, &f, is_none)
       }
   *)
-  Definition or_else (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition or_else (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [ F ], [ self; f ] =>
+    match ε, τ, α with
+    | [], [ F ], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -3804,7 +3824,7 @@ Module Impl_subtle_CtOption_T.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "subtle::CtOption") [ T ],
+                  Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
                   "is_none",
                   []
                 |),
@@ -3828,7 +3848,7 @@ Module Impl_subtle_CtOption_T.
             M.call_closure (|
               M.get_trait_method (|
                 "subtle::ConditionallySelectable",
-                Ty.apply (Ty.path "subtle::CtOption") [ T ],
+                Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
                 [],
                 "conditional_select",
                 []
@@ -3837,7 +3857,7 @@ Module Impl_subtle_CtOption_T.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_or_else :
@@ -3846,7 +3866,7 @@ Module Impl_subtle_CtOption_T.
 End Impl_subtle_CtOption_T.
 
 Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_T_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [] [ T ].
   
   (*
       fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -3856,16 +3876,21 @@ Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_
           )
       }
   *)
-  Definition conditional_select (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition conditional_select
+      (T : Ty.t)
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ a; b; choice ] =>
+    match ε, τ, α with
+    | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.apply (Ty.path "subtle::CtOption") [ T ], "new", [] |),
+          M.get_associated_function (| Ty.apply (Ty.path "subtle::CtOption") [] [ T ], "new", [] |),
           [
             M.call_closure (|
               M.get_trait_method (|
@@ -3913,7 +3938,7 @@ Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -3926,7 +3951,7 @@ Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_
 End Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_T_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [] [ T ].
   
   (*
       fn ct_eq(&self, rhs: &CtOption<T>) -> Choice {
@@ -3936,10 +3961,10 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
           (a & b & self.value.ct_eq(&rhs.value)) | (!a & !b)
       }
   *)
-  Definition ct_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition ct_eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self; rhs ] =>
+    match ε, τ, α with
+    | [], [], [ self; rhs ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
@@ -3948,7 +3973,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "subtle::CtOption") [ T ],
+                  Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
                   "is_some",
                   []
                 |),
@@ -3959,7 +3984,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "subtle::CtOption") [ T ],
+                  Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
                   "is_some",
                   []
                 |),
@@ -4047,7 +4072,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -4088,9 +4113,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                   Choice::from((bit & 1) as u8)
               }
   *)
-  Definition ct_gt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -4100,7 +4125,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
-                  Ty.apply (Ty.path "&") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                   [ Ty.path "u8" ],
                   "bitand",
                   []
@@ -4110,7 +4135,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::Not",
-                      Ty.apply (Ty.path "&") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                       [],
                       "not",
                       []
@@ -4126,7 +4151,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.path "u8",
-                  [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                   "bitand",
                   []
                 |),
@@ -4134,7 +4159,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::Not",
-                      Ty.apply (Ty.path "&") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                       [],
                       "not",
                       []
@@ -4252,7 +4277,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -4289,9 +4314,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                   Choice::from((bit & 1) as u8)
               }
   *)
-  Definition ct_gt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -4301,7 +4326,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
-                  Ty.apply (Ty.path "&") [ Ty.path "u16" ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                   [ Ty.path "u16" ],
                   "bitand",
                   []
@@ -4311,7 +4336,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::Not",
-                      Ty.apply (Ty.path "&") [ Ty.path "u16" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                       [],
                       "not",
                       []
@@ -4327,7 +4352,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.path "u16",
-                  [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                   "bitand",
                   []
                 |),
@@ -4335,7 +4360,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::Not",
-                      Ty.apply (Ty.path "&") [ Ty.path "u16" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                       [],
                       "not",
                       []
@@ -4449,7 +4474,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -4486,9 +4511,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                   Choice::from((bit & 1) as u8)
               }
   *)
-  Definition ct_gt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -4498,7 +4523,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
-                  Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
                   [ Ty.path "u32" ],
                   "bitand",
                   []
@@ -4508,7 +4533,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::Not",
-                      Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
                       [],
                       "not",
                       []
@@ -4524,7 +4549,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.path "u32",
-                  [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                   "bitand",
                   []
                 |),
@@ -4532,7 +4557,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::Not",
-                      Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
                       [],
                       "not",
                       []
@@ -4646,7 +4671,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -4683,9 +4708,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                   Choice::from((bit & 1) as u8)
               }
   *)
-  Definition ct_gt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -4695,7 +4720,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
-                  Ty.apply (Ty.path "&") [ Ty.path "u64" ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
                   [ Ty.path "u64" ],
                   "bitand",
                   []
@@ -4705,7 +4730,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::Not",
-                      Ty.apply (Ty.path "&") [ Ty.path "u64" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
                       [],
                       "not",
                       []
@@ -4721,7 +4746,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.path "u64",
-                  [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                   "bitand",
                   []
                 |),
@@ -4729,7 +4754,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::Not",
-                      Ty.apply (Ty.path "&") [ Ty.path "u64" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
                       [],
                       "not",
                       []
@@ -4843,7 +4868,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -4856,9 +4881,9 @@ End Impl_subtle_ConstantTimeGreater_for_u64.
 
 (* Trait *)
 Module ConstantTimeLess.
-  Definition ct_lt (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition ct_lt (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -4903,7 +4928,7 @@ Module ConstantTimeLess.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom ProvidedMethod_ct_lt : M.IsProvidedMethod "subtle::ConstantTimeLess" "ct_lt" ct_lt.

@@ -39,9 +39,9 @@ Module unicode.
         current
     }
     *)
-    Definition check (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ x; singletonuppers; singletonlowers; normal ] =>
+    Definition check (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ x; singletonuppers; singletonlowers; normal ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let singletonuppers := M.alloc (| singletonuppers |) in
@@ -62,9 +62,11 @@ Module unicode.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "slice")
+                                  []
                                   [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
                               ],
                             [],
@@ -88,6 +90,7 @@ Module unicode.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::Iter")
+                                            []
                                             [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ],
                                           [],
                                           "next",
@@ -153,9 +156,11 @@ Module unicode.
                                                               "core::iter::traits::collect::IntoIterator",
                                                               Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [ Ty.path "u8" ]
                                                                 ],
                                                               [],
@@ -168,11 +173,13 @@ Module unicode.
                                                                   "core::ops::index::Index",
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [ Ty.path "u8" ],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::ops::range::Range")
+                                                                      []
                                                                       [ Ty.path "usize" ]
                                                                   ],
                                                                   "index",
@@ -208,6 +215,7 @@ Module unicode.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::slice::iter::Iter")
+                                                                              []
                                                                               [ Ty.path "u8" ],
                                                                             [],
                                                                             "next",
@@ -339,7 +347,7 @@ Module unicode.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
-                        Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                         [],
                         "cloned",
                         [ Ty.path "u8" ]
@@ -347,7 +355,7 @@ Module unicode.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "iter",
                             []
                           |),
@@ -372,9 +380,11 @@ Module unicode.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::cloned::Cloned")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::slice::iter::Iter")
+                                            []
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
@@ -425,6 +435,7 @@ Module unicode.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [ Ty.path "u8" ],
                                                     "unwrap",
                                                     []
@@ -436,9 +447,11 @@ Module unicode.
                                                         Ty.apply
                                                           (Ty.path
                                                             "core::iter::adapters::cloned::Cloned")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::slice::iter::Iter")
+                                                              []
                                                               [ Ty.path "u8" ]
                                                           ],
                                                         [],
@@ -506,7 +519,7 @@ Module unicode.
                 current
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_check : M.IsFunction "core::unicode::printable::check" check.
@@ -558,9 +571,9 @@ Module unicode.
         }
     }
     *)
-    Definition is_printable (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ x ] =>
+    Definition is_printable (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.catch_return (|
@@ -1021,7 +1034,7 @@ Module unicode.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_is_printable :

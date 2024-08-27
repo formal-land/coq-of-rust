@@ -6,9 +6,9 @@ fn print_one<'a>(x: &'a i32) {
     println!("`print_one`: x is {}", x);
 }
 *)
-Definition print_one (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ x ] =>
+Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ x ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (|
@@ -40,7 +40,7 @@ Definition print_one (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [ x ]
                               |)
@@ -54,7 +54,7 @@ Definition print_one (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_print_one : M.IsFunction "scoping_rules_lifetimes_functions::print_one" print_one.
@@ -64,9 +64,9 @@ fn add_one<'a>(x: &'a mut i32) {
     *x += 1;
 }
 *)
-Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ x ] =>
+Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ x ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (|
@@ -75,7 +75,7 @@ Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
           M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 1) |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_add_one : M.IsFunction "scoping_rules_lifetimes_functions::add_one" add_one.
@@ -85,9 +85,9 @@ fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
     println!("`print_multi`: x is {}, y is {}", x, y);
 }
 *)
-Definition print_multi (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ x; y ] =>
+Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ x; y ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       let y := M.alloc (| y |) in
@@ -121,7 +121,7 @@ Definition print_multi (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [ x ]
                               |);
@@ -129,7 +129,7 @@ Definition print_multi (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [ y ]
                               |)
@@ -143,7 +143,7 @@ Definition print_multi (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_print_multi :
@@ -154,14 +154,14 @@ fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
     x
 }
 *)
-Definition pass_x (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ x; β1 ] =>
+Definition pass_x (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ x; β1 ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       let β1 := M.alloc (| β1 |) in
       M.match_operator (| β1, [ fun γ => ltac:(M.monadic (M.read (| x |))) ] |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_pass_x : M.IsFunction "scoping_rules_lifetimes_functions::pass_x" pass_x.
@@ -182,9 +182,9 @@ fn main() {
     print_one(&t);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ x := M.alloc (| Value.Integer 7 |) in
@@ -234,7 +234,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_functions::main" main.

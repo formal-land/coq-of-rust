@@ -4,22 +4,23 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc1155_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [] [ K; V ].
   
   (* Default *)
-  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match τ, α with
-    | [], [] =>
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "erc1155::Mapping"
@@ -28,7 +29,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
                   "default",
                   []
@@ -39,7 +40,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
                   "default",
                   []
@@ -47,7 +48,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -60,14 +61,14 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc1155_Mapping_K_V.
 
 Module Impl_erc1155_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [] [ K; V ].
   
   (*
       fn contains(&self, _key: &K) -> bool {
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
@@ -78,7 +79,7 @@ Module Impl_erc1155_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -89,7 +90,7 @@ Module Impl_erc1155_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -100,7 +101,7 @@ Module Impl_erc1155_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
@@ -111,7 +112,7 @@ Module Impl_erc1155_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
@@ -122,7 +123,7 @@ Module Impl_erc1155_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -132,6 +133,7 @@ End Impl_erc1155_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -140,9 +142,9 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "erc1155::AccountId"
@@ -152,7 +154,7 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -167,9 +169,9 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -178,7 +180,7 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -211,9 +213,9 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -224,7 +226,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
           (M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "erc1155::AccountId", 0 |)
           |))))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -235,7 +237,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_AccountId.
 
-Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
+Module Impl_core_convert_From_array_32_u8_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
   (*
@@ -243,21 +245,23 @@ Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
           unimplemented!()
       }
   *)
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *)
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_u8_for_erc1155_AccountId.
+End Impl_core_convert_From_array_32_u8_for_erc1155_AccountId.
 
 Axiom Balance : (Ty.path "erc1155::Balance") = (Ty.path "u128").
 
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "erc1155::AccountId") ];
   } *)
@@ -267,21 +271,21 @@ fn zero_address() -> AccountId {
     [0u8; 32].into()
 }
 *)
-Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.call_closure (|
         M.get_trait_method (|
           "core::convert::Into",
-          Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
           [ Ty.path "erc1155::AccountId" ],
           "into",
           []
         |),
-        [ repeat (Value.Integer 0) 32 ]
+        [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_zero_address : M.IsFunction "erc1155::zero_address" zero_address.
@@ -305,6 +309,7 @@ Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -357,9 +362,9 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -386,7 +391,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
             |) in
           M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -412,13 +417,17 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -432,8 +441,8 @@ End Impl_core_cmp_Eq_for_erc1155_Error.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "erc1155::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc1155::Error" ]).
+  (Ty.apply (Ty.path "erc1155::Result") [] [ T ]) =
+    (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "erc1155::Error" ]).
 
 (* Trait *)
 (* Empty module 'Erc1155' *)
@@ -448,12 +457,13 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (* StructRecord
   {
     name := "TransferSingle";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("operator", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ]);
-        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ]);
-        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ]);
+        ("operator", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc1155::AccountId" ]);
+        ("from", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc1155::AccountId" ]);
+        ("to", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc1155::AccountId" ]);
         ("token_id", Ty.path "u128");
         ("value", Ty.path "u128")
       ];
@@ -462,6 +472,7 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (* StructRecord
   {
     name := "ApprovalForAll";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -474,6 +485,7 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (* StructRecord
   {
     name := "Uri";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "alloc::string::String"); ("token_id", Ty.path "u128") ];
   } *)
@@ -481,6 +493,7 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -511,15 +524,15 @@ Module Impl_erc1155_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition caller (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "erc1155::Env", "caller" |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -529,7 +542,7 @@ Module Impl_erc1155_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_erc1155_Env.
@@ -537,16 +550,19 @@ End Impl_erc1155_Env.
 (* StructRecord
   {
     name := "Contract";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("balances",
           Ty.apply
             (Ty.path "erc1155::Mapping")
+            []
             [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ]);
         ("approvals",
           Ty.apply
             (Ty.path "erc1155::Mapping")
+            []
             [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId" ]; Ty.tuple []
             ]);
         ("token_id_nonce", Ty.path "u128")
@@ -557,9 +573,9 @@ Module Impl_core_default_Default_for_erc1155_Contract.
   Definition Self : Ty.t := Ty.path "erc1155::Contract".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "erc1155::Contract"
@@ -570,6 +586,7 @@ Module Impl_core_default_Default_for_erc1155_Contract.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "erc1155::Mapping")
+                    []
                     [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                   [],
                   "default",
@@ -583,6 +600,7 @@ Module Impl_core_default_Default_for_erc1155_Contract.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "erc1155::Mapping")
+                    []
                     [
                       Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId" ];
                       Ty.tuple []
@@ -605,7 +623,7 @@ Module Impl_core_default_Default_for_erc1155_Contract.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -624,7 +642,7 @@ Module Impl_erc1155_Contract.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -633,16 +651,16 @@ Module Impl_erc1155_Contract.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "erc1155::Contract", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -652,9 +670,9 @@ Module Impl_erc1155_Contract.
           Default::default()
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_trait_method (|
@@ -666,7 +684,7 @@ Module Impl_erc1155_Contract.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -692,9 +710,9 @@ Module Impl_erc1155_Contract.
           self.token_id_nonce
       }
   *)
-  Definition create (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; value ] =>
+  Definition create (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
@@ -727,6 +745,7 @@ Module Impl_erc1155_Contract.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "erc1155::Mapping")
+                    []
                     [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                   "insert",
                   []
@@ -822,7 +841,7 @@ Module Impl_erc1155_Contract.
             "token_id_nonce"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_create : M.IsAssociatedFunction Self "create" create.
@@ -846,9 +865,9 @@ Module Impl_erc1155_Contract.
           Ok(())
       }
   *)
-  Definition mint (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; token_id; value ] =>
+  Definition mint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; token_id; value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let token_id := M.alloc (| token_id |) in
@@ -923,6 +942,7 @@ Module Impl_erc1155_Contract.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "erc1155::Mapping")
+                        []
                         [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128"
                         ],
                       "insert",
@@ -975,7 +995,7 @@ Module Impl_erc1155_Contract.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.
@@ -1009,9 +1029,9 @@ Module Impl_erc1155_Contract.
           }));
       }
   *)
-  Definition perform_transfer (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; from; to; token_id; value ] =>
+  Definition perform_transfer (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; from; to; token_id; value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let from := M.alloc (| from |) in
@@ -1023,7 +1043,7 @@ Module Impl_erc1155_Contract.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                   "expect",
                   []
                 |),
@@ -1032,6 +1052,7 @@ Module Impl_erc1155_Contract.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "erc1155::Mapping")
+                        []
                         [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128"
                         ],
                       "get",
@@ -1061,6 +1082,7 @@ Module Impl_erc1155_Contract.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "erc1155::Mapping")
+                    []
                     [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                   "insert",
                   []
@@ -1080,7 +1102,7 @@ Module Impl_erc1155_Contract.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                   "unwrap_or",
                   []
                 |),
@@ -1089,6 +1111,7 @@ Module Impl_erc1155_Contract.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "erc1155::Mapping")
+                        []
                         [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128"
                         ],
                       "get",
@@ -1116,6 +1139,7 @@ Module Impl_erc1155_Contract.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "erc1155::Mapping")
+                    []
                     [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                   "insert",
                   []
@@ -1177,7 +1201,7 @@ Module Impl_erc1155_Contract.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_perform_transfer :
@@ -1256,9 +1280,9 @@ Module Impl_erc1155_Contract.
           }
       }
   *)
-  Definition transfer_acceptance_check (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; caller; from; to; token_id; value; data ] =>
+  Definition transfer_acceptance_check (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; caller; from; to; token_id; value; data ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let caller := M.alloc (| caller |) in
@@ -1268,7 +1292,7 @@ Module Impl_erc1155_Contract.
         let value := M.alloc (| value |) in
         let data := M.alloc (| data |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_transfer_acceptance_check :
@@ -1283,9 +1307,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           self.approvals.contains(&(owner, operator))
       }
   *)
-  Definition is_approved_for_all (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; owner; operator ] =>
+  Definition is_approved_for_all (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; owner; operator ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
@@ -1294,6 +1318,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           M.get_associated_function (|
             Ty.apply
               (Ty.path "erc1155::Mapping")
+              []
               [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId" ]; Ty.tuple []
               ],
             "contains",
@@ -1308,7 +1333,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| operator |) ] |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -1316,16 +1341,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
       }
   *)
-  Definition balance_of (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; owner; token_id ] =>
+  Definition balance_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; owner; token_id ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
         let token_id := M.alloc (| token_id |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ],
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
             "unwrap_or",
             []
           |),
@@ -1334,6 +1359,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "erc1155::Mapping")
+                  []
                   [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                 "get",
                 []
@@ -1350,7 +1376,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -1378,9 +1404,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           Ok(())
       }
   *)
-  Definition safe_transfer_from (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; from; to; token_id; value; data ] =>
+  Definition safe_transfer_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; from; to; token_id; value; data ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let from := M.alloc (| from |) in
@@ -1634,7 +1660,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -1675,9 +1701,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           Ok(())
       }
   *)
-  Definition safe_batch_transfer_from (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; from; to; token_ids; values; data ] =>
+  Definition safe_batch_transfer_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; from; to; token_ids; values; data ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let from := M.alloc (| from |) in
@@ -1855,6 +1881,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                                       "is_empty",
                                       []
@@ -1905,6 +1932,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                                       "len",
                                       []
@@ -1915,6 +1943,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                                       "len",
                                       []
@@ -1955,15 +1984,15 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u128" ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ],
                       [],
                       "zip",
-                      [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u128" ] ]
+                      [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ] ]
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u128" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ],
                           "iter",
                           []
                         |),
@@ -1973,6 +2002,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               "core::ops::deref::Deref",
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                               [],
                               "deref",
@@ -1984,7 +2014,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       |);
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u128" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ],
                           "iter",
                           []
                         |),
@@ -1994,6 +2024,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               "core::ops::deref::Deref",
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                               [],
                               "deref",
@@ -2015,9 +2046,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::zip::Zip")
+                            []
                             [
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u128" ];
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u128" ]
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ];
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ]
                             ],
                           [],
                           "into_iter",
@@ -2029,9 +2061,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               "core::clone::Clone",
                               Ty.apply
                                 (Ty.path "core::iter::adapters::zip::Zip")
+                                []
                                 [
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u128" ];
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u128" ]
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "u128" ];
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ]
                                 ],
                               [],
                               "clone",
@@ -2056,12 +2092,15 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::zip::Zip")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::slice::iter::Iter")
+                                              []
                                               [ Ty.path "u128" ];
                                             Ty.apply
                                               (Ty.path "core::slice::iter::Iter")
+                                              []
                                               [ Ty.path "u128" ]
                                           ],
                                         [],
@@ -2175,9 +2214,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::zip::Zip")
+                            []
                             [
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u128" ];
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u128" ]
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ];
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ]
                             ],
                           [],
                           "into_iter",
@@ -2200,12 +2240,15 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::zip::Zip")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::slice::iter::Iter")
+                                              []
                                               [ Ty.path "u128" ];
                                             Ty.apply
                                               (Ty.path "core::slice::iter::Iter")
+                                              []
                                               [ Ty.path "u128" ]
                                           ],
                                         [],
@@ -2280,6 +2323,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             "core::ops::index::Index",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                             [ Ty.path "usize" ],
                             "index",
@@ -2294,6 +2338,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             "core::ops::index::Index",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                             [ Ty.path "usize" ],
                             "index",
@@ -2309,7 +2354,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2324,9 +2369,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           output
       }
   *)
-  Definition balance_of_batch (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; owners; token_ids ] =>
+  Definition balance_of_batch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; owners; token_ids ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owners := M.alloc (| owners |) in
@@ -2338,6 +2383,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                   "new",
                   []
@@ -2354,9 +2400,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       "core::iter::traits::collect::IntoIterator",
                       Ty.apply
                         (Ty.path "&")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [ Ty.path "erc1155::AccountId"; Ty.path "alloc::alloc::Global" ]
                         ],
                       [],
@@ -2380,6 +2428,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
                                       (Ty.path "core::slice::iter::Iter")
+                                      []
                                       [ Ty.path "erc1155::AccountId" ],
                                     [],
                                     "next",
@@ -2411,9 +2460,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               "core::iter::traits::collect::IntoIterator",
                                               Ty.apply
                                                 (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [ Ty.path "u128"; Ty.path "alloc::alloc::Global"
                                                     ]
                                                 ],
@@ -2438,6 +2489,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                             "core::iter::traits::iterator::Iterator",
                                                             Ty.apply
                                                               (Ty.path "core::slice::iter::Iter")
+                                                              []
                                                               [ Ty.path "u128" ],
                                                             [],
                                                             "next",
@@ -2491,6 +2543,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                   M.get_associated_function (|
                                                                     Ty.apply
                                                                       (Ty.path "alloc::vec::Vec")
+                                                                      []
                                                                       [
                                                                         Ty.path "u128";
                                                                         Ty.path
@@ -2517,7 +2570,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               |)) in
           output
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2540,9 +2593,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           Ok(())
       }
   *)
-  Definition set_approval_for_all (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; operator; approved ] =>
+  Definition set_approval_for_all (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; operator; approved ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let operator := M.alloc (| operator |) in
@@ -2627,6 +2680,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "erc1155::Mapping")
+                                  []
                                   [
                                     Ty.tuple
                                       [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId"
@@ -2656,6 +2710,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "erc1155::Mapping")
+                                  []
                                   [
                                     Ty.tuple
                                       [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId"
@@ -2706,7 +2761,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2751,9 +2806,9 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
           unimplemented!("This smart contract does not accept token transfer.")
       }
   *)
-  Definition on_received (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; _operator; _from; _token_id; _value; _data ] =>
+  Definition on_received (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _operator; _from; _token_id; _value; _data ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let _operator := M.alloc (| _operator |) in
@@ -2796,7 +2851,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -2822,9 +2877,9 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
           unimplemented!("This smart contract does not accept batch token transfers.")
       }
   *)
-  Definition on_batch_received (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; _operator; _from; _token_ids; _values; _data ] =>
+  Definition on_batch_received (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _operator; _from; _token_ids; _values; _data ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let _operator := M.alloc (| _operator |) in
@@ -2867,7 +2922,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :

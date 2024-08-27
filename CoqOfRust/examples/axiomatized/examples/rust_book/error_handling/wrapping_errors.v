@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum DoubleError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -24,7 +25,7 @@ Enum DoubleError
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -36,13 +37,13 @@ End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "wrapping_errors::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "wrapping_errors::DoubleError" ]).
+  (Ty.apply (Ty.path "wrapping_errors::Result") [] [ T ]) =
+    (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "wrapping_errors::DoubleError" ]).
 
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -55,7 +56,7 @@ End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
   
-  Parameter source : (list Ty.t) -> (list Value.t) -> M.
+  Parameter source : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -68,7 +69,7 @@ End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
   
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -78,14 +79,14 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 
-Parameter double_first : (list Ty.t) -> (list Value.t) -> M.
+Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_double_first : M.IsFunction "wrapping_errors::double_first" double_first.
 
-Parameter print : (list Ty.t) -> (list Value.t) -> M.
+Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_print : M.IsFunction "wrapping_errors::print" print.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "wrapping_errors::main" main.

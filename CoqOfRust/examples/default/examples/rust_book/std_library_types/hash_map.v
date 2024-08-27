@@ -16,9 +16,9 @@ fn call(number: &str) -> &str {
     }
 }
 *)
-Definition call (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ number ] =>
+Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ number ] =>
     ltac:(M.monadic
       (let number := M.alloc (| number |) in
       M.read (|
@@ -52,7 +52,7 @@ Definition call (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_call : M.IsFunction "hash_map::call" call.
@@ -90,9 +90,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ contacts :=
@@ -101,9 +101,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "new",
@@ -118,9 +119,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
@@ -135,9 +137,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
@@ -152,9 +155,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
@@ -169,9 +173,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
@@ -187,13 +192,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
+                    []
                     [
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                       Ty.path "std::hash::random::RandomState"
                     ],
                   "get",
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 |),
                 [ contacts; Value.String "Daniel" ]
               |)
@@ -236,7 +242,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [
                                           M.alloc (|
@@ -290,9 +296,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
@@ -308,13 +315,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
+                    []
                     [
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                       Ty.path "std::hash::random::RandomState"
                     ],
                   "get",
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 |),
                 [ contacts; Value.String "Ashley" ]
               |)
@@ -357,7 +365,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [
                                           M.alloc (|
@@ -411,13 +419,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "remove",
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [ contacts; Value.String "Ashley" ]
             |)
@@ -430,9 +439,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
                     (Ty.path "std::collections::hash::map::Iter")
+                    []
                     [
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ]
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
                     ],
                   [],
                   "into_iter",
@@ -443,9 +453,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                          Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       "iter",
@@ -470,9 +481,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
                                   (Ty.path "std::collections::hash::map::Iter")
+                                  []
                                   [
-                                    Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                                    Ty.apply (Ty.path "&") [ Ty.path "str" ]
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
                                   ],
                                 [],
                                 "next",
@@ -535,9 +547,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&")
+                                                                  []
                                                                   [ Ty.path "str" ]
                                                               ]
                                                           ]
@@ -548,7 +562,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
-                                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
                                                           ]
                                                         |),
                                                         [
@@ -579,7 +597,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "hash_map::main" main.

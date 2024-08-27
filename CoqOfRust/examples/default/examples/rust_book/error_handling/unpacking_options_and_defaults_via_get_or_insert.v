@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Fruit
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -40,9 +41,9 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
   Definition Self : Ty.t := Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -104,7 +105,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -128,9 +129,9 @@ fn main() {
     // TODO: uncomment the line above to see the compiler error
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ my_fruit := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
@@ -144,6 +145,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ],
                 "get_or_insert",
                 []
@@ -182,6 +184,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
+                                      []
                                       [
                                         Ty.path
                                           "unpacking_options_and_defaults_via_get_or_insert::Fruit"
@@ -229,6 +232,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
+                                      []
                                       [
                                         Ty.path
                                           "unpacking_options_and_defaults_via_get_or_insert::Fruit"
@@ -247,7 +251,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "unpacking_options_and_defaults_via_get_or_insert::main" main.

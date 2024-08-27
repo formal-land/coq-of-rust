@@ -13,14 +13,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -39,14 +39,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.U8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -65,14 +65,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.U16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -91,14 +91,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.U32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -117,14 +117,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.U64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -143,14 +143,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.U128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -169,14 +169,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.Isize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -195,14 +195,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.I8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -221,14 +221,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.I16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -247,14 +247,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.I32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -273,14 +273,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.I64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -299,14 +299,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.I128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -325,14 +325,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f32".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -351,14 +351,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f64".
       
       (*             fn add(self, other: $t) -> $t { self + other } *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.add Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -380,14 +380,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -406,14 +406,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.U8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -432,14 +432,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.U16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -458,14 +458,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.U32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -484,14 +484,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.U64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -510,14 +510,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.U128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -536,14 +536,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.Isize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -562,14 +562,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.I8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -588,14 +588,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.I16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -614,14 +614,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.I32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -640,14 +640,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.I64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -666,14 +666,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.I128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -692,14 +692,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f32".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -718,14 +718,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f64".
       
       (*             fn sub(self, other: $t) -> $t { self - other } *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.sub Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -747,14 +747,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -773,14 +773,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.U8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -799,14 +799,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.U16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -825,14 +825,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.U32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -851,14 +851,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.U64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -877,14 +877,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.U128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -903,14 +903,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.Isize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -929,14 +929,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.I8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -955,14 +955,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.I16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -981,14 +981,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.I32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1007,14 +1007,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.I64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1033,14 +1033,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.I128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1059,14 +1059,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f32".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1085,14 +1085,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f64".
       
       (*             fn mul(self, other: $t) -> $t { self * other } *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.mul Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1114,14 +1114,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1140,14 +1140,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.U8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1166,14 +1166,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.U16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1192,14 +1192,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.U32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1218,14 +1218,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.U64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1244,14 +1244,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.U128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1270,14 +1270,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.Isize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1296,14 +1296,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.I8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1322,14 +1322,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.I16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1348,14 +1348,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.I32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1374,14 +1374,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.I64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1400,14 +1400,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.I128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1426,14 +1426,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f32".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1452,14 +1452,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f64".
       
       (*             fn div(self, other: $t) -> $t { self / other } *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.div Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1481,14 +1481,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1507,14 +1507,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.U8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1533,14 +1533,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.U16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1559,14 +1559,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.U32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1585,14 +1585,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.U64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1611,14 +1611,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.U128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1637,14 +1637,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.Isize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1663,14 +1663,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.I8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1689,14 +1689,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.I16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1715,14 +1715,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.I32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1741,14 +1741,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.I64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1767,14 +1767,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.I128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1793,14 +1793,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f32".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1819,14 +1819,14 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f64".
       
       (*             fn rem(self, other: $t) -> $t { self % other } *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Wrap.rem Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1848,13 +1848,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Panic.neg (| Integer.Isize, M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1873,13 +1873,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Panic.neg (| Integer.I8, M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1898,13 +1898,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Panic.neg (| Integer.I16, M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1923,13 +1923,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Panic.neg (| Integer.I32, M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1948,13 +1948,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Panic.neg (| Integer.I64, M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1973,13 +1973,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Panic.neg (| Integer.I128, M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1998,13 +1998,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f32".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Panic.neg (| Integer.Usize, M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2023,13 +2023,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "f64".
       
       (*             fn neg(self) -> $t { -self } *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Panic.neg (| Integer.Usize, M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2048,9 +2048,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2058,7 +2058,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2073,9 +2073,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2083,7 +2083,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2098,9 +2098,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2108,7 +2108,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2123,9 +2123,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2133,7 +2133,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2148,9 +2148,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2158,7 +2158,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2173,9 +2173,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2183,7 +2183,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2198,9 +2198,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2208,7 +2208,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2223,9 +2223,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2233,7 +2233,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2248,9 +2248,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2258,7 +2258,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2273,9 +2273,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2283,7 +2283,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2298,9 +2298,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2308,7 +2308,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2323,9 +2323,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2333,7 +2333,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2348,9 +2348,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2358,7 +2358,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2373,9 +2373,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2383,7 +2383,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2401,9 +2401,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2411,7 +2411,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2426,9 +2426,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2436,7 +2436,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2451,9 +2451,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2461,7 +2461,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2476,9 +2476,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2486,7 +2486,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2501,9 +2501,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2511,7 +2511,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2526,9 +2526,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2536,7 +2536,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2551,9 +2551,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2561,7 +2561,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2576,9 +2576,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2586,7 +2586,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2601,9 +2601,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2611,7 +2611,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2626,9 +2626,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2636,7 +2636,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2651,9 +2651,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2661,7 +2661,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2676,9 +2676,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2686,7 +2686,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2701,9 +2701,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2711,7 +2711,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2726,9 +2726,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2736,7 +2736,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2754,9 +2754,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2764,7 +2764,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2779,9 +2779,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2789,7 +2789,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2804,9 +2804,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2814,7 +2814,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2829,9 +2829,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2839,7 +2839,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2854,9 +2854,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2864,7 +2864,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2879,9 +2879,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2889,7 +2889,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2904,9 +2904,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2914,7 +2914,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2929,9 +2929,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2939,7 +2939,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2954,9 +2954,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2964,7 +2964,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2979,9 +2979,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2989,7 +2989,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3004,9 +3004,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3014,7 +3014,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3029,9 +3029,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3039,7 +3039,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3054,9 +3054,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3064,7 +3064,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3079,9 +3079,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3089,7 +3089,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.mul Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3107,9 +3107,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3117,7 +3117,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3132,9 +3132,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3142,7 +3142,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3157,9 +3157,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3167,7 +3167,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3182,9 +3182,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3192,7 +3192,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3207,9 +3207,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3217,7 +3217,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3232,9 +3232,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3242,7 +3242,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3257,9 +3257,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3267,7 +3267,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3282,9 +3282,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3292,7 +3292,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3307,9 +3307,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3317,7 +3317,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3332,9 +3332,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3342,7 +3342,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3357,9 +3357,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3367,7 +3367,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3382,9 +3382,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3392,7 +3392,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3407,9 +3407,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3417,7 +3417,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3432,9 +3432,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3442,7 +3442,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.div Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3460,9 +3460,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3470,7 +3470,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3485,9 +3485,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3495,7 +3495,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3510,9 +3510,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3520,7 +3520,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3535,9 +3535,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3545,7 +3545,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3560,9 +3560,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3570,7 +3570,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3585,9 +3585,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3595,7 +3595,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3610,9 +3610,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3620,7 +3620,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3635,9 +3635,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3645,7 +3645,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3660,9 +3660,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3670,7 +3670,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3685,9 +3685,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3695,7 +3695,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3710,9 +3710,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3720,7 +3720,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3735,9 +3735,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3745,7 +3745,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3760,9 +3760,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3770,7 +3770,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3785,9 +3785,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3795,7 +3795,7 @@ Module ops.
               let β := M.read (| self |) in
               M.write (| β, BinOp.Wrap.rem Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

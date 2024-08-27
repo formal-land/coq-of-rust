@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Inch
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -13,14 +14,14 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
   Definition Self : Ty.t := Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -35,13 +36,13 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
   Definition Self : Ty.t := Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -62,6 +63,7 @@ End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification
 (*
 Enum Mm
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -71,14 +73,14 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
   Definition Self : Ty.t := Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -93,13 +95,13 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
   Definition Self : Ty.t := Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -120,19 +122,20 @@ End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification
 (* StructTuple
   {
     name := "Length";
+    const_params := [];
     ty_params := [ "Unit" ];
-    fields := [ Ty.path "f64"; Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ] ];
+    fields := [ Ty.path "f64"; Ty.apply (Ty.path "core::marker::PhantomData") [] [ Unit ] ];
   } *)
 
 Module Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
+    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [] [ Unit ].
   
   (* Debug *)
-  Definition fmt (Unit : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (Unit : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self Unit in
-    match τ, α with
-    | [], [ self; f ] =>
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -163,7 +166,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_t
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -177,13 +180,13 @@ End Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_test
 
 Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
+    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [] [ Unit ].
   
   (* Clone *)
-  Definition clone (Unit : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (Unit : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self Unit in
-    match τ, α with
-    | [], [ self ] =>
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructTuple
@@ -202,7 +205,7 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_ty
             M.call_closure (|
               M.get_trait_method (|
                 "core::clone::Clone",
-                Ty.apply (Ty.path "core::marker::PhantomData") [ Unit ],
+                Ty.apply (Ty.path "core::marker::PhantomData") [] [ Unit ],
                 [],
                 "clone",
                 []
@@ -216,7 +219,7 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_ty
               ]
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -230,7 +233,7 @@ End Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_type_
 
 Module Impl_core_marker_Copy_where_core_marker_Copy_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
+    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [] [ Unit ].
   
   Axiom Implements :
     forall (Unit : Ty.t),
@@ -243,11 +246,11 @@ End Impl_core_marker_Copy_where_core_marker_Copy_Unit_for_generics_phantom_type_
 
 Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
+    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [] [ Unit ].
   
   (*     type Output = Length<Unit>; *)
   Definition _Output (Unit : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [ Unit ].
+    Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [] [ Unit ].
   
   (*
       fn add(self, rhs: Length<Unit>) -> Length<Unit> {
@@ -255,10 +258,10 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
           Length(self.0 + rhs.0, PhantomData)
       }
   *)
-  Definition add (Unit : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition add (Unit : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self Unit in
-    match τ, α with
-    | [], [ self; rhs ] =>
+    match ε, τ, α with
+    | [], [], [ self; rhs ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
@@ -283,7 +286,7 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
               |));
             Value.StructTuple "core::marker::PhantomData" []
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -319,9 +322,9 @@ fn main() {
     //let one_feter = one_foot + one_meter;
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ one_foot :=
@@ -343,10 +346,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::ops::arith::Add",
                 Ty.apply
                   (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                  []
                   [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ],
                 [
                   Ty.apply
                     (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                    []
                     [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ]
                 ],
                 "add",
@@ -362,10 +367,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::ops::arith::Add",
                 Ty.apply
                   (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                  []
                   [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ],
                 [
                   Ty.apply
                     (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                    []
                     [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ]
                 ],
                 "add",
@@ -468,7 +475,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_phantom_type_test_case_unit_clarification::main" main.

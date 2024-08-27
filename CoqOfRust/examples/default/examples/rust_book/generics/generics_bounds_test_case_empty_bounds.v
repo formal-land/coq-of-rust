@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Cardinal";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -11,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "BlueJay";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -18,6 +20,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Turkey";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -55,13 +58,13 @@ fn red<T: Red>(_: &T) -> &'static str {
     "red"
 }
 *)
-Definition red (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ T ], [ β0 ] =>
+Definition red (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ T ], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       M.match_operator (| β0, [ fun γ => ltac:(M.monadic (M.read (| Value.String "red" |))) ] |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_red : M.IsFunction "generics_bounds_test_case_empty_bounds::red" red.
@@ -71,13 +74,13 @@ fn blue<T: Blue>(_: &T) -> &'static str {
     "blue"
 }
 *)
-Definition blue (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ T ], [ β0 ] =>
+Definition blue (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ T ], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       M.match_operator (| β0, [ fun γ => ltac:(M.monadic (M.read (| Value.String "blue" |))) ] |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_blue : M.IsFunction "generics_bounds_test_case_empty_bounds::blue" blue.
@@ -96,9 +99,9 @@ fn main() {
     // ^ TODO: Try uncommenting this line.
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ cardinal :=
@@ -135,7 +138,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -186,7 +189,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -211,7 +214,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_bounds_test_case_empty_bounds::main" main.

@@ -28,9 +28,9 @@ fn main() {
     println!("The person's age from person struct is {}", person.age);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ person :=
@@ -43,7 +43,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_trait_method (|
                       "core::convert::From",
                       Ty.path "alloc::string::String",
-                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       "from",
                       []
                     |),
@@ -54,6 +54,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "new",
                       []
@@ -116,9 +117,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
+                                                  []
                                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                               ]
                                           ]
@@ -214,6 +217,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::boxed::Box")
+                                              []
                                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                           ]
                                         |),
@@ -237,7 +241,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules_partial_moves::main" main.
@@ -246,12 +250,16 @@ Module main.
   (* StructRecord
     {
       name := "Person";
+      const_params := [];
       ty_params := [];
       fields :=
         [
           ("name", Ty.path "alloc::string::String");
           ("age",
-            Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
         ];
     } *)
   
@@ -260,9 +268,9 @@ Module main.
       Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person".
     
     (*     Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -295,7 +303,7 @@ Module main.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

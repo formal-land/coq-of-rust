@@ -8,30 +8,30 @@ Module vec.
     
     Module Impl_alloc_vec_spec_from_iter_SpecFromIter_where_core_iter_traits_iterator_Iterator_I_T_I_for_alloc_vec_Vec_T_alloc_alloc_Global.
       Definition Self (T I : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
           default fn from_iter(iterator: I) -> Self {
               SpecFromIterNested::from_iter(iterator)
           }
       *)
-      Definition from_iter (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T I in
-        match τ, α with
-        | [], [ iterator ] =>
+        match ε, τ, α with
+        | [], [], [ iterator ] =>
           ltac:(M.monadic
             (let iterator := M.alloc (| iterator |) in
             M.call_closure (|
               M.get_trait_method (|
                 "alloc::vec::spec_from_iter_nested::SpecFromIterNested",
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                 [ T; I ],
                 "from_iter",
                 []
               |),
               [ M.read (| iterator |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -45,7 +45,7 @@ Module vec.
     
     Module Impl_alloc_vec_spec_from_iter_SpecFromIter_T_alloc_vec_into_iter_IntoIter_T_alloc_alloc_Global_for_alloc_vec_Vec_T_alloc_alloc_Global.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
           fn from_iter(iterator: IntoIter<T>) -> Self {
@@ -75,10 +75,10 @@ Module vec.
               vec
           }
       *)
-      Definition from_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ iterator ] =>
+        match ε, τ, α with
+        | [], [], [ iterator ] =>
           ltac:(M.monadic
             (let iterator := M.alloc (| iterator |) in
             M.catch_return (|
@@ -92,7 +92,7 @@ Module vec.
                           (M.pointer_coercion
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "as_ptr",
                                 []
                               |),
@@ -132,6 +132,7 @@ Module vec.
                                             "core::iter::traits::exact_size::ExactSizeIterator",
                                             Ty.apply
                                               (Ty.path "alloc::vec::into_iter::IntoIter")
+                                              []
                                               [ T; Ty.path "alloc::alloc::Global" ],
                                             [],
                                             "len",
@@ -162,9 +163,11 @@ Module vec.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                []
                                                 [ T; Ty.path "alloc::alloc::Global" ]
                                             ],
                                           "new",
@@ -201,10 +204,12 @@ Module vec.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::mem::manually_drop::ManuallyDrop")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::vec::into_iter::IntoIter")
+                                                                  []
                                                                   [
                                                                     T;
                                                                     Ty.path "alloc::alloc::Global"
@@ -224,6 +229,7 @@ Module vec.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
                                                           [ T ],
                                                         "as_ptr",
                                                         []
@@ -237,10 +243,12 @@ Module vec.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::mem::manually_drop::ManuallyDrop")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "alloc::vec::into_iter::IntoIter")
+                                                                      []
                                                                       [
                                                                         T;
                                                                         Ty.path
@@ -265,6 +273,7 @@ Module vec.
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloc::vec::into_iter::IntoIter")
+                                                          []
                                                           [ T; Ty.path "alloc::alloc::Global" ],
                                                         [],
                                                         "len",
@@ -277,10 +286,12 @@ Module vec.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::mem::manually_drop::ManuallyDrop")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::vec::into_iter::IntoIter")
+                                                                  []
                                                                   [
                                                                     T;
                                                                     Ty.path "alloc::alloc::Global"
@@ -306,6 +317,7 @@ Module vec.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [ T; Ty.path "alloc::alloc::Global" ],
                                         "from_raw_parts",
                                         []
@@ -313,7 +325,10 @@ Module vec.
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ T ],
                                             "as_ptr",
                                             []
                                           |),
@@ -326,10 +341,12 @@ Module vec.
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::manually_drop::ManuallyDrop")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloc::vec::into_iter::IntoIter")
+                                                          []
                                                           [ T; Ty.path "alloc::alloc::Global" ]
                                                       ],
                                                     [],
@@ -349,6 +366,7 @@ Module vec.
                                             "core::iter::traits::exact_size::ExactSizeIterator",
                                             Ty.apply
                                               (Ty.path "alloc::vec::into_iter::IntoIter")
+                                              []
                                               [ T; Ty.path "alloc::alloc::Global" ],
                                             [],
                                             "len",
@@ -360,9 +378,11 @@ Module vec.
                                                 "core::ops::deref::Deref",
                                                 Ty.apply
                                                   (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                      []
                                                       [ T; Ty.path "alloc::alloc::Global" ]
                                                   ],
                                                 [],
@@ -380,9 +400,11 @@ Module vec.
                                                 "core::ops::deref::Deref",
                                                 Ty.apply
                                                   (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                      []
                                                       [ T; Ty.path "alloc::alloc::Global" ]
                                                   ],
                                                 [],
@@ -410,6 +432,7 @@ Module vec.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [ T; Ty.path "alloc::alloc::Global" ],
                           "new",
                           []
@@ -424,11 +447,13 @@ Module vec.
                           "alloc::vec::spec_extend::SpecExtend",
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [ T; Ty.path "alloc::alloc::Global" ],
                           [
                             T;
                             Ty.apply
                               (Ty.path "alloc::vec::into_iter::IntoIter")
+                              []
                               [ T; Ty.path "alloc::alloc::Global" ]
                           ],
                           "spec_extend",
@@ -440,7 +465,7 @@ Module vec.
                   vec
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -454,6 +479,7 @@ Module vec.
             (* I *)
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")
+              []
               [ T; Ty.path "alloc::alloc::Global" ]
           ]
           (* Instance *) [ ("from_iter", InstanceField.Method (from_iter T)) ].

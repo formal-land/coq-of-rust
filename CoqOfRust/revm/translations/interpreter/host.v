@@ -8,12 +8,15 @@ Module host.
   (* StructRecord
     {
       name := "SStoreResult";
+      const_params := [];
       ty_params := [];
       fields :=
         [
-          ("original_value", Ty.path "ruint::Uint");
-          ("present_value", Ty.path "ruint::Uint");
-          ("new_value", Ty.path "ruint::Uint");
+          ("original_value",
+            Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+          ("present_value",
+            Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+          ("new_value", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
           ("is_cold", Ty.path "bool")
         ];
     } *)
@@ -22,9 +25,9 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SStoreResult".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -73,7 +76,7 @@ Module host.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -88,9 +91,9 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SStoreResult".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -100,7 +103,7 @@ Module host.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -117,7 +120,7 @@ Module host.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -134,7 +137,7 @@ Module host.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "clone",
                     []
@@ -159,7 +162,7 @@ Module host.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -185,9 +188,9 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SStoreResult".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -197,8 +200,8 @@ Module host.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
-                    Ty.path "ruint::Uint",
-                    [ Ty.path "ruint::Uint" ],
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                     "eq",
                     []
                   |),
@@ -219,8 +222,9 @@ Module host.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
-                      Ty.path "ruint::Uint",
-                      [ Ty.path "ruint::Uint" ],
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      ],
                       "eq",
                       []
                     |),
@@ -242,8 +246,8 @@ Module host.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
-                    Ty.path "ruint::Uint",
-                    [ Ty.path "ruint::Uint" ],
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                     "eq",
                     []
                   |),
@@ -278,7 +282,7 @@ Module host.
                   |)
                 |))))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -304,9 +308,13 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SStoreResult".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -322,7 +330,7 @@ Module host.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -337,6 +345,7 @@ Module host.
   (* StructRecord
     {
       name := "LoadAccountResult";
+      const_params := [];
       ty_params := [];
       fields := [ ("is_cold", Ty.path "bool"); ("is_empty", Ty.path "bool") ];
     } *)
@@ -345,9 +354,9 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -380,7 +389,7 @@ Module host.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -395,9 +404,9 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -426,7 +435,7 @@ Module host.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -441,9 +450,9 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_interpreter::host::LoadAccountResult"
@@ -471,7 +480,7 @@ Module host.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -497,9 +506,9 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -536,7 +545,7 @@ Module host.
                   |)
                 |))))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -562,9 +571,13 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -573,7 +586,7 @@ Module host.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -588,6 +601,7 @@ Module host.
   (* StructRecord
     {
       name := "SelfDestructResult";
+      const_params := [];
       ty_params := [];
       fields :=
         [
@@ -602,9 +616,9 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm_interpreter::host::SelfDestructResult"
@@ -654,7 +668,7 @@ Module host.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -669,9 +683,9 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -722,7 +736,7 @@ Module host.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -737,9 +751,9 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -788,7 +802,7 @@ Module host.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -814,9 +828,9 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -889,7 +903,7 @@ Module host.
                   |)
                 |))))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -915,9 +929,13 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -926,7 +944,7 @@ Module host.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -942,9 +960,9 @@ Module host.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -1005,7 +1023,7 @@ Module host.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

@@ -6,9 +6,9 @@ pub fn calc_linear_cost_u32(len: usize, base: u64, word: u64) -> u64 {
     (len as u64 + 32 - 1) / 32 * word + base
 }
 *)
-Definition calc_linear_cost_u32 (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ len; base; word ] =>
+Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ len; base; word ] =>
     ltac:(M.monadic
       (let len := M.alloc (| len |) in
       let base := M.alloc (| base |) in
@@ -26,7 +26,7 @@ Definition calc_linear_cost_u32 (τ : list Ty.t) (α : list Value.t) : M :=
             (Value.Integer 32))
           (M.read (| word |)))
         (M.read (| base |))))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_calc_linear_cost_u32 :
@@ -35,18 +35,21 @@ Axiom Function_calc_linear_cost_u32 :
 (* StructRecord
   {
     name := "PrecompileOutput";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("cost", Ty.path "u64");
         ("output",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]);
+          Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]);
         ("logs",
           Ty.apply
             (Ty.path "alloc::vec::Vec")
+            []
             [
               Ty.apply
                 (Ty.path "alloy_primitives::log::Log")
+                []
                 [ Ty.path "alloy_primitives::log::LogData" ];
               Ty.path "alloc::alloc::Global"
             ])
@@ -57,9 +60,9 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileOutput.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructRecord
@@ -82,6 +85,7 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileOutput.
                   "core::clone::Clone",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "clone",
@@ -101,9 +105,11 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileOutput.
                   "core::clone::Clone",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [
                       Ty.apply
                         (Ty.path "alloy_primitives::log::Log")
+                        []
                         [ Ty.path "alloy_primitives::log::LogData" ];
                       Ty.path "alloc::alloc::Global"
                     ],
@@ -120,7 +126,7 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileOutput.
                 ]
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -135,9 +141,9 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileOutput.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -178,7 +184,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileOutput.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -193,9 +199,9 @@ Module Impl_core_default_Default_for_revm_precompile_PrecompileOutput.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "revm_precompile::PrecompileOutput"
@@ -211,6 +217,7 @@ Module Impl_core_default_Default_for_revm_precompile_PrecompileOutput.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "default",
@@ -224,9 +231,11 @@ Module Impl_core_default_Default_for_revm_precompile_PrecompileOutput.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [
                       Ty.apply
                         (Ty.path "alloy_primitives::log::Log")
+                        []
                         [ Ty.path "alloy_primitives::log::LogData" ];
                       Ty.path "alloc::alloc::Global"
                     ],
@@ -237,7 +246,7 @@ Module Impl_core_default_Default_for_revm_precompile_PrecompileOutput.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -263,9 +272,9 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileOutput.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -292,10 +301,12 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileOutput.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                   ],
                   "eq",
@@ -321,18 +332,22 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileOutput.
                 "core::cmp::PartialEq",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloy_primitives::log::Log")
+                      []
                       [ Ty.path "alloy_primitives::log::LogData" ];
                     Ty.path "alloc::alloc::Global"
                   ],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [
                       Ty.apply
                         (Ty.path "alloy_primitives::log::Log")
+                        []
                         [ Ty.path "alloy_primitives::log::LogData" ];
                       Ty.path "alloc::alloc::Global"
                     ]
@@ -354,7 +369,7 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileOutput.
               ]
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -380,9 +395,13 @@ Module Impl_core_cmp_Eq_for_revm_precompile_PrecompileOutput.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -405,7 +424,7 @@ Module Impl_core_cmp_Eq_for_revm_precompile_PrecompileOutput.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -421,9 +440,9 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileOutput.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
   
   (* Hash *)
-  Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ __H ], [ self; state ] =>
+  Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ __H ], [ self; state ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
@@ -449,6 +468,7 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileOutput.
                   "core::hash::Hash",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "hash",
@@ -470,9 +490,11 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileOutput.
                 "core::hash::Hash",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloy_primitives::log::Log")
+                      []
                       [ Ty.path "alloy_primitives::log::LogData" ];
                     Ty.path "alloc::alloc::Global"
                   ],
@@ -491,7 +513,7 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileOutput.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -514,9 +536,9 @@ Module Impl_revm_precompile_PrecompileOutput.
           }
       }
   *)
-  Definition without_logs (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ cost; output ] =>
+  Definition without_logs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ cost; output ] =>
       ltac:(M.monadic
         (let cost := M.alloc (| cost |) in
         let output := M.alloc (| output |) in
@@ -530,9 +552,11 @@ Module Impl_revm_precompile_PrecompileOutput.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [
                       Ty.apply
                         (Ty.path "alloy_primitives::log::Log")
+                        []
                         [ Ty.path "alloy_primitives::log::LogData" ];
                       Ty.path "alloc::alloc::Global"
                     ],
@@ -542,7 +566,7 @@ Module Impl_revm_precompile_PrecompileOutput.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_without_logs : M.IsAssociatedFunction Self "without_logs" without_logs.
@@ -551,12 +575,14 @@ End Impl_revm_precompile_PrecompileOutput.
 (* StructRecord
   {
     name := "Precompiles";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("inner",
           Ty.apply
             (Ty.path "std::collections::hash::map::HashMap")
+            []
             [
               Ty.path "alloy_primitives::bits::address::Address";
               Ty.path "revm_primitives::precompile::Precompile";
@@ -569,9 +595,9 @@ Module Impl_core_clone_Clone_for_revm_precompile_Precompiles.
   Definition Self : Ty.t := Ty.path "revm_precompile::Precompiles".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructRecord
@@ -583,6 +609,7 @@ Module Impl_core_clone_Clone_for_revm_precompile_Precompiles.
                   "core::clone::Clone",
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
+                    []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
                       Ty.path "revm_primitives::precompile::Precompile";
@@ -601,7 +628,7 @@ Module Impl_core_clone_Clone_for_revm_precompile_Precompiles.
                 ]
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -616,9 +643,9 @@ Module Impl_core_default_Default_for_revm_precompile_Precompiles.
   Definition Self : Ty.t := Ty.path "revm_precompile::Precompiles".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "revm_precompile::Precompiles"
@@ -629,6 +656,7 @@ Module Impl_core_default_Default_for_revm_precompile_Precompiles.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
+                    []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
                       Ty.path "revm_primitives::precompile::Precompile";
@@ -641,7 +669,7 @@ Module Impl_core_default_Default_for_revm_precompile_Precompiles.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -656,9 +684,9 @@ Module Impl_core_fmt_Debug_for_revm_precompile_Precompiles.
   Definition Self : Ty.t := Ty.path "revm_precompile::Precompiles".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -683,7 +711,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_Precompiles.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -709,9 +737,9 @@ Module Impl_revm_precompile_Precompiles.
           }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ spec ] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ spec ] =>
       ltac:(M.monadic
         (let spec := M.alloc (| spec |) in
         M.read (|
@@ -805,7 +833,7 @@ Module Impl_revm_precompile_Precompiles.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -825,14 +853,15 @@ Module Impl_revm_precompile_Precompiles.
           })
       }
   *)
-  Definition homestead (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition homestead (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_associated_function (|
             Ty.apply
               (Ty.path "once_cell::race::once_box::OnceBox")
+              []
               [ Ty.path "revm_precompile::Precompiles" ],
             "get_or_init",
             [
@@ -840,6 +869,7 @@ Module Impl_revm_precompile_Precompiles.
                 [ Ty.tuple [] ]
                 (Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "revm_precompile::Precompiles"; Ty.path "alloc::alloc::Global" ])
             ]
           |),
@@ -878,6 +908,7 @@ Module Impl_revm_precompile_Precompiles.
                                       [
                                         Ty.apply
                                           (Ty.path "array")
+                                          [ Value.Integer 4 ]
                                           [ Ty.path "revm_precompile::PrecompileWithAddress" ]
                                       ]
                                     |),
@@ -908,6 +939,7 @@ Module Impl_revm_precompile_Precompiles.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.path "revm_precompile::Precompiles";
                                         Ty.path "alloc::alloc::Global"
@@ -925,7 +957,7 @@ Module Impl_revm_precompile_Precompiles.
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_homestead : M.IsAssociatedFunction Self "homestead" homestead.
@@ -948,14 +980,15 @@ Module Impl_revm_precompile_Precompiles.
           })
       }
   *)
-  Definition byzantium (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition byzantium (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_associated_function (|
             Ty.apply
               (Ty.path "once_cell::race::once_box::OnceBox")
+              []
               [ Ty.path "revm_precompile::Precompiles" ],
             "get_or_init",
             [
@@ -963,6 +996,7 @@ Module Impl_revm_precompile_Precompiles.
                 [ Ty.tuple [] ]
                 (Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "revm_precompile::Precompiles"; Ty.path "alloc::alloc::Global" ])
             ]
           |),
@@ -1010,6 +1044,7 @@ Module Impl_revm_precompile_Precompiles.
                                       [
                                         Ty.apply
                                           (Ty.path "array")
+                                          [ Value.Integer 4 ]
                                           [ Ty.path "revm_precompile::PrecompileWithAddress" ]
                                       ]
                                     |),
@@ -1046,6 +1081,7 @@ Module Impl_revm_precompile_Precompiles.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.path "revm_precompile::Precompiles";
                                         Ty.path "alloc::alloc::Global"
@@ -1063,7 +1099,7 @@ Module Impl_revm_precompile_Precompiles.
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_byzantium : M.IsAssociatedFunction Self "byzantium" byzantium.
@@ -1085,14 +1121,15 @@ Module Impl_revm_precompile_Precompiles.
           })
       }
   *)
-  Definition istanbul (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition istanbul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_associated_function (|
             Ty.apply
               (Ty.path "once_cell::race::once_box::OnceBox")
+              []
               [ Ty.path "revm_precompile::Precompiles" ],
             "get_or_init",
             [
@@ -1100,6 +1137,7 @@ Module Impl_revm_precompile_Precompiles.
                 [ Ty.tuple [] ]
                 (Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "revm_precompile::Precompiles"; Ty.path "alloc::alloc::Global" ])
             ]
           |),
@@ -1147,6 +1185,7 @@ Module Impl_revm_precompile_Precompiles.
                                       [
                                         Ty.apply
                                           (Ty.path "array")
+                                          [ Value.Integer 4 ]
                                           [ Ty.path "revm_precompile::PrecompileWithAddress" ]
                                       ]
                                     |),
@@ -1181,6 +1220,7 @@ Module Impl_revm_precompile_Precompiles.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.path "revm_precompile::Precompiles";
                                         Ty.path "alloc::alloc::Global"
@@ -1198,7 +1238,7 @@ Module Impl_revm_precompile_Precompiles.
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_istanbul : M.IsAssociatedFunction Self "istanbul" istanbul.
@@ -1216,14 +1256,15 @@ Module Impl_revm_precompile_Precompiles.
           })
       }
   *)
-  Definition berlin (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition berlin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_associated_function (|
             Ty.apply
               (Ty.path "once_cell::race::once_box::OnceBox")
+              []
               [ Ty.path "revm_precompile::Precompiles" ],
             "get_or_init",
             [
@@ -1231,6 +1272,7 @@ Module Impl_revm_precompile_Precompiles.
                 [ Ty.tuple [] ]
                 (Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "revm_precompile::Precompiles"; Ty.path "alloc::alloc::Global" ])
             ]
           |),
@@ -1278,6 +1320,7 @@ Module Impl_revm_precompile_Precompiles.
                                       [
                                         Ty.apply
                                           (Ty.path "array")
+                                          [ Value.Integer 1 ]
                                           [ Ty.path "revm_precompile::PrecompileWithAddress" ]
                                       ]
                                     |),
@@ -1297,6 +1340,7 @@ Module Impl_revm_precompile_Precompiles.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.path "revm_precompile::Precompiles";
                                         Ty.path "alloc::alloc::Global"
@@ -1314,7 +1358,7 @@ Module Impl_revm_precompile_Precompiles.
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_berlin : M.IsAssociatedFunction Self "berlin" berlin.
@@ -1340,14 +1384,15 @@ Module Impl_revm_precompile_Precompiles.
           })
       }
   *)
-  Definition cancun (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition cancun (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_associated_function (|
             Ty.apply
               (Ty.path "once_cell::race::once_box::OnceBox")
+              []
               [ Ty.path "revm_precompile::Precompiles" ],
             "get_or_init",
             [
@@ -1355,6 +1400,7 @@ Module Impl_revm_precompile_Precompiles.
                 [ Ty.tuple [] ]
                 (Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "revm_precompile::Precompiles"; Ty.path "alloc::alloc::Global" ])
             ]
           |),
@@ -1405,6 +1451,7 @@ Module Impl_revm_precompile_Precompiles.
                                           [
                                             Ty.apply
                                               (Ty.path "array")
+                                              [ Value.Integer 1 ]
                                               [ Ty.path "revm_precompile::PrecompileWithAddress" ]
                                           ]
                                         |),
@@ -1428,6 +1475,7 @@ Module Impl_revm_precompile_Precompiles.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.path "revm_precompile::Precompiles";
                                         Ty.path "alloc::alloc::Global"
@@ -1445,7 +1493,7 @@ Module Impl_revm_precompile_Precompiles.
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_cancun : M.IsAssociatedFunction Self "cancun" cancun.
@@ -1455,15 +1503,15 @@ Module Impl_revm_precompile_Precompiles.
           Self::cancun()
       }
   *)
-  Definition latest (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition latest (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_associated_function (| Ty.path "revm_precompile::Precompiles", "cancun", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_latest : M.IsAssociatedFunction Self "latest" latest.
@@ -1473,15 +1521,16 @@ Module Impl_revm_precompile_Precompiles.
           self.inner.keys()
       }
   *)
-  Definition addresses (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition addresses (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (|
             Ty.apply
               (Ty.path "std::collections::hash::map::HashMap")
+              []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
                 Ty.path "revm_primitives::precompile::Precompile";
@@ -1498,7 +1547,7 @@ Module Impl_revm_precompile_Precompiles.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_addresses : M.IsAssociatedFunction Self "addresses" addresses.
@@ -1508,15 +1557,16 @@ Module Impl_revm_precompile_Precompiles.
           self.inner.into_keys()
       }
   *)
-  Definition into_addresses (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition into_addresses (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (|
             Ty.apply
               (Ty.path "std::collections::hash::map::HashMap")
+              []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
                 Ty.path "revm_primitives::precompile::Precompile";
@@ -1535,7 +1585,7 @@ Module Impl_revm_precompile_Precompiles.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_into_addresses :
@@ -1546,9 +1596,9 @@ Module Impl_revm_precompile_Precompiles.
           self.inner.contains_key(address)
       }
   *)
-  Definition contains (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; address ] =>
+  Definition contains (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; address ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let address := M.alloc (| address |) in
@@ -1556,6 +1606,7 @@ Module Impl_revm_precompile_Precompiles.
           M.get_associated_function (|
             Ty.apply
               (Ty.path "std::collections::hash::map::HashMap")
+              []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
                 Ty.path "revm_primitives::precompile::Precompile";
@@ -1573,7 +1624,7 @@ Module Impl_revm_precompile_Precompiles.
             M.read (| address |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_contains : M.IsAssociatedFunction Self "contains" contains.
@@ -1583,9 +1634,9 @@ Module Impl_revm_precompile_Precompiles.
           self.inner.get(address)
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; address ] =>
+  Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; address ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let address := M.alloc (| address |) in
@@ -1593,6 +1644,7 @@ Module Impl_revm_precompile_Precompiles.
           M.get_associated_function (|
             Ty.apply
               (Ty.path "std::collections::hash::map::HashMap")
+              []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
                 Ty.path "revm_primitives::precompile::Precompile";
@@ -1610,7 +1662,7 @@ Module Impl_revm_precompile_Precompiles.
             M.read (| address |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -1620,9 +1672,9 @@ Module Impl_revm_precompile_Precompiles.
           self.inner.get_mut(address)
       }
   *)
-  Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; address ] =>
+  Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; address ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let address := M.alloc (| address |) in
@@ -1630,6 +1682,7 @@ Module Impl_revm_precompile_Precompiles.
           M.get_associated_function (|
             Ty.apply
               (Ty.path "std::collections::hash::map::HashMap")
+              []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
                 Ty.path "revm_primitives::precompile::Precompile";
@@ -1647,7 +1700,7 @@ Module Impl_revm_precompile_Precompiles.
             M.read (| address |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -1657,9 +1710,9 @@ Module Impl_revm_precompile_Precompiles.
           self.inner.len() == 0
       }
   *)
-  Definition is_empty (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         BinOp.Pure.eq
@@ -1667,6 +1720,7 @@ Module Impl_revm_precompile_Precompiles.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "std::collections::hash::map::HashMap")
+                []
                 [
                   Ty.path "alloy_primitives::bits::address::Address";
                   Ty.path "revm_primitives::precompile::Precompile";
@@ -1684,7 +1738,7 @@ Module Impl_revm_precompile_Precompiles.
             ]
           |))
           (Value.Integer 0)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -1694,15 +1748,16 @@ Module Impl_revm_precompile_Precompiles.
           self.inner.len()
       }
   *)
-  Definition len (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (|
             Ty.apply
               (Ty.path "std::collections::hash::map::HashMap")
+              []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
                 Ty.path "revm_primitives::precompile::Precompile";
@@ -1719,7 +1774,7 @@ Module Impl_revm_precompile_Precompiles.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -1729,9 +1784,9 @@ Module Impl_revm_precompile_Precompiles.
           self.inner.extend(other.into_iter().map(Into::into));
       }
   *)
-  Definition extend (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ impl_IntoIterator_Item___PrecompileWithAddress_ ], [ self; other ] =>
+  Definition extend (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ impl_IntoIterator_Item___PrecompileWithAddress_ ], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1743,6 +1798,7 @@ Module Impl_revm_precompile_Precompiles.
                   "core::iter::traits::collect::Extend",
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
+                    []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
                       Ty.path "revm_primitives::precompile::Precompile";
@@ -1759,6 +1815,7 @@ Module Impl_revm_precompile_Precompiles.
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::map::Map")
+                      []
                       [
                         Ty.associated;
                         Ty.function
@@ -1829,7 +1886,7 @@ Module Impl_revm_precompile_Precompiles.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
@@ -1838,6 +1895,7 @@ End Impl_revm_precompile_Precompiles.
 (* StructTuple
   {
     name := "PrecompileWithAddress";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -1850,9 +1908,9 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileWithAddress.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileWithAddress".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructTuple
@@ -1891,7 +1949,7 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileWithAddress.
               ]
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1906,9 +1964,9 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileWithAddress.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileWithAddress".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -1939,7 +1997,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileWithAddress.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1958,9 +2016,9 @@ Module Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_revm_p
           PrecompileWithAddress(value.0, value.1)
       }
   *)
-  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ value ] =>
+  Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         Value.StructTuple
@@ -1969,7 +2027,7 @@ Module Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_revm_p
             M.read (| M.SubPointer.get_tuple_field (| value, 0 |) |);
             M.read (| M.SubPointer.get_tuple_field (| value, 1 |) |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2001,9 +2059,9 @@ Module Impl_core_convert_From_revm_precompile_PrecompileWithAddress_for_Tuple_al
           (value.0, value.1)
       }
   *)
-  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ value ] =>
+  Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         Value.Tuple
@@ -2023,7 +2081,7 @@ Module Impl_core_convert_From_revm_precompile_PrecompileWithAddress_for_Tuple_al
               |)
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2037,6 +2095,7 @@ End Impl_core_convert_From_revm_precompile_PrecompileWithAddress_for_Tuple_alloy
 (*
 Enum PrecompileSpecId
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -2085,13 +2144,13 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2106,9 +2165,9 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -2161,7 +2220,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2187,9 +2246,9 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -2216,7 +2275,7 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
             |) in
           M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2242,13 +2301,17 @@ Module Impl_core_cmp_Eq_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2264,9 +2327,9 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
   
   (* Hash *)
-  Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ __H ], [ self; state ] =>
+  Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ __H ], [ self; state ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
@@ -2288,7 +2351,7 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileSpecId.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2303,9 +2366,9 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
   
   (* Ord *)
-  Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -2337,7 +2400,7 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2352,9 +2415,9 @@ Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
   
   (* PartialOrd *)
-  Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -2392,7 +2455,7 @@ Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -2425,9 +2488,9 @@ Module Impl_revm_precompile_PrecompileSpecId.
           }
       }
   *)
-  Definition from_spec_id (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ spec_id ] =>
+  Definition from_spec_id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ spec_id ] =>
       ltac:(M.monadic
         (let spec_id := M.alloc (| spec_id |) in
         M.read (|
@@ -2679,7 +2742,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_from_spec_id : M.IsAssociatedFunction Self "from_spec_id" from_spec_id.
@@ -2693,9 +2756,9 @@ pub const fn u64_to_address(x: u64) -> Address {
     ])
 }
 *)
-Definition u64_to_address (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ x ] =>
+Definition u64_to_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ x ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (|
@@ -2741,7 +2804,7 @@ Definition u64_to_address (τ : list Ty.t) (α : list Value.t) : M :=
           |)
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_u64_to_address : M.IsFunction "revm_precompile::u64_to_address" u64_to_address.

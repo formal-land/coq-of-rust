@@ -23,9 +23,9 @@ Module num.
         ((val + C1) & (val + C2)) >> 8
     }
     *)
-    Definition u8 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition u8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
@@ -44,7 +44,7 @@ Module num.
                 (Value.Integer 8)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_u8 : M.IsFunction "core::num::int_log10::u8" u8.
@@ -81,9 +81,9 @@ Module num.
         (((val + C1) & (val + C2)) ^ ((val + C3) & (val + C4))) >> 17
     }
     *)
-    Definition less_than_5 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition less_than_5 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           BinOp.Wrap.shr
@@ -107,7 +107,7 @@ Module num.
                   (M.read (| val |))
                   (M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C4" |) |)))))
             (Value.Integer 17)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_less_than_5 : M.IsFunction "core::num::int_log10::less_than_5" less_than_5.
@@ -141,16 +141,16 @@ Module num.
         less_than_5(val as u32)
     }
     *)
-    Definition u16 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition u16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::less_than_5", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_u16 : M.IsFunction "core::num::int_log10::u16" u16.
@@ -165,9 +165,9 @@ Module num.
         log + less_than_5(val)
     }
     *)
-    Definition u32 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
@@ -208,7 +208,7 @@ Module num.
                 |))
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_u32 : M.IsFunction "core::num::int_log10::u32" u32.
@@ -227,9 +227,9 @@ Module num.
         log + less_than_5(val as u32)
     }
     *)
-    Definition u64 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition u64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
@@ -298,7 +298,7 @@ Module num.
                 |))
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_u64 : M.IsFunction "core::num::int_log10::u64" u64.
@@ -318,9 +318,9 @@ Module num.
         log + u64(val as u64)
     }
     *)
-    Definition u128 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition u128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.catch_return (|
@@ -418,7 +418,7 @@ Module num.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_u128 : M.IsFunction "core::num::int_log10::u128" u128.
@@ -428,16 +428,16 @@ Module num.
         u64(val as _)
     }
     *)
-    Definition usize (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition usize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u64", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_usize : M.IsFunction "core::num::int_log10::usize" usize.
@@ -447,16 +447,16 @@ Module num.
         u8(val as u8)
     }
     *)
-    Definition i8 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition i8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u8", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_i8 : M.IsFunction "core::num::int_log10::i8" i8.
@@ -466,16 +466,16 @@ Module num.
         u16(val as u16)
     }
     *)
-    Definition i16 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition i16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u16", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_i16 : M.IsFunction "core::num::int_log10::i16" i16.
@@ -485,16 +485,16 @@ Module num.
         u32(val as u32)
     }
     *)
-    Definition i32 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u32", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_i32 : M.IsFunction "core::num::int_log10::i32" i32.
@@ -504,16 +504,16 @@ Module num.
         u64(val as u64)
     }
     *)
-    Definition i64 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition i64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u64", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_i64 : M.IsFunction "core::num::int_log10::i64" i64.
@@ -523,16 +523,16 @@ Module num.
         u128(val as u128)
     }
     *)
-    Definition i128 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition i128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u128", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_i128 : M.IsFunction "core::num::int_log10::i128" i128.
@@ -542,9 +542,13 @@ Module num.
         panic!("argument of integer logarithm must be positive")
     }
     *)
-    Definition panic_for_nonpositive_argument (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition panic_for_nonpositive_argument
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [ host ], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -563,7 +567,7 @@ Module num.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_panic_for_nonpositive_argument :

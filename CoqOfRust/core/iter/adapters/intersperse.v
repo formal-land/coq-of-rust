@@ -7,24 +7,25 @@ Module iter.
       (* StructRecord
         {
           name := "Intersperse";
+          const_params := [];
           ty_params := [ "I" ];
           fields :=
             [
               ("separator", Ty.associated);
-              ("iter", Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ]);
+              ("iter", Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ]);
               ("needs_sep", Ty.path "bool")
             ];
         } *)
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_fmt_Debug_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [] [ I ].
         
         (* Debug *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -65,7 +66,7 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -79,13 +80,13 @@ Module iter.
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [] [ I ].
         
         (* Clone *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -106,7 +107,7 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::clone::Clone",
-                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ],
+                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ],
                         [],
                         "clone",
                         []
@@ -137,7 +138,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -151,17 +152,17 @@ Module iter.
       
       Module Impl_core_iter_adapters_intersperse_Intersperse_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [] [ I ].
         
         (*
             pub(in crate::iter) fn new(iter: I, separator: I::Item) -> Self {
                 Self { iter: iter.peekable(), separator, needs_sep: false }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ iter; separator ] =>
+          match ε, τ, α with
+          | [], [], [ iter; separator ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               let separator := M.alloc (| separator |) in
@@ -182,7 +183,7 @@ Module iter.
                   ("separator", M.read (| separator |));
                   ("needs_sep", Value.Bool false)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -192,7 +193,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [] [ I ].
         
         (*     type Item = I::Item; *)
         Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
@@ -208,10 +209,10 @@ Module iter.
                 }
             }
         *)
-        Definition next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -236,7 +237,8 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
-                                        [ Ty.apply (Ty.path "&") [ Ty.associated ] ],
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
                                       "is_some",
                                       []
                                     |),
@@ -246,6 +248,7 @@ Module iter.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::iter::adapters::peekable::Peekable")
+                                              []
                                               [ I ],
                                             "peek",
                                             []
@@ -311,7 +314,10 @@ Module iter.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ],
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::peekable::Peekable")
+                                []
+                                [ I ],
                               [],
                               "next",
                               []
@@ -328,7 +334,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -341,10 +347,10 @@ Module iter.
                 intersperse_fold(self.iter, init, f, move || separator.clone(), self.needs_sep)
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -363,7 +369,7 @@ Module iter.
                     M.get_function (|
                       "core::iter::adapters::intersperse::intersperse_fold",
                       [
-                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ];
+                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ];
                         B;
                         F;
                         Ty.function [ Ty.tuple [] ] Ty.associated
@@ -414,7 +420,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -422,16 +428,16 @@ Module iter.
                 intersperse_size_hint(&self.iter, self.needs_sep)
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::intersperse::intersperse_size_hint",
-                  [ Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ] ]
+                  [ Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ] ]
                 |),
                 [
                   M.SubPointer.get_struct_record_field (|
@@ -448,7 +454,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -469,18 +475,19 @@ Module iter.
       (* StructRecord
         {
           name := "IntersperseWith";
+          const_params := [];
           ty_params := [ "I"; "G" ];
           fields :=
             [
               ("separator", G);
-              ("iter", Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ]);
+              ("iter", Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ]);
               ("needs_sep", Ty.path "bool")
             ];
         } *)
       
       Module Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_G_for_core_iter_adapters_intersperse_IntersperseWith_I_G.
         Definition Self (I G : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::intersperse::IntersperseWith") [ I; G ].
+          Ty.apply (Ty.path "core::iter::adapters::intersperse::IntersperseWith") [] [ I; G ].
         
         (*
             fn fmt(&self, f: &mut crate::fmt::Formatter<'_>) -> crate::fmt::Result {
@@ -491,10 +498,10 @@ Module iter.
                     .finish()
             }
         *)
-        Definition fmt (I G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I G : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I G in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -568,7 +575,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -582,7 +589,7 @@ Module iter.
       
       Module Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_type_where_core_clone_Clone_G_for_core_iter_adapters_intersperse_IntersperseWith_I_G.
         Definition Self (I G : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::intersperse::IntersperseWith") [ I; G ].
+          Ty.apply (Ty.path "core::iter::adapters::intersperse::IntersperseWith") [] [ I; G ].
         
         (*
             fn clone(&self) -> Self {
@@ -593,10 +600,10 @@ Module iter.
                 }
             }
         *)
-        Definition clone (I G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I G : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I G in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -617,7 +624,7 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::clone::Clone",
-                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ],
+                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ],
                         [],
                         "clone",
                         []
@@ -648,7 +655,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -662,17 +669,17 @@ Module iter.
       
       Module Impl_core_iter_adapters_intersperse_IntersperseWith_I_G.
         Definition Self (I G : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::intersperse::IntersperseWith") [ I; G ].
+          Ty.apply (Ty.path "core::iter::adapters::intersperse::IntersperseWith") [] [ I; G ].
         
         (*
             pub(in crate::iter) fn new(iter: I, separator: G) -> Self {
                 Self { iter: iter.peekable(), separator, needs_sep: false }
             }
         *)
-        Definition new (I G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I G : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I G in
-          match τ, α with
-          | [], [ iter; separator ] =>
+          match ε, τ, α with
+          | [], [], [ iter; separator ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               let separator := M.alloc (| separator |) in
@@ -693,7 +700,7 @@ Module iter.
                   ("separator", M.read (| separator |));
                   ("needs_sep", Value.Bool false)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -703,7 +710,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_G_Tuple__for_core_iter_adapters_intersperse_IntersperseWith_I_G.
         Definition Self (I G : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::intersperse::IntersperseWith") [ I; G ].
+          Ty.apply (Ty.path "core::iter::adapters::intersperse::IntersperseWith") [] [ I; G ].
         
         (*     type Item = I::Item; *)
         Definition _Item (I G : Ty.t) : Ty.t := Ty.associated.
@@ -719,10 +726,10 @@ Module iter.
                 }
             }
         *)
-        Definition next (I G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I G : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I G in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -747,7 +754,8 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
-                                        [ Ty.apply (Ty.path "&") [ Ty.associated ] ],
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
                                       "is_some",
                                       []
                                     |),
@@ -757,6 +765,7 @@ Module iter.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::iter::adapters::peekable::Peekable")
+                                              []
                                               [ I ],
                                             "peek",
                                             []
@@ -823,7 +832,10 @@ Module iter.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ],
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::peekable::Peekable")
+                                []
+                                [ I ],
                               [],
                               "next",
                               []
@@ -840,7 +852,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -852,10 +864,10 @@ Module iter.
                 intersperse_fold(self.iter, init, f, self.separator, self.needs_sep)
             }
         *)
-        Definition fold (I G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I G : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I G in
-          match τ, α with
-          | [ B; F ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -863,7 +875,8 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::intersperse::intersperse_fold",
-                  [ Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ]; B; F; G ]
+                  [ Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ]; B; F; G
+                  ]
                 |),
                 [
                   M.read (|
@@ -891,7 +904,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -899,16 +912,21 @@ Module iter.
                 intersperse_size_hint(&self.iter, self.needs_sep)
             }
         *)
-        Definition size_hint (I G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint
+            (I G : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I G in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::intersperse::intersperse_size_hint",
-                  [ Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ] ]
+                  [ Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ] ]
                 |),
                 [
                   M.SubPointer.get_struct_record_field (|
@@ -925,7 +943,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -956,9 +974,9 @@ Module iter.
           )
       }
       *)
-      Definition intersperse_size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ _ as I ], [ iter; needs_sep ] =>
+      Definition intersperse_size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ _ as I ], [ iter; needs_sep ] =>
           ltac:(M.monadic
             (let iter := M.alloc (| iter |) in
             let needs_sep := M.alloc (| needs_sep |) in
@@ -1003,13 +1021,16 @@ Module iter.
                             |);
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "and_then",
                                 [
                                   Ty.path "usize";
                                   Ty.function
                                     [ Ty.tuple [ Ty.path "usize" ] ]
-                                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ])
+                                    (Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ])
                                 ]
                               |),
                               [
@@ -1057,7 +1078,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_intersperse_size_hint :
@@ -1095,9 +1116,9 @@ Module iter.
           })
       }
       *)
-      Definition intersperse_fold (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ _ as I; B; F; G ], [ iter; init; f; separator; needs_sep ] =>
+      Definition intersperse_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ _ as I; B; F; G ], [ iter; init; f; separator; needs_sep ] =>
           ltac:(M.monadic
             (let iter := M.alloc (| iter |) in
             let init := M.alloc (| init |) in
@@ -1261,7 +1282,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_intersperse_fold :

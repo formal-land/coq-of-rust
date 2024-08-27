@@ -12,12 +12,13 @@ Module panic.
     (* StructTuple
       {
         name := "AssertUnwindSafe";
+        const_params := [];
         ty_params := [ "T" ];
         fields := [ T ];
       } *)
     
     Module Impl_core_panic_unwind_safe_UnwindSafe_where_core_marker_Sized_T_for_ref_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -29,7 +30,7 @@ Module panic.
     End Impl_core_panic_unwind_safe_UnwindSafe_where_core_marker_Sized_T_for_ref_mut_T.
     
     Module Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_for_ref__T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -41,7 +42,7 @@ Module panic.
     End Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_for_ref__T.
     
     Module Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_for_pointer_const_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -53,7 +54,7 @@ Module panic.
     End Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_for_pointer_const_T.
     
     Module Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_for_pointer_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -65,7 +66,7 @@ Module panic.
     End Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_for_pointer_mut_T.
     
     Module Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_UnwindSafe_T_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -77,7 +78,8 @@ Module panic.
     End Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_UnwindSafe_T_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
     
     Module Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -90,7 +92,7 @@ Module panic.
     
     Module Impl_core_panic_unwind_safe_UnwindSafe_for_core_panic_unwind_safe_AssertUnwindSafe_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [ T ].
+        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -102,7 +104,7 @@ Module panic.
     End Impl_core_panic_unwind_safe_UnwindSafe_for_core_panic_unwind_safe_AssertUnwindSafe_T.
     
     Module Impl_core_panic_unwind_safe_RefUnwindSafe_where_core_marker_Sized_T_for_core_cell_UnsafeCell_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -115,7 +117,7 @@ Module panic.
     
     Module Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_panic_unwind_safe_AssertUnwindSafe_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [ T ].
+        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -248,7 +250,8 @@ Module panic.
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicBool.
     
     Module Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicPtr_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -261,7 +264,7 @@ Module panic.
     
     Module Impl_core_ops_deref_Deref_for_core_panic_unwind_safe_AssertUnwindSafe_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [ T ].
+        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ T ].
       
       (*     type Target = T; *)
       Definition _Target (T : Ty.t) : Ty.t := T.
@@ -271,10 +274,10 @@ Module panic.
               &self.0
           }
       *)
-      Definition deref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_tuple_field (|
@@ -282,7 +285,7 @@ Module panic.
               "core::panic::unwind_safe::AssertUnwindSafe",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -297,17 +300,17 @@ Module panic.
     
     Module Impl_core_ops_deref_DerefMut_for_core_panic_unwind_safe_AssertUnwindSafe_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [ T ].
+        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ T ].
       
       (*
           fn deref_mut(&mut self) -> &mut T {
               &mut self.0
           }
       *)
-      Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_tuple_field (|
@@ -315,7 +318,7 @@ Module panic.
               "core::panic::unwind_safe::AssertUnwindSafe",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -329,7 +332,7 @@ Module panic.
     
     Module Impl_core_ops_function_FnOnce_where_core_ops_function_FnOnce_F_Tuple__Tuple__for_core_panic_unwind_safe_AssertUnwindSafe_F.
       Definition Self (R F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [ F ].
+        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ F ].
       
       (*     type Output = R; *)
       Definition _Output (R F : Ty.t) : Ty.t := R.
@@ -339,10 +342,10 @@ Module panic.
               (self.0)()
           }
       *)
-      Definition call_once (R F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call_once (R F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self R F in
-        match τ, α with
-        | [], [ self; _args ] =>
+        match ε, τ, α with
+        | [], [], [ self; _args ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _args := M.alloc (| _args |) in
@@ -365,7 +368,7 @@ Module panic.
                 Value.Tuple []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -383,17 +386,17 @@ Module panic.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_panic_unwind_safe_AssertUnwindSafe_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [ T ].
+        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_tuple("AssertUnwindSafe").field(&self.0).finish()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -432,7 +435,7 @@ Module panic.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -446,17 +449,17 @@ Module panic.
     
     Module Impl_core_default_Default_where_core_default_Default_T_for_core_panic_unwind_safe_AssertUnwindSafe_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [ T ].
+        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ T ].
       
       (*
           fn default() -> Self {
               Self(Default::default())
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructTuple
               "core::panic::unwind_safe::AssertUnwindSafe"
@@ -466,7 +469,7 @@ Module panic.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -480,7 +483,7 @@ Module panic.
     
     Module Impl_core_future_future_Future_where_core_future_future_Future_F_for_core_panic_unwind_safe_AssertUnwindSafe_F.
       Definition Self (F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [ F ].
+        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ F ].
       
       (*     type Output = F::Output; *)
       Definition _Output (F : Ty.t) : Ty.t := Ty.associated.
@@ -492,10 +495,10 @@ Module panic.
               F::poll(pinned_field, cx)
           }
       *)
-      Definition poll (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; cx ] =>
+        match ε, τ, α with
+        | [], [], [ self; cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
@@ -506,10 +509,16 @@ Module panic.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::pin::Pin")
+                        []
                         [
                           Ty.apply
                             (Ty.path "&mut")
-                            [ Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [ F ]
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
+                                []
+                                [ F ]
                             ]
                         ],
                       "map_unchecked_mut",
@@ -521,14 +530,16 @@ Module panic.
                               [
                                 Ty.apply
                                   (Ty.path "&mut")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
+                                      []
                                       [ F ]
                                   ]
                               ]
                           ]
-                          (Ty.apply (Ty.path "&mut") [ F ])
+                          (Ty.apply (Ty.path "&mut") [] [ F ])
                       ]
                     |),
                     [
@@ -563,7 +574,7 @@ Module panic.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -578,7 +589,7 @@ Module panic.
     
     Module Impl_core_async_iter_async_iter_AsyncIterator_where_core_async_iter_async_iter_AsyncIterator_S_for_core_panic_unwind_safe_AssertUnwindSafe_S.
       Definition Self (S : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [ S ].
+        Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ S ].
       
       (*     type Item = S::Item; *)
       Definition _Item (S : Ty.t) : Ty.t := Ty.associated.
@@ -589,10 +600,10 @@ Module panic.
               unsafe { self.map_unchecked_mut(|x| &mut x.0) }.poll_next(cx)
           }
       *)
-      Definition poll_next (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll_next (S : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self S in
-        match τ, α with
-        | [], [ self; cx ] =>
+        match ε, τ, α with
+        | [], [], [ self; cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
@@ -609,10 +620,13 @@ Module panic.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::pin::Pin")
+                      []
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [ S ] ]
+                          []
+                          [ Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ S ]
+                          ]
                       ],
                     "map_unchecked_mut",
                     [
@@ -623,14 +637,16 @@ Module panic.
                             [
                               Ty.apply
                                 (Ty.path "&mut")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
+                                    []
                                     [ S ]
                                 ]
                             ]
                         ]
-                        (Ty.apply (Ty.path "&mut") [ S ])
+                        (Ty.apply (Ty.path "&mut") [] [ S ])
                     ]
                   |),
                   [
@@ -660,7 +676,7 @@ Module panic.
                 M.read (| cx |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -668,10 +684,10 @@ Module panic.
               self.0.size_hint()
           }
       *)
-      Definition size_hint (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (S : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self S in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -690,7 +706,7 @@ Module panic.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

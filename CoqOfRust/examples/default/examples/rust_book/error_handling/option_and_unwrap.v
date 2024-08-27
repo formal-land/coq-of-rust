@@ -11,9 +11,9 @@ fn give_adult(drink: Option<&str>) {
     }
 }
 *)
-Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ drink ] =>
+Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ drink ] =>
     ltac:(M.monadic
       (let drink := M.alloc (| drink |) in
       M.read (|
@@ -86,7 +86,7 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [ inner ]
                                     |)
@@ -128,7 +128,7 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_give_adult : M.IsFunction "option_and_unwrap::give_adult" give_adult.
@@ -144,9 +144,9 @@ fn drink(drink: Option<&str>) {
     println!("I love {}s!!!!!", inside);
 }
 *)
-Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ drink ] =>
+Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ drink ] =>
     ltac:(M.monadic
       (let drink := M.alloc (| drink |) in
       M.read (|
@@ -156,7 +156,8 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "unwrap",
                 []
               |),
@@ -175,8 +176,8 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "&") [ Ty.path "str" ],
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             "eq",
                             []
                           |),
@@ -189,7 +190,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                       M.call_closure (|
                         M.get_function (|
                           "std::panicking::begin_panic",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ M.read (| Value.String "AAAaaaaa!!!!" |) ]
                       |)
@@ -226,7 +227,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [ inside ]
                               |)
@@ -240,7 +241,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_drink : M.IsFunction "option_and_unwrap::drink" drink.
@@ -262,9 +263,9 @@ fn main() {
     drink(nothing);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ water :=
@@ -318,7 +319,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "option_and_unwrap::main" main.

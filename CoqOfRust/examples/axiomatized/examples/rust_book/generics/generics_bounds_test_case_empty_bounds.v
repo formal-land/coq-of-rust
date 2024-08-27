@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Cardinal";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -11,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "BlueJay";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -18,6 +20,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Turkey";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -50,14 +53,14 @@ Module Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test
       (* Instance *) [].
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
-Parameter red : (list Ty.t) -> (list Value.t) -> M.
+Parameter red : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_red : M.IsFunction "generics_bounds_test_case_empty_bounds::red" red.
 
-Parameter blue : (list Ty.t) -> (list Value.t) -> M.
+Parameter blue : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_blue : M.IsFunction "generics_bounds_test_case_empty_bounds::blue" blue.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "generics_bounds_test_case_empty_bounds::main" main.

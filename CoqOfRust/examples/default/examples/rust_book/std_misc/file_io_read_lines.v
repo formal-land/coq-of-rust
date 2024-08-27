@@ -9,9 +9,9 @@ fn read_lines(filename: String) -> io::Lines<BufReader<File>> {
     return io::BufReader::new(file).lines();
 }
 *)
-Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ filename ] =>
+Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ filename ] =>
     ltac:(M.monadic
       (let filename := M.alloc (| filename |) in
       M.catch_return (|
@@ -24,6 +24,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                       "unwrap",
                       []
@@ -46,6 +47,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                     "std::io::BufRead",
                     Ty.apply
                       (Ty.path "std::io::buffered::bufreader::BufReader")
+                      []
                       [ Ty.path "std::fs::File" ],
                     [],
                     "lines",
@@ -56,6 +58,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::io::buffered::bufreader::BufReader")
+                          []
                           [ Ty.path "std::fs::File" ],
                         "new",
                         []
@@ -68,7 +71,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_read_lines : M.IsFunction "file_io_read_lines::read_lines" read_lines.
@@ -83,9 +86,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ lines :=
@@ -114,9 +117,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
                     (Ty.path "std::io::Lines")
+                    []
                     [
                       Ty.apply
                         (Ty.path "std::io::buffered::bufreader::BufReader")
+                        []
                         [ Ty.path "std::fs::File" ]
                     ],
                   [],
@@ -140,9 +145,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
                                   (Ty.path "std::io::Lines")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "std::io::buffered::bufreader::BufReader")
+                                      []
                                       [ Ty.path "std::fs::File" ]
                                   ],
                                 [],
@@ -206,6 +213,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.path "alloc::string::String";
                                                                     Ty.path "std::io::error::Error"
@@ -234,7 +242,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "file_io_read_lines::main" main.

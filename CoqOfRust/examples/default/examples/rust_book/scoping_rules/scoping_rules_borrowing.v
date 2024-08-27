@@ -6,9 +6,9 @@ fn eat_box_i32(boxed_i32: Box<i32>) {
     println!("Destroying box that contains {}", boxed_i32);
 }
 *)
-Definition eat_box_i32 (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ boxed_i32 ] =>
+Definition eat_box_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ boxed_i32 ] =>
     ltac:(M.monadic
       (let boxed_i32 := M.alloc (| boxed_i32 |) in
       M.read (|
@@ -43,6 +43,7 @@ Definition eat_box_i32 (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                   ]
                                 |),
@@ -58,7 +59,7 @@ Definition eat_box_i32 (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_eat_box_i32 : M.IsFunction "scoping_rules_borrowing::eat_box_i32" eat_box_i32.
@@ -68,9 +69,9 @@ fn borrow_i32(borrowed_i32: &i32) {
     println!("This int is: {}", borrowed_i32);
 }
 *)
-Definition borrow_i32 (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ borrowed_i32 ] =>
+Definition borrow_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ borrowed_i32 ] =>
     ltac:(M.monadic
       (let borrowed_i32 := M.alloc (| borrowed_i32 |) in
       M.read (|
@@ -102,7 +103,7 @@ Definition borrow_i32 (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [ borrowed_i32 ]
                               |)
@@ -116,7 +117,7 @@ Definition borrow_i32 (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_borrow_i32 : M.IsFunction "scoping_rules_borrowing::borrow_i32" borrow_i32.
@@ -150,9 +151,9 @@ fn main() {
     eat_box_i32(boxed_i32);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ boxed_i32 :=
@@ -161,6 +162,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
@@ -202,7 +204,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_borrowing::main" main.

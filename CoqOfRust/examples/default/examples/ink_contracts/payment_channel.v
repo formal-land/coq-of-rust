@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -12,9 +13,9 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "payment_channel::AccountId"
@@ -24,7 +25,7 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -39,9 +40,9 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -50,7 +51,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -83,9 +84,9 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -104,7 +105,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
               0
             |)
           |))))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -130,9 +131,13 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -141,7 +146,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -153,7 +158,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
-Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
+Module Impl_core_convert_From_array_32_u8_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   (*
@@ -161,15 +166,16 @@ Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
           unimplemented!()
       }
   *)
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *)
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
+End Impl_core_convert_From_array_32_u8_for_payment_channel_AccountId.
 
 Axiom Balance : (Ty.path "payment_channel::Balance") = (Ty.path "u128").
 
@@ -178,6 +184,7 @@ Axiom Timestamp : (Ty.path "payment_channel::Timestamp") = (Ty.path "u64").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "payment_channel::AccountId") ];
   } *)
@@ -185,12 +192,13 @@ Axiom Timestamp : (Ty.path "payment_channel::Timestamp") = (Ty.path "u64").
 (* StructRecord
   {
     name := "PaymentChannel";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("sender", Ty.path "payment_channel::AccountId");
         ("recipient", Ty.path "payment_channel::AccountId");
-        ("expiration", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ]);
+        ("expiration", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ]);
         ("withdrawn", Ty.path "u128");
         ("close_duration", Ty.path "u64")
       ];
@@ -199,6 +207,7 @@ Axiom Timestamp : (Ty.path "payment_channel::Timestamp") = (Ty.path "u64").
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -251,9 +260,9 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
   Definition Self : Ty.t := Ty.path "payment_channel::Error".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -280,7 +289,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
             |) in
           M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -306,13 +315,17 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
   Definition Self : Ty.t := Ty.path "payment_channel::Error".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -326,12 +339,13 @@ End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "payment_channel::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "payment_channel::Error" ]).
+  (Ty.apply (Ty.path "payment_channel::Result") [] [ T ]) =
+    (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "payment_channel::Error" ]).
 
 (* StructRecord
   {
     name := "SenderCloseStarted";
+    const_params := [];
     ty_params := [];
     fields := [ ("expiration", Ty.path "u64"); ("close_duration", Ty.path "u64") ];
   } *)
@@ -339,6 +353,7 @@ Axiom Result :
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -359,9 +374,9 @@ Module Impl_payment_channel_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition caller (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -371,7 +386,7 @@ Module Impl_payment_channel_Env.
             "caller"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -381,7 +396,7 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   
@@ -390,7 +405,7 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter terminate_contract : (list Ty.t) -> (list Value.t) -> M.
+  Parameter terminate_contract : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_terminate_contract :
     M.IsAssociatedFunction Self "terminate_contract" terminate_contract.
@@ -400,7 +415,7 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   
@@ -409,7 +424,7 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter block_timestamp : (list Ty.t) -> (list Value.t) -> M.
+  Parameter block_timestamp : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_block_timestamp :
     M.IsAssociatedFunction Self "block_timestamp" block_timestamp.
@@ -419,7 +434,7 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter balance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
   
@@ -428,7 +443,7 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter account_id : (list Ty.t) -> (list Value.t) -> M.
+  Parameter account_id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_account_id : M.IsAssociatedFunction Self "account_id" account_id.
 End Impl_payment_channel_Env.
@@ -447,7 +462,7 @@ where
     unimplemented!()
 }
 *)
-Parameter hash_encoded : (list Ty.t) -> (list Value.t) -> M.
+Parameter hash_encoded : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_hash_encoded : M.IsFunction "payment_channel::hash_encoded" hash_encoded.
 
@@ -460,13 +475,14 @@ pub fn ecdsa_recover(
     unimplemented!()
 }
 *)
-Parameter ecdsa_recover : (list Ty.t) -> (list Value.t) -> M.
+Parameter ecdsa_recover : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_ecdsa_recover : M.IsFunction "payment_channel::ecdsa_recover" ecdsa_recover.
 
 (*
 Enum Sha2x256
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -475,6 +491,7 @@ Enum Sha2x256
 (*
 Enum Keccak256
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -483,6 +500,7 @@ Enum Keccak256
 (*
 Enum Blake2x256
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -491,6 +509,7 @@ Enum Blake2x256
 (*
 Enum Blake2x128
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -500,7 +519,7 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Sha2x256".
   
   (*     type Type = [u8; 32]; *)
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -514,7 +533,7 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
   Definition Self : Ty.t := Ty.path "payment_channel::Keccak256".
   
   (*     type Type = [u8; 32]; *)
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -528,7 +547,7 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x256".
   
   (*     type Type = [u8; 32]; *)
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -542,7 +561,7 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x128".
   
   (*     type Type = [u8; 16]; *)
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -560,7 +579,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
           unimplemented!()
       }
   *)
-  Parameter hash : (list Ty.t) -> (list Value.t) -> M.
+  Parameter hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -578,7 +597,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
           unimplemented!()
       }
   *)
-  Parameter hash : (list Ty.t) -> (list Value.t) -> M.
+  Parameter hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -596,7 +615,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
           unimplemented!()
       }
   *)
-  Parameter hash : (list Ty.t) -> (list Value.t) -> M.
+  Parameter hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -614,7 +633,7 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
           unimplemented!()
       }
   *)
-  Parameter hash : (list Ty.t) -> (list Value.t) -> M.
+  Parameter hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -632,7 +651,7 @@ Module Impl_payment_channel_PaymentChannel.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -641,16 +660,16 @@ Module Impl_payment_channel_PaymentChannel.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "payment_channel::PaymentChannel", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -670,9 +689,9 @@ Module Impl_payment_channel_PaymentChannel.
           self.recipient == signature_account_id.into()
       }
   *)
-  Definition is_signature_valid (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; amount; signature ] =>
+  Definition is_signature_valid (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; amount; signature ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let amount := M.alloc (| amount |) in
@@ -709,7 +728,7 @@ Module Impl_payment_channel_PaymentChannel.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
                   [],
                   "default",
                   []
@@ -730,13 +749,14 @@ Module Impl_payment_channel_PaymentChannel.
                 [ encodable; message ]
               |)
             |) in
-          let~ pub_key := M.alloc (| repeat (Value.Integer 0) 33 |) in
+          let~ pub_key := M.alloc (| repeat (| Value.Integer 0, Value.Integer 33 |) |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                   "unwrap_or_else",
                   [ Ty.function [ Ty.tuple [ Ty.path "payment_channel::Error" ] ] (Ty.tuple []) ]
@@ -761,7 +781,7 @@ Module Impl_payment_channel_PaymentChannel.
                                     M.call_closure (|
                                       M.get_function (|
                                         "std::panicking::begin_panic",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [ M.read (| Value.String "recover failed: {err:?}" |) ]
                                     |)
@@ -773,7 +793,8 @@ Module Impl_payment_channel_PaymentChannel.
                 ]
               |)
             |) in
-          let~ signature_account_id := M.alloc (| repeat (Value.Integer 0) 32 |) in
+          let~ signature_account_id :=
+            M.alloc (| repeat (| Value.Integer 0, Value.Integer 32 |) |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
@@ -806,7 +827,7 @@ Module Impl_payment_channel_PaymentChannel.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::Into",
-                      Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
                       [ Ty.path "payment_channel::AccountId" ],
                       "into",
                       []
@@ -818,7 +839,7 @@ Module Impl_payment_channel_PaymentChannel.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_is_signature_valid :
@@ -835,9 +856,9 @@ Module Impl_payment_channel_PaymentChannel.
           }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ recipient; close_duration ] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ recipient; close_duration ] =>
       ltac:(M.monadic
         (let recipient := M.alloc (| recipient |) in
         let close_duration := M.alloc (| close_duration |) in
@@ -865,7 +886,7 @@ Module Impl_payment_channel_PaymentChannel.
             ("withdrawn", Value.Integer 0);
             ("close_duration", M.read (| close_duration |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -892,9 +913,9 @@ Module Impl_payment_channel_PaymentChannel.
           Ok(())
       }
   *)
-  Definition close_inner (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; amount; signature ] =>
+  Definition close_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; amount; signature ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let amount := M.alloc (| amount |) in
@@ -1052,6 +1073,7 @@ Module Impl_payment_channel_PaymentChannel.
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                         [],
                         "branch",
@@ -1062,6 +1084,7 @@ Module Impl_payment_channel_PaymentChannel.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                             "map_err",
                             [
@@ -1149,10 +1172,12 @@ Module Impl_payment_channel_PaymentChannel.
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "payment_channel::Error"
@@ -1182,7 +1207,7 @@ Module Impl_payment_channel_PaymentChannel.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_close_inner : M.IsAssociatedFunction Self "close_inner" close_inner.
@@ -1195,9 +1220,9 @@ Module Impl_payment_channel_PaymentChannel.
           Ok(())
       }
   *)
-  Definition close (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; amount; signature ] =>
+  Definition close (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; amount; signature ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let amount := M.alloc (| amount |) in
@@ -1213,6 +1238,7 @@ Module Impl_payment_channel_PaymentChannel.
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                         [],
                         "branch",
@@ -1249,10 +1275,12 @@ Module Impl_payment_channel_PaymentChannel.
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "payment_channel::Error"
@@ -1311,7 +1339,7 @@ Module Impl_payment_channel_PaymentChannel.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_close : M.IsAssociatedFunction Self "close" close.
@@ -1336,9 +1364,9 @@ Module Impl_payment_channel_PaymentChannel.
           Ok(())
       }
   *)
-  Definition start_sender_close (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition start_sender_close (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.catch_return (|
@@ -1494,7 +1522,7 @@ Module Impl_payment_channel_PaymentChannel.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_start_sender_close :
@@ -1520,9 +1548,9 @@ Module Impl_payment_channel_PaymentChannel.
           }
       }
   *)
-  Definition claim_timeout (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition claim_timeout (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.catch_return (|
@@ -1644,7 +1672,7 @@ Module Impl_payment_channel_PaymentChannel.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_claim_timeout :
@@ -1676,9 +1704,9 @@ Module Impl_payment_channel_PaymentChannel.
           Ok(())
       }
   *)
-  Definition withdraw (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; amount; signature ] =>
+  Definition withdraw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; amount; signature ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let amount := M.alloc (| amount |) in
@@ -1860,6 +1888,7 @@ Module Impl_payment_channel_PaymentChannel.
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                         [],
                         "branch",
@@ -1870,6 +1899,7 @@ Module Impl_payment_channel_PaymentChannel.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                             "map_err",
                             [
@@ -1948,10 +1978,12 @@ Module Impl_payment_channel_PaymentChannel.
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "payment_channel::Error"
@@ -1981,7 +2013,7 @@ Module Impl_payment_channel_PaymentChannel.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_withdraw : M.IsAssociatedFunction Self "withdraw" withdraw.
@@ -1991,9 +2023,9 @@ Module Impl_payment_channel_PaymentChannel.
           self.sender
       }
   *)
-  Definition get_sender (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get_sender (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -2003,7 +2035,7 @@ Module Impl_payment_channel_PaymentChannel.
             "sender"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_sender : M.IsAssociatedFunction Self "get_sender" get_sender.
@@ -2013,9 +2045,9 @@ Module Impl_payment_channel_PaymentChannel.
           self.recipient
       }
   *)
-  Definition get_recipient (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get_recipient (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -2025,7 +2057,7 @@ Module Impl_payment_channel_PaymentChannel.
             "recipient"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_recipient :
@@ -2036,9 +2068,9 @@ Module Impl_payment_channel_PaymentChannel.
           self.expiration
       }
   *)
-  Definition get_expiration (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get_expiration (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -2048,7 +2080,7 @@ Module Impl_payment_channel_PaymentChannel.
             "expiration"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_expiration :
@@ -2059,9 +2091,9 @@ Module Impl_payment_channel_PaymentChannel.
           self.withdrawn
       }
   *)
-  Definition get_withdrawn (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get_withdrawn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -2071,7 +2103,7 @@ Module Impl_payment_channel_PaymentChannel.
             "withdrawn"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_withdrawn :
@@ -2082,9 +2114,9 @@ Module Impl_payment_channel_PaymentChannel.
           self.close_duration
       }
   *)
-  Definition get_close_duration (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get_close_duration (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -2094,7 +2126,7 @@ Module Impl_payment_channel_PaymentChannel.
             "close_duration"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_close_duration :
@@ -2105,9 +2137,9 @@ Module Impl_payment_channel_PaymentChannel.
           self.env().balance()
       }
   *)
-  Definition get_balance (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get_balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
@@ -2125,7 +2157,7 @@ Module Impl_payment_channel_PaymentChannel.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_balance : M.IsAssociatedFunction Self "get_balance" get_balance.

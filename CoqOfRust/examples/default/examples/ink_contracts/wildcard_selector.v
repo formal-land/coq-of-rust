@@ -6,13 +6,14 @@ fn decode_input<T>() -> Result<T, ()> {
     unimplemented!()
 }
 *)
-Parameter decode_input : (list Ty.t) -> (list Value.t) -> M.
+Parameter decode_input : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_decode_input : M.IsFunction "wildcard_selector::decode_input" decode_input.
 
 (* StructTuple
   {
     name := "WildcardSelector";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -25,10 +26,10 @@ Module Impl_wildcard_selector_WildcardSelector.
           Self {}
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] => ltac:(M.monadic (Value.StructTuple "wildcard_selector::WildcardSelector" []))
-    | _, _ => M.impossible
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "wildcard_selector::WildcardSelector" []))
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -39,9 +40,9 @@ Module Impl_wildcard_selector_WildcardSelector.
           println!("Wildcard selector: {:?}, message: {}", _selector, _message);
       }
   *)
-  Definition wildcard (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition wildcard (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -51,10 +52,11 @@ Module Impl_wildcard_selector_WildcardSelector.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.tuple
                         [
-                          Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                          Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ];
                           Ty.path "alloc::string::String"
                         ];
                       Ty.tuple []
@@ -69,7 +71,7 @@ Module Impl_wildcard_selector_WildcardSelector.
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                            Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ];
                             Ty.path "alloc::string::String"
                           ]
                       ]
@@ -119,7 +121,12 @@ Module Impl_wildcard_selector_WildcardSelector.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_debug",
-                                            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer 4 ]
+                                                [ Ty.path "u8" ]
+                                            ]
                                           |),
                                           [ _selector ]
                                         |);
@@ -143,7 +150,7 @@ Module Impl_wildcard_selector_WildcardSelector.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_wildcard : M.IsAssociatedFunction Self "wildcard" wildcard.
@@ -153,9 +160,9 @@ Module Impl_wildcard_selector_WildcardSelector.
           println!("Wildcard complement message: {}", _message);
       }
   *)
-  Definition wildcard_complement (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; _message ] =>
+  Definition wildcard_complement (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _message ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let _message := M.alloc (| _message |) in
@@ -202,7 +209,7 @@ Module Impl_wildcard_selector_WildcardSelector.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_wildcard_complement :

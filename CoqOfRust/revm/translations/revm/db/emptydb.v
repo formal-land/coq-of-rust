@@ -7,32 +7,34 @@ Module db.
       (Ty.path "revm::db::emptydb::EmptyDB") =
         (Ty.apply
           (Ty.path "revm::db::emptydb::EmptyDBTyped")
+          []
           [ Ty.path "core::convert::Infallible" ]).
     
     (* StructRecord
       {
         name := "EmptyDBTyped";
+        const_params := [];
         ty_params := [ "E" ];
-        fields := [ ("_phantom", Ty.apply (Ty.path "core::marker::PhantomData") [ E ]) ];
+        fields := [ ("_phantom", Ty.apply (Ty.path "core::marker::PhantomData") [] [ E ]) ];
       } *)
     
     Module Impl_core_clone_Clone_for_revm_db_emptydb_EmptyDBTyped_E.
       Definition Self (E : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ].
+        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ].
       
       (*
           fn clone(&self) -> Self {
               *self
           }
       *)
-      Definition clone (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -46,7 +48,7 @@ Module db.
     
     Module Impl_core_marker_Copy_for_revm_db_emptydb_EmptyDBTyped_E.
       Definition Self (E : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ].
+        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ].
       
       Axiom Implements :
         forall (E : Ty.t),
@@ -59,27 +61,27 @@ Module db.
     
     Module Impl_core_default_Default_for_revm_db_emptydb_EmptyDBTyped_E.
       Definition Self (E : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ].
+        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ].
       
       (*
           fn default() -> Self {
               Self::new()
           }
       *)
-      Definition default (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ],
+                Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ],
                 "new",
                 []
               |),
               []
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -93,17 +95,17 @@ Module db.
     
     Module Impl_core_fmt_Debug_for_revm_db_emptydb_EmptyDBTyped_E.
       Definition Self (E : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ].
+        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_struct("EmptyDB").finish_non_exhaustive()
           }
       *)
-      Definition fmt (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -126,7 +128,7 @@ Module db.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -140,22 +142,22 @@ Module db.
     
     Module Impl_core_cmp_PartialEq_for_revm_db_emptydb_EmptyDBTyped_E.
       Definition Self (E : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ].
+        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ].
       
       (*
           fn eq(&self, _: &Self) -> bool {
               true
           }
       *)
-      Definition eq (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [ self; β1 ] =>
+        match ε, τ, α with
+        | [], [], [ self; β1 ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
             M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Bool true)) ] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -169,7 +171,7 @@ Module db.
     
     Module Impl_core_cmp_Eq_for_revm_db_emptydb_EmptyDBTyped_E.
       Definition Self (E : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ].
+        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ].
       
       Axiom Implements :
         forall (E : Ty.t),
@@ -182,7 +184,7 @@ Module db.
     
     Module Impl_revm_db_emptydb_EmptyDBTyped_E.
       Definition Self (E : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ].
+        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ].
       
       (*
           pub fn new() -> Self {
@@ -191,15 +193,15 @@ Module db.
               }
           }
       *)
-      Definition new (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "revm::db::emptydb::EmptyDBTyped"
               [ ("_phantom", Value.StructTuple "core::marker::PhantomData" []) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -211,20 +213,25 @@ Module db.
               Self::new()
           }
       *)
-      Definition new_keccak_block_hash (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_keccak_block_hash
+          (E : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ],
+                Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ],
                 "new",
                 []
               |),
               []
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_keccak_block_hash :
@@ -234,7 +241,7 @@ Module db.
     
     Module Impl_revm_primitives_db_Database_for_revm_db_emptydb_EmptyDBTyped_E.
       Definition Self (E : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ].
+        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ].
       
       (*     type Error = E; *)
       Definition _Error (E : Ty.t) : Ty.t := E.
@@ -244,24 +251,24 @@ Module db.
               <Self as DatabaseRef>::basic_ref(self, address)
           }
       *)
-      Definition basic (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
             M.call_closure (|
               M.get_trait_method (|
                 "revm_primitives::db::DatabaseRef",
-                Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ],
+                Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ],
                 [],
                 "basic_ref",
                 []
               |),
               [ M.read (| self |); M.read (| address |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -269,24 +276,29 @@ Module db.
               <Self as DatabaseRef>::code_by_hash_ref(self, code_hash)
           }
       *)
-      Definition code_by_hash (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash
+          (E : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [ self; code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let code_hash := M.alloc (| code_hash |) in
             M.call_closure (|
               M.get_trait_method (|
                 "revm_primitives::db::DatabaseRef",
-                Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ],
+                Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ],
                 [],
                 "code_by_hash_ref",
                 []
               |),
               [ M.read (| self |); M.read (| code_hash |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -294,10 +306,10 @@ Module db.
               <Self as DatabaseRef>::storage_ref(self, address, index)
           }
       *)
-      Definition storage (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -305,14 +317,14 @@ Module db.
             M.call_closure (|
               M.get_trait_method (|
                 "revm_primitives::db::DatabaseRef",
-                Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ],
+                Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ],
                 [],
                 "storage_ref",
                 []
               |),
               [ M.read (| self |); M.read (| address |); M.read (| index |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -320,24 +332,24 @@ Module db.
               <Self as DatabaseRef>::block_hash_ref(self, number)
           }
       *)
-      Definition block_hash (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
             M.call_closure (|
               M.get_trait_method (|
                 "revm_primitives::db::DatabaseRef",
-                Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ],
+                Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ],
                 [],
                 "block_hash_ref",
                 []
               |),
               [ M.read (| self |); M.read (| number |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -358,7 +370,7 @@ Module db.
     
     Module Impl_revm_primitives_db_DatabaseRef_for_revm_db_emptydb_EmptyDBTyped_E.
       Definition Self (E : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [ E ].
+        Ty.apply (Ty.path "revm::db::emptydb::EmptyDBTyped") [] [ E ].
       
       (*     type Error = E; *)
       Definition _Error (E : Ty.t) : Ty.t := E.
@@ -368,17 +380,17 @@ Module db.
               Ok(None)
           }
       *)
-      Definition basic_ref (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic_ref (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [ self; _address ] =>
+        match ε, τ, α with
+        | [], [], [ self; _address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
             Value.StructTuple
               "core::result::Result::Ok"
               [ Value.StructTuple "core::option::Option::None" [] ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -386,10 +398,15 @@ Module db.
               Ok(Bytecode::default())
           }
       *)
-      Definition code_by_hash_ref (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash_ref
+          (E : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [ self; _code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; _code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _code_hash := M.alloc (| _code_hash |) in
@@ -407,7 +424,7 @@ Module db.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -415,10 +432,10 @@ Module db.
               Ok(U256::default())
           }
       *)
-      Definition storage_ref (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage_ref (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [ self; _address; _index ] =>
+        match ε, τ, α with
+        | [], [], [ self; _address; _index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
@@ -429,7 +446,7 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "default",
                     []
@@ -437,7 +454,7 @@ Module db.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -445,10 +462,15 @@ Module db.
               Ok(keccak256(number.to_string().as_bytes()))
           }
       *)
-      Definition block_hash_ref (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash_ref
+          (E : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self E in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -458,7 +480,7 @@ Module db.
                 M.call_closure (|
                   M.get_function (|
                     "alloy_primitives::utils::keccak256",
-                    [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ]
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
                   |),
                   [
                     M.call_closure (|
@@ -472,7 +494,10 @@ Module db.
                           M.call_closure (|
                             M.get_trait_method (|
                               "alloc::string::ToString",
-                              Ty.path "ruint::Uint",
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [],
                               [],
                               "to_string",
                               []
@@ -485,7 +510,7 @@ Module db.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

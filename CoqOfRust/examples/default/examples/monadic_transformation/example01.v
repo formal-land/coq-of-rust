@@ -6,27 +6,27 @@ fn id(x: u64) -> u64 {
     x
 }
 *)
-Definition id (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ x ] =>
+Definition id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ x ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (| x |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_id : M.IsFunction "example01::id" id.
 
 (* fn tri(a: u64, b: u64, c: u64) {} *)
-Definition tri (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ a; b; c ] =>
+Definition tri (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ a; b; c ] =>
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
       let c := M.alloc (| c |) in
       Value.Tuple []))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_tri : M.IsFunction "example01::tri" tri.
@@ -40,9 +40,9 @@ fn main() {
     tri(id(1), id(2), 3);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -108,7 +108,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "example01::main" main.

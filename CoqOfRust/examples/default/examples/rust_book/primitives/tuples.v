@@ -9,9 +9,9 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
     (bool_param, int_param)
 }
 *)
-Definition reverse (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ pair_ ] =>
+Definition reverse (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ pair_ ] =>
     ltac:(M.monadic
       (let pair_ := M.alloc (| pair_ |) in
       M.read (|
@@ -28,7 +28,7 @@ Definition reverse (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_reverse : M.IsFunction "tuples::reverse" reverse.
@@ -36,6 +36,7 @@ Axiom Function_reverse : M.IsFunction "tuples::reverse" reverse.
 (* StructTuple
   {
     name := "Matrix";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "f32"; Ty.path "f32"; Ty.path "f32"; Ty.path "f32" ];
   } *)
@@ -44,9 +45,9 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
   Definition Self : Ty.t := Ty.path "tuples::Matrix".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -75,7 +76,7 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -130,9 +131,9 @@ fn main() {
 
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ long_tuple :=
@@ -520,7 +521,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_debug",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [ b ]
                                       |);
@@ -604,7 +605,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "tuples::main" main.

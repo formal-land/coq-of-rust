@@ -9,16 +9,16 @@ Module db.
       
       Module underscore.
         Module Impl_revm_primitives_db_components_state_State_where_revm_primitives_db_components_state_State_T_where_core_marker_Sized_T_for_ref_mut_T.
-          Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+          Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
           
           (* #[auto_impl(&mut, Box)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&mut, Box)] *)
-          Definition basic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition basic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address ] =>
+            match ε, τ, α with
+            | [], [], [ self; address ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -32,14 +32,19 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&mut, Box)] *)
-          Definition code_by_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition code_by_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; code_hash ] =>
+            match ε, τ, α with
+            | [], [], [ self; code_hash ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let code_hash := M.alloc (| code_hash |) in
@@ -53,14 +58,14 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&mut, Box)] *)
-          Definition storage (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition storage (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address; index ] =>
+            match ε, τ, α with
+            | [], [], [ self; address; index ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -75,7 +80,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -94,16 +99,16 @@ Module db.
         End Impl_revm_primitives_db_components_state_State_where_revm_primitives_db_components_state_State_T_where_core_marker_Sized_T_for_ref_mut_T.
         Module Impl_revm_primitives_db_components_state_State_where_revm_primitives_db_components_state_State_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
           Definition Self (T : Ty.t) : Ty.t :=
-            Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
           
           (* #[auto_impl(&mut, Box)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&mut, Box)] *)
-          Definition basic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition basic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address ] =>
+            match ε, τ, α with
+            | [], [], [ self; address ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -117,14 +122,19 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&mut, Box)] *)
-          Definition code_by_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition code_by_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; code_hash ] =>
+            match ε, τ, α with
+            | [], [], [ self; code_hash ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let code_hash := M.alloc (| code_hash |) in
@@ -138,14 +148,14 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&mut, Box)] *)
-          Definition storage (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition storage (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address; index ] =>
+            match ε, τ, α with
+            | [], [], [ self; address; index ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -160,7 +170,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -178,16 +188,16 @@ Module db.
               ].
         End Impl_revm_primitives_db_components_state_State_where_revm_primitives_db_components_state_State_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
         Module Impl_revm_primitives_db_components_state_StateRef_where_revm_primitives_db_components_state_StateRef_T_where_core_marker_Sized_T_for_ref__T.
-          Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+          Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition basic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition basic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address ] =>
+            match ε, τ, α with
+            | [], [], [ self; address ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -201,14 +211,19 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition code_by_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition code_by_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; code_hash ] =>
+            match ε, τ, α with
+            | [], [], [ self; code_hash ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let code_hash := M.alloc (| code_hash |) in
@@ -222,14 +237,14 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition storage (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition storage (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address; index ] =>
+            match ε, τ, α with
+            | [], [], [ self; address; index ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -244,7 +259,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -262,16 +277,16 @@ Module db.
               ].
         End Impl_revm_primitives_db_components_state_StateRef_where_revm_primitives_db_components_state_StateRef_T_where_core_marker_Sized_T_for_ref__T.
         Module Impl_revm_primitives_db_components_state_StateRef_where_revm_primitives_db_components_state_StateRef_T_where_core_marker_Sized_T_for_ref_mut_T.
-          Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+          Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition basic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition basic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address ] =>
+            match ε, τ, α with
+            | [], [], [ self; address ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -285,14 +300,19 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition code_by_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition code_by_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; code_hash ] =>
+            match ε, τ, α with
+            | [], [], [ self; code_hash ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let code_hash := M.alloc (| code_hash |) in
@@ -306,14 +326,14 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition storage (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition storage (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address; index ] =>
+            match ε, τ, α with
+            | [], [], [ self; address; index ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -328,7 +348,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -347,16 +367,16 @@ Module db.
         End Impl_revm_primitives_db_components_state_StateRef_where_revm_primitives_db_components_state_StateRef_T_where_core_marker_Sized_T_for_ref_mut_T.
         Module Impl_revm_primitives_db_components_state_StateRef_where_revm_primitives_db_components_state_StateRef_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
           Definition Self (T : Ty.t) : Ty.t :=
-            Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition basic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition basic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address ] =>
+            match ε, τ, α with
+            | [], [], [ self; address ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -370,14 +390,19 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition code_by_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition code_by_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; code_hash ] =>
+            match ε, τ, α with
+            | [], [], [ self; code_hash ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let code_hash := M.alloc (| code_hash |) in
@@ -391,14 +416,14 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition storage (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition storage (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address; index ] =>
+            match ε, τ, α with
+            | [], [], [ self; address; index ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -413,7 +438,7 @@ Module db.
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -432,16 +457,16 @@ Module db.
         End Impl_revm_primitives_db_components_state_StateRef_where_revm_primitives_db_components_state_StateRef_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
         Module Impl_revm_primitives_db_components_state_StateRef_where_revm_primitives_db_components_state_StateRef_T_where_core_marker_Sized_T_for_alloc_rc_Rc_T_alloc_alloc_Global.
           Definition Self (T : Ty.t) : Ty.t :=
-            Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ].
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ].
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition basic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition basic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address ] =>
+            match ε, τ, α with
+            | [], [], [ self; address ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -457,7 +482,7 @@ Module db.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                         [],
                         "deref",
                         []
@@ -467,14 +492,19 @@ Module db.
                     M.read (| address |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition code_by_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition code_by_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; code_hash ] =>
+            match ε, τ, α with
+            | [], [], [ self; code_hash ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let code_hash := M.alloc (| code_hash |) in
@@ -490,7 +520,7 @@ Module db.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                         [],
                         "deref",
                         []
@@ -500,14 +530,14 @@ Module db.
                     M.read (| code_hash |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition storage (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition storage (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address; index ] =>
+            match ε, τ, α with
+            | [], [], [ self; address; index ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -524,7 +554,7 @@ Module db.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                         [],
                         "deref",
                         []
@@ -535,7 +565,7 @@ Module db.
                     M.read (| index |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -554,16 +584,16 @@ Module db.
         End Impl_revm_primitives_db_components_state_StateRef_where_revm_primitives_db_components_state_StateRef_T_where_core_marker_Sized_T_for_alloc_rc_Rc_T_alloc_alloc_Global.
         Module Impl_revm_primitives_db_components_state_StateRef_where_revm_primitives_db_components_state_StateRef_T_where_core_marker_Sized_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
           Definition Self (T : Ty.t) : Ty.t :=
-            Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ].
+            Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
           Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition basic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition basic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address ] =>
+            match ε, τ, α with
+            | [], [], [ self; address ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -579,7 +609,10 @@ Module db.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ],
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ],
                         [],
                         "deref",
                         []
@@ -589,14 +622,19 @@ Module db.
                     M.read (| address |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition code_by_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition code_by_hash
+              (T : Ty.t)
+              (ε : list Value.t)
+              (τ : list Ty.t)
+              (α : list Value.t)
+              : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; code_hash ] =>
+            match ε, τ, α with
+            | [], [], [ self; code_hash ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let code_hash := M.alloc (| code_hash |) in
@@ -612,7 +650,10 @@ Module db.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ],
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ],
                         [],
                         "deref",
                         []
@@ -622,14 +663,14 @@ Module db.
                     M.read (| code_hash |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
-          Definition storage (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition storage (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let Self : Ty.t := Self T in
-            match τ, α with
-            | [], [ self; address; index ] =>
+            match ε, τ, α with
+            | [], [], [ self; address; index ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 let address := M.alloc (| address |) in
@@ -646,7 +687,10 @@ Module db.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ],
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ],
                         [],
                         "deref",
                         []
@@ -657,7 +701,7 @@ Module db.
                     M.read (| index |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :
@@ -686,7 +730,7 @@ Module db.
       
       
       Module Impl_revm_primitives_db_components_state_State_where_revm_primitives_db_components_state_StateRef_T_for_ref__T.
-        Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+        Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
         
         (*     type Error = <T as StateRef>::Error; *)
         Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
@@ -696,10 +740,10 @@ Module db.
                 StateRef::basic( *self, address)
             }
         *)
-        Definition basic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition basic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; address ] =>
+          match ε, τ, α with
+          | [], [], [ self; address ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -713,7 +757,7 @@ Module db.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| address |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -721,10 +765,15 @@ Module db.
                 StateRef::code_by_hash( *self, code_hash)
             }
         *)
-        Definition code_by_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition code_by_hash
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; code_hash ] =>
+          match ε, τ, α with
+          | [], [], [ self; code_hash ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let code_hash := M.alloc (| code_hash |) in
@@ -738,7 +787,7 @@ Module db.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -746,10 +795,10 @@ Module db.
                 StateRef::storage( *self, address, index)
             }
         *)
-        Definition storage (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition storage (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; address; index ] =>
+          match ε, τ, α with
+          | [], [], [ self; address; index ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -764,7 +813,7 @@ Module db.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -784,7 +833,7 @@ Module db.
       
       Module Impl_revm_primitives_db_components_state_State_where_revm_primitives_db_components_state_StateRef_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ].
+          Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
         
         (*     type Error = <T as StateRef>::Error; *)
         Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
@@ -794,17 +843,17 @@ Module db.
                 self.deref().basic(address)
             }
         *)
-        Definition basic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition basic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; address ] =>
+          match ε, τ, α with
+          | [], [], [ self; address ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "revm_primitives::db::components::state::StateRef",
-                  Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ],
+                  Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   [],
                   "basic",
                   []
@@ -815,9 +864,11 @@ Module db.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "&mut")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [ T; Ty.path "alloc::alloc::Global" ]
                         ],
                       [],
@@ -829,7 +880,7 @@ Module db.
                   M.read (| address |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -837,17 +888,22 @@ Module db.
                 self.deref().code_by_hash(code_hash)
             }
         *)
-        Definition code_by_hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition code_by_hash
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; code_hash ] =>
+          match ε, τ, α with
+          | [], [], [ self; code_hash ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let code_hash := M.alloc (| code_hash |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "revm_primitives::db::components::state::StateRef",
-                  Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ],
+                  Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   [],
                   "code_by_hash",
                   []
@@ -858,9 +914,11 @@ Module db.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "&mut")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [ T; Ty.path "alloc::alloc::Global" ]
                         ],
                       [],
@@ -872,7 +930,7 @@ Module db.
                   M.read (| code_hash |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -880,10 +938,10 @@ Module db.
                 self.deref().storage(address, index)
             }
         *)
-        Definition storage (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition storage (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; address; index ] =>
+          match ε, τ, α with
+          | [], [], [ self; address; index ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -891,7 +949,7 @@ Module db.
               M.call_closure (|
                 M.get_trait_method (|
                   "revm_primitives::db::components::state::StateRef",
-                  Ty.apply (Ty.path "alloc::sync::Arc") [ T; Ty.path "alloc::alloc::Global" ],
+                  Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   [],
                   "storage",
                   []
@@ -902,9 +960,11 @@ Module db.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "&mut")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [ T; Ty.path "alloc::alloc::Global" ]
                         ],
                       [],
@@ -917,7 +977,7 @@ Module db.
                   M.read (| index |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

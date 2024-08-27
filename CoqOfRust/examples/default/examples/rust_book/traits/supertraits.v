@@ -24,9 +24,9 @@ fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
     )
 }
 *)
-Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ student ] =>
+Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ student ] =>
     ltac:(M.monadic
       (let student := M.alloc (| student |) in
       M.read (|
@@ -147,14 +147,17 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         res
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_comp_sci_student_greeting :
   M.IsFunction "supertraits::comp_sci_student_greeting" comp_sci_student_greeting.
 
 (* fn main() {} *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] => ltac:(M.monadic (Value.Tuple []))
+  | _, _, _ => M.impossible
+  end.
 
 Axiom Function_main : M.IsFunction "supertraits::main" main.

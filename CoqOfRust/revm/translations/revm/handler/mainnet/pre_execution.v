@@ -11,15 +11,19 @@ Module handler.
               .into()
       }
       *)
-      Definition load_precompiles (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC; DB ], [] =>
+      Definition load_precompiles (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ SPEC; DB ], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_trait_method (|
                 "core::convert::Into",
                 Ty.path "revm_precompile::Precompiles",
-                [ Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [ DB ]
+                [
+                  Ty.apply
+                    (Ty.path "revm::context::context_precompiles::ContextPrecompiles")
+                    []
+                    [ DB ]
                 ],
                 "into",
                 []
@@ -59,7 +63,7 @@ Module handler.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_load_precompiles :
@@ -86,9 +90,9 @@ Module handler.
           Ok(())
       }
       *)
-      Definition load_accounts (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC; EXT; DB ], [ context ] =>
+      Definition load_accounts (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ SPEC; EXT; DB ], [ context ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             M.catch_return (|
@@ -107,7 +111,10 @@ Module handler.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::deref::DerefMut",
-                                Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                                Ty.apply
+                                  (Ty.path "revm::context::evm_context::EvmContext")
+                                  []
+                                  [ DB ],
                                 [],
                                 "deref_mut",
                                 []
@@ -163,12 +170,15 @@ Module handler.
                                       "core::ops::try_trait::Try",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "&mut")
+                                            []
                                             [ Ty.path "revm_primitives::state::Account" ];
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [],
@@ -260,21 +270,25 @@ Module handler.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.tuple [];
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.path "core::convert::Infallible";
                                                         Ty.apply
                                                           (Ty.path
                                                             "revm_primitives::result::EVMError")
+                                                          []
                                                           [ Ty.associated ]
                                                       ]
                                                   ],
@@ -311,10 +325,12 @@ Module handler.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple [];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -326,6 +342,7 @@ Module handler.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                                  []
                                   [ DB ],
                                 "load_access_list",
                                 []
@@ -336,6 +353,7 @@ Module handler.
                                     "core::ops::deref::DerefMut",
                                     Ty.apply
                                       (Ty.path "revm::context::evm_context::EvmContext")
+                                      []
                                       [ DB ],
                                     [],
                                     "deref_mut",
@@ -373,19 +391,23 @@ Module handler.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -413,7 +435,7 @@ Module handler.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_load_accounts :
@@ -444,9 +466,9 @@ Module handler.
           caller_account.mark_touch();
       }
       *)
-      Definition deduct_caller_inner (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC ], [ caller_account; env ] =>
+      Definition deduct_caller_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ SPEC ], [ caller_account; env ] =>
           ltac:(M.monadic
             (let caller_account := M.alloc (| caller_account |) in
             let env := M.alloc (| env |) in
@@ -454,11 +476,18 @@ Module handler.
               let~ gas_cost :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "ruint::Uint", "saturating_mul", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      "saturating_mul",
+                      []
+                    |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.path "ruint::Uint",
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [],
                           "from",
                           [ Ty.path "u64" ]
                         |),
@@ -517,7 +546,15 @@ Module handler.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                 "expect",
                                 []
                               |),
@@ -539,7 +576,10 @@ Module handler.
                             gas_cost,
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 "saturating_add",
                                 []
                               |),
@@ -562,7 +602,11 @@ Module handler.
                     "balance"
                   |),
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "ruint::Uint", "saturating_sub", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      "saturating_sub",
+                      []
+                    |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -658,7 +702,7 @@ Module handler.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_deduct_caller_inner :
@@ -683,9 +727,9 @@ Module handler.
           Ok(())
       }
       *)
-      Definition deduct_caller (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC; EXT; DB ], [ context ] =>
+      Definition deduct_caller (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ SPEC; EXT; DB ], [ context ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             M.catch_return (|
@@ -699,16 +743,19 @@ Module handler.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
+                                      []
                                       [ Ty.path "revm_primitives::state::Account" ];
                                     Ty.path "bool"
                                   ];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -798,19 +845,23 @@ Module handler.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -875,7 +926,7 @@ Module handler.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_deduct_caller :

@@ -9,8 +9,9 @@ Module sync.
     (* StructRecord
       {
         name := "AtomicBool";
+        const_params := [];
         ty_params := [];
-        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ]) ];
+        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ]) ];
       } *)
     
     Module Impl_core_default_Default_for_core_sync_atomic_AtomicBool.
@@ -21,15 +22,15 @@ Module sync.
               Self::new(false)
           }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicBool", "new", [] |),
               [ Value.Bool false ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -54,34 +55,38 @@ Module sync.
     (* StructRecord
       {
         name := "AtomicPtr";
+        const_params := [];
         ty_params := [ "T" ];
         fields :=
-          [ ("p", Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.apply (Ty.path "*mut") [ T ] ])
+          [
+            ("p",
+              Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ])
           ];
       } *)
     
     Module Impl_core_default_Default_for_core_sync_atomic_AtomicPtr_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ].
       
       (*
           fn default() -> AtomicPtr<T> {
               AtomicPtr::new(crate::ptr::null_mut())
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ],
+                Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                 "new",
                 []
               |),
               [ M.call_closure (| M.get_function (| "core::ptr::null_mut", [ T ] |), [] |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -94,7 +99,8 @@ Module sync.
     End Impl_core_default_Default_for_core_sync_atomic_AtomicPtr_T.
     
     Module Impl_core_marker_Send_for_core_sync_atomic_AtomicPtr_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -106,7 +112,8 @@ Module sync.
     End Impl_core_marker_Send_for_core_sync_atomic_AtomicPtr_T.
     
     Module Impl_core_marker_Sync_for_core_sync_atomic_AtomicPtr_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -120,6 +127,7 @@ Module sync.
     (*
     Enum Ordering
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -167,13 +175,13 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -188,9 +196,9 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -237,7 +245,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -263,13 +271,17 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -296,9 +308,9 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -325,7 +337,7 @@ Module sync.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -340,9 +352,9 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -364,7 +376,7 @@ Module sync.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -393,9 +405,9 @@ Module sync.
               AtomicBool { v: UnsafeCell::new(v as u8) }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -404,14 +416,14 @@ Module sync.
                 ("v",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                       "new",
                       []
                     |),
                     [ M.rust_cast (M.read (| v |)) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -422,20 +434,20 @@ Module sync.
               unsafe { &*ptr.cast() }
           }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ptr ] =>
+      Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.path "bool" ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.path "bool" ],
                 "cast",
                 [ Ty.path "core::sync::atomic::AtomicBool" ]
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -446,15 +458,15 @@ Module sync.
               unsafe { &mut *(self.v.get() as *mut bool) }
           }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                   "get",
                   []
                 |),
@@ -466,7 +478,7 @@ Module sync.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -478,13 +490,13 @@ Module sync.
               unsafe { &mut *(v as *mut bool as *mut Self) }
           }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -495,13 +507,13 @@ Module sync.
               unsafe { &mut *(this as *mut [Self] as *mut [bool]) }
           }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ this ] =>
+      Definition get_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -514,13 +526,13 @@ Module sync.
               unsafe { &mut *(v as *mut [bool] as *mut [Self]) }
           }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -531,15 +543,15 @@ Module sync.
               self.v.into_inner() != 0
           }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.ne
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                   "into_inner",
                   []
                 |),
@@ -554,7 +566,7 @@ Module sync.
                 ]
               |))
               (Value.Integer 0)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -566,9 +578,9 @@ Module sync.
               unsafe { atomic_load(self.v.get(), order) != 0 }
           }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; order ] =>
+      Definition load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
@@ -580,7 +592,7 @@ Module sync.
                   M.pointer_coercion
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                         "get",
                         []
                       |),
@@ -596,7 +608,7 @@ Module sync.
                 ]
               |))
               (Value.Integer 0)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -610,9 +622,9 @@ Module sync.
               }
           }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition store (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -625,7 +637,7 @@ Module sync.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                           "get",
                           []
                         |),
@@ -644,7 +656,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -659,9 +671,9 @@ Module sync.
               }
           }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -722,7 +734,7 @@ Module sync.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                                   "get",
                                   []
                                 |),
@@ -743,7 +755,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -756,9 +768,9 @@ Module sync.
               }
           }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; order ] =>
+      Definition compare_and_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -809,7 +821,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -859,9 +871,9 @@ Module sync.
               }
           }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -1153,7 +1165,7 @@ Module sync.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                                   "get",
                                   []
                                 |),
@@ -1206,7 +1218,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -1233,9 +1245,9 @@ Module sync.
               }
           }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange_weak (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -1291,7 +1303,7 @@ Module sync.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                               "get",
                               []
                             |),
@@ -1343,7 +1355,7 @@ Module sync.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -1355,9 +1367,9 @@ Module sync.
               unsafe { atomic_and(self.v.get(), val as u8, order) != 0 }
           }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -1368,7 +1380,7 @@ Module sync.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                       "get",
                       []
                     |),
@@ -1385,7 +1397,7 @@ Module sync.
                 ]
               |))
               (Value.Integer 0)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -1407,9 +1419,9 @@ Module sync.
               }
           }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_nand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -1447,7 +1459,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -1458,9 +1470,9 @@ Module sync.
               unsafe { atomic_or(self.v.get(), val as u8, order) != 0 }
           }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_or (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -1471,7 +1483,7 @@ Module sync.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                       "get",
                       []
                     |),
@@ -1488,7 +1500,7 @@ Module sync.
                 ]
               |))
               (Value.Integer 0)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -1499,9 +1511,9 @@ Module sync.
               unsafe { atomic_xor(self.v.get(), val as u8, order) != 0 }
           }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_xor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -1512,7 +1524,7 @@ Module sync.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                       "get",
                       []
                     |),
@@ -1529,7 +1541,7 @@ Module sync.
                 ]
               |))
               (Value.Integer 0)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -1539,9 +1551,9 @@ Module sync.
               self.fetch_xor(true, order)
           }
       *)
-      Definition fetch_not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; order ] =>
+      Definition fetch_not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
@@ -1553,7 +1565,7 @@ Module sync.
               |),
               [ M.read (| self |); Value.Bool true; M.read (| order |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_not : M.IsAssociatedFunction Self "fetch_not" fetch_not.
@@ -1563,21 +1575,21 @@ Module sync.
               self.v.get().cast()
           }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                 "cast",
                 [ Ty.path "bool" ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
                     []
                   |),
@@ -1591,7 +1603,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -1616,9 +1628,9 @@ Module sync.
               Err(prev)
           }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; set_order; fetch_order; f ] =>
+      Definition fetch_update (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let set_order := M.alloc (| set_order |) in
@@ -1729,7 +1741,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -1737,17 +1749,18 @@ Module sync.
     End Impl_core_sync_atomic_AtomicBool.
     
     Module Impl_core_sync_atomic_AtomicPtr_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ].
       
       (*
           pub const fn new(p: *mut T) -> AtomicPtr<T> {
               AtomicPtr { p: UnsafeCell::new(p) }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ p ] =>
+        match ε, τ, α with
+        | [ host ], [], [ p ] =>
           ltac:(M.monadic
             (let p := M.alloc (| p |) in
             Value.StructRecord
@@ -1758,14 +1771,15 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::cell::UnsafeCell")
-                        [ Ty.apply (Ty.path "*mut") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                       "new",
                       []
                     |),
                     [ M.read (| p |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -1778,21 +1792,21 @@ Module sync.
               unsafe { &*ptr.cast() }
           }
       *)
-      Definition from_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ ptr ] =>
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                 "cast",
-                [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ] ]
+                [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ]
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_ptr :
@@ -1804,15 +1818,18 @@ Module sync.
               self.p.get_mut()
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                Ty.apply
+                  (Ty.path "core::cell::UnsafeCell")
+                  []
+                  [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                 "get_mut",
                 []
               |),
@@ -1824,7 +1841,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut :
@@ -1842,15 +1859,15 @@ Module sync.
               unsafe { &mut *(v as *mut *mut T as *mut Self) }
           }
       *)
-      Definition from_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ v ] =>
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1860,7 +1877,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut :
@@ -1873,14 +1890,19 @@ Module sync.
               unsafe { &mut *(this as *mut [Self] as *mut [*mut T]) }
           }
       *)
-      Definition get_mut_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ this ] =>
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -1896,14 +1918,19 @@ Module sync.
               unsafe { &mut *(v as *mut [*mut T] as *mut [Self]) }
           }
       *)
-      Definition from_mut_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ v ] =>
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -1915,15 +1942,18 @@ Module sync.
               self.p.into_inner()
           }
       *)
-      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                Ty.apply
+                  (Ty.path "core::cell::UnsafeCell")
+                  []
+                  [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                 "into_inner",
                 []
               |),
@@ -1937,7 +1967,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -1950,17 +1980,17 @@ Module sync.
               unsafe { atomic_load(self.p.get(), order) }
           }
       *)
-      Definition load (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; order ] =>
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_load",
-                [ Ty.apply (Ty.path "*mut") [ T ] ]
+                [ Ty.apply (Ty.path "*mut") [] [ T ] ]
               |),
               [
                 (* MutToConstPointer *)
@@ -1969,7 +1999,8 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::cell::UnsafeCell")
-                        [ Ty.apply (Ty.path "*mut") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                       "get",
                       []
                     |),
@@ -1984,7 +2015,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load :
@@ -1999,10 +2030,10 @@ Module sync.
               }
           }
       *)
-      Definition store (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; ptr; order ] =>
+        match ε, τ, α with
+        | [], [], [ self; ptr; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let ptr := M.alloc (| ptr |) in
@@ -2013,14 +2044,15 @@ Module sync.
                   M.call_closure (|
                     M.get_function (|
                       "core::sync::atomic::atomic_store",
-                      [ Ty.apply (Ty.path "*mut") [ T ] ]
+                      [ Ty.apply (Ty.path "*mut") [] [ T ] ]
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::cell::UnsafeCell")
-                            [ Ty.apply (Ty.path "*mut") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                           "get",
                           []
                         |),
@@ -2039,7 +2071,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_store :
@@ -2052,10 +2084,10 @@ Module sync.
               unsafe { atomic_swap(self.p.get(), ptr, order) }
           }
       *)
-      Definition swap (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; ptr; order ] =>
+        match ε, τ, α with
+        | [], [], [ self; ptr; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let ptr := M.alloc (| ptr |) in
@@ -2063,12 +2095,15 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_swap",
-                [ Ty.apply (Ty.path "*mut") [ T ] ]
+                [ Ty.apply (Ty.path "*mut") [] [ T ] ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                    Ty.apply
+                      (Ty.path "core::cell::UnsafeCell")
+                      []
+                      [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                     "get",
                     []
                   |),
@@ -2084,7 +2119,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap :
@@ -2099,10 +2134,15 @@ Module sync.
               }
           }
       *)
-      Definition compare_and_swap (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; current; new; order ] =>
+        match ε, τ, α with
+        | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -2113,7 +2153,7 @@ Module sync.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ],
+                      Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                       "compare_exchange",
                       []
                     |),
@@ -2153,7 +2193,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -2172,10 +2212,15 @@ Module sync.
               unsafe { atomic_compare_exchange(self.p.get(), current, new, success, failure) }
           }
       *)
-      Definition compare_exchange (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -2185,12 +2230,15 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange",
-                [ Ty.apply (Ty.path "*mut") [ T ] ]
+                [ Ty.apply (Ty.path "*mut") [] [ T ] ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                    Ty.apply
+                      (Ty.path "core::cell::UnsafeCell")
+                      []
+                      [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                     "get",
                     []
                   |),
@@ -2208,7 +2256,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -2230,10 +2278,15 @@ Module sync.
               unsafe { atomic_compare_exchange_weak(self.p.get(), current, new, success, failure) }
           }
       *)
-      Definition compare_exchange_weak (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -2243,12 +2296,15 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange_weak",
-                [ Ty.apply (Ty.path "*mut") [ T ] ]
+                [ Ty.apply (Ty.path "*mut") [] [ T ] ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                    Ty.apply
+                      (Ty.path "core::cell::UnsafeCell")
+                      []
+                      [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                     "get",
                     []
                   |),
@@ -2266,7 +2322,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -2293,10 +2349,15 @@ Module sync.
               Err(prev)
           }
       *)
-      Definition fetch_update (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ F ], [ self; set_order; fetch_order; f ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let set_order := M.alloc (| set_order |) in
@@ -2309,7 +2370,7 @@ Module sync.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ],
+                          Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                           "load",
                           []
                         |),
@@ -2330,7 +2391,7 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
-                                        [ Ty.tuple [ Ty.apply (Ty.path "*mut") [ T ] ] ],
+                                        [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ] ] ],
                                         "call_mut",
                                         []
                                       |),
@@ -2348,7 +2409,7 @@ Module sync.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ],
+                                        Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                                         "compare_exchange_weak",
                                         []
                                       |),
@@ -2407,7 +2468,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -2419,17 +2480,22 @@ Module sync.
               self.fetch_byte_add(val.wrapping_mul(core::mem::size_of::<T>()), order)
           }
       *)
-      Definition fetch_ptr_add (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_ptr_add
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; val; order ] =>
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ],
+                Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                 "fetch_byte_add",
                 []
               |),
@@ -2445,7 +2511,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_ptr_add :
@@ -2457,17 +2523,22 @@ Module sync.
               self.fetch_byte_sub(val.wrapping_mul(core::mem::size_of::<T>()), order)
           }
       *)
-      Definition fetch_ptr_sub (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_ptr_sub
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; val; order ] =>
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ],
+                Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                 "fetch_byte_sub",
                 []
               |),
@@ -2483,7 +2554,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_ptr_sub :
@@ -2496,28 +2567,34 @@ Module sync.
               unsafe { atomic_add(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
           }
       *)
-      Definition fetch_byte_add (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_byte_add
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; val; order ] =>
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "cast", [ T ] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [ T ] |),
               [
                 M.call_closure (|
                   M.get_function (|
                     "core::sync::atomic::atomic_add",
-                    [ Ty.apply (Ty.path "*mut") [ T ] ]
+                    [ Ty.apply (Ty.path "*mut") [] [ T ] ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::cell::UnsafeCell")
-                          [ Ty.apply (Ty.path "*mut") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                         "get",
                         []
                       |),
@@ -2538,7 +2615,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_byte_add :
@@ -2551,28 +2628,34 @@ Module sync.
               unsafe { atomic_sub(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
           }
       *)
-      Definition fetch_byte_sub (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_byte_sub
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; val; order ] =>
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "cast", [ T ] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [ T ] |),
               [
                 M.call_closure (|
                   M.get_function (|
                     "core::sync::atomic::atomic_sub",
-                    [ Ty.apply (Ty.path "*mut") [ T ] ]
+                    [ Ty.apply (Ty.path "*mut") [] [ T ] ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::cell::UnsafeCell")
-                          [ Ty.apply (Ty.path "*mut") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                         "get",
                         []
                       |),
@@ -2593,7 +2676,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_byte_sub :
@@ -2606,28 +2689,29 @@ Module sync.
               unsafe { atomic_or(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
           }
       *)
-      Definition fetch_or (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; val; order ] =>
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "cast", [ T ] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [ T ] |),
               [
                 M.call_closure (|
                   M.get_function (|
                     "core::sync::atomic::atomic_or",
-                    [ Ty.apply (Ty.path "*mut") [ T ] ]
+                    [ Ty.apply (Ty.path "*mut") [] [ T ] ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::cell::UnsafeCell")
-                          [ Ty.apply (Ty.path "*mut") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                         "get",
                         []
                       |),
@@ -2648,7 +2732,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_or :
@@ -2661,28 +2745,29 @@ Module sync.
               unsafe { atomic_and(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
           }
       *)
-      Definition fetch_and (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; val; order ] =>
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "cast", [ T ] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [ T ] |),
               [
                 M.call_closure (|
                   M.get_function (|
                     "core::sync::atomic::atomic_and",
-                    [ Ty.apply (Ty.path "*mut") [ T ] ]
+                    [ Ty.apply (Ty.path "*mut") [] [ T ] ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::cell::UnsafeCell")
-                          [ Ty.apply (Ty.path "*mut") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                         "get",
                         []
                       |),
@@ -2703,7 +2788,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_and :
@@ -2716,28 +2801,29 @@ Module sync.
               unsafe { atomic_xor(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
           }
       *)
-      Definition fetch_xor (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; val; order ] =>
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "cast", [ T ] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [ T ] |),
               [
                 M.call_closure (|
                   M.get_function (|
                     "core::sync::atomic::atomic_xor",
-                    [ Ty.apply (Ty.path "*mut") [ T ] ]
+                    [ Ty.apply (Ty.path "*mut") [] [ T ] ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::cell::UnsafeCell")
-                          [ Ty.apply (Ty.path "*mut") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                         "get",
                         []
                       |),
@@ -2758,7 +2844,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_xor :
@@ -2770,15 +2856,18 @@ Module sync.
               self.p.get()
           }
       *)
-      Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                Ty.apply
+                  (Ty.path "core::cell::UnsafeCell")
+                  []
+                  [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                 "get",
                 []
               |),
@@ -2790,7 +2879,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr :
@@ -2806,16 +2895,16 @@ Module sync.
               Self::new(b)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ b ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicBool", "new", [] |),
               [ M.read (| b |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2827,28 +2916,29 @@ Module sync.
     End Impl_core_convert_From_bool_for_core_sync_atomic_AtomicBool.
     
     Module Impl_core_convert_From_pointer_mut_T_for_core_sync_atomic_AtomicPtr_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ].
       
       (*
           fn from(p: *mut T) -> Self {
               Self::new(p)
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ p ] =>
+        match ε, τ, α with
+        | [], [], [ p ] =>
           ltac:(M.monadic
             (let p := M.alloc (| p |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ],
+                Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                 "new",
                 []
               |),
               [ M.read (| p |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2856,15 +2946,16 @@ Module sync.
         M.IsTraitInstance
           "core::convert::From"
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*mut") [ T ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*mut") [] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_pointer_mut_T_for_core_sync_atomic_AtomicPtr_T.
     
     (* StructRecord
       {
         name := "AtomicI8";
+        const_params := [];
         ty_params := [];
-        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ]) ];
+        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ]) ];
       } *)
     
     Module Impl_core_default_Default_for_core_sync_atomic_AtomicI8.
@@ -2875,9 +2966,9 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI8", "new", [] |),
@@ -2894,7 +2985,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2909,16 +3000,16 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicI8".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI8", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2937,9 +3028,9 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -2962,7 +3053,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2992,9 +3083,9 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -3003,14 +3094,14 @@ Module sync.
                 ("v",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                       "new",
                       []
                     |),
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -3021,20 +3112,20 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ptr ] =>
+      Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.path "i8" ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ],
                 "cast",
                 [ Ty.path "core::sync::atomic::AtomicI8" ]
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -3044,14 +3135,14 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                 "get_mut",
                 []
               |),
@@ -3063,7 +3154,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -3079,14 +3170,14 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3096,7 +3187,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -3107,13 +3198,13 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ this ] =>
+      Definition get_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -3130,14 +3221,14 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3147,7 +3238,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -3158,14 +3249,14 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                 "into_inner",
                 []
               |),
@@ -3179,7 +3270,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -3190,9 +3281,9 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; order ] =>
+      Definition load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
@@ -3203,7 +3294,7 @@ Module sync.
                 M.pointer_coercion
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                       "get",
                       []
                     |),
@@ -3218,7 +3309,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -3229,9 +3320,9 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition store (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -3244,7 +3335,7 @@ Module sync.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                           "get",
                           []
                         |),
@@ -3263,7 +3354,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -3274,9 +3365,9 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -3286,7 +3377,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
                     []
                   |),
@@ -3302,7 +3393,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -3321,9 +3412,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; order ] =>
+      Definition compare_and_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -3374,7 +3465,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -3390,9 +3481,9 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -3404,7 +3495,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
                     []
                   |),
@@ -3422,7 +3513,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -3440,9 +3531,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange_weak (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -3457,7 +3548,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
                     []
                   |),
@@ -3475,7 +3566,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -3487,9 +3578,9 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -3499,7 +3590,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
                     []
                   |),
@@ -3515,7 +3606,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -3526,9 +3617,9 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -3538,7 +3629,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
                     []
                   |),
@@ -3554,7 +3645,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -3565,9 +3656,9 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -3577,7 +3668,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
                     []
                   |),
@@ -3593,7 +3684,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -3604,9 +3695,9 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_nand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -3616,7 +3707,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
                     []
                   |),
@@ -3632,7 +3723,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -3643,9 +3734,9 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_or (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -3655,7 +3746,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
                     []
                   |),
@@ -3671,7 +3762,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -3682,9 +3773,9 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_xor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -3694,7 +3785,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
                     []
                   |),
@@ -3710,7 +3801,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -3731,9 +3822,9 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; set_order; fetch_order; f ] =>
+      Definition fetch_update (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let set_order := M.alloc (| set_order |) in
@@ -3844,7 +3935,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -3856,9 +3947,9 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -3868,7 +3959,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
                     []
                   |),
@@ -3884,7 +3975,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -3895,9 +3986,9 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -3907,7 +3998,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
                     []
                   |),
@@ -3923,7 +4014,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -3933,14 +4024,14 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                 "get",
                 []
               |),
@@ -3952,7 +4043,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -3961,8 +4052,9 @@ Module sync.
     (* StructRecord
       {
         name := "AtomicU8";
+        const_params := [];
         ty_params := [];
-        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ]) ];
+        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ]) ];
       } *)
     
     Module Impl_core_default_Default_for_core_sync_atomic_AtomicU8.
@@ -3973,9 +4065,9 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU8", "new", [] |),
@@ -3992,7 +4084,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4007,16 +4099,16 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicU8".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU8", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4035,9 +4127,9 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4060,7 +4152,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4090,9 +4182,9 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -4101,14 +4193,14 @@ Module sync.
                 ("v",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                       "new",
                       []
                     |),
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -4119,20 +4211,20 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ptr ] =>
+      Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                 "cast",
                 [ Ty.path "core::sync::atomic::AtomicU8" ]
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -4142,14 +4234,14 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                 "get_mut",
                 []
               |),
@@ -4161,7 +4253,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -4177,14 +4269,14 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -4194,7 +4286,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -4205,13 +4297,13 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ this ] =>
+      Definition get_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -4228,14 +4320,14 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -4245,7 +4337,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -4256,14 +4348,14 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                 "into_inner",
                 []
               |),
@@ -4277,7 +4369,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -4288,9 +4380,9 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; order ] =>
+      Definition load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
@@ -4301,7 +4393,7 @@ Module sync.
                 M.pointer_coercion
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                       "get",
                       []
                     |),
@@ -4316,7 +4408,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -4327,9 +4419,9 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition store (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -4342,7 +4434,7 @@ Module sync.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                           "get",
                           []
                         |),
@@ -4361,7 +4453,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -4372,9 +4464,9 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -4384,7 +4476,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
                     []
                   |),
@@ -4400,7 +4492,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -4419,9 +4511,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; order ] =>
+      Definition compare_and_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -4472,7 +4564,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -4488,9 +4580,9 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -4502,7 +4594,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
                     []
                   |),
@@ -4520,7 +4612,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -4538,9 +4630,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange_weak (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -4555,7 +4647,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
                     []
                   |),
@@ -4573,7 +4665,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -4585,9 +4677,9 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -4597,7 +4689,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
                     []
                   |),
@@ -4613,7 +4705,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -4624,9 +4716,9 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -4636,7 +4728,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
                     []
                   |),
@@ -4652,7 +4744,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -4663,9 +4755,9 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -4675,7 +4767,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
                     []
                   |),
@@ -4691,7 +4783,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -4702,9 +4794,9 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_nand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -4714,7 +4806,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
                     []
                   |),
@@ -4730,7 +4822,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -4741,9 +4833,9 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_or (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -4753,7 +4845,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
                     []
                   |),
@@ -4769,7 +4861,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -4780,9 +4872,9 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_xor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -4792,7 +4884,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
                     []
                   |),
@@ -4808,7 +4900,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -4829,9 +4921,9 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; set_order; fetch_order; f ] =>
+      Definition fetch_update (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let set_order := M.alloc (| set_order |) in
@@ -4942,7 +5034,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -4954,9 +5046,9 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -4966,7 +5058,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
                     []
                   |),
@@ -4982,7 +5074,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -4993,9 +5085,9 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -5005,7 +5097,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
                     []
                   |),
@@ -5021,7 +5113,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -5031,14 +5123,14 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                 "get",
                 []
               |),
@@ -5050,7 +5142,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -5059,8 +5151,9 @@ Module sync.
     (* StructRecord
       {
         name := "AtomicI16";
+        const_params := [];
         ty_params := [];
-        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ]) ];
+        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ]) ];
       } *)
     
     Module Impl_core_default_Default_for_core_sync_atomic_AtomicI16.
@@ -5071,9 +5164,9 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI16", "new", [] |),
@@ -5090,7 +5183,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5105,16 +5198,16 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicI16".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI16", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5133,9 +5226,9 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5158,7 +5251,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5188,9 +5281,9 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -5199,14 +5292,14 @@ Module sync.
                 ("v",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                       "new",
                       []
                     |),
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -5217,20 +5310,20 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ptr ] =>
+      Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.path "i16" ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.path "i16" ],
                 "cast",
                 [ Ty.path "core::sync::atomic::AtomicI16" ]
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -5240,14 +5333,14 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                 "get_mut",
                 []
               |),
@@ -5259,7 +5352,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -5275,14 +5368,14 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5292,7 +5385,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -5303,13 +5396,13 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ this ] =>
+      Definition get_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -5326,14 +5419,14 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5343,7 +5436,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -5354,14 +5447,14 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                 "into_inner",
                 []
               |),
@@ -5375,7 +5468,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -5386,9 +5479,9 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; order ] =>
+      Definition load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
@@ -5399,7 +5492,7 @@ Module sync.
                 M.pointer_coercion
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                       "get",
                       []
                     |),
@@ -5414,7 +5507,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -5425,9 +5518,9 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition store (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -5440,7 +5533,7 @@ Module sync.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                           "get",
                           []
                         |),
@@ -5459,7 +5552,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -5470,9 +5563,9 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -5482,7 +5575,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
                     []
                   |),
@@ -5498,7 +5591,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -5517,9 +5610,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; order ] =>
+      Definition compare_and_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -5570,7 +5663,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -5586,9 +5679,9 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -5600,7 +5693,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
                     []
                   |),
@@ -5618,7 +5711,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -5636,9 +5729,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange_weak (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -5653,7 +5746,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
                     []
                   |),
@@ -5671,7 +5764,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -5683,9 +5776,9 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -5695,7 +5788,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
                     []
                   |),
@@ -5711,7 +5804,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -5722,9 +5815,9 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -5734,7 +5827,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
                     []
                   |),
@@ -5750,7 +5843,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -5761,9 +5854,9 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -5773,7 +5866,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
                     []
                   |),
@@ -5789,7 +5882,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -5800,9 +5893,9 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_nand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -5812,7 +5905,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
                     []
                   |),
@@ -5828,7 +5921,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -5839,9 +5932,9 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_or (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -5851,7 +5944,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
                     []
                   |),
@@ -5867,7 +5960,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -5878,9 +5971,9 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_xor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -5890,7 +5983,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
                     []
                   |),
@@ -5906,7 +5999,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -5927,9 +6020,9 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; set_order; fetch_order; f ] =>
+      Definition fetch_update (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let set_order := M.alloc (| set_order |) in
@@ -6040,7 +6133,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -6052,9 +6145,9 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -6064,7 +6157,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
                     []
                   |),
@@ -6080,7 +6173,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -6091,9 +6184,9 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -6103,7 +6196,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
                     []
                   |),
@@ -6119,7 +6212,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -6129,14 +6222,14 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                 "get",
                 []
               |),
@@ -6148,7 +6241,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -6157,8 +6250,9 @@ Module sync.
     (* StructRecord
       {
         name := "AtomicU16";
+        const_params := [];
         ty_params := [];
-        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ]) ];
+        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ]) ];
       } *)
     
     Module Impl_core_default_Default_for_core_sync_atomic_AtomicU16.
@@ -6169,9 +6263,9 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU16", "new", [] |),
@@ -6188,7 +6282,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6203,16 +6297,16 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicU16".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU16", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6231,9 +6325,9 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6256,7 +6350,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6286,9 +6380,9 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -6297,14 +6391,14 @@ Module sync.
                 ("v",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                       "new",
                       []
                     |),
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -6315,20 +6409,20 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ptr ] =>
+      Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.path "u16" ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.path "u16" ],
                 "cast",
                 [ Ty.path "core::sync::atomic::AtomicU16" ]
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -6338,14 +6432,14 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                 "get_mut",
                 []
               |),
@@ -6357,7 +6451,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -6373,14 +6467,14 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -6390,7 +6484,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -6401,13 +6495,13 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ this ] =>
+      Definition get_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -6424,14 +6518,14 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -6441,7 +6535,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -6452,14 +6546,14 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                 "into_inner",
                 []
               |),
@@ -6473,7 +6567,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -6484,9 +6578,9 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; order ] =>
+      Definition load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
@@ -6497,7 +6591,7 @@ Module sync.
                 M.pointer_coercion
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                       "get",
                       []
                     |),
@@ -6512,7 +6606,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -6523,9 +6617,9 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition store (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -6538,7 +6632,7 @@ Module sync.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                           "get",
                           []
                         |),
@@ -6557,7 +6651,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -6568,9 +6662,9 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -6580,7 +6674,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
                     []
                   |),
@@ -6596,7 +6690,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -6615,9 +6709,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; order ] =>
+      Definition compare_and_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -6668,7 +6762,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -6684,9 +6778,9 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -6698,7 +6792,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
                     []
                   |),
@@ -6716,7 +6810,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -6734,9 +6828,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange_weak (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -6751,7 +6845,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
                     []
                   |),
@@ -6769,7 +6863,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -6781,9 +6875,9 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -6793,7 +6887,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
                     []
                   |),
@@ -6809,7 +6903,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -6820,9 +6914,9 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -6832,7 +6926,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
                     []
                   |),
@@ -6848,7 +6942,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -6859,9 +6953,9 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -6871,7 +6965,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
                     []
                   |),
@@ -6887,7 +6981,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -6898,9 +6992,9 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_nand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -6910,7 +7004,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
                     []
                   |),
@@ -6926,7 +7020,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -6937,9 +7031,9 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_or (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -6949,7 +7043,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
                     []
                   |),
@@ -6965,7 +7059,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -6976,9 +7070,9 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_xor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -6988,7 +7082,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
                     []
                   |),
@@ -7004,7 +7098,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -7025,9 +7119,9 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; set_order; fetch_order; f ] =>
+      Definition fetch_update (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let set_order := M.alloc (| set_order |) in
@@ -7138,7 +7232,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -7150,9 +7244,9 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -7162,7 +7256,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
                     []
                   |),
@@ -7178,7 +7272,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -7189,9 +7283,9 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -7201,7 +7295,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
                     []
                   |),
@@ -7217,7 +7311,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -7227,14 +7321,14 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                 "get",
                 []
               |),
@@ -7246,7 +7340,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -7255,8 +7349,9 @@ Module sync.
     (* StructRecord
       {
         name := "AtomicI32";
+        const_params := [];
         ty_params := [];
-        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ]) ];
+        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ]) ];
       } *)
     
     Module Impl_core_default_Default_for_core_sync_atomic_AtomicI32.
@@ -7267,9 +7362,9 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI32", "new", [] |),
@@ -7286,7 +7381,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7301,16 +7396,16 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicI32".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI32", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7329,9 +7424,9 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -7354,7 +7449,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7384,9 +7479,9 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -7395,14 +7490,14 @@ Module sync.
                 ("v",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                       "new",
                       []
                     |),
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -7413,20 +7508,20 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ptr ] =>
+      Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.path "i32" ],
                 "cast",
                 [ Ty.path "core::sync::atomic::AtomicI32" ]
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -7436,14 +7531,14 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                 "get_mut",
                 []
               |),
@@ -7455,7 +7550,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -7471,14 +7566,14 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -7488,7 +7583,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -7499,13 +7594,13 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ this ] =>
+      Definition get_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -7522,14 +7617,14 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -7539,7 +7634,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -7550,14 +7645,14 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                 "into_inner",
                 []
               |),
@@ -7571,7 +7666,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -7582,9 +7677,9 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; order ] =>
+      Definition load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
@@ -7595,7 +7690,7 @@ Module sync.
                 M.pointer_coercion
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                       "get",
                       []
                     |),
@@ -7610,7 +7705,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -7621,9 +7716,9 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition store (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -7636,7 +7731,7 @@ Module sync.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                           "get",
                           []
                         |),
@@ -7655,7 +7750,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -7666,9 +7761,9 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -7678,7 +7773,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
                     []
                   |),
@@ -7694,7 +7789,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -7713,9 +7808,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; order ] =>
+      Definition compare_and_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -7766,7 +7861,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -7782,9 +7877,9 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -7796,7 +7891,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
                     []
                   |),
@@ -7814,7 +7909,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -7832,9 +7927,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange_weak (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -7849,7 +7944,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
                     []
                   |),
@@ -7867,7 +7962,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -7879,9 +7974,9 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -7891,7 +7986,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
                     []
                   |),
@@ -7907,7 +8002,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -7918,9 +8013,9 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -7930,7 +8025,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
                     []
                   |),
@@ -7946,7 +8041,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -7957,9 +8052,9 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -7969,7 +8064,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
                     []
                   |),
@@ -7985,7 +8080,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -7996,9 +8091,9 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_nand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -8008,7 +8103,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
                     []
                   |),
@@ -8024,7 +8119,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -8035,9 +8130,9 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_or (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -8047,7 +8142,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
                     []
                   |),
@@ -8063,7 +8158,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -8074,9 +8169,9 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_xor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -8086,7 +8181,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
                     []
                   |),
@@ -8102,7 +8197,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -8123,9 +8218,9 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; set_order; fetch_order; f ] =>
+      Definition fetch_update (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let set_order := M.alloc (| set_order |) in
@@ -8236,7 +8331,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -8248,9 +8343,9 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -8260,7 +8355,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
                     []
                   |),
@@ -8276,7 +8371,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -8287,9 +8382,9 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -8299,7 +8394,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
                     []
                   |),
@@ -8315,7 +8410,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -8325,14 +8420,14 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                 "get",
                 []
               |),
@@ -8344,7 +8439,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -8353,8 +8448,9 @@ Module sync.
     (* StructRecord
       {
         name := "AtomicU32";
+        const_params := [];
         ty_params := [];
-        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ]) ];
+        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ]) ];
       } *)
     
     Module Impl_core_default_Default_for_core_sync_atomic_AtomicU32.
@@ -8365,9 +8461,9 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU32", "new", [] |),
@@ -8384,7 +8480,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8399,16 +8495,16 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicU32".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU32", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8427,9 +8523,9 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -8452,7 +8548,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8482,9 +8578,9 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -8493,14 +8589,14 @@ Module sync.
                 ("v",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                       "new",
                       []
                     |),
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -8511,20 +8607,20 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ptr ] =>
+      Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.path "u32" ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.path "u32" ],
                 "cast",
                 [ Ty.path "core::sync::atomic::AtomicU32" ]
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -8534,14 +8630,14 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                 "get_mut",
                 []
               |),
@@ -8553,7 +8649,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -8569,14 +8665,14 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -8586,7 +8682,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -8597,13 +8693,13 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ this ] =>
+      Definition get_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -8620,14 +8716,14 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -8637,7 +8733,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -8648,14 +8744,14 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                 "into_inner",
                 []
               |),
@@ -8669,7 +8765,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -8680,9 +8776,9 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; order ] =>
+      Definition load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
@@ -8693,7 +8789,7 @@ Module sync.
                 M.pointer_coercion
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                       "get",
                       []
                     |),
@@ -8708,7 +8804,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -8719,9 +8815,9 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition store (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -8734,7 +8830,7 @@ Module sync.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                           "get",
                           []
                         |),
@@ -8753,7 +8849,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -8764,9 +8860,9 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -8776,7 +8872,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
                     []
                   |),
@@ -8792,7 +8888,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -8811,9 +8907,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; order ] =>
+      Definition compare_and_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -8864,7 +8960,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -8880,9 +8976,9 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -8894,7 +8990,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
                     []
                   |),
@@ -8912,7 +9008,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -8930,9 +9026,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange_weak (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -8947,7 +9043,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
                     []
                   |),
@@ -8965,7 +9061,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -8977,9 +9073,9 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -8989,7 +9085,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
                     []
                   |),
@@ -9005,7 +9101,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -9016,9 +9112,9 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -9028,7 +9124,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
                     []
                   |),
@@ -9044,7 +9140,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -9055,9 +9151,9 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -9067,7 +9163,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
                     []
                   |),
@@ -9083,7 +9179,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -9094,9 +9190,9 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_nand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -9106,7 +9202,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
                     []
                   |),
@@ -9122,7 +9218,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -9133,9 +9229,9 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_or (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -9145,7 +9241,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
                     []
                   |),
@@ -9161,7 +9257,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -9172,9 +9268,9 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_xor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -9184,7 +9280,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
                     []
                   |),
@@ -9200,7 +9296,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -9221,9 +9317,9 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; set_order; fetch_order; f ] =>
+      Definition fetch_update (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let set_order := M.alloc (| set_order |) in
@@ -9334,7 +9430,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -9346,9 +9442,9 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -9358,7 +9454,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
                     []
                   |),
@@ -9374,7 +9470,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -9385,9 +9481,9 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -9397,7 +9493,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
                     []
                   |),
@@ -9413,7 +9509,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -9423,14 +9519,14 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                 "get",
                 []
               |),
@@ -9442,7 +9538,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -9451,8 +9547,9 @@ Module sync.
     (* StructRecord
       {
         name := "AtomicI64";
+        const_params := [];
         ty_params := [];
-        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ]) ];
+        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ]) ];
       } *)
     
     Module Impl_core_default_Default_for_core_sync_atomic_AtomicI64.
@@ -9463,9 +9560,9 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI64", "new", [] |),
@@ -9482,7 +9579,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9497,16 +9594,16 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicI64".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI64", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9525,9 +9622,9 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -9550,7 +9647,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9580,9 +9677,9 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -9591,14 +9688,14 @@ Module sync.
                 ("v",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                       "new",
                       []
                     |),
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -9609,20 +9706,20 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ptr ] =>
+      Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.path "i64" ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.path "i64" ],
                 "cast",
                 [ Ty.path "core::sync::atomic::AtomicI64" ]
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -9632,14 +9729,14 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                 "get_mut",
                 []
               |),
@@ -9651,7 +9748,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -9667,14 +9764,14 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -9684,7 +9781,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -9695,13 +9792,13 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ this ] =>
+      Definition get_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -9718,14 +9815,14 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -9735,7 +9832,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -9746,14 +9843,14 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                 "into_inner",
                 []
               |),
@@ -9767,7 +9864,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -9778,9 +9875,9 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; order ] =>
+      Definition load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
@@ -9791,7 +9888,7 @@ Module sync.
                 M.pointer_coercion
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                       "get",
                       []
                     |),
@@ -9806,7 +9903,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -9817,9 +9914,9 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition store (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -9832,7 +9929,7 @@ Module sync.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                           "get",
                           []
                         |),
@@ -9851,7 +9948,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -9862,9 +9959,9 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -9874,7 +9971,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
                     []
                   |),
@@ -9890,7 +9987,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -9909,9 +10006,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; order ] =>
+      Definition compare_and_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -9962,7 +10059,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -9978,9 +10075,9 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -9992,7 +10089,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
                     []
                   |),
@@ -10010,7 +10107,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -10028,9 +10125,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange_weak (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -10045,7 +10142,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
                     []
                   |),
@@ -10063,7 +10160,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -10075,9 +10172,9 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -10087,7 +10184,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
                     []
                   |),
@@ -10103,7 +10200,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -10114,9 +10211,9 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -10126,7 +10223,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
                     []
                   |),
@@ -10142,7 +10239,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -10153,9 +10250,9 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -10165,7 +10262,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
                     []
                   |),
@@ -10181,7 +10278,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -10192,9 +10289,9 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_nand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -10204,7 +10301,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
                     []
                   |),
@@ -10220,7 +10317,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -10231,9 +10328,9 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_or (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -10243,7 +10340,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
                     []
                   |),
@@ -10259,7 +10356,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -10270,9 +10367,9 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_xor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -10282,7 +10379,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
                     []
                   |),
@@ -10298,7 +10395,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -10319,9 +10416,9 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; set_order; fetch_order; f ] =>
+      Definition fetch_update (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let set_order := M.alloc (| set_order |) in
@@ -10432,7 +10529,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -10444,9 +10541,9 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -10456,7 +10553,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
                     []
                   |),
@@ -10472,7 +10569,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -10483,9 +10580,9 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -10495,7 +10592,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
                     []
                   |),
@@ -10511,7 +10608,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -10521,14 +10618,14 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                 "get",
                 []
               |),
@@ -10540,7 +10637,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -10549,8 +10646,9 @@ Module sync.
     (* StructRecord
       {
         name := "AtomicU64";
+        const_params := [];
         ty_params := [];
-        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ]) ];
+        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ]) ];
       } *)
     
     Module Impl_core_default_Default_for_core_sync_atomic_AtomicU64.
@@ -10561,9 +10659,9 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU64", "new", [] |),
@@ -10580,7 +10678,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10595,16 +10693,16 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicU64".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU64", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10623,9 +10721,9 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -10648,7 +10746,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10678,9 +10776,9 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -10689,14 +10787,14 @@ Module sync.
                 ("v",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                       "new",
                       []
                     |),
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -10707,20 +10805,20 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ptr ] =>
+      Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.path "u64" ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                 "cast",
                 [ Ty.path "core::sync::atomic::AtomicU64" ]
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -10730,14 +10828,14 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                 "get_mut",
                 []
               |),
@@ -10749,7 +10847,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -10765,14 +10863,14 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -10782,7 +10880,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -10793,13 +10891,13 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ this ] =>
+      Definition get_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -10816,14 +10914,14 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -10833,7 +10931,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -10844,14 +10942,14 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                 "into_inner",
                 []
               |),
@@ -10865,7 +10963,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -10876,9 +10974,9 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; order ] =>
+      Definition load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
@@ -10889,7 +10987,7 @@ Module sync.
                 M.pointer_coercion
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                       "get",
                       []
                     |),
@@ -10904,7 +11002,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -10915,9 +11013,9 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition store (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -10930,7 +11028,7 @@ Module sync.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                           "get",
                           []
                         |),
@@ -10949,7 +11047,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -10960,9 +11058,9 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -10972,7 +11070,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
                     []
                   |),
@@ -10988,7 +11086,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -11007,9 +11105,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; order ] =>
+      Definition compare_and_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -11060,7 +11158,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -11076,9 +11174,9 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -11090,7 +11188,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
                     []
                   |),
@@ -11108,7 +11206,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -11126,9 +11224,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange_weak (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -11143,7 +11241,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
                     []
                   |),
@@ -11161,7 +11259,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -11173,9 +11271,9 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -11185,7 +11283,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
                     []
                   |),
@@ -11201,7 +11299,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -11212,9 +11310,9 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -11224,7 +11322,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
                     []
                   |),
@@ -11240,7 +11338,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -11251,9 +11349,9 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -11263,7 +11361,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
                     []
                   |),
@@ -11279,7 +11377,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -11290,9 +11388,9 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_nand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -11302,7 +11400,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
                     []
                   |),
@@ -11318,7 +11416,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -11329,9 +11427,9 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_or (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -11341,7 +11439,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
                     []
                   |),
@@ -11357,7 +11455,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -11368,9 +11466,9 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_xor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -11380,7 +11478,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
                     []
                   |),
@@ -11396,7 +11494,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -11417,9 +11515,9 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; set_order; fetch_order; f ] =>
+      Definition fetch_update (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let set_order := M.alloc (| set_order |) in
@@ -11530,7 +11628,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -11542,9 +11640,9 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -11554,7 +11652,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
                     []
                   |),
@@ -11570,7 +11668,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -11581,9 +11679,9 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -11593,7 +11691,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
                     []
                   |),
@@ -11609,7 +11707,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -11619,14 +11717,14 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                 "get",
                 []
               |),
@@ -11638,7 +11736,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -11647,8 +11745,9 @@ Module sync.
     (* StructRecord
       {
         name := "AtomicIsize";
+        const_params := [];
         ty_params := [];
-        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ]) ];
+        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ]) ];
       } *)
     
     Module Impl_core_default_Default_for_core_sync_atomic_AtomicIsize.
@@ -11659,9 +11758,9 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicIsize", "new", [] |),
@@ -11678,7 +11777,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11693,16 +11792,16 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicIsize".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicIsize", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11721,9 +11820,9 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -11746,7 +11845,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11776,9 +11875,9 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -11787,14 +11886,14 @@ Module sync.
                 ("v",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                       "new",
                       []
                     |),
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -11805,20 +11904,20 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ptr ] =>
+      Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.path "isize" ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.path "isize" ],
                 "cast",
                 [ Ty.path "core::sync::atomic::AtomicIsize" ]
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -11828,14 +11927,14 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                 "get_mut",
                 []
               |),
@@ -11847,7 +11946,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -11863,14 +11962,14 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -11880,7 +11979,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -11891,13 +11990,13 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ this ] =>
+      Definition get_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -11914,14 +12013,14 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -11931,7 +12030,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -11942,14 +12041,14 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                 "into_inner",
                 []
               |),
@@ -11963,7 +12062,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -11974,9 +12073,9 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; order ] =>
+      Definition load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
@@ -11987,7 +12086,7 @@ Module sync.
                 M.pointer_coercion
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                       "get",
                       []
                     |),
@@ -12002,7 +12101,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -12013,9 +12112,9 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition store (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -12028,7 +12127,7 @@ Module sync.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                           "get",
                           []
                         |),
@@ -12047,7 +12146,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -12058,9 +12157,9 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -12070,7 +12169,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
                     []
                   |),
@@ -12086,7 +12185,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -12105,9 +12204,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; order ] =>
+      Definition compare_and_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -12158,7 +12257,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -12174,9 +12273,9 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -12191,7 +12290,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
                     []
                   |),
@@ -12209,7 +12308,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -12227,9 +12326,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange_weak (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -12244,7 +12343,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
                     []
                   |),
@@ -12262,7 +12361,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -12274,9 +12373,9 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -12286,7 +12385,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
                     []
                   |),
@@ -12302,7 +12401,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -12313,9 +12412,9 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -12325,7 +12424,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
                     []
                   |),
@@ -12341,7 +12440,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -12352,9 +12451,9 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -12364,7 +12463,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
                     []
                   |),
@@ -12380,7 +12479,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -12391,9 +12490,9 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_nand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -12403,7 +12502,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
                     []
                   |),
@@ -12419,7 +12518,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -12430,9 +12529,9 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_or (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -12442,7 +12541,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
                     []
                   |),
@@ -12458,7 +12557,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -12469,9 +12568,9 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_xor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -12481,7 +12580,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
                     []
                   |),
@@ -12497,7 +12596,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -12518,9 +12617,9 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; set_order; fetch_order; f ] =>
+      Definition fetch_update (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let set_order := M.alloc (| set_order |) in
@@ -12631,7 +12730,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -12643,9 +12742,9 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -12655,7 +12754,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
                     []
                   |),
@@ -12671,7 +12770,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -12682,9 +12781,9 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -12694,7 +12793,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
                     []
                   |),
@@ -12710,7 +12809,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -12720,14 +12819,14 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                 "get",
                 []
               |),
@@ -12739,7 +12838,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -12748,8 +12847,9 @@ Module sync.
     (* StructRecord
       {
         name := "AtomicUsize";
+        const_params := [];
         ty_params := [];
-        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ]) ];
+        fields := [ ("v", Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ]) ];
       } *)
     
     Module Impl_core_default_Default_for_core_sync_atomic_AtomicUsize.
@@ -12760,9 +12860,9 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicUsize", "new", [] |),
@@ -12779,7 +12879,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12794,16 +12894,16 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicUsize".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicUsize", "new", [] |),
               [ M.read (| v |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12822,9 +12922,9 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -12847,7 +12947,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12877,9 +12977,9 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -12888,14 +12988,14 @@ Module sync.
                 ("v",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                       "new",
                       []
                     |),
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -12906,20 +13006,20 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ptr ] =>
+      Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.path "usize" ],
                 "cast",
                 [ Ty.path "core::sync::atomic::AtomicUsize" ]
               |),
               [ M.read (| ptr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
@@ -12929,14 +13029,14 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                 "get_mut",
                 []
               |),
@@ -12948,7 +13048,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -12964,14 +13064,14 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -12981,7 +13081,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
@@ -12992,13 +13092,13 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ this ] =>
+      Definition get_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut_slice :
@@ -13015,14 +13115,14 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_mut_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| Value.Tuple [], Value.Integer 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -13032,7 +13132,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut_slice :
@@ -13043,14 +13143,14 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                 "into_inner",
                 []
               |),
@@ -13064,7 +13164,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -13075,9 +13175,9 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; order ] =>
+      Definition load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
@@ -13088,7 +13188,7 @@ Module sync.
                 M.pointer_coercion
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                       "get",
                       []
                     |),
@@ -13103,7 +13203,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
@@ -13114,9 +13214,9 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition store (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -13129,7 +13229,7 @@ Module sync.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                           "get",
                           []
                         |),
@@ -13148,7 +13248,7 @@ Module sync.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
@@ -13159,9 +13259,9 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -13171,7 +13271,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -13187,7 +13287,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -13206,9 +13306,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; order ] =>
+      Definition compare_and_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -13259,7 +13359,7 @@ Module sync.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_and_swap :
@@ -13275,9 +13375,9 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -13292,7 +13392,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -13310,7 +13410,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange :
@@ -13328,9 +13428,9 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; current; new; success; failure ] =>
+      Definition compare_exchange_weak (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let current := M.alloc (| current |) in
@@ -13345,7 +13445,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -13363,7 +13463,7 @@ Module sync.
                 M.read (| failure |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_compare_exchange_weak :
@@ -13375,9 +13475,9 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -13387,7 +13487,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -13403,7 +13503,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
@@ -13414,9 +13514,9 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -13426,7 +13526,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -13442,7 +13542,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
@@ -13453,9 +13553,9 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -13465,7 +13565,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -13481,7 +13581,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
@@ -13492,9 +13592,9 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_nand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -13504,7 +13604,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -13520,7 +13620,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
@@ -13531,9 +13631,9 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_or (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -13543,7 +13643,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -13559,7 +13659,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
@@ -13570,9 +13670,9 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_xor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -13582,7 +13682,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -13598,7 +13698,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
@@ -13619,9 +13719,9 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; set_order; fetch_order; f ] =>
+      Definition fetch_update (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let set_order := M.alloc (| set_order |) in
@@ -13732,7 +13832,7 @@ Module sync.
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_update :
@@ -13744,9 +13844,9 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -13756,7 +13856,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -13772,7 +13872,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
@@ -13783,9 +13883,9 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; val; order ] =>
+      Definition fetch_min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -13795,7 +13895,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -13811,7 +13911,7 @@ Module sync.
                 M.read (| order |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
@@ -13821,14 +13921,14 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                 "get",
                 []
               |),
@@ -13840,7 +13940,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -13877,9 +13977,13 @@ Module sync.
         }
     }
     *)
-    Definition strongest_failure_ordering (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ order ] =>
+    Definition strongest_failure_ordering
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ order ] =>
         ltac:(M.monadic
           (let order := M.alloc (| order |) in
           M.read (|
@@ -13909,7 +14013,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_strongest_failure_ordering :
@@ -13929,9 +14033,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_store (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; val; order ] =>
+    Definition atomic_store (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let val := M.alloc (| val |) in
@@ -14033,7 +14137,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_store : M.IsFunction "core::sync::atomic::atomic_store" atomic_store.
@@ -14052,9 +14156,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_load (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; order ] =>
+    Definition atomic_load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let order := M.alloc (| order |) in
@@ -14155,7 +14259,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_load : M.IsFunction "core::sync::atomic::atomic_load" atomic_load.
@@ -14174,9 +14278,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_swap (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; val; order ] =>
+    Definition atomic_swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let val := M.alloc (| val |) in
@@ -14233,7 +14337,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_swap : M.IsFunction "core::sync::atomic::atomic_swap" atomic_swap.
@@ -14252,9 +14356,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_add (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; val; order ] =>
+    Definition atomic_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let val := M.alloc (| val |) in
@@ -14311,7 +14415,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_add : M.IsFunction "core::sync::atomic::atomic_add" atomic_add.
@@ -14330,9 +14434,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_sub (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; val; order ] =>
+    Definition atomic_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let val := M.alloc (| val |) in
@@ -14389,7 +14493,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_sub : M.IsFunction "core::sync::atomic::atomic_sub" atomic_sub.
@@ -14427,9 +14531,9 @@ Module sync.
         if ok { Ok(val) } else { Err(val) }
     }
     *)
-    Definition atomic_compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; old; new; success; failure ] =>
+    Definition atomic_compare_exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; old; new; success; failure ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let old := M.alloc (| old |) in
@@ -14796,7 +14900,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_compare_exchange :
@@ -14835,9 +14939,13 @@ Module sync.
         if ok { Ok(val) } else { Err(val) }
     }
     *)
-    Definition atomic_compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; old; new; success; failure ] =>
+    Definition atomic_compare_exchange_weak
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; old; new; success; failure ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let old := M.alloc (| old |) in
@@ -15204,7 +15312,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_compare_exchange_weak :
@@ -15224,9 +15332,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_and (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; val; order ] =>
+    Definition atomic_and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let val := M.alloc (| val |) in
@@ -15283,7 +15391,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_and : M.IsFunction "core::sync::atomic::atomic_and" atomic_and.
@@ -15302,9 +15410,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_nand (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; val; order ] =>
+    Definition atomic_nand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let val := M.alloc (| val |) in
@@ -15361,7 +15469,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_nand : M.IsFunction "core::sync::atomic::atomic_nand" atomic_nand.
@@ -15380,9 +15488,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_or (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; val; order ] =>
+    Definition atomic_or (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let val := M.alloc (| val |) in
@@ -15439,7 +15547,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_or : M.IsFunction "core::sync::atomic::atomic_or" atomic_or.
@@ -15458,9 +15566,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_xor (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; val; order ] =>
+    Definition atomic_xor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let val := M.alloc (| val |) in
@@ -15517,7 +15625,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_xor : M.IsFunction "core::sync::atomic::atomic_xor" atomic_xor.
@@ -15536,9 +15644,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_max (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; val; order ] =>
+    Definition atomic_max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let val := M.alloc (| val |) in
@@ -15595,7 +15703,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_max : M.IsFunction "core::sync::atomic::atomic_max" atomic_max.
@@ -15614,9 +15722,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_min (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; val; order ] =>
+    Definition atomic_min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let val := M.alloc (| val |) in
@@ -15673,7 +15781,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_min : M.IsFunction "core::sync::atomic::atomic_min" atomic_min.
@@ -15692,9 +15800,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_umax (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; val; order ] =>
+    Definition atomic_umax (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let val := M.alloc (| val |) in
@@ -15751,7 +15859,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_umax : M.IsFunction "core::sync::atomic::atomic_umax" atomic_umax.
@@ -15770,9 +15878,9 @@ Module sync.
         }
     }
     *)
-    Definition atomic_umin (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst; val; order ] =>
+    Definition atomic_umin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           let val := M.alloc (| val |) in
@@ -15829,7 +15937,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_atomic_umin : M.IsFunction "core::sync::atomic::atomic_umin" atomic_umin.
@@ -15848,9 +15956,9 @@ Module sync.
         }
     }
     *)
-    Definition fence (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ order ] =>
+    Definition fence (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ order ] =>
         ltac:(M.monadic
           (let order := M.alloc (| order |) in
           M.read (|
@@ -15927,7 +16035,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_fence : M.IsFunction "core::sync::atomic::fence" fence.
@@ -15946,9 +16054,9 @@ Module sync.
         }
     }
     *)
-    Definition compiler_fence (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ order ] =>
+    Definition compiler_fence (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ order ] =>
         ltac:(M.monadic
           (let order := M.alloc (| order |) in
           M.read (|
@@ -16038,7 +16146,7 @@ Module sync.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_compiler_fence :
@@ -16052,9 +16160,9 @@ Module sync.
               fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -16077,7 +16185,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16089,24 +16197,25 @@ Module sync.
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicBool.
     
     Module Impl_core_fmt_Debug_for_core_sync_atomic_AtomicPtr_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::fmt::Debug",
-                Ty.apply (Ty.path "*mut") [ T ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
                 "fmt",
                 []
@@ -16115,7 +16224,7 @@ Module sync.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ],
+                      Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                       "load",
                       []
                     |),
@@ -16128,7 +16237,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16141,24 +16250,25 @@ Module sync.
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicPtr_T.
     
     Module Impl_core_fmt_Pointer_for_core_sync_atomic_AtomicPtr_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               fmt::Pointer::fmt(&self.load(Ordering::SeqCst), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::fmt::Pointer",
-                Ty.apply (Ty.path "*mut") [ T ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
                 "fmt",
                 []
@@ -16167,7 +16277,7 @@ Module sync.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [ T ],
+                      Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                       "load",
                       []
                     |),
@@ -16178,7 +16288,7 @@ Module sync.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16195,11 +16305,11 @@ Module sync.
         spin_loop()
     }
     *)
-    Definition spin_loop_hint (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition spin_loop_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (M.call_closure (| M.get_function (| "core::hint::spin_loop", [] |), [] |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_spin_loop_hint :

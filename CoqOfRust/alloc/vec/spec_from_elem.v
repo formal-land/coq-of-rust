@@ -16,10 +16,10 @@ Module vec.
               v
           }
       *)
-      Definition from_elem (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_elem (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ A ], [ elem; n; alloc ] =>
+        match ε, τ, α with
+        | [], [ A ], [ elem; n; alloc ] =>
           ltac:(M.monadic
             (let elem := M.alloc (| elem |) in
             let n := M.alloc (| n |) in
@@ -29,7 +29,7 @@ Module vec.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "with_capacity_in",
                       []
                     |),
@@ -40,7 +40,7 @@ Module vec.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "extend_with",
                       []
                     |),
@@ -49,7 +49,7 @@ Module vec.
                 |) in
               v
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -74,10 +74,10 @@ Module vec.
               v
           }
       *)
-      Definition from_elem (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_elem (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ A ], [ elem; n; alloc ] =>
+        match ε, τ, α with
+        | [], [ A ], [ elem; n; alloc ] =>
           ltac:(M.monadic
             (let elem := M.alloc (| elem |) in
             let n := M.alloc (| n |) in
@@ -117,7 +117,10 @@ Module vec.
                                         ("buf",
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                              Ty.apply
+                                                (Ty.path "alloc::raw_vec::RawVec")
+                                                []
+                                                [ T; A ],
                                               "with_capacity_zeroed_in",
                                               []
                                             |),
@@ -136,7 +139,7 @@ Module vec.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "with_capacity_in",
                           []
                         |),
@@ -147,7 +150,7 @@ Module vec.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "extend_with",
                           []
                         |),
@@ -157,7 +160,7 @@ Module vec.
                   v
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -185,9 +188,9 @@ Module vec.
               v
           }
       *)
-      Definition from_elem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ A ], [ elem; n; alloc ] =>
+      Definition from_elem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ A ], [ elem; n; alloc ] =>
           ltac:(M.monadic
             (let elem := M.alloc (| elem |) in
             let n := M.alloc (| n |) in
@@ -220,6 +223,7 @@ Module vec.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::raw_vec::RawVec")
+                                                []
                                                 [ Ty.path "i8"; A ],
                                               "with_capacity_zeroed_in",
                                               []
@@ -239,7 +243,7 @@ Module vec.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i8"; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "i8"; A ],
                           "with_capacity_in",
                           []
                         |),
@@ -254,7 +258,7 @@ Module vec.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i8"; A ],
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "i8"; A ],
                                 "as_mut_ptr",
                                 []
                               |),
@@ -269,7 +273,7 @@ Module vec.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "i8"; A ],
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "i8"; A ],
                             "set_len",
                             []
                           |),
@@ -280,7 +284,7 @@ Module vec.
                   v
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -307,9 +311,9 @@ Module vec.
               v
           }
       *)
-      Definition from_elem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ A ], [ elem; n; alloc ] =>
+      Definition from_elem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ A ], [ elem; n; alloc ] =>
           ltac:(M.monadic
             (let elem := M.alloc (| elem |) in
             let n := M.alloc (| n |) in
@@ -342,6 +346,7 @@ Module vec.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::raw_vec::RawVec")
+                                                []
                                                 [ Ty.path "u8"; A ],
                                               "with_capacity_zeroed_in",
                                               []
@@ -361,7 +366,7 @@ Module vec.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; A ],
                           "with_capacity_in",
                           []
                         |),
@@ -376,7 +381,7 @@ Module vec.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; A ],
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; A ],
                                 "as_mut_ptr",
                                 []
                               |),
@@ -391,7 +396,7 @@ Module vec.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; A ],
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; A ],
                             "set_len",
                             []
                           |),
@@ -402,7 +407,7 @@ Module vec.
                   v
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -427,9 +432,9 @@ Module vec.
               v
           }
       *)
-      Definition from_elem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ A ], [ _elem; n; alloc ] =>
+      Definition from_elem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ A ], [ _elem; n; alloc ] =>
           ltac:(M.monadic
             (let _elem := M.alloc (| _elem |) in
             let n := M.alloc (| n |) in
@@ -439,7 +444,7 @@ Module vec.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.tuple []; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.tuple []; A ],
                       "with_capacity_in",
                       []
                     |),
@@ -451,7 +456,7 @@ Module vec.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.tuple []; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.tuple []; A ],
                         "set_len",
                         []
                       |),
@@ -461,7 +466,7 @@ Module vec.
                 M.alloc (| Value.Tuple [] |) in
               v
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

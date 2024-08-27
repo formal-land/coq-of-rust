@@ -6,8 +6,11 @@ fn age() -> u32 {
     15
 }
 *)
-Definition age (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 15)) | _, _ => M.impossible end.
+Definition age (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] => ltac:(M.monadic (Value.Integer 15))
+  | _, _, _ => M.impossible
+  end.
 
 Axiom Function_age : M.IsFunction "match_binding::age" age.
 
@@ -27,9 +30,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -230,7 +233,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "match_binding::main" main.

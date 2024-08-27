@@ -6,11 +6,12 @@ Module str.
     (* StructRecord
       {
         name := "Utf8Error";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("valid_up_to", Ty.path "usize");
-            ("error_len", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ])
+            ("error_len", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ])
           ];
       } *)
     
@@ -40,9 +41,13 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::Utf8Error".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -58,7 +63,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -85,9 +90,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::Utf8Error".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -111,8 +116,8 @@ Module str.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ],
-                    [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ] ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ] ],
                     "eq",
                     []
                   |),
@@ -130,7 +135,7 @@ Module str.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -145,9 +150,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::Utf8Error".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -163,7 +168,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -178,9 +183,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::Utf8Error".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -213,7 +218,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -232,9 +237,9 @@ Module str.
               self.valid_up_to
           }
       *)
-      Definition valid_up_to (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition valid_up_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -244,7 +249,7 @@ Module str.
                 "valid_up_to"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_valid_up_to : M.IsAssociatedFunction Self "valid_up_to" valid_up_to.
@@ -258,9 +263,9 @@ Module str.
               }
           }
       *)
-      Definition error_len (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition error_len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -292,7 +297,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_error_len : M.IsAssociatedFunction Self "error_len" error_len.
@@ -314,9 +319,9 @@ Module str.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -455,7 +460,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -474,13 +479,13 @@ Module str.
               "invalid utf-8: corrupt contents"
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| Value.String "invalid utf-8: corrupt contents" |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -494,6 +499,7 @@ Module str.
     (* StructTuple
       {
         name := "ParseBoolError";
+        const_params := [];
         ty_params := [];
         fields := [];
       } *)
@@ -502,9 +508,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::ParseBoolError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -512,7 +518,7 @@ Module str.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
               [ M.read (| f |); M.read (| Value.String "ParseBoolError" |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -527,13 +533,13 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::ParseBoolError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::str::error::ParseBoolError" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -559,14 +565,14 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::ParseBoolError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             Value.Bool true))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -592,13 +598,17 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::error::ParseBoolError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -618,9 +628,9 @@ Module str.
               "provided string was not `true` or `false`".fmt(f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -631,7 +641,7 @@ Module str.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -650,13 +660,13 @@ Module str.
               "failed to parse bool"
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| Value.String "failed to parse bool" |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

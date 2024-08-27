@@ -22,9 +22,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -70,7 +70,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -93,9 +93,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -141,7 +141,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -164,9 +164,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -178,7 +178,7 @@ Module iter.
                   [
                     Ty.path "i8";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "i8"; Ty.apply (Ty.path "&") [ Ty.path "i8" ] ] ]
+                      [ Ty.tuple [ Ty.path "i8"; Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ] ]
                       (Ty.path "i8")
                   ]
                 |),
@@ -206,7 +206,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "i8",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i8" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ],
                                               "add",
                                               []
                                             |),
@@ -220,14 +220,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "i8" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__i8_for_i8.
       
@@ -243,9 +243,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -257,7 +257,7 @@ Module iter.
                   [
                     Ty.path "i8";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "i8"; Ty.apply (Ty.path "&") [ Ty.path "i8" ] ] ]
+                      [ Ty.tuple [ Ty.path "i8"; Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ] ]
                       (Ty.path "i8")
                   ]
                 |),
@@ -285,7 +285,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "i8",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i8" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ],
                                               "mul",
                                               []
                                             |),
@@ -299,14 +299,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "i8" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i8_for_i8.
       
@@ -322,9 +322,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -370,7 +370,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -393,9 +393,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -441,7 +441,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -464,9 +464,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -478,7 +478,7 @@ Module iter.
                   [
                     Ty.path "i16";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "i16"; Ty.apply (Ty.path "&") [ Ty.path "i16" ] ] ]
+                      [ Ty.tuple [ Ty.path "i16"; Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ] ]
                       (Ty.path "i16")
                   ]
                 |),
@@ -506,7 +506,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "i16",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i16" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ],
                                               "add",
                                               []
                                             |),
@@ -520,14 +520,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "i16" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__i16_for_i16.
       
@@ -543,9 +543,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -557,7 +557,7 @@ Module iter.
                   [
                     Ty.path "i16";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "i16"; Ty.apply (Ty.path "&") [ Ty.path "i16" ] ] ]
+                      [ Ty.tuple [ Ty.path "i16"; Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ] ]
                       (Ty.path "i16")
                   ]
                 |),
@@ -585,7 +585,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "i16",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i16" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ],
                                               "mul",
                                               []
                                             |),
@@ -599,14 +599,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "i16" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i16_for_i16.
       
@@ -622,9 +622,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -670,7 +670,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -693,9 +693,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -741,7 +741,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -764,9 +764,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -778,7 +778,7 @@ Module iter.
                   [
                     Ty.path "i32";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "i32"; Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
+                      [ Ty.tuple [ Ty.path "i32"; Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] ]
                       (Ty.path "i32")
                   ]
                 |),
@@ -806,7 +806,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "i32",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
                                               "add",
                                               []
                                             |),
@@ -820,14 +820,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__i32_for_i32.
       
@@ -843,9 +843,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -857,7 +857,7 @@ Module iter.
                   [
                     Ty.path "i32";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "i32"; Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
+                      [ Ty.tuple [ Ty.path "i32"; Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] ]
                       (Ty.path "i32")
                   ]
                 |),
@@ -885,7 +885,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "i32",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
                                               "mul",
                                               []
                                             |),
@@ -899,14 +899,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i32_for_i32.
       
@@ -922,9 +922,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -970,7 +970,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -993,9 +993,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1041,7 +1041,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1064,9 +1064,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1078,7 +1078,7 @@ Module iter.
                   [
                     Ty.path "i64";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "i64"; Ty.apply (Ty.path "&") [ Ty.path "i64" ] ] ]
+                      [ Ty.tuple [ Ty.path "i64"; Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ] ]
                       (Ty.path "i64")
                   ]
                 |),
@@ -1106,7 +1106,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "i64",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i64" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ],
                                               "add",
                                               []
                                             |),
@@ -1120,14 +1120,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "i64" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__i64_for_i64.
       
@@ -1143,9 +1143,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1157,7 +1157,7 @@ Module iter.
                   [
                     Ty.path "i64";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "i64"; Ty.apply (Ty.path "&") [ Ty.path "i64" ] ] ]
+                      [ Ty.tuple [ Ty.path "i64"; Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ] ]
                       (Ty.path "i64")
                   ]
                 |),
@@ -1185,7 +1185,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "i64",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i64" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ],
                                               "mul",
                                               []
                                             |),
@@ -1199,14 +1199,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "i64" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i64_for_i64.
       
@@ -1222,9 +1222,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1270,7 +1270,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1293,9 +1293,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1341,7 +1341,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1364,9 +1364,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1378,7 +1378,7 @@ Module iter.
                   [
                     Ty.path "i128";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "i128"; Ty.apply (Ty.path "&") [ Ty.path "i128" ] ] ]
+                      [ Ty.tuple [ Ty.path "i128"; Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ] ]
                       (Ty.path "i128")
                   ]
                 |),
@@ -1406,7 +1406,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "i128",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i128" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ],
                                               "add",
                                               []
                                             |),
@@ -1420,14 +1420,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "i128" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__i128_for_i128.
       
@@ -1443,9 +1443,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1457,7 +1457,7 @@ Module iter.
                   [
                     Ty.path "i128";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "i128"; Ty.apply (Ty.path "&") [ Ty.path "i128" ] ] ]
+                      [ Ty.tuple [ Ty.path "i128"; Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ] ]
                       (Ty.path "i128")
                   ]
                 |),
@@ -1485,7 +1485,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "i128",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i128" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ],
                                               "mul",
                                               []
                                             |),
@@ -1499,14 +1499,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "i128" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i128_for_i128.
       
@@ -1522,9 +1522,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1570,7 +1570,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1593,9 +1593,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1641,7 +1641,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1664,9 +1664,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1678,7 +1678,8 @@ Module iter.
                   [
                     Ty.path "isize";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "isize"; Ty.apply (Ty.path "&") [ Ty.path "isize" ] ] ]
+                      [ Ty.tuple [ Ty.path "isize"; Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ]
+                      ]
                       (Ty.path "isize")
                   ]
                 |),
@@ -1706,7 +1707,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "isize",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "isize" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ],
                                               "add",
                                               []
                                             |),
@@ -1720,14 +1721,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "isize" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__isize_for_isize.
       
@@ -1743,9 +1744,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1757,7 +1758,8 @@ Module iter.
                   [
                     Ty.path "isize";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "isize"; Ty.apply (Ty.path "&") [ Ty.path "isize" ] ] ]
+                      [ Ty.tuple [ Ty.path "isize"; Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ]
+                      ]
                       (Ty.path "isize")
                   ]
                 |),
@@ -1785,7 +1787,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "isize",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "isize" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ],
                                               "mul",
                                               []
                                             |),
@@ -1799,14 +1801,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "isize" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__isize_for_isize.
       
@@ -1822,9 +1824,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1870,7 +1872,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1893,9 +1895,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1941,7 +1943,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1964,9 +1966,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -1978,7 +1980,7 @@ Module iter.
                   [
                     Ty.path "u8";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "u8"; Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] ]
+                      [ Ty.tuple [ Ty.path "u8"; Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
                       (Ty.path "u8")
                   ]
                 |),
@@ -2006,7 +2008,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "u8",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                               "add",
                                               []
                                             |),
@@ -2020,14 +2022,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__u8_for_u8.
       
@@ -2043,9 +2045,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2057,7 +2059,7 @@ Module iter.
                   [
                     Ty.path "u8";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "u8"; Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] ]
+                      [ Ty.tuple [ Ty.path "u8"; Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
                       (Ty.path "u8")
                   ]
                 |),
@@ -2085,7 +2087,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "u8",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                               "mul",
                                               []
                                             |),
@@ -2099,14 +2101,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u8_for_u8.
       
@@ -2122,9 +2124,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2170,7 +2172,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -2193,9 +2195,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2241,7 +2243,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -2264,9 +2266,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2278,7 +2280,7 @@ Module iter.
                   [
                     Ty.path "u16";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "u16"; Ty.apply (Ty.path "&") [ Ty.path "u16" ] ] ]
+                      [ Ty.tuple [ Ty.path "u16"; Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
                       (Ty.path "u16")
                   ]
                 |),
@@ -2306,7 +2308,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "u16",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                               "add",
                                               []
                                             |),
@@ -2320,14 +2322,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "u16" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__u16_for_u16.
       
@@ -2343,9 +2345,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2357,7 +2359,7 @@ Module iter.
                   [
                     Ty.path "u16";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "u16"; Ty.apply (Ty.path "&") [ Ty.path "u16" ] ] ]
+                      [ Ty.tuple [ Ty.path "u16"; Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
                       (Ty.path "u16")
                   ]
                 |),
@@ -2385,7 +2387,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "u16",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                               "mul",
                                               []
                                             |),
@@ -2399,14 +2401,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "u16" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u16_for_u16.
       
@@ -2422,9 +2424,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2470,7 +2472,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -2493,9 +2495,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2541,7 +2543,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -2564,9 +2566,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2578,7 +2580,7 @@ Module iter.
                   [
                     Ty.path "u32";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "u32"; Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                      [ Ty.tuple [ Ty.path "u32"; Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                       (Ty.path "u32")
                   ]
                 |),
@@ -2606,7 +2608,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "u32",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                               "add",
                                               []
                                             |),
@@ -2620,14 +2622,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__u32_for_u32.
       
@@ -2643,9 +2645,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2657,7 +2659,7 @@ Module iter.
                   [
                     Ty.path "u32";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "u32"; Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                      [ Ty.tuple [ Ty.path "u32"; Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                       (Ty.path "u32")
                   ]
                 |),
@@ -2685,7 +2687,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "u32",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                               "mul",
                                               []
                                             |),
@@ -2699,14 +2701,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u32_for_u32.
       
@@ -2722,9 +2724,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2770,7 +2772,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -2793,9 +2795,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2841,7 +2843,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -2864,9 +2866,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2878,7 +2880,7 @@ Module iter.
                   [
                     Ty.path "u64";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "u64"; Ty.apply (Ty.path "&") [ Ty.path "u64" ] ] ]
+                      [ Ty.tuple [ Ty.path "u64"; Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] ]
                       (Ty.path "u64")
                   ]
                 |),
@@ -2906,7 +2908,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "u64",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                               "add",
                                               []
                                             |),
@@ -2920,14 +2922,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "u64" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__u64_for_u64.
       
@@ -2943,9 +2945,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -2957,7 +2959,7 @@ Module iter.
                   [
                     Ty.path "u64";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "u64"; Ty.apply (Ty.path "&") [ Ty.path "u64" ] ] ]
+                      [ Ty.tuple [ Ty.path "u64"; Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] ]
                       (Ty.path "u64")
                   ]
                 |),
@@ -2985,7 +2987,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "u64",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                               "mul",
                                               []
                                             |),
@@ -2999,14 +3001,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "u64" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u64_for_u64.
       
@@ -3022,9 +3024,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -3070,7 +3072,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3093,9 +3095,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -3141,7 +3143,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3164,9 +3166,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -3178,7 +3180,7 @@ Module iter.
                   [
                     Ty.path "u128";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "u128"; Ty.apply (Ty.path "&") [ Ty.path "u128" ] ] ]
+                      [ Ty.tuple [ Ty.path "u128"; Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ] ]
                       (Ty.path "u128")
                   ]
                 |),
@@ -3206,7 +3208,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "u128",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u128" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
                                               "add",
                                               []
                                             |),
@@ -3220,14 +3222,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "u128" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__u128_for_u128.
       
@@ -3243,9 +3245,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -3257,7 +3259,7 @@ Module iter.
                   [
                     Ty.path "u128";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "u128"; Ty.apply (Ty.path "&") [ Ty.path "u128" ] ] ]
+                      [ Ty.tuple [ Ty.path "u128"; Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ] ]
                       (Ty.path "u128")
                   ]
                 |),
@@ -3285,7 +3287,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "u128",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u128" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
                                               "mul",
                                               []
                                             |),
@@ -3299,14 +3301,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "u128" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u128_for_u128.
       
@@ -3322,9 +3324,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -3370,7 +3372,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3393,9 +3395,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -3441,7 +3443,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3464,9 +3466,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -3478,7 +3480,8 @@ Module iter.
                   [
                     Ty.path "usize";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [ Ty.path "usize" ] ] ]
+                      [ Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
+                      ]
                       (Ty.path "usize")
                   ]
                 |),
@@ -3506,7 +3509,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "usize",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "usize" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                                               "add",
                                               []
                                             |),
@@ -3520,14 +3523,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "usize" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__usize_for_usize.
       
@@ -3543,9 +3546,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -3557,7 +3560,8 @@ Module iter.
                   [
                     Ty.path "usize";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [ Ty.path "usize" ] ] ]
+                      [ Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
+                      ]
                       (Ty.path "usize")
                   ]
                 |),
@@ -3585,7 +3589,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "usize",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "usize" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                                               "mul",
                                               []
                                             |),
@@ -3599,20 +3603,20 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "usize" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__usize_for_usize.
       
       Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i8.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ].
         
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -3623,9 +3627,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -3635,16 +3639,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ])
                   ]
                 |),
                 [
@@ -3672,10 +3676,12 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i8" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "i8" ]
                                               ],
                                               "add",
@@ -3691,7 +3697,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3704,7 +3710,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i8.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ].
         
         (*
                     fn product<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -3715,9 +3721,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -3727,16 +3733,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ])
                   ]
                 |),
                 [
@@ -3764,10 +3770,12 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i8" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "i8" ]
                                               ],
                                               "mul",
@@ -3783,7 +3791,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3796,7 +3804,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i8_for_core_num_wrapping_Wrapping_i8.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ].
         
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -3807,9 +3815,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -3819,19 +3827,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i8" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ])
                   ]
                 |),
                 [
@@ -3859,13 +3872,16 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i8" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "i8" ]
                                                   ]
                                               ],
@@ -3882,7 +3898,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3894,14 +3910,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ]
             ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i8_for_core_num_wrapping_Wrapping_i8.
       
       Module Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i8_for_core_num_wrapping_Wrapping_i8.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ].
         
         (*
                     fn product<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -3912,9 +3929,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -3924,19 +3941,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i8" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ])
                   ]
                 |),
                 [
@@ -3964,13 +3986,16 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i8" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "i8" ]
                                                   ]
                                               ],
@@ -3987,7 +4012,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3999,14 +4024,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i8" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ]
             ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i8_for_core_num_wrapping_Wrapping_i8.
       
       Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i16.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ].
         
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -4017,9 +4043,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -4029,16 +4055,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ])
                   ]
                 |),
                 [
@@ -4066,10 +4092,12 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i16" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "i16" ]
                                               ],
                                               "add",
@@ -4085,7 +4113,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4098,7 +4126,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i16.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ].
         
         (*
                     fn product<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -4109,9 +4137,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -4121,16 +4149,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ])
                   ]
                 |),
                 [
@@ -4158,10 +4186,12 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i16" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "i16" ]
                                               ],
                                               "mul",
@@ -4177,7 +4207,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4190,7 +4220,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i16_for_core_num_wrapping_Wrapping_i16.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ].
         
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -4201,9 +4231,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -4213,19 +4243,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i16" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ])
                   ]
                 |),
                 [
@@ -4253,13 +4288,16 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i16" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "i16" ]
                                                   ]
                                               ],
@@ -4276,7 +4314,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4288,14 +4326,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ]
             ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i16_for_core_num_wrapping_Wrapping_i16.
       
       Module Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i16_for_core_num_wrapping_Wrapping_i16.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ].
         
         (*
                     fn product<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -4306,9 +4345,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -4318,19 +4357,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i16" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ])
                   ]
                 |),
                 [
@@ -4358,13 +4402,16 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i16" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "i16" ]
                                                   ]
                                               ],
@@ -4381,7 +4428,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4393,14 +4440,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i16" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ]
             ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i16_for_core_num_wrapping_Wrapping_i16.
       
       Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i32.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ].
         
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -4411,9 +4459,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -4423,16 +4471,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ])
                   ]
                 |),
                 [
@@ -4460,10 +4508,12 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i32" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "i32" ]
                                               ],
                                               "add",
@@ -4479,7 +4529,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4492,7 +4542,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i32.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ].
         
         (*
                     fn product<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -4503,9 +4553,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -4515,16 +4565,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ])
                   ]
                 |),
                 [
@@ -4552,10 +4602,12 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i32" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "i32" ]
                                               ],
                                               "mul",
@@ -4571,7 +4623,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4584,7 +4636,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i32_for_core_num_wrapping_Wrapping_i32.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ].
         
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -4595,9 +4647,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -4607,19 +4659,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i32" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ])
                   ]
                 |),
                 [
@@ -4647,13 +4704,16 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i32" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "i32" ]
                                                   ]
                                               ],
@@ -4670,7 +4730,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4682,14 +4742,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ]
             ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i32_for_core_num_wrapping_Wrapping_i32.
       
       Module Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i32_for_core_num_wrapping_Wrapping_i32.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ].
         
         (*
                     fn product<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -4700,9 +4761,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -4712,19 +4773,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i32" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ])
                   ]
                 |),
                 [
@@ -4752,13 +4818,16 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i32" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "i32" ]
                                                   ]
                                               ],
@@ -4775,7 +4844,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4787,14 +4856,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i32" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ]
             ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i32_for_core_num_wrapping_Wrapping_i32.
       
       Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i64.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ].
         
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -4805,9 +4875,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -4817,16 +4887,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ])
                   ]
                 |),
                 [
@@ -4854,10 +4924,12 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i64" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "i64" ]
                                               ],
                                               "add",
@@ -4873,7 +4945,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4886,7 +4958,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i64.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ].
         
         (*
                     fn product<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -4897,9 +4969,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -4909,16 +4981,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ])
                   ]
                 |),
                 [
@@ -4946,10 +5018,12 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i64" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "i64" ]
                                               ],
                                               "mul",
@@ -4965,7 +5039,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4978,7 +5052,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i64_for_core_num_wrapping_Wrapping_i64.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ].
         
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -4989,9 +5063,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -5001,19 +5075,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i64" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ])
                   ]
                 |),
                 [
@@ -5041,13 +5120,16 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i64" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "i64" ]
                                                   ]
                                               ],
@@ -5064,7 +5146,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5076,14 +5158,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ]
             ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i64_for_core_num_wrapping_Wrapping_i64.
       
       Module Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i64_for_core_num_wrapping_Wrapping_i64.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ].
         
         (*
                     fn product<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -5094,9 +5177,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -5106,19 +5189,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "i64" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ])
                   ]
                 |),
                 [
@@ -5146,13 +5234,16 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i64" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "i64" ]
                                                   ]
                                               ],
@@ -5169,7 +5260,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5181,14 +5272,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i64" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ]
             ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i64_for_core_num_wrapping_Wrapping_i64.
       
       Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i128.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ].
         
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -5199,9 +5291,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -5211,16 +5303,19 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ]
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "i128" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ])
                   ]
                 |),
                 [
@@ -5248,10 +5343,12 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i128" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "i128" ]
                                               ],
                                               "add",
@@ -5267,7 +5364,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5280,7 +5377,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i128.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ].
         
         (*
                     fn product<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -5291,9 +5388,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -5303,16 +5400,19 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ]
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "i128" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ])
                   ]
                 |),
                 [
@@ -5340,10 +5440,12 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i128" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "i128" ]
                                               ],
                                               "mul",
@@ -5359,7 +5461,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5372,7 +5474,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i128_for_core_num_wrapping_Wrapping_i128.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ].
         
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -5383,9 +5485,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -5395,22 +5497,27 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ];
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "i128" ];
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::num::wrapping::Wrapping")
+                                  []
                                   [ Ty.path "i128" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ])
                   ]
                 |),
                 [
@@ -5438,13 +5545,16 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i128" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "i128" ]
                                                   ]
                                               ],
@@ -5461,7 +5571,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5473,14 +5583,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ]
             ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i128_for_core_num_wrapping_Wrapping_i128.
       
       Module Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i128_for_core_num_wrapping_Wrapping_i128.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ].
         
         (*
                     fn product<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -5491,9 +5602,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -5503,22 +5614,27 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ];
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "i128" ];
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::num::wrapping::Wrapping")
+                                  []
                                   [ Ty.path "i128" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ])
                   ]
                 |),
                 [
@@ -5546,13 +5662,16 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "i128" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "i128" ]
                                                   ]
                                               ],
@@ -5569,7 +5688,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5581,14 +5700,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "i128" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ]
             ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i128_for_core_num_wrapping_Wrapping_i128.
       
       Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_isize.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ].
         
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -5599,9 +5719,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -5611,16 +5731,22 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ]
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "isize" ];
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "isize" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ])
                   ]
                 |),
                 [
@@ -5648,10 +5774,12 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "isize" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "isize" ]
                                               ],
                                               "add",
@@ -5667,7 +5795,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5680,7 +5808,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_isize.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ].
         
         (*
                     fn product<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -5691,9 +5819,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -5703,16 +5831,22 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ]
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "isize" ];
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "isize" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ])
                   ]
                 |),
                 [
@@ -5740,10 +5874,12 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "isize" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "isize" ]
                                               ],
                                               "mul",
@@ -5759,7 +5895,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5772,7 +5908,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_isize_for_core_num_wrapping_Wrapping_isize.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ].
         
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -5783,9 +5919,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -5795,22 +5931,27 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ];
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "isize" ];
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::num::wrapping::Wrapping")
+                                  []
                                   [ Ty.path "isize" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ])
                   ]
                 |),
                 [
@@ -5838,13 +5979,16 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "isize" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "isize" ]
                                                   ]
                                               ],
@@ -5861,7 +6005,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5873,14 +6017,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ]
             ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_isize_for_core_num_wrapping_Wrapping_isize.
       
       Module Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_isize_for_core_num_wrapping_Wrapping_isize.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ].
         
         (*
                     fn product<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -5891,9 +6036,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -5903,22 +6048,27 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ];
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "isize" ];
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::num::wrapping::Wrapping")
+                                  []
                                   [ Ty.path "isize" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ])
                   ]
                 |),
                 [
@@ -5946,13 +6096,16 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "isize" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "isize" ]
                                                   ]
                                               ],
@@ -5969,7 +6122,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5981,14 +6134,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "isize" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ]
             ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_isize_for_core_num_wrapping_Wrapping_isize.
       
       Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u8.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ].
         
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -5999,9 +6153,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -6011,16 +6165,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ])
                   ]
                 |),
                 [
@@ -6048,10 +6202,12 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u8" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "u8" ]
                                               ],
                                               "add",
@@ -6067,7 +6223,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6080,7 +6236,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u8.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ].
         
         (*
                     fn product<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -6091,9 +6247,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -6103,16 +6259,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ])
                   ]
                 |),
                 [
@@ -6140,10 +6296,12 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u8" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "u8" ]
                                               ],
                                               "mul",
@@ -6159,7 +6317,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6172,7 +6330,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u8_for_core_num_wrapping_Wrapping_u8.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ].
         
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -6183,9 +6341,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -6195,19 +6353,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u8" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ])
                   ]
                 |),
                 [
@@ -6235,13 +6398,16 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u8" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "u8" ]
                                                   ]
                                               ],
@@ -6258,7 +6424,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6270,14 +6436,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ]
             ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u8_for_core_num_wrapping_Wrapping_u8.
       
       Module Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u8_for_core_num_wrapping_Wrapping_u8.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ].
         
         (*
                     fn product<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -6288,9 +6455,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -6300,19 +6467,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u8" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ])
                   ]
                 |),
                 [
@@ -6340,13 +6512,16 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u8" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "u8" ]
                                                   ]
                                               ],
@@ -6363,7 +6538,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6375,14 +6550,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u8" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ]
             ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u8_for_core_num_wrapping_Wrapping_u8.
       
       Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u16.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ].
         
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -6393,9 +6569,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -6405,16 +6581,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ])
                   ]
                 |),
                 [
@@ -6442,10 +6618,12 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u16" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "u16" ]
                                               ],
                                               "add",
@@ -6461,7 +6639,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6474,7 +6652,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u16.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ].
         
         (*
                     fn product<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -6485,9 +6663,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -6497,16 +6675,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ])
                   ]
                 |),
                 [
@@ -6534,10 +6712,12 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u16" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "u16" ]
                                               ],
                                               "mul",
@@ -6553,7 +6733,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6566,7 +6746,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u16_for_core_num_wrapping_Wrapping_u16.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ].
         
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -6577,9 +6757,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -6589,19 +6769,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u16" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ])
                   ]
                 |),
                 [
@@ -6629,13 +6814,16 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u16" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "u16" ]
                                                   ]
                                               ],
@@ -6652,7 +6840,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6664,14 +6852,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ]
             ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u16_for_core_num_wrapping_Wrapping_u16.
       
       Module Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u16_for_core_num_wrapping_Wrapping_u16.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ].
         
         (*
                     fn product<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -6682,9 +6871,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -6694,19 +6883,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u16" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ])
                   ]
                 |),
                 [
@@ -6734,13 +6928,16 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u16" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "u16" ]
                                                   ]
                                               ],
@@ -6757,7 +6954,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6769,14 +6966,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u16" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ]
             ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u16_for_core_num_wrapping_Wrapping_u16.
       
       Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u32.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ].
         
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -6787,9 +6985,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -6799,16 +6997,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ])
                   ]
                 |),
                 [
@@ -6836,10 +7034,12 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u32" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "u32" ]
                                               ],
                                               "add",
@@ -6855,7 +7055,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6868,7 +7068,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u32.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ].
         
         (*
                     fn product<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -6879,9 +7079,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -6891,16 +7091,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ])
                   ]
                 |),
                 [
@@ -6928,10 +7128,12 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u32" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "u32" ]
                                               ],
                                               "mul",
@@ -6947,7 +7149,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -6960,7 +7162,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u32_for_core_num_wrapping_Wrapping_u32.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ].
         
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -6971,9 +7173,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -6983,19 +7185,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u32" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ])
                   ]
                 |),
                 [
@@ -7023,13 +7230,16 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u32" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "u32" ]
                                                   ]
                                               ],
@@ -7046,7 +7256,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -7058,14 +7268,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ]
             ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u32_for_core_num_wrapping_Wrapping_u32.
       
       Module Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u32_for_core_num_wrapping_Wrapping_u32.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ].
         
         (*
                     fn product<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -7076,9 +7287,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -7088,19 +7299,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u32" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ])
                   ]
                 |),
                 [
@@ -7128,13 +7344,16 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u32" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "u32" ]
                                                   ]
                                               ],
@@ -7151,7 +7370,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -7163,14 +7382,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u32" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ]
             ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u32_for_core_num_wrapping_Wrapping_u32.
       
       Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u64.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ].
         
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -7181,9 +7401,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -7193,16 +7413,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ])
                   ]
                 |),
                 [
@@ -7230,10 +7450,12 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u64" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "u64" ]
                                               ],
                                               "add",
@@ -7249,7 +7471,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -7262,7 +7484,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u64.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ].
         
         (*
                     fn product<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -7273,9 +7495,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -7285,16 +7507,16 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ]
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ])
                   ]
                 |),
                 [
@@ -7322,10 +7544,12 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u64" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "u64" ]
                                               ],
                                               "mul",
@@ -7341,7 +7565,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -7354,7 +7578,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u64_for_core_num_wrapping_Wrapping_u64.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ].
         
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -7365,9 +7589,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -7377,19 +7601,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u64" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ])
                   ]
                 |),
                 [
@@ -7417,13 +7646,16 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u64" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "u64" ]
                                                   ]
                                               ],
@@ -7440,7 +7672,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -7452,14 +7684,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ]
             ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u64_for_core_num_wrapping_Wrapping_u64.
       
       Module Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u64_for_core_num_wrapping_Wrapping_u64.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ].
         
         (*
                     fn product<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -7470,9 +7703,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -7482,19 +7715,24 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ];
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::wrapping::Wrapping")
+                                  []
+                                  [ Ty.path "u64" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ])
                   ]
                 |),
                 [
@@ -7522,13 +7760,16 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u64" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "u64" ]
                                                   ]
                                               ],
@@ -7545,7 +7786,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -7557,14 +7798,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u64" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ]
             ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u64_for_core_num_wrapping_Wrapping_u64.
       
       Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u128.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ].
         
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -7575,9 +7817,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -7587,16 +7829,19 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ]
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "u128" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ])
                   ]
                 |),
                 [
@@ -7624,10 +7869,12 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u128" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "u128" ]
                                               ],
                                               "add",
@@ -7643,7 +7890,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -7656,7 +7903,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u128.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ].
         
         (*
                     fn product<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -7667,9 +7914,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -7679,16 +7926,19 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ]
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "u128" ];
+                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ])
                   ]
                 |),
                 [
@@ -7716,10 +7966,12 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u128" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "u128" ]
                                               ],
                                               "mul",
@@ -7735,7 +7987,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -7748,7 +8000,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u128_for_core_num_wrapping_Wrapping_u128.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ].
         
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -7759,9 +8011,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -7771,22 +8023,27 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ];
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "u128" ];
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::num::wrapping::Wrapping")
+                                  []
                                   [ Ty.path "u128" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ])
                   ]
                 |),
                 [
@@ -7814,13 +8071,16 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u128" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "u128" ]
                                                   ]
                                               ],
@@ -7837,7 +8097,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -7849,14 +8109,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ]
             ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u128_for_core_num_wrapping_Wrapping_u128.
       
       Module Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u128_for_core_num_wrapping_Wrapping_u128.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ].
         
         (*
                     fn product<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -7867,9 +8128,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -7879,22 +8140,27 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ];
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "u128" ];
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::num::wrapping::Wrapping")
+                                  []
                                   [ Ty.path "u128" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ])
                   ]
                 |),
                 [
@@ -7922,13 +8188,16 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "u128" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "u128" ]
                                                   ]
                                               ],
@@ -7945,7 +8214,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -7957,14 +8226,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "u128" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ]
             ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u128_for_core_num_wrapping_Wrapping_u128.
       
       Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_usize.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ].
         
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -7975,9 +8245,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -7987,16 +8257,22 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ]
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "usize" ];
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "usize" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ])
                   ]
                 |),
                 [
@@ -8024,10 +8300,12 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "usize" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "usize" ]
                                               ],
                                               "add",
@@ -8043,7 +8321,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -8056,7 +8334,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_usize.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ].
         
         (*
                     fn product<I: Iterator<Item=Self>>(iter: I) -> Self {
@@ -8067,9 +8345,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -8079,16 +8357,22 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ];
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ]
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "usize" ];
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "usize" ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ])
                   ]
                 |),
                 [
@@ -8116,10 +8400,12 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "usize" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
+                                                  []
                                                   [ Ty.path "usize" ]
                                               ],
                                               "mul",
@@ -8135,7 +8421,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -8148,7 +8434,7 @@ Module iter.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_usize_for_core_num_wrapping_Wrapping_usize.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ].
         
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -8159,9 +8445,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -8171,22 +8457,27 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ];
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "usize" ];
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::num::wrapping::Wrapping")
+                                  []
                                   [ Ty.path "usize" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ])
                   ]
                 |),
                 [
@@ -8214,13 +8505,16 @@ Module iter.
                                               "core::ops::arith::Add",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "usize" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "usize" ]
                                                   ]
                                               ],
@@ -8237,7 +8531,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -8249,14 +8543,15 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ]
             ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_usize_for_core_num_wrapping_Wrapping_usize.
       
       Module Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_usize_for_core_num_wrapping_Wrapping_usize.
         Definition Self : Ty.t :=
-          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ].
+          Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ].
         
         (*
                     fn product<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
@@ -8267,9 +8562,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -8279,22 +8574,27 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ];
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ];
                     Ty.function
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ];
+                            Ty.apply
+                              (Ty.path "core::num::wrapping::Wrapping")
+                              []
+                              [ Ty.path "usize" ];
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::num::wrapping::Wrapping")
+                                  []
                                   [ Ty.path "usize" ]
                               ]
                           ]
                       ]
-                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ])
+                      (Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ])
                   ]
                 |),
                 [
@@ -8322,13 +8622,16 @@ Module iter.
                                               "core::ops::arith::Mul",
                                               Ty.apply
                                                 (Ty.path "core::num::wrapping::Wrapping")
+                                                []
                                                 [ Ty.path "usize" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::num::wrapping::Wrapping")
+                                                      []
                                                       [ Ty.path "usize" ]
                                                   ]
                                               ],
@@ -8345,7 +8648,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -8357,7 +8660,8 @@ Module iter.
               (* A *)
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ Ty.path "usize" ] ]
+                []
+                [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ]
             ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_usize_for_core_num_wrapping_Wrapping_usize.
@@ -8374,9 +8678,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -8422,7 +8726,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -8445,9 +8749,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -8493,7 +8797,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -8516,9 +8820,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -8530,7 +8834,7 @@ Module iter.
                   [
                     Ty.path "f32";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "f32"; Ty.apply (Ty.path "&") [ Ty.path "f32" ] ] ]
+                      [ Ty.tuple [ Ty.path "f32"; Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ] ]
                       (Ty.path "f32")
                   ]
                 |),
@@ -8558,7 +8862,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "f32",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "f32" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ],
                                               "add",
                                               []
                                             |),
@@ -8572,14 +8876,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "f32" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__f32_for_f32.
       
@@ -8595,9 +8899,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -8609,7 +8913,7 @@ Module iter.
                   [
                     Ty.path "f32";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "f32"; Ty.apply (Ty.path "&") [ Ty.path "f32" ] ] ]
+                      [ Ty.tuple [ Ty.path "f32"; Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ] ]
                       (Ty.path "f32")
                   ]
                 |),
@@ -8637,7 +8941,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "f32",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "f32" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ],
                                               "mul",
                                               []
                                             |),
@@ -8651,14 +8955,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "f32" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__f32_for_f32.
       
@@ -8674,9 +8978,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -8722,7 +9026,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -8745,9 +9049,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -8793,7 +9097,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -8816,9 +9120,9 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -8830,7 +9134,7 @@ Module iter.
                   [
                     Ty.path "f64";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "f64"; Ty.apply (Ty.path "&") [ Ty.path "f64" ] ] ]
+                      [ Ty.tuple [ Ty.path "f64"; Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ] ]
                       (Ty.path "f64")
                   ]
                 |),
@@ -8858,7 +9162,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Add",
                                               Ty.path "f64",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ],
                                               "add",
                                               []
                                             |),
@@ -8872,14 +9176,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "f64" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__f64_for_f64.
       
@@ -8895,9 +9199,9 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+        Definition product (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -8909,7 +9213,7 @@ Module iter.
                   [
                     Ty.path "f64";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "f64"; Ty.apply (Ty.path "&") [ Ty.path "f64" ] ] ]
+                      [ Ty.tuple [ Ty.path "f64"; Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ] ]
                       (Ty.path "f64")
                   ]
                 |),
@@ -8937,7 +9241,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               Ty.path "f64",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ],
                                               "mul",
                                               []
                                             |),
@@ -8951,19 +9255,20 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "f64" ] ]
+            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__f64_for_f64.
       
       Module Impl_core_iter_traits_accum_Sum_where_core_iter_traits_accum_Sum_T_U_core_result_Result_U_E_for_core_result_Result_T_E.
-        Definition Self (T U E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+        Definition Self (T U E : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
         
         (*
             fn sum<I>(iter: I) -> Result<T, E>
@@ -8973,10 +9278,10 @@ Module iter.
                 iter::try_process(iter, |i| i.sum())
             }
         *)
-        Definition sum (T U E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (T U E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T U E in
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -8987,6 +9292,7 @@ Module iter.
                     U;
                     Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.path "core::convert::Infallible"; E ];
                     Ty.function
                       [
@@ -8994,10 +9300,12 @@ Module iter.
                           [
                             Ty.apply
                               (Ty.path "core::iter::adapters::GenericShunt")
+                              []
                               [
                                 I;
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.path "core::convert::Infallible"; E ]
                               ]
                           ]
@@ -9024,10 +9332,12 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::GenericShunt")
+                                        []
                                         [
                                           I;
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [ Ty.path "core::convert::Infallible"; E ]
                                         ],
                                       [],
@@ -9042,7 +9352,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -9051,12 +9361,13 @@ Module iter.
             "core::iter::traits::accum::Sum"
             (Self T U E)
             (* Trait polymorphic types *)
-            [ (* A *) Ty.apply (Ty.path "core::result::Result") [ U; E ] ]
+            [ (* A *) Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
             (* Instance *) [ ("sum", InstanceField.Method (sum T U E)) ].
       End Impl_core_iter_traits_accum_Sum_where_core_iter_traits_accum_Sum_T_U_core_result_Result_U_E_for_core_result_Result_T_E.
       
       Module Impl_core_iter_traits_accum_Product_where_core_iter_traits_accum_Product_T_U_core_result_Result_U_E_for_core_result_Result_T_E.
-        Definition Self (T U E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+        Definition Self (T U E : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
         
         (*
             fn product<I>(iter: I) -> Result<T, E>
@@ -9066,10 +9377,15 @@ Module iter.
                 iter::try_process(iter, |i| i.product())
             }
         *)
-        Definition product (T U E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product
+            (T U E : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T U E in
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -9080,6 +9396,7 @@ Module iter.
                     U;
                     Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.path "core::convert::Infallible"; E ];
                     Ty.function
                       [
@@ -9087,10 +9404,12 @@ Module iter.
                           [
                             Ty.apply
                               (Ty.path "core::iter::adapters::GenericShunt")
+                              []
                               [
                                 I;
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.path "core::convert::Infallible"; E ]
                               ]
                           ]
@@ -9117,10 +9436,12 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::GenericShunt")
+                                        []
                                         [
                                           I;
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [ Ty.path "core::convert::Infallible"; E ]
                                         ],
                                       [],
@@ -9135,7 +9456,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -9144,12 +9465,12 @@ Module iter.
             "core::iter::traits::accum::Product"
             (Self T U E)
             (* Trait polymorphic types *)
-            [ (* A *) Ty.apply (Ty.path "core::result::Result") [ U; E ] ]
+            [ (* A *) Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
             (* Instance *) [ ("product", InstanceField.Method (product T U E)) ].
       End Impl_core_iter_traits_accum_Product_where_core_iter_traits_accum_Product_T_U_core_result_Result_U_E_for_core_result_Result_T_E.
       
       Module Impl_core_iter_traits_accum_Sum_where_core_iter_traits_accum_Sum_T_U_core_option_Option_U_for_core_option_Option_T.
-        Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [ T ].
+        Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
         
         (*
             fn sum<I>(iter: I) -> Option<T>
@@ -9159,10 +9480,10 @@ Module iter.
                 iter::try_process(iter, |i| i.sum())
             }
         *)
-        Definition sum (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (T U : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T U in
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -9173,6 +9494,7 @@ Module iter.
                     U;
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::convert::Infallible" ];
                     Ty.function
                       [
@@ -9180,10 +9502,12 @@ Module iter.
                           [
                             Ty.apply
                               (Ty.path "core::iter::adapters::GenericShunt")
+                              []
                               [
                                 I;
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.path "core::convert::Infallible" ]
                               ]
                           ]
@@ -9210,10 +9534,12 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::GenericShunt")
+                                        []
                                         [
                                           I;
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "core::convert::Infallible" ]
                                         ],
                                       [],
@@ -9228,7 +9554,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -9237,12 +9563,12 @@ Module iter.
             "core::iter::traits::accum::Sum"
             (Self T U)
             (* Trait polymorphic types *)
-            [ (* A *) Ty.apply (Ty.path "core::option::Option") [ U ] ]
+            [ (* A *) Ty.apply (Ty.path "core::option::Option") [] [ U ] ]
             (* Instance *) [ ("sum", InstanceField.Method (sum T U)) ].
       End Impl_core_iter_traits_accum_Sum_where_core_iter_traits_accum_Sum_T_U_core_option_Option_U_for_core_option_Option_T.
       
       Module Impl_core_iter_traits_accum_Product_where_core_iter_traits_accum_Product_T_U_core_option_Option_U_for_core_option_Option_T.
-        Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [ T ].
+        Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
         
         (*
             fn product<I>(iter: I) -> Option<T>
@@ -9252,10 +9578,10 @@ Module iter.
                 iter::try_process(iter, |i| i.product())
             }
         *)
-        Definition product (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (T U : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T U in
-          match τ, α with
-          | [ _ as I ], [ iter ] =>
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
@@ -9266,6 +9592,7 @@ Module iter.
                     U;
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::convert::Infallible" ];
                     Ty.function
                       [
@@ -9273,10 +9600,12 @@ Module iter.
                           [
                             Ty.apply
                               (Ty.path "core::iter::adapters::GenericShunt")
+                              []
                               [
                                 I;
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.path "core::convert::Infallible" ]
                               ]
                           ]
@@ -9303,10 +9632,12 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::GenericShunt")
+                                        []
                                         [
                                           I;
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "core::convert::Infallible" ]
                                         ],
                                       [],
@@ -9321,7 +9652,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -9330,7 +9661,7 @@ Module iter.
             "core::iter::traits::accum::Product"
             (Self T U)
             (* Trait polymorphic types *)
-            [ (* A *) Ty.apply (Ty.path "core::option::Option") [ U ] ]
+            [ (* A *) Ty.apply (Ty.path "core::option::Option") [] [ U ] ]
             (* Instance *) [ ("product", InstanceField.Method (product T U)) ].
       End Impl_core_iter_traits_accum_Product_where_core_iter_traits_accum_Product_T_U_core_option_Option_U_for_core_option_Option_T.
     End accum.

@@ -6,6 +6,7 @@ Module future.
     (*
     Enum MaybeDone
     {
+      const_params := [];
       ty_params := [ "F" ];
       variants :=
         [
@@ -29,7 +30,8 @@ Module future.
     *)
     
     Module Impl_core_future_join_MaybeDone_F.
-      Definition Self (F : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::join::MaybeDone") [ F ].
+      Definition Self (F : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ].
       
       (*
           pub fn take_output(&mut self) -> Option<F::Output> {
@@ -42,10 +44,10 @@ Module future.
               }
           }
       *)
-      Definition take_output (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition take_output (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -65,7 +67,7 @@ Module future.
                           M.call_closure (|
                             M.get_function (|
                               "core::mem::replace",
-                              [ Ty.apply (Ty.path "core::future::join::MaybeDone") [ F ] ]
+                              [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
                             |),
                             [
                               M.read (| self |);
@@ -108,7 +110,7 @@ Module future.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_take_output :
@@ -117,7 +119,8 @@ Module future.
     End Impl_core_future_join_MaybeDone_F.
     
     Module Impl_core_future_future_Future_where_core_future_future_Future_F_for_core_future_join_MaybeDone_F.
-      Definition Self (F : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::join::MaybeDone") [ F ].
+      Definition Self (F : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ].
       
       (*     type Output = (); *)
       Definition _Output (F : Ty.t) : Ty.t := Ty.tuple [].
@@ -140,10 +143,10 @@ Module future.
               Poll::Ready(())
           }
       *)
-      Definition poll (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; cx ] =>
+        match ε, τ, α with
+        | [], [], [ self; cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
@@ -156,10 +159,12 @@ Module future.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::pin::Pin")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "&mut")
-                                [ Ty.apply (Ty.path "core::future::join::MaybeDone") [ F ] ]
+                                []
+                                [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
                             ],
                           "get_unchecked_mut",
                           []
@@ -169,10 +174,12 @@ Module future.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::pin::Pin")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "core::future::join::MaybeDone") [ F ] ]
+                                    []
+                                    [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
                                 ],
                               "as_mut",
                               []
@@ -208,7 +215,8 @@ Module future.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::pin::Pin")
-                                              [ Ty.apply (Ty.path "&mut") [ F ] ],
+                                              []
+                                              [ Ty.apply (Ty.path "&mut") [] [ F ] ],
                                             "new_unchecked",
                                             []
                                           |),
@@ -256,10 +264,16 @@ Module future.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::pin::Pin")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "&mut")
-                                          [ Ty.apply (Ty.path "core::future::join::MaybeDone") [ F ]
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::future::join::MaybeDone")
+                                              []
+                                              [ F ]
                                           ]
                                       ],
                                     "set",
@@ -304,7 +318,7 @@ Module future.
                   M.alloc (| Value.StructTuple "core::task::poll::Poll::Ready" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

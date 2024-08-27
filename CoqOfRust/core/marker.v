@@ -6,7 +6,7 @@ Module marker.
   (* Empty module 'Send' *)
   
   Module Impl_core_marker_Send_where_core_marker_Sized_T_for_pointer_const_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -18,7 +18,7 @@ Module marker.
   End Impl_core_marker_Send_where_core_marker_Sized_T_for_pointer_const_T.
   
   Module Impl_core_marker_Send_where_core_marker_Sized_T_for_pointer_mut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -30,7 +30,7 @@ Module marker.
   End Impl_core_marker_Send_where_core_marker_Sized_T_for_pointer_mut_T.
   
   Module Impl_core_marker_Send_where_core_marker_Sync_T_where_core_marker_Sized_T_for_ref__T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -226,20 +226,20 @@ Module marker.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_.
   
-  Module Impl_core_marker_StructuralPartialEq_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_marker_StructuralPartialEq_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_StructuralPartialEq_for_array_T.
+  End Impl_core_marker_StructuralPartialEq_for_array_N_T.
   
   Module Impl_core_marker_StructuralPartialEq_for_slice_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -251,7 +251,7 @@ Module marker.
   End Impl_core_marker_StructuralPartialEq_for_slice_T.
   
   Module Impl_core_marker_StructuralPartialEq_where_core_marker_Sized_T_for_ref__T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -441,20 +441,20 @@ Module marker.
         (* Instance *) [].
   End Impl_core_marker_StructuralEq_for_Tuple_.
   
-  Module Impl_core_marker_StructuralEq_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_marker_StructuralEq_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralEq"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_array_T.
+  End Impl_core_marker_StructuralEq_for_array_N_T.
   
   Module Impl_core_marker_StructuralEq_for_slice_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -466,7 +466,7 @@ Module marker.
   End Impl_core_marker_StructuralEq_for_slice_T.
   
   Module Impl_core_marker_StructuralEq_where_core_marker_Sized_T_for_ref__T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -657,7 +657,7 @@ Module marker.
   End Impl_core_marker_Copy_for_char.
   
   Module Impl_core_marker_Copy_where_core_marker_Sized_T_for_pointer_const_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -669,7 +669,7 @@ Module marker.
   End Impl_core_marker_Copy_where_core_marker_Sized_T_for_pointer_const_T.
   
   Module Impl_core_marker_Copy_where_core_marker_Sized_T_for_pointer_mut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -692,7 +692,7 @@ Module marker.
   End Impl_core_marker_Copy_for_never.
   
   Module Impl_core_marker_Copy_where_core_marker_Sized_T_for_ref__T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -707,7 +707,7 @@ Module marker.
   (* Empty module 'Sync' *)
   
   Module Impl_core_marker_Sync_where_core_marker_Sized_T_for_pointer_const_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -719,7 +719,7 @@ Module marker.
   End Impl_core_marker_Sync_where_core_marker_Sized_T_for_pointer_const_T.
   
   Module Impl_core_marker_Sync_where_core_marker_Sized_T_for_pointer_mut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -733,23 +733,24 @@ Module marker.
   (* StructTuple
     {
       name := "PhantomData";
+      const_params := [];
       ty_params := [ "T" ];
       fields := [];
     } *)
   
   Module Impl_core_hash_Hash_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     (*     fn hash<H: Hasher>(&self, _: &mut H) {} *)
-    Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [ H ], [ self; β1 ] =>
+      match ε, τ, α with
+      | [], [ H ], [ self; β1 ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -762,22 +763,22 @@ Module marker.
   End Impl_core_hash_Hash_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     (*
         fn eq(&self, _other: &PhantomData<T>) -> bool {
             true
         }
     *)
-    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; _other ] =>
+      match ε, τ, α with
+      | [], [], [ self; _other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -790,7 +791,7 @@ Module marker.
   End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_cmp_Eq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -798,24 +799,24 @@ Module marker.
   End Impl_core_cmp_Eq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     (*
         fn partial_cmp(&self, _other: &PhantomData<T>) -> Option<cmp::Ordering> {
             Option::Some(cmp::Ordering::Equal)
         }
     *)
-    Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; _other ] =>
+      match ε, τ, α with
+      | [], [], [ self; _other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -828,22 +829,22 @@ Module marker.
   End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_cmp_Ord_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     (*
         fn cmp(&self, _other: &PhantomData<T>) -> cmp::Ordering {
             cmp::Ordering::Equal
         }
     *)
-    Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; _other ] =>
+      match ε, τ, α with
+      | [], [], [ self; _other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -856,7 +857,7 @@ Module marker.
   End Impl_core_cmp_Ord_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_marker_Copy_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -868,21 +869,21 @@ Module marker.
   End Impl_core_marker_Copy_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_clone_Clone_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     (*
         fn clone(&self) -> Self {
             Self
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| (* Expected a function name *) M.alloc (| Value.Tuple [] |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -895,19 +896,19 @@ Module marker.
   End Impl_core_clone_Clone_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_default_Default_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     (*
         fn default() -> Self {
             Self
         }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (M.read (| (* Expected a function name *) M.alloc (| Value.Tuple [] |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -920,7 +921,7 @@ Module marker.
   End Impl_core_default_Default_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_marker_StructuralPartialEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -932,7 +933,7 @@ Module marker.
   End Impl_core_marker_StructuralPartialEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_marker_StructuralEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -950,7 +951,7 @@ Module marker.
   (* Empty module 'Freeze' *)
   
   Module Impl_core_marker_Freeze_where_core_marker_Sized_T_for_core_cell_UnsafeCell_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -962,7 +963,7 @@ Module marker.
   End Impl_core_marker_Freeze_where_core_marker_Sized_T_for_core_cell_UnsafeCell_T.
   
   Module Impl_core_marker_Freeze_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -974,7 +975,7 @@ Module marker.
   End Impl_core_marker_Freeze_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_marker_Freeze_where_core_marker_Sized_T_for_pointer_const_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -986,7 +987,7 @@ Module marker.
   End Impl_core_marker_Freeze_where_core_marker_Sized_T_for_pointer_const_T.
   
   Module Impl_core_marker_Freeze_where_core_marker_Sized_T_for_pointer_mut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -998,7 +999,7 @@ Module marker.
   End Impl_core_marker_Freeze_where_core_marker_Sized_T_for_pointer_mut_T.
   
   Module Impl_core_marker_Freeze_where_core_marker_Sized_T_for_ref__T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -1010,7 +1011,7 @@ Module marker.
   End Impl_core_marker_Freeze_where_core_marker_Sized_T_for_ref__T.
   
   Module Impl_core_marker_Freeze_where_core_marker_Sized_T_for_ref_mut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -1027,6 +1028,7 @@ Module marker.
   (* StructTuple
     {
       name := "PhantomPinned";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -1035,9 +1037,9 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1045,7 +1047,7 @@ Module marker.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "PhantomPinned" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1060,10 +1062,10 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] => ltac:(M.monadic (Value.StructTuple "core::marker::PhantomPinned" []))
-      | _, _ => M.impossible
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::marker::PhantomPinned" []))
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1089,13 +1091,13 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1121,13 +1123,17 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1154,14 +1160,14 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1176,14 +1182,14 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1198,16 +1204,16 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1222,14 +1228,14 @@ Module marker.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1252,7 +1258,7 @@ Module marker.
   End Impl_core_marker_Unpin_for_core_marker_PhantomPinned.
   
   Module Impl_core_marker_Unpin_where_core_marker_Sized_T_for_ref__T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -1264,7 +1270,7 @@ Module marker.
   End Impl_core_marker_Unpin_where_core_marker_Sized_T_for_ref__T.
   
   Module Impl_core_marker_Unpin_where_core_marker_Sized_T_for_ref_mut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -1276,7 +1282,7 @@ Module marker.
   End Impl_core_marker_Unpin_where_core_marker_Sized_T_for_ref_mut_T.
   
   Module Impl_core_marker_Unpin_where_core_marker_Sized_T_for_pointer_const_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -1288,7 +1294,7 @@ Module marker.
   End Impl_core_marker_Unpin_where_core_marker_Sized_T_for_pointer_const_T.
   
   Module Impl_core_marker_Unpin_where_core_marker_Sized_T_for_pointer_mut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -1476,20 +1482,20 @@ Module marker.
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy_for_str.
   
-  Module Impl_core_marker_ConstParamTy_where_core_marker_ConstParamTy_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_marker_ConstParamTy_where_core_marker_ConstParamTy_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_where_core_marker_ConstParamTy_T_for_array_T.
+  End Impl_core_marker_ConstParamTy_where_core_marker_ConstParamTy_T_for_array_N_T.
   
   Module Impl_core_marker_ConstParamTy_where_core_marker_ConstParamTy_T_for_slice_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -1501,7 +1507,7 @@ Module marker.
   End Impl_core_marker_ConstParamTy_where_core_marker_ConstParamTy_T_for_slice_T.
   
   Module Impl_core_marker_ConstParamTy_where_core_marker_Sized_T_where_core_marker_ConstParamTy_T_for_ref__T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),

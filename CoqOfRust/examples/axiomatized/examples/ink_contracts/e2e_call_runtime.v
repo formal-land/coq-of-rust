@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -11,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -24,7 +25,7 @@ End Impl_core_default_Default_for_e2e_call_runtime_AccountId.
 Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -46,6 +47,7 @@ Axiom Balance : (Ty.path "e2e_call_runtime::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "e2e_call_runtime::AccountId") ];
   } *)
@@ -53,7 +55,7 @@ Axiom Balance : (Ty.path "e2e_call_runtime::Balance") = (Ty.path "u128").
 Module Impl_e2e_call_runtime_Env.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::Env".
   
-  Parameter balance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
 End Impl_e2e_call_runtime_Env.
@@ -61,6 +63,7 @@ End Impl_e2e_call_runtime_Env.
 (* StructTuple
   {
     name := "Contract";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -68,7 +71,7 @@ End Impl_e2e_call_runtime_Env.
 Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::Contract".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -81,19 +84,19 @@ End Impl_core_default_Default_for_e2e_call_runtime_Contract.
 Module Impl_e2e_call_runtime_Contract.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::Contract".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter get_contract_balance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get_contract_balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_contract_balance :
     M.IsAssociatedFunction Self "get_contract_balance" get_contract_balance.

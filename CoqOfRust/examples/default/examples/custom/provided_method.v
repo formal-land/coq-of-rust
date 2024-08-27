@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
 Module ProvidedAndRequired.
-  Definition provided (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition provided (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         BinOp.Wrap.add
@@ -21,7 +21,7 @@ Module ProvidedAndRequired.
             |),
             [ M.read (| self |) ]
           |))))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom ProvidedMethod_provided :
@@ -36,13 +36,13 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
           *self
       }
   *)
-  Definition required (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition required (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -61,13 +61,13 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
           *self as i32
       }
   *)
-  Definition required (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition required (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.rust_cast (M.read (| M.read (| self |) |))))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -75,13 +75,13 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
           0
       }
   *)
-  Definition provided (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition provided (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Integer 0))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -101,9 +101,9 @@ fn main() {
     assert_eq!(y.provided(), 0);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ x := M.alloc (| Value.Integer 5 |) in
@@ -252,7 +252,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "provided_method::main" main.

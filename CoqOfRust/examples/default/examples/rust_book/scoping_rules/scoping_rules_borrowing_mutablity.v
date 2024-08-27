@@ -4,11 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Book";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("author", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
-        ("title", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
+        ("author", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]);
+        ("title", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]);
         ("year", Ty.path "u32")
       ];
   } *)
@@ -17,9 +18,9 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self : Ty.t := Ty.path "scoping_rules_borrowing_mutablity::Book".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -42,7 +43,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -68,9 +69,9 @@ fn borrow_book(book: &Book) {
     );
 }
 *)
-Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ book ] =>
+Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ book ] =>
     ltac:(M.monadic
       (let book := M.alloc (| book |) in
       M.read (|
@@ -103,7 +104,7 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
@@ -137,7 +138,7 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_borrow_book :
@@ -149,9 +150,9 @@ fn new_edition(book: &mut Book) {
     println!("I mutably borrowed {} - {} edition", book.title, book.year);
 }
 *)
-Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ book ] =>
+Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ book ] =>
     ltac:(M.monadic
       (let book := M.alloc (| book |) in
       M.read (|
@@ -193,7 +194,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
@@ -227,7 +228,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_new_edition :
@@ -260,9 +261,9 @@ fn main() {
     // FIXME ^ Comment out this line
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ immutabook :=
@@ -300,7 +301,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_borrowing_mutablity::main" main.

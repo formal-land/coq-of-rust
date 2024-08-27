@@ -12,9 +12,9 @@ Module bytecode.
           Ok((&input[1..], input[0]))
       }
       *)
-      Definition consume_u8 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ input ] =>
+      Definition consume_u8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ input ] =>
           ltac:(M.monadic
             (let input := M.alloc (| input |) in
             M.catch_return (|
@@ -31,7 +31,7 @@ Module bytecode.
                                 (M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "is_empty",
                                       []
                                     |),
@@ -67,10 +67,11 @@ Module bytecode.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::index::Index",
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeFrom")
+                                    []
                                     [ Ty.path "usize" ]
                                 ],
                                 "index",
@@ -94,7 +95,7 @@ Module bytecode.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_consume_u8 :
@@ -109,9 +110,9 @@ Module bytecode.
           Ok((rest, u16::from_be_bytes([int_bytes[0], int_bytes[1]])))
       }
       *)
-      Definition consume_u16 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ input ] =>
+      Definition consume_u16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ input ] =>
           ltac:(M.monadic
             (let input := M.alloc (| input |) in
             M.catch_return (|
@@ -129,7 +130,7 @@ Module bytecode.
                                   BinOp.Pure.lt
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
@@ -161,7 +162,7 @@ Module bytecode.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "split_at",
                           []
                         |),
@@ -213,7 +214,7 @@ Module bytecode.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_consume_u16 :

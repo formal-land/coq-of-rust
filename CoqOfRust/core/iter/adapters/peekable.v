@@ -7,6 +7,7 @@ Module iter.
       (* StructRecord
         {
           name := "Peekable";
+          const_params := [];
           ty_params := [ "I" ];
           fields :=
             [
@@ -14,19 +15,20 @@ Module iter.
               ("peeked",
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ] ])
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ])
             ];
         } *)
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_peekable_Peekable_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ].
         
         (* Clone *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -49,7 +51,8 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ] ],
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
                         [],
                         "clone",
                         []
@@ -63,7 +66,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -77,13 +80,13 @@ Module iter.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_associated_type_for_core_iter_adapters_peekable_Peekable_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ].
         
         (* Debug *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -116,7 +119,7 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -130,17 +133,17 @@ Module iter.
       
       Module Impl_core_iter_adapters_peekable_Peekable_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ].
         
         (*
             pub(in crate::iter) fn new(iter: I) -> Peekable<I> {
                 Peekable { iter, peeked: None }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ iter ] =>
+          match ε, τ, α with
+          | [], [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
@@ -149,7 +152,7 @@ Module iter.
                   ("iter", M.read (| iter |));
                   ("peeked", Value.StructTuple "core::option::Option::None" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -161,10 +164,10 @@ Module iter.
                 self.peeked.get_or_insert_with(|| iter.next()).as_ref()
             }
         *)
-        Definition peek (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition peek (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -179,7 +182,7 @@ Module iter.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.associated ],
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                       "as_ref",
                       []
                     |),
@@ -188,12 +191,13 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
-                            [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
                           "get_or_insert_with",
                           [
                             Ty.function
                               [ Ty.tuple [] ]
-                              (Ty.apply (Ty.path "core::option::Option") [ Ty.associated ])
+                              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
                           ]
                         |),
                         [
@@ -232,7 +236,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_peek :
@@ -245,10 +249,10 @@ Module iter.
                 self.peeked.get_or_insert_with(|| iter.next()).as_mut()
             }
         *)
-        Definition peek_mut (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition peek_mut (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -263,7 +267,7 @@ Module iter.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.associated ],
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                       "as_mut",
                       []
                     |),
@@ -272,12 +276,13 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
-                            [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
                           "get_or_insert_with",
                           [
                             Ty.function
                               [ Ty.tuple [] ]
-                              (Ty.apply (Ty.path "core::option::Option") [ Ty.associated ])
+                              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
                           ]
                         |),
                         [
@@ -316,7 +321,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_peek_mut :
@@ -336,10 +341,10 @@ Module iter.
                 }
             }
         *)
-        Definition next_if (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_if (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ impl_FnOnce__I_Item__arrow_bool ], [ self; func ] =>
+          match ε, τ, α with
+          | [], [ impl_FnOnce__I_Item__arrow_bool ], [ self; func ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let func := M.alloc (| func |) in
@@ -349,7 +354,7 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
-                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ],
+                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ],
                         [],
                         "next",
                         []
@@ -373,7 +378,7 @@ Module iter.
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 impl_FnOnce__I_Item__arrow_bool,
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.associated ] ] ],
+                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ] ],
                                 "call_once",
                                 []
                               |),
@@ -402,9 +407,11 @@ Module iter.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [ Ty.associated ]
                                                 ],
                                               "is_none",
@@ -452,7 +459,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_next_if :
@@ -468,20 +475,25 @@ Module iter.
                 self.next_if(|next| next == expected)
             }
         *)
-        Definition next_if_eq (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_if_eq
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ T ], [ self; expected ] =>
+          match ε, τ, α with
+          | [], [ T ], [ self; expected ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let expected := M.alloc (| expected |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ],
                   "next_if",
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.associated ] ] ]
+                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ] ]
                       (Ty.path "bool")
                   ]
                 |),
@@ -501,8 +513,8 @@ Module iter.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "&") [ Ty.associated ],
-                                      [ Ty.apply (Ty.path "&") [ T ] ],
+                                      Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                      [ Ty.apply (Ty.path "&") [] [ T ] ],
                                       "eq",
                                       []
                                     |),
@@ -514,7 +526,7 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_next_if_eq :
@@ -524,7 +536,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_peekable_Peekable_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ].
         
         (*     type Item = I::Item; *)
         Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
@@ -537,10 +549,10 @@ Module iter.
                 }
             }
         *)
-        Definition next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -550,7 +562,8 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ] ],
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
                         "take",
                         []
                       |),
@@ -598,7 +611,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -610,10 +623,10 @@ Module iter.
                 }
             }
         *)
-        Definition count (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition count (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -623,7 +636,8 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ] ],
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
                         "take",
                         []
                       |),
@@ -710,7 +724,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -723,10 +737,10 @@ Module iter.
                 }
             }
         *)
-        Definition nth (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -737,7 +751,8 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ] ],
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
                         "take",
                         []
                       |),
@@ -838,7 +853,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -851,10 +866,10 @@ Module iter.
                 self.iter.last().or(peek_opt)
             }
         *)
-        Definition last (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition last (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -868,7 +883,9 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
-                                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ]
+                                  ],
                                 "take",
                                 []
                               |),
@@ -921,7 +938,7 @@ Module iter.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::option::Option") [ Ty.associated ],
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                           "or",
                           []
                         |),
@@ -950,7 +967,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -969,10 +986,10 @@ Module iter.
                 (lo, hi)
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -1110,7 +1127,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1128,10 +1145,10 @@ Module iter.
                 self.iter.try_fold(acc, f)
             }
         *)
-        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -1147,7 +1164,9 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
-                                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ]
+                                  ],
                                 "take",
                                 []
                               |),
@@ -1297,7 +1316,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1313,10 +1332,10 @@ Module iter.
                 self.iter.fold(acc, fold)
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Acc; Fold ], [ self; init; fold ] =>
+          match ε, τ, α with
+          | [], [ Acc; Fold ], [ self; init; fold ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -1406,7 +1425,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1430,7 +1449,7 @@ Module iter.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_for_core_iter_adapters_peekable_Peekable_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ].
         
         (*
             fn next_back(&mut self) -> Option<Self::Item> {
@@ -1441,10 +1460,10 @@ Module iter.
                 }
             }
         *)
-        Definition next_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -1454,7 +1473,8 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ] ],
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
                         "as_mut",
                         []
                       |),
@@ -1487,12 +1507,12 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.associated ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                               "or_else",
                               [
                                 Ty.function
                                   [ Ty.tuple [] ]
-                                  (Ty.apply (Ty.path "core::option::Option") [ Ty.associated ])
+                                  (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
                               ]
                             |),
                             [
@@ -1526,6 +1546,7 @@ Module iter.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [ Ty.associated ],
                                                   "take",
                                                   []
@@ -1574,7 +1595,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1597,10 +1618,10 @@ Module iter.
                 }
             }
         *)
-        Definition try_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_rfold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -1612,7 +1633,8 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ] ],
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
                         "take",
                         []
                       |),
@@ -1679,7 +1701,7 @@ Module iter.
                                     I,
                                     [],
                                     "try_rfold",
-                                    [ B; Ty.apply (Ty.path "&mut") [ F ]; R ]
+                                    [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                   |),
                                   [
                                     M.SubPointer.get_struct_record_field (|
@@ -1780,7 +1802,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1798,10 +1820,10 @@ Module iter.
                 }
             }
         *)
-        Definition rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Acc; Fold ], [ self; init; fold ] =>
+          match ε, τ, α with
+          | [], [ Acc; Fold ], [ self; init; fold ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -1847,7 +1869,7 @@ Module iter.
                                 I,
                                 [],
                                 "rfold",
-                                [ Acc; Ty.apply (Ty.path "&mut") [ Fold ] ]
+                                [ Acc; Ty.apply (Ty.path "&mut") [] [ Fold ] ]
                               |),
                               [
                                 M.read (|
@@ -1902,7 +1924,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1921,7 +1943,7 @@ Module iter.
       
       Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_for_core_iter_adapters_peekable_Peekable_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ].
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -1934,7 +1956,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_for_core_iter_adapters_peekable_Peekable_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ].
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -1948,7 +1970,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_for_core_iter_adapters_peekable_Peekable_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ].
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -1961,7 +1983,7 @@ Module iter.
       
       Module Impl_core_iter_adapters_SourceIter_where_core_iter_traits_iterator_Iterator_I_where_core_iter_adapters_SourceIter_I_for_core_iter_adapters_peekable_Peekable_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ].
         
         (*     type Source = I::Source; *)
         Definition _Source (I : Ty.t) : Ty.t := Ty.associated.
@@ -1972,10 +1994,10 @@ Module iter.
                 unsafe { SourceIter::as_inner(&mut self.iter) }
             }
         *)
-        Definition as_inner (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_inner (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -1988,7 +2010,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

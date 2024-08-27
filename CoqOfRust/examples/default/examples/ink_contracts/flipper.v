@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Flipper";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "bool") ];
   } *)
@@ -16,13 +17,13 @@ Module Impl_flipper_Flipper.
           Self { value: init_value }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ init_value ] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord "flipper::Flipper" [ ("value", M.read (| init_value |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -32,9 +33,9 @@ Module Impl_flipper_Flipper.
           Self::new(Default::default())
       }
   *)
-  Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition new_default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_associated_function (| Ty.path "flipper::Flipper", "new", [] |),
@@ -45,7 +46,7 @@ Module Impl_flipper_Flipper.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
@@ -55,9 +56,9 @@ Module Impl_flipper_Flipper.
           self.value = !self.value;
       }
   *)
-  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition flip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -79,7 +80,7 @@ Module Impl_flipper_Flipper.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
@@ -89,15 +90,15 @@ Module Impl_flipper_Flipper.
           self.value
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "flipper::Flipper", "value" |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.

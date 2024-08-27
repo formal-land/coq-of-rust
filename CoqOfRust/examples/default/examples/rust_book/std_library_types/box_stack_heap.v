@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Point";
+    const_params := [];
     ty_params := [];
     fields := [ ("x", Ty.path "f64"); ("y", Ty.path "f64") ];
   } *)
@@ -12,9 +13,9 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -47,7 +48,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -62,9 +63,9 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Definition Self : Ty.t := Ty.path "box_stack_heap::Point".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -73,7 +74,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -94,6 +95,7 @@ End Impl_core_marker_Copy_for_box_stack_heap_Point.
 (* StructRecord
   {
     name := "Rectangle";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -107,14 +109,14 @@ fn origin() -> Point {
     Point { x: 0.0, y: 0.0 }
 }
 *)
-Definition origin (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (Value.StructRecord
         "box_stack_heap::Point"
         [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |)) ]))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_origin : M.IsFunction "box_stack_heap::origin" origin.
@@ -125,14 +127,15 @@ fn boxed_origin() -> Box<Point> {
     Box::new(Point { x: 0.0, y: 0.0 })
 }
 *)
-Definition boxed_origin (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition boxed_origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.call_closure (|
         M.get_associated_function (|
           Ty.apply
             (Ty.path "alloc::boxed::Box")
+            []
             [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ],
           "new",
           []
@@ -143,7 +146,7 @@ Definition boxed_origin (τ : list Ty.t) (α : list Value.t) : M :=
             [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |)) ]
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_boxed_origin : M.IsFunction "box_stack_heap::boxed_origin" boxed_origin.
@@ -201,9 +204,9 @@ fn main() {
     );
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ point :=
@@ -230,6 +233,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "box_stack_heap::Rectangle"; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
@@ -257,6 +261,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
@@ -270,9 +275,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ];
                     Ty.path "alloc::alloc::Global"
                   ],
@@ -420,6 +427,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
+                                            []
                                             [
                                               Ty.path "box_stack_heap::Point";
                                               Ty.path "alloc::alloc::Global"
@@ -477,6 +485,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
+                                            []
                                             [
                                               Ty.path "box_stack_heap::Rectangle";
                                               Ty.path "alloc::alloc::Global"
@@ -534,9 +543,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
+                                                []
                                                 [
                                                   Ty.path "box_stack_heap::Point";
                                                   Ty.path "alloc::alloc::Global"
@@ -611,7 +622,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "box_stack_heap::main" main.

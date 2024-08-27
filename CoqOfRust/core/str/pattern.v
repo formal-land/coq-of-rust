@@ -5,9 +5,14 @@ Module str.
   Module pattern.
     (* Trait *)
     Module Pattern.
-      Definition is_contained_in (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_contained_in
+          (Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -15,6 +20,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "is_some",
                 []
@@ -47,14 +53,19 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_is_contained_in :
         M.IsProvidedMethod "core::str::pattern::Pattern" "is_contained_in" is_contained_in.
-      Definition is_prefix_of (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_prefix_of
+          (Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -107,14 +118,19 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_is_prefix_of :
         M.IsProvidedMethod "core::str::pattern::Pattern" "is_prefix_of" is_prefix_of.
-      Definition is_suffix_of (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_suffix_of
+          (Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -176,14 +192,19 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_is_suffix_of :
         M.IsProvidedMethod "core::str::pattern::Pattern" "is_suffix_of" is_suffix_of.
-      Definition strip_prefix_of (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_prefix_of
+          (Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -346,6 +367,7 @@ Module str.
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeFrom")
+                                    []
                                     [ Ty.path "usize" ]
                                 ]
                               |),
@@ -364,14 +386,19 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_strip_prefix_of :
         M.IsProvidedMethod "core::str::pattern::Pattern" "strip_prefix_of" strip_prefix_of.
-      Definition strip_suffix_of (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_suffix_of
+          (Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -544,7 +571,11 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "str",
                                 "get_unchecked",
-                                [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
+                                    []
+                                    [ Ty.path "usize" ]
                                 ]
                               |),
                               [
@@ -562,7 +593,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_strip_suffix_of :
@@ -572,6 +603,7 @@ Module str.
     (*
     Enum SearchStep
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -609,9 +641,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::SearchStep".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -620,7 +652,7 @@ Module str.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -646,9 +678,13 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::SearchStep".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -657,7 +693,7 @@ Module str.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -684,9 +720,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::SearchStep".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -816,7 +852,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -831,9 +867,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::SearchStep".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -922,7 +958,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -935,9 +971,14 @@ Module str.
     
     (* Trait *)
     Module Searcher.
-      Definition next_match (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_match
+          (Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -1012,14 +1053,19 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_next_match :
         M.IsProvidedMethod "core::str::pattern::Searcher" "next_match" next_match.
-      Definition next_reject (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_reject
+          (Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -1094,7 +1140,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_next_reject :
@@ -1103,9 +1149,14 @@ Module str.
     
     (* Trait *)
     Module ReverseSearcher.
-      Definition next_match_back (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_match_back
+          (Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -1180,14 +1231,19 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_next_match_back :
         M.IsProvidedMethod "core::str::pattern::ReverseSearcher" "next_match_back" next_match_back.
-      Definition next_reject_back (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_reject_back
+          (Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -1262,7 +1318,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_next_reject_back :
@@ -1278,15 +1334,16 @@ Module str.
     (* StructRecord
       {
         name := "CharSearcher";
+        const_params := [];
         ty_params := [];
         fields :=
           [
-            ("haystack", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
+            ("haystack", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]);
             ("finger", Ty.path "usize");
             ("finger_back", Ty.path "usize");
             ("needle", Ty.path "char");
             ("utf8_size", Ty.path "usize");
-            ("utf8_encoded", Ty.apply (Ty.path "array") [ Ty.path "u8" ])
+            ("utf8_encoded", Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ])
           ];
       } *)
     
@@ -1294,9 +1351,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::CharSearcher".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -1306,7 +1363,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
                       "clone",
                       []
@@ -1367,7 +1424,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ],
                       [],
                       "clone",
                       []
@@ -1381,7 +1438,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1396,9 +1453,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::CharSearcher".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1487,7 +1544,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1506,9 +1563,9 @@ Module str.
               self.haystack
           }
       *)
-      Definition haystack (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition haystack (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1518,7 +1575,7 @@ Module str.
                 "haystack"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1549,9 +1606,9 @@ Module str.
               }
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1569,7 +1626,7 @@ Module str.
                     M.get_associated_function (|
                       Ty.path "str",
                       "get_unchecked",
-                      [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                      [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                     |),
                     [
                       M.read (|
@@ -1607,7 +1664,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::exact_size::ExactSizeIterator",
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
                       "len",
                       []
@@ -1664,7 +1721,7 @@ Module str.
                               (M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                                   [],
                                   "len",
                                   []
@@ -1739,7 +1796,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1785,9 +1842,9 @@ Module str.
               }
           }
       *)
-      Definition next_match (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_match (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -1805,10 +1862,12 @@ Module str.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "&")
-                                          [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                       ],
                                     [],
                                     "branch",
@@ -1817,11 +1876,12 @@ Module str.
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "get",
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ]
                                         ]
                                       |),
@@ -1886,10 +1946,12 @@ Module str.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
+                                                  []
                                                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [ Ty.path "core::convert::Infallible" ]
                                                 ],
                                                 "from_residual",
@@ -1918,7 +1980,7 @@ Module str.
                           M.copy (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "get_unchecked",
                                 [ Ty.path "usize" ]
                               |),
@@ -2036,11 +2098,15 @@ Module str.
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ],
                                                         "get",
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::Range")
+                                                            []
                                                             [ Ty.path "usize" ]
                                                         ]
                                                       |),
@@ -2097,17 +2163,21 @@ Module str.
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
                                                                     (Ty.path "&")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "slice")
+                                                                        []
                                                                         [ Ty.path "u8" ]
                                                                     ],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "&")
+                                                                      []
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [ Ty.path "u8" ]
                                                                       ]
                                                                   ],
@@ -2122,11 +2192,13 @@ Module str.
                                                                         "core::ops::index::Index",
                                                                         Ty.apply
                                                                           (Ty.path "array")
+                                                                          [ Value.Integer 4 ]
                                                                           [ Ty.path "u8" ],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::ops::range::Range")
+                                                                            []
                                                                             [ Ty.path "usize" ]
                                                                         ],
                                                                         "index",
@@ -2229,7 +2301,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2269,9 +2341,9 @@ Module str.
               }
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2289,7 +2361,7 @@ Module str.
                     M.get_associated_function (|
                       Ty.path "str",
                       "get_unchecked",
-                      [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                      [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                     |),
                     [
                       M.read (|
@@ -2327,7 +2399,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::exact_size::ExactSizeIterator",
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
                       "len",
                       []
@@ -2384,7 +2456,7 @@ Module str.
                               (M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                                   [],
                                   "len",
                                   []
@@ -2459,7 +2531,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2512,9 +2584,9 @@ Module str.
               }
           }
       *)
-      Definition next_match_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_match_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -2549,10 +2621,12 @@ Module str.
                                         "core::ops::try_trait::Try",
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                           ],
                                         [],
                                         "branch",
@@ -2561,11 +2635,12 @@ Module str.
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "get",
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "usize" ]
                                             ]
                                           |),
@@ -2615,6 +2690,7 @@ Module str.
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [
                                                         Ty.tuple
                                                           [ Ty.path "usize"; Ty.path "usize" ]
@@ -2622,6 +2698,7 @@ Module str.
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
+                                                        []
                                                         [ Ty.path "core::convert::Infallible" ]
                                                     ],
                                                     "from_residual",
@@ -2650,7 +2727,7 @@ Module str.
                               M.copy (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "get_unchecked",
                                     [ Ty.path "usize" ]
                                   |),
@@ -2756,12 +2833,14 @@ Module str.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "slice")
+                                                                []
                                                                 [ Ty.path "u8" ],
                                                               "get",
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::ops::range::Range")
+                                                                  []
                                                                   [ Ty.path "usize" ]
                                                               ]
                                                             |),
@@ -2807,17 +2886,21 @@ Module str.
                                                                         "core::cmp::PartialEq",
                                                                         Ty.apply
                                                                           (Ty.path "&")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path "slice")
+                                                                              []
                                                                               [ Ty.path "u8" ]
                                                                           ],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "&")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [ Ty.path "u8" ]
                                                                             ]
                                                                         ],
@@ -2832,11 +2915,13 @@ Module str.
                                                                               "core::ops::index::Index",
                                                                               Ty.apply
                                                                                 (Ty.path "array")
+                                                                                [ Value.Integer 4 ]
                                                                                 [ Ty.path "u8" ],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::ops::range::Range")
+                                                                                  []
                                                                                   [ Ty.path "usize"
                                                                                   ]
                                                                               ],
@@ -2984,7 +3069,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3030,14 +3115,14 @@ Module str.
               }
           }
       *)
-      Definition into_searcher (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition into_searcher (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.read (|
-              let~ utf8_encoded := M.alloc (| repeat (Value.Integer 0) 4 |) in
+              let~ utf8_encoded := M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) in
               let~ utf8_size :=
                 M.alloc (|
                   M.call_closure (|
@@ -3067,7 +3152,7 @@ Module str.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3080,9 +3165,9 @@ Module str.
               }
           }
       *)
-      Definition is_contained_in (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_contained_in (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -3101,7 +3186,7 @@ Module str.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "contains",
                             []
                           |),
@@ -3116,12 +3201,12 @@ Module str.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ buffer := M.alloc (| repeat (Value.Integer 0) 4 |) in
+                      (let~ buffer := M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::str::pattern::Pattern",
-                            Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             [],
                             "is_contained_in",
                             []
@@ -3138,7 +3223,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3146,16 +3231,16 @@ Module str.
               self.encode_utf8(&mut [0u8; 4]).is_prefix_of(haystack)
           }
       *)
-      Definition is_prefix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_prefix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 [],
                 "is_prefix_of",
                 []
@@ -3165,13 +3250,14 @@ Module str.
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                   [
                     M.read (| self |);
-                    (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
                   ]
                 |);
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3179,16 +3265,16 @@ Module str.
               self.encode_utf8(&mut [0u8; 4]).strip_prefix_of(haystack)
           }
       *)
-      Definition strip_prefix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_prefix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 [],
                 "strip_prefix_of",
                 []
@@ -3198,13 +3284,14 @@ Module str.
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                   [
                     M.read (| self |);
-                    (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
                   ]
                 |);
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3215,16 +3302,16 @@ Module str.
               self.encode_utf8(&mut [0u8; 4]).is_suffix_of(haystack)
           }
       *)
-      Definition is_suffix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_suffix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 [],
                 "is_suffix_of",
                 []
@@ -3234,13 +3321,14 @@ Module str.
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                   [
                     M.read (| self |);
-                    (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
                   ]
                 |);
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3251,16 +3339,16 @@ Module str.
               self.encode_utf8(&mut [0u8; 4]).strip_suffix_of(haystack)
           }
       *)
-      Definition strip_suffix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_suffix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 [],
                 "strip_suffix_of",
                 []
@@ -3270,13 +3358,14 @@ Module str.
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                   [
                     M.read (| self |);
-                    (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
                   ]
                 |);
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3307,10 +3396,10 @@ Module str.
               ( *self)(c)
           }
       *)
-      Definition matches (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition matches (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; c ] =>
+        match ε, τ, α with
+        | [], [], [ self; c ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let c := M.alloc (| c |) in
@@ -3324,7 +3413,7 @@ Module str.
               |),
               [ M.read (| self |); Value.Tuple [ M.read (| c |) ] ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3336,29 +3425,30 @@ Module str.
           (* Instance *) [ ("matches", InstanceField.Method (matches F)) ].
     End Impl_core_str_pattern_MultiCharEq_where_core_ops_function_FnMut_F_Tuple_char__for_F.
     
-    Module Impl_core_str_pattern_MultiCharEq_for_array_char.
-      Definition Self : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "char" ].
+    Module Impl_core_str_pattern_MultiCharEq_for_array_N_char.
+      Definition Self (N : Value.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ].
       
       (*
           fn matches(&mut self, c: char) -> bool {
               self.iter().any(|&m| m == c)
           }
       *)
-      Definition matches (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; c ] =>
+      Definition matches (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; c ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let c := M.alloc (| c |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "char" ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "char" ],
                 [],
                 "any",
                 [
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "char" ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ] ]
                     (Ty.path "bool")
                 ]
               |),
@@ -3366,7 +3456,7 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "char" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "char" ],
                       "iter",
                       []
                     |),
@@ -3392,41 +3482,43 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::MultiCharEq"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("matches", InstanceField.Method matches) ].
-    End Impl_core_str_pattern_MultiCharEq_for_array_char.
+          (* Instance *) [ ("matches", InstanceField.Method (matches N)) ].
+    End Impl_core_str_pattern_MultiCharEq_for_array_N_char.
     
-    Module Impl_core_str_pattern_MultiCharEq_for_ref__array_char.
-      Definition Self : Ty.t :=
-        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ].
+    Module Impl_core_str_pattern_MultiCharEq_for_ref__array_N_char.
+      Definition Self (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ].
       
       (*
           fn matches(&mut self, c: char) -> bool {
               self.iter().any(|&m| m == c)
           }
       *)
-      Definition matches (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; c ] =>
+      Definition matches (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; c ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let c := M.alloc (| c |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "char" ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "char" ],
                 [],
                 "any",
                 [
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "char" ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ] ]
                     (Ty.path "bool")
                 ]
               |),
@@ -3434,7 +3526,7 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "char" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "char" ],
                       "iter",
                       []
                     |),
@@ -3460,41 +3552,42 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::MultiCharEq"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("matches", InstanceField.Method matches) ].
-    End Impl_core_str_pattern_MultiCharEq_for_ref__array_char.
+          (* Instance *) [ ("matches", InstanceField.Method (matches N)) ].
+    End Impl_core_str_pattern_MultiCharEq_for_ref__array_N_char.
     
     Module Impl_core_str_pattern_MultiCharEq_for_ref__slice_char.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ].
+        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ].
       
       (*
           fn matches(&mut self, c: char) -> bool {
               self.iter().any(|&m| m == c)
           }
       *)
-      Definition matches (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; c ] =>
+      Definition matches (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; c ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let c := M.alloc (| c |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "char" ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "char" ],
                 [],
                 "any",
                 [
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "char" ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ] ]
                     (Ty.path "bool")
                 ]
               |),
@@ -3502,7 +3595,7 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "char" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "char" ],
                       "iter",
                       []
                     |),
@@ -3528,7 +3621,7 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3542,6 +3635,7 @@ Module str.
     (* StructTuple
       {
         name := "MultiCharEqPattern";
+        const_params := [];
         ty_params := [ "C" ];
         fields := [ C ];
       } *)
@@ -3549,24 +3643,25 @@ Module str.
     (* StructRecord
       {
         name := "MultiCharEqSearcher";
+        const_params := [];
         ty_params := [ "C" ];
         fields :=
           [
             ("char_eq", C);
-            ("haystack", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
+            ("haystack", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]);
             ("char_indices", Ty.path "core::str::iter::CharIndices")
           ];
       } *)
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_C_where_core_str_pattern_MultiCharEq_C_for_core_str_pattern_MultiCharEqSearcher_C.
       Definition Self (C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ C ].
+        Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ C ].
       
       (* Clone *)
-      Definition clone (C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self C in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -3587,7 +3682,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
                       "clone",
                       []
@@ -3618,7 +3713,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3632,13 +3727,13 @@ Module str.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_C_where_core_str_pattern_MultiCharEq_C_for_core_str_pattern_MultiCharEqSearcher_C.
       Definition Self (C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ C ].
+        Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ C ].
       
       (* Debug *)
-      Definition fmt (C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self C in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -3679,7 +3774,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3693,21 +3788,26 @@ Module str.
     
     Module Impl_core_str_pattern_Pattern_where_core_str_pattern_MultiCharEq_C_for_core_str_pattern_MultiCharEqPattern_C.
       Definition Self (C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [ C ].
+        Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [] [ C ].
       
       (*     type Searcher = MultiCharEqSearcher<'a, C>; *)
       Definition _Searcher (C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ C ].
+        Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ C ].
       
       (*
           fn into_searcher(self, haystack: &'a str) -> MultiCharEqSearcher<'a, C> {
               MultiCharEqSearcher { haystack, char_eq: self.0, char_indices: haystack.char_indices() }
           }
       *)
-      Definition into_searcher (C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_searcher
+          (C : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self C in
-        match τ, α with
-        | [], [ self; haystack ] =>
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -3729,7 +3829,7 @@ Module str.
                     [ M.read (| haystack |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3747,17 +3847,17 @@ Module str.
     
     Module Impl_core_str_pattern_Searcher_where_core_str_pattern_MultiCharEq_C_for_core_str_pattern_MultiCharEqSearcher_C.
       Definition Self (C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ C ].
+        Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ C ].
       
       (*
           fn haystack(&self) -> &'a str {
               self.haystack
           }
       *)
-      Definition haystack (C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition haystack (C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self C in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3767,7 +3867,7 @@ Module str.
                 "haystack"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3788,10 +3888,10 @@ Module str.
               SearchStep::Done
           }
       *)
-      Definition next (C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self C in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -3810,7 +3910,7 @@ Module str.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::exact_size::ExactSizeIterator",
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                           [],
                           "len",
                           []
@@ -3862,7 +3962,10 @@ Module str.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "u8" ],
                                     [],
                                     "len",
                                     []
@@ -3962,7 +4065,7 @@ Module str.
                   M.alloc (| Value.StructTuple "core::str::pattern::SearchStep::Done" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3978,7 +4081,7 @@ Module str.
     
     Module Impl_core_str_pattern_ReverseSearcher_where_core_str_pattern_MultiCharEq_C_for_core_str_pattern_MultiCharEqSearcher_C.
       Definition Self (C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ C ].
+        Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ C ].
       
       (*
           fn next_back(&mut self) -> SearchStep {
@@ -3998,10 +4101,10 @@ Module str.
               SearchStep::Done
           }
       *)
-      Definition next_back (C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self C in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -4020,7 +4123,7 @@ Module str.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::exact_size::ExactSizeIterator",
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                           [],
                           "len",
                           []
@@ -4072,7 +4175,10 @@ Module str.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "u8" ],
                                     [],
                                     "len",
                                     []
@@ -4172,7 +4278,7 @@ Module str.
                   M.alloc (| Value.StructTuple "core::str::pattern::SearchStep::Done" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4186,7 +4292,7 @@ Module str.
     
     Module Impl_core_str_pattern_DoubleEndedSearcher_where_core_str_pattern_MultiCharEq_C_for_core_str_pattern_MultiCharEqSearcher_C.
       Definition Self (C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ C ].
+        Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ C ].
       
       Axiom Implements :
         forall (C : Ty.t),
@@ -4200,17 +4306,20 @@ Module str.
     (* StructTuple
       {
         name := "CharArraySearcher";
+        const_params := [ "N" ];
         ty_params := [];
         fields := [ Ty.associated ];
       } *)
     
-    Module Impl_core_clone_Clone_for_core_str_pattern_CharArraySearcher.
-      Definition Self : Ty.t := Ty.path "core::str::pattern::CharArraySearcher".
+    Module Impl_core_clone_Clone_for_core_str_pattern_CharArraySearcher_N.
+      Definition Self (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::pattern::CharArraySearcher") [ N ] [].
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4221,7 +4330,8 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                      [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                     [],
                     "clone",
                     []
@@ -4235,24 +4345,27 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("clone", InstanceField.Method clone) ].
-    End Impl_core_clone_Clone_for_core_str_pattern_CharArraySearcher.
+          (* Instance *) [ ("clone", InstanceField.Method (clone N)) ].
+    End Impl_core_clone_Clone_for_core_str_pattern_CharArraySearcher_N.
     
-    Module Impl_core_fmt_Debug_for_core_str_pattern_CharArraySearcher.
-      Definition Self : Ty.t := Ty.path "core::str::pattern::CharArraySearcher".
+    Module Impl_core_fmt_Debug_for_core_str_pattern_CharArraySearcher_N.
+      Definition Self (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::pattern::CharArraySearcher") [ N ] [].
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4276,31 +4389,35 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-    End Impl_core_fmt_Debug_for_core_str_pattern_CharArraySearcher.
+          (* Instance *) [ ("fmt", InstanceField.Method (fmt N)) ].
+    End Impl_core_fmt_Debug_for_core_str_pattern_CharArraySearcher_N.
     
     (* StructTuple
       {
         name := "CharArrayRefSearcher";
+        const_params := [ "N" ];
         ty_params := [];
         fields := [ Ty.associated ];
       } *)
     
-    Module Impl_core_clone_Clone_for_core_str_pattern_CharArrayRefSearcher.
-      Definition Self : Ty.t := Ty.path "core::str::pattern::CharArrayRefSearcher".
+    Module Impl_core_clone_Clone_for_core_str_pattern_CharArrayRefSearcher_N.
+      Definition Self (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::pattern::CharArrayRefSearcher") [ N ] [].
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4311,7 +4428,13 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                      [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                      ],
                     [],
                     "clone",
                     []
@@ -4325,24 +4448,27 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("clone", InstanceField.Method clone) ].
-    End Impl_core_clone_Clone_for_core_str_pattern_CharArrayRefSearcher.
+          (* Instance *) [ ("clone", InstanceField.Method (clone N)) ].
+    End Impl_core_clone_Clone_for_core_str_pattern_CharArrayRefSearcher_N.
     
-    Module Impl_core_fmt_Debug_for_core_str_pattern_CharArrayRefSearcher.
-      Definition Self : Ty.t := Ty.path "core::str::pattern::CharArrayRefSearcher".
+    Module Impl_core_fmt_Debug_for_core_str_pattern_CharArrayRefSearcher_N.
+      Definition Self (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::pattern::CharArrayRefSearcher") [ N ] [].
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4366,31 +4492,39 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-    End Impl_core_fmt_Debug_for_core_str_pattern_CharArrayRefSearcher.
+          (* Instance *) [ ("fmt", InstanceField.Method (fmt N)) ].
+    End Impl_core_fmt_Debug_for_core_str_pattern_CharArrayRefSearcher_N.
     
-    Module Impl_core_str_pattern_Pattern_for_array_char.
-      Definition Self : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "char" ].
+    Module Impl_core_str_pattern_Pattern_for_array_N_char.
+      Definition Self (N : Value.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ].
       
       (*         type Searcher = $t; *)
-      Definition _Searcher : Ty.t := Ty.path "core::str::pattern::CharArraySearcher".
+      Definition _Searcher (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::pattern::CharArraySearcher") [ N ] [].
       
       (*
               fn into_searcher(self, haystack: &'a str) -> $t {
                   ($smap)(($pmap)(self).into_searcher(haystack))
               }
       *)
-      Definition into_searcher (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition into_searcher
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -4402,7 +4536,8 @@ Module str.
                     "core::str::pattern::Pattern",
                     Ty.apply
                       (Ty.path "core::str::pattern::MultiCharEqPattern")
-                      [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                     [],
                     "into_searcher",
                     []
@@ -4415,7 +4550,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4423,9 +4558,15 @@ Module str.
                   ($pmap)(self).is_contained_in(haystack)
               }
       *)
-      Definition is_contained_in (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_contained_in
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -4434,7 +4575,8 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                 [],
                 "is_contained_in",
                 []
@@ -4444,7 +4586,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4452,9 +4594,15 @@ Module str.
                   ($pmap)(self).is_prefix_of(haystack)
               }
       *)
-      Definition is_prefix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_prefix_of
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -4463,7 +4611,8 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                 [],
                 "is_prefix_of",
                 []
@@ -4473,7 +4622,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4481,9 +4630,15 @@ Module str.
                   ($pmap)(self).strip_prefix_of(haystack)
               }
       *)
-      Definition strip_prefix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_prefix_of
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -4492,7 +4647,8 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                 [],
                 "strip_prefix_of",
                 []
@@ -4502,7 +4658,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4513,9 +4669,15 @@ Module str.
                   ($pmap)(self).is_suffix_of(haystack)
               }
       *)
-      Definition is_suffix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_suffix_of
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -4524,7 +4686,8 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                 [],
                 "is_suffix_of",
                 []
@@ -4534,7 +4697,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4545,9 +4708,15 @@ Module str.
                   ($pmap)(self).strip_suffix_of(haystack)
               }
       *)
-      Definition strip_suffix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_suffix_of
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -4556,7 +4725,8 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                 [],
                 "strip_suffix_of",
                 []
@@ -4566,37 +4736,40 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::Pattern"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("Searcher", InstanceField.Ty _Searcher);
-            ("into_searcher", InstanceField.Method into_searcher);
-            ("is_contained_in", InstanceField.Method is_contained_in);
-            ("is_prefix_of", InstanceField.Method is_prefix_of);
-            ("strip_prefix_of", InstanceField.Method strip_prefix_of);
-            ("is_suffix_of", InstanceField.Method is_suffix_of);
-            ("strip_suffix_of", InstanceField.Method strip_suffix_of)
+            ("Searcher", InstanceField.Ty (_Searcher N));
+            ("into_searcher", InstanceField.Method (into_searcher N));
+            ("is_contained_in", InstanceField.Method (is_contained_in N));
+            ("is_prefix_of", InstanceField.Method (is_prefix_of N));
+            ("strip_prefix_of", InstanceField.Method (strip_prefix_of N));
+            ("is_suffix_of", InstanceField.Method (is_suffix_of N));
+            ("strip_suffix_of", InstanceField.Method (strip_suffix_of N))
           ].
-    End Impl_core_str_pattern_Pattern_for_array_char.
+    End Impl_core_str_pattern_Pattern_for_array_N_char.
     
-    Module Impl_core_str_pattern_Searcher_for_core_str_pattern_CharArraySearcher.
-      Definition Self : Ty.t := Ty.path "core::str::pattern::CharArraySearcher".
+    Module Impl_core_str_pattern_Searcher_for_core_str_pattern_CharArraySearcher_N.
+      Definition Self (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::pattern::CharArraySearcher") [ N ] [].
       
       (*
               fn haystack(&self) -> &'a str {
                   self.0.haystack()
               }
       *)
-      Definition haystack (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition haystack (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -4604,7 +4777,8 @@ Module str.
                 "core::str::pattern::Searcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                 [],
                 "haystack",
                 []
@@ -4617,7 +4791,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4625,9 +4799,10 @@ Module str.
                   self.0.next()
               }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -4635,7 +4810,8 @@ Module str.
                 "core::str::pattern::Searcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                 [],
                 "next",
                 []
@@ -4648,7 +4824,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4656,9 +4832,15 @@ Module str.
                   self.0.next_match()
               }
       *)
-      Definition next_match (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_match
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -4666,7 +4848,8 @@ Module str.
                 "core::str::pattern::Searcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                 [],
                 "next_match",
                 []
@@ -4679,7 +4862,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4687,9 +4870,15 @@ Module str.
                   self.0.next_reject()
               }
       *)
-      Definition next_reject (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_reject
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -4697,7 +4886,8 @@ Module str.
                 "core::str::pattern::Searcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                 [],
                 "next_reject",
                 []
@@ -4710,34 +4900,42 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::Searcher"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("haystack", InstanceField.Method haystack);
-            ("next", InstanceField.Method next);
-            ("next_match", InstanceField.Method next_match);
-            ("next_reject", InstanceField.Method next_reject)
+            ("haystack", InstanceField.Method (haystack N));
+            ("next", InstanceField.Method (next N));
+            ("next_match", InstanceField.Method (next_match N));
+            ("next_reject", InstanceField.Method (next_reject N))
           ].
-    End Impl_core_str_pattern_Searcher_for_core_str_pattern_CharArraySearcher.
+    End Impl_core_str_pattern_Searcher_for_core_str_pattern_CharArraySearcher_N.
     
-    Module Impl_core_str_pattern_ReverseSearcher_for_core_str_pattern_CharArraySearcher.
-      Definition Self : Ty.t := Ty.path "core::str::pattern::CharArraySearcher".
+    Module Impl_core_str_pattern_ReverseSearcher_for_core_str_pattern_CharArraySearcher_N.
+      Definition Self (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::pattern::CharArraySearcher") [ N ] [].
       
       (*
               fn next_back(&mut self) -> SearchStep {
                   self.0.next_back()
               }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -4745,7 +4943,8 @@ Module str.
                 "core::str::pattern::ReverseSearcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                 [],
                 "next_back",
                 []
@@ -4758,7 +4957,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4766,9 +4965,15 @@ Module str.
                   self.0.next_match_back()
               }
       *)
-      Definition next_match_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_match_back
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -4776,7 +4981,8 @@ Module str.
                 "core::str::pattern::ReverseSearcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                 [],
                 "next_match_back",
                 []
@@ -4789,7 +4995,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4797,9 +5003,15 @@ Module str.
                   self.0.next_reject_back()
               }
       *)
-      Definition next_reject_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_reject_back
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -4807,7 +5019,8 @@ Module str.
                 "core::str::pattern::ReverseSearcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ],
                 [],
                 "next_reject_back",
                 []
@@ -4820,48 +5033,58 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::ReverseSearcher"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("next_back", InstanceField.Method next_back);
-            ("next_match_back", InstanceField.Method next_match_back);
-            ("next_reject_back", InstanceField.Method next_reject_back)
+            ("next_back", InstanceField.Method (next_back N));
+            ("next_match_back", InstanceField.Method (next_match_back N));
+            ("next_reject_back", InstanceField.Method (next_reject_back N))
           ].
-    End Impl_core_str_pattern_ReverseSearcher_for_core_str_pattern_CharArraySearcher.
+    End Impl_core_str_pattern_ReverseSearcher_for_core_str_pattern_CharArraySearcher_N.
     
-    Module Impl_core_str_pattern_DoubleEndedSearcher_for_core_str_pattern_CharArraySearcher.
-      Definition Self : Ty.t := Ty.path "core::str::pattern::CharArraySearcher".
+    Module Impl_core_str_pattern_DoubleEndedSearcher_for_core_str_pattern_CharArraySearcher_N.
+      Definition Self (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::pattern::CharArraySearcher") [ N ] [].
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::DoubleEndedSearcher"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_str_pattern_DoubleEndedSearcher_for_core_str_pattern_CharArraySearcher.
+    End Impl_core_str_pattern_DoubleEndedSearcher_for_core_str_pattern_CharArraySearcher_N.
     
-    Module Impl_core_str_pattern_Pattern_for_ref__array_char.
-      Definition Self : Ty.t :=
-        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ].
+    Module Impl_core_str_pattern_Pattern_for_ref__array_N_char.
+      Definition Self (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ].
       
       (*         type Searcher = $t; *)
-      Definition _Searcher : Ty.t := Ty.path "core::str::pattern::CharArrayRefSearcher".
+      Definition _Searcher (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::pattern::CharArrayRefSearcher") [ N ] [].
       
       (*
               fn into_searcher(self, haystack: &'a str) -> $t {
                   ($smap)(($pmap)(self).into_searcher(haystack))
               }
       *)
-      Definition into_searcher (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition into_searcher
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -4873,7 +5096,13 @@ Module str.
                     "core::str::pattern::Pattern",
                     Ty.apply
                       (Ty.path "core::str::pattern::MultiCharEqPattern")
-                      [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                      ],
                     [],
                     "into_searcher",
                     []
@@ -4886,7 +5115,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4894,9 +5123,15 @@ Module str.
                   ($pmap)(self).is_contained_in(haystack)
               }
       *)
-      Definition is_contained_in (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_contained_in
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -4905,7 +5140,13 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "is_contained_in",
                 []
@@ -4915,7 +5156,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4923,9 +5164,15 @@ Module str.
                   ($pmap)(self).is_prefix_of(haystack)
               }
       *)
-      Definition is_prefix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_prefix_of
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -4934,7 +5181,13 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "is_prefix_of",
                 []
@@ -4944,7 +5197,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4952,9 +5205,15 @@ Module str.
                   ($pmap)(self).strip_prefix_of(haystack)
               }
       *)
-      Definition strip_prefix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_prefix_of
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -4963,7 +5222,13 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "strip_prefix_of",
                 []
@@ -4973,7 +5238,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4984,9 +5249,15 @@ Module str.
                   ($pmap)(self).is_suffix_of(haystack)
               }
       *)
-      Definition is_suffix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_suffix_of
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -4995,7 +5266,13 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "is_suffix_of",
                 []
@@ -5005,7 +5282,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5016,9 +5293,15 @@ Module str.
                   ($pmap)(self).strip_suffix_of(haystack)
               }
       *)
-      Definition strip_suffix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_suffix_of
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -5027,7 +5310,13 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "strip_suffix_of",
                 []
@@ -5037,37 +5326,40 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::Pattern"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("Searcher", InstanceField.Ty _Searcher);
-            ("into_searcher", InstanceField.Method into_searcher);
-            ("is_contained_in", InstanceField.Method is_contained_in);
-            ("is_prefix_of", InstanceField.Method is_prefix_of);
-            ("strip_prefix_of", InstanceField.Method strip_prefix_of);
-            ("is_suffix_of", InstanceField.Method is_suffix_of);
-            ("strip_suffix_of", InstanceField.Method strip_suffix_of)
+            ("Searcher", InstanceField.Ty (_Searcher N));
+            ("into_searcher", InstanceField.Method (into_searcher N));
+            ("is_contained_in", InstanceField.Method (is_contained_in N));
+            ("is_prefix_of", InstanceField.Method (is_prefix_of N));
+            ("strip_prefix_of", InstanceField.Method (strip_prefix_of N));
+            ("is_suffix_of", InstanceField.Method (is_suffix_of N));
+            ("strip_suffix_of", InstanceField.Method (strip_suffix_of N))
           ].
-    End Impl_core_str_pattern_Pattern_for_ref__array_char.
+    End Impl_core_str_pattern_Pattern_for_ref__array_N_char.
     
-    Module Impl_core_str_pattern_Searcher_for_core_str_pattern_CharArrayRefSearcher.
-      Definition Self : Ty.t := Ty.path "core::str::pattern::CharArrayRefSearcher".
+    Module Impl_core_str_pattern_Searcher_for_core_str_pattern_CharArrayRefSearcher_N.
+      Definition Self (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::pattern::CharArrayRefSearcher") [ N ] [].
       
       (*
               fn haystack(&self) -> &'a str {
                   self.0.haystack()
               }
       *)
-      Definition haystack (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition haystack (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5075,7 +5367,13 @@ Module str.
                 "core::str::pattern::Searcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "haystack",
                 []
@@ -5088,7 +5386,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5096,9 +5394,10 @@ Module str.
                   self.0.next()
               }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5106,7 +5405,13 @@ Module str.
                 "core::str::pattern::Searcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "next",
                 []
@@ -5119,7 +5424,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5127,9 +5432,15 @@ Module str.
                   self.0.next_match()
               }
       *)
-      Definition next_match (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_match
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5137,7 +5448,13 @@ Module str.
                 "core::str::pattern::Searcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "next_match",
                 []
@@ -5150,7 +5467,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5158,9 +5475,15 @@ Module str.
                   self.0.next_reject()
               }
       *)
-      Definition next_reject (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_reject
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5168,7 +5491,13 @@ Module str.
                 "core::str::pattern::Searcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "next_reject",
                 []
@@ -5181,34 +5510,42 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::Searcher"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("haystack", InstanceField.Method haystack);
-            ("next", InstanceField.Method next);
-            ("next_match", InstanceField.Method next_match);
-            ("next_reject", InstanceField.Method next_reject)
+            ("haystack", InstanceField.Method (haystack N));
+            ("next", InstanceField.Method (next N));
+            ("next_match", InstanceField.Method (next_match N));
+            ("next_reject", InstanceField.Method (next_reject N))
           ].
-    End Impl_core_str_pattern_Searcher_for_core_str_pattern_CharArrayRefSearcher.
+    End Impl_core_str_pattern_Searcher_for_core_str_pattern_CharArrayRefSearcher_N.
     
-    Module Impl_core_str_pattern_ReverseSearcher_for_core_str_pattern_CharArrayRefSearcher.
-      Definition Self : Ty.t := Ty.path "core::str::pattern::CharArrayRefSearcher".
+    Module Impl_core_str_pattern_ReverseSearcher_for_core_str_pattern_CharArrayRefSearcher_N.
+      Definition Self (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::pattern::CharArrayRefSearcher") [ N ] [].
       
       (*
               fn next_back(&mut self) -> SearchStep {
                   self.0.next_back()
               }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5216,7 +5553,13 @@ Module str.
                 "core::str::pattern::ReverseSearcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "next_back",
                 []
@@ -5229,7 +5572,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5237,9 +5580,15 @@ Module str.
                   self.0.next_match_back()
               }
       *)
-      Definition next_match_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_match_back
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5247,7 +5596,13 @@ Module str.
                 "core::str::pattern::ReverseSearcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "next_match_back",
                 []
@@ -5260,7 +5615,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5268,9 +5623,15 @@ Module str.
                   self.0.next_reject_back()
               }
       *)
-      Definition next_reject_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_reject_back
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5278,7 +5639,13 @@ Module str.
                 "core::str::pattern::ReverseSearcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "char" ] ] ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "next_reject_back",
                 []
@@ -5291,36 +5658,40 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::ReverseSearcher"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("next_back", InstanceField.Method next_back);
-            ("next_match_back", InstanceField.Method next_match_back);
-            ("next_reject_back", InstanceField.Method next_reject_back)
+            ("next_back", InstanceField.Method (next_back N));
+            ("next_match_back", InstanceField.Method (next_match_back N));
+            ("next_reject_back", InstanceField.Method (next_reject_back N))
           ].
-    End Impl_core_str_pattern_ReverseSearcher_for_core_str_pattern_CharArrayRefSearcher.
+    End Impl_core_str_pattern_ReverseSearcher_for_core_str_pattern_CharArrayRefSearcher_N.
     
-    Module Impl_core_str_pattern_DoubleEndedSearcher_for_core_str_pattern_CharArrayRefSearcher.
-      Definition Self : Ty.t := Ty.path "core::str::pattern::CharArrayRefSearcher".
+    Module Impl_core_str_pattern_DoubleEndedSearcher_for_core_str_pattern_CharArrayRefSearcher_N.
+      Definition Self (N : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::pattern::CharArrayRefSearcher") [ N ] [].
       
       Axiom Implements :
+        forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::DoubleEndedSearcher"
-          Self
+          (Self N)
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_str_pattern_DoubleEndedSearcher_for_core_str_pattern_CharArrayRefSearcher.
+    End Impl_core_str_pattern_DoubleEndedSearcher_for_core_str_pattern_CharArrayRefSearcher_N.
     
     (* StructTuple
       {
         name := "CharSliceSearcher";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.associated ];
       } *)
@@ -5329,9 +5700,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::CharSliceSearcher".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -5342,7 +5713,13 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                      [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                      ],
                     [],
                     "clone",
                     []
@@ -5356,7 +5733,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5371,9 +5748,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::CharSliceSearcher".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5397,7 +5774,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5416,9 +5793,9 @@ Module str.
                   self.0.haystack()
               }
       *)
-      Definition haystack (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition haystack (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5426,7 +5803,9 @@ Module str.
                 "core::str::pattern::Searcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "haystack",
                 []
@@ -5439,7 +5818,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5447,9 +5826,9 @@ Module str.
                   self.0.next()
               }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5457,7 +5836,9 @@ Module str.
                 "core::str::pattern::Searcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "next",
                 []
@@ -5470,7 +5851,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5478,9 +5859,9 @@ Module str.
                   self.0.next_match()
               }
       *)
-      Definition next_match (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_match (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5488,7 +5869,9 @@ Module str.
                 "core::str::pattern::Searcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "next_match",
                 []
@@ -5501,7 +5884,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5509,9 +5892,9 @@ Module str.
                   self.0.next_reject()
               }
       *)
-      Definition next_reject (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_reject (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5519,7 +5902,9 @@ Module str.
                 "core::str::pattern::Searcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "next_reject",
                 []
@@ -5532,7 +5917,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5557,9 +5942,9 @@ Module str.
                   self.0.next_back()
               }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5567,7 +5952,9 @@ Module str.
                 "core::str::pattern::ReverseSearcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "next_back",
                 []
@@ -5580,7 +5967,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5588,9 +5975,9 @@ Module str.
                   self.0.next_match_back()
               }
       *)
-      Definition next_match_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_match_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5598,7 +5985,9 @@ Module str.
                 "core::str::pattern::ReverseSearcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "next_match_back",
                 []
@@ -5611,7 +6000,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5619,9 +6008,9 @@ Module str.
                   self.0.next_reject_back()
               }
       *)
-      Definition next_reject_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_reject_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5629,7 +6018,9 @@ Module str.
                 "core::str::pattern::ReverseSearcher",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqSearcher")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "next_reject_back",
                 []
@@ -5642,7 +6033,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5671,7 +6062,7 @@ Module str.
     
     Module Impl_core_str_pattern_Pattern_for_ref__slice_char.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ].
+        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ].
       
       (*         type Searcher = $t; *)
       Definition _Searcher : Ty.t := Ty.path "core::str::pattern::CharSliceSearcher".
@@ -5681,9 +6072,9 @@ Module str.
                   ($smap)(($pmap)(self).into_searcher(haystack))
               }
       *)
-      Definition into_searcher (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition into_searcher (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -5695,7 +6086,13 @@ Module str.
                     "core::str::pattern::Pattern",
                     Ty.apply
                       (Ty.path "core::str::pattern::MultiCharEqPattern")
-                      [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                      ],
                     [],
                     "into_searcher",
                     []
@@ -5708,7 +6105,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5716,9 +6113,9 @@ Module str.
                   ($pmap)(self).is_contained_in(haystack)
               }
       *)
-      Definition is_contained_in (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_contained_in (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -5727,7 +6124,9 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "is_contained_in",
                 []
@@ -5737,7 +6136,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5745,9 +6144,9 @@ Module str.
                   ($pmap)(self).is_prefix_of(haystack)
               }
       *)
-      Definition is_prefix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_prefix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -5756,7 +6155,9 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "is_prefix_of",
                 []
@@ -5766,7 +6167,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5774,9 +6175,9 @@ Module str.
                   ($pmap)(self).strip_prefix_of(haystack)
               }
       *)
-      Definition strip_prefix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_prefix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -5785,7 +6186,9 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "strip_prefix_of",
                 []
@@ -5795,7 +6198,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5806,9 +6209,9 @@ Module str.
                   ($pmap)(self).is_suffix_of(haystack)
               }
       *)
-      Definition is_suffix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_suffix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -5817,7 +6220,9 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "is_suffix_of",
                 []
@@ -5827,7 +6232,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5838,9 +6243,9 @@ Module str.
                   ($pmap)(self).strip_suffix_of(haystack)
               }
       *)
-      Definition strip_suffix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_suffix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -5849,7 +6254,9 @@ Module str.
                 "core::str::pattern::Pattern",
                 Ty.apply
                   (Ty.path "core::str::pattern::MultiCharEqPattern")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "char" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                  ],
                 [],
                 "strip_suffix_of",
                 []
@@ -5859,7 +6266,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5882,19 +6289,20 @@ Module str.
     (* StructTuple
       {
         name := "CharPredicateSearcher";
+        const_params := [];
         ty_params := [ "F" ];
         fields := [ Ty.associated ];
       } *)
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_F_where_core_ops_function_FnMut_F_Tuple_char__for_core_str_pattern_CharPredicateSearcher_F.
       Definition Self (F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [ F ].
+        Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [] [ F ].
       
       (* Clone *)
-      Definition clone (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -5903,7 +6311,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ F ],
+                    Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ F ],
                     [],
                     "clone",
                     []
@@ -5917,7 +6325,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5931,7 +6339,7 @@ Module str.
     
     Module Impl_core_fmt_Debug_where_core_ops_function_FnMut_F_Tuple_char__for_core_str_pattern_CharPredicateSearcher_F.
       Definition Self (F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [ F ].
+        Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [] [ F ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -5941,10 +6349,10 @@ Module str.
                   .finish()
           }
       *)
-      Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6009,7 +6417,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6023,23 +6431,23 @@ Module str.
     
     Module Impl_core_str_pattern_Searcher_where_core_ops_function_FnMut_F_Tuple_char__for_core_str_pattern_CharPredicateSearcher_F.
       Definition Self (F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [ F ].
+        Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [] [ F ].
       
       (*
               fn haystack(&self) -> &'a str {
                   self.0.haystack()
               }
       *)
-      Definition haystack (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition haystack (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Searcher",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ F ],
+                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ F ],
                 [],
                 "haystack",
                 []
@@ -6052,7 +6460,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6060,16 +6468,16 @@ Module str.
                   self.0.next()
               }
       *)
-      Definition next (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Searcher",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ F ],
+                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ F ],
                 [],
                 "next",
                 []
@@ -6082,7 +6490,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6090,16 +6498,16 @@ Module str.
                   self.0.next_match()
               }
       *)
-      Definition next_match (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_match (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Searcher",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ F ],
+                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ F ],
                 [],
                 "next_match",
                 []
@@ -6112,7 +6520,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6120,16 +6528,16 @@ Module str.
                   self.0.next_reject()
               }
       *)
-      Definition next_reject (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_reject (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Searcher",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ F ],
+                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ F ],
                 [],
                 "next_reject",
                 []
@@ -6142,7 +6550,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6162,23 +6570,23 @@ Module str.
     
     Module Impl_core_str_pattern_ReverseSearcher_where_core_ops_function_FnMut_F_Tuple_char__for_core_str_pattern_CharPredicateSearcher_F.
       Definition Self (F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [ F ].
+        Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [] [ F ].
       
       (*
               fn next_back(&mut self) -> SearchStep {
                   self.0.next_back()
               }
       *)
-      Definition next_back (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::ReverseSearcher",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ F ],
+                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ F ],
                 [],
                 "next_back",
                 []
@@ -6191,7 +6599,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6199,16 +6607,21 @@ Module str.
                   self.0.next_match_back()
               }
       *)
-      Definition next_match_back (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_match_back
+          (F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::ReverseSearcher",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ F ],
+                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ F ],
                 [],
                 "next_match_back",
                 []
@@ -6221,7 +6634,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6229,16 +6642,21 @@ Module str.
                   self.0.next_reject_back()
               }
       *)
-      Definition next_reject_back (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_reject_back
+          (F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::ReverseSearcher",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [ F ],
+                Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ F ],
                 [],
                 "next_reject_back",
                 []
@@ -6251,7 +6669,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6270,7 +6688,7 @@ Module str.
     
     Module Impl_core_str_pattern_DoubleEndedSearcher_where_core_ops_function_FnMut_F_Tuple_char__for_core_str_pattern_CharPredicateSearcher_F.
       Definition Self (F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [ F ].
+        Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [] [ F ].
       
       Axiom Implements :
         forall (F : Ty.t),
@@ -6286,17 +6704,22 @@ Module str.
       
       (*         type Searcher = $t; *)
       Definition _Searcher (F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [ F ].
+        Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [] [ F ].
       
       (*
               fn into_searcher(self, haystack: &'a str) -> $t {
                   ($smap)(($pmap)(self).into_searcher(haystack))
               }
       *)
-      Definition into_searcher (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_searcher
+          (F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; haystack ] =>
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -6306,7 +6729,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::str::pattern::Pattern",
-                    Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [ F ],
+                    Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [] [ F ],
                     [],
                     "into_searcher",
                     []
@@ -6319,7 +6742,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6327,17 +6750,22 @@ Module str.
                   ($pmap)(self).is_contained_in(haystack)
               }
       *)
-      Definition is_contained_in (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_contained_in
+          (F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; haystack ] =>
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [ F ],
+                Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [] [ F ],
                 [],
                 "is_contained_in",
                 []
@@ -6347,7 +6775,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6355,17 +6783,22 @@ Module str.
                   ($pmap)(self).is_prefix_of(haystack)
               }
       *)
-      Definition is_prefix_of (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_prefix_of
+          (F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; haystack ] =>
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [ F ],
+                Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [] [ F ],
                 [],
                 "is_prefix_of",
                 []
@@ -6375,7 +6808,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6383,17 +6816,22 @@ Module str.
                   ($pmap)(self).strip_prefix_of(haystack)
               }
       *)
-      Definition strip_prefix_of (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition strip_prefix_of
+          (F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; haystack ] =>
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [ F ],
+                Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [] [ F ],
                 [],
                 "strip_prefix_of",
                 []
@@ -6403,7 +6841,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6414,17 +6852,22 @@ Module str.
                   ($pmap)(self).is_suffix_of(haystack)
               }
       *)
-      Definition is_suffix_of (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_suffix_of
+          (F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; haystack ] =>
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [ F ],
+                Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [] [ F ],
                 [],
                 "is_suffix_of",
                 []
@@ -6434,7 +6877,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6445,17 +6888,22 @@ Module str.
                   ($pmap)(self).strip_suffix_of(haystack)
               }
       *)
-      Definition strip_suffix_of (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition strip_suffix_of
+          (F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; haystack ] =>
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [ F ],
+                Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [] [ F ],
                 [],
                 "strip_suffix_of",
                 []
@@ -6465,7 +6913,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6487,7 +6935,8 @@ Module str.
     End Impl_core_str_pattern_Pattern_where_core_ops_function_FnMut_F_Tuple_char__for_F.
     
     Module Impl_core_str_pattern_Pattern_for_ref__ref__str.
-      Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ].
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ].
       
       (*         type Searcher = $t; *)
       Definition _Searcher : Ty.t := Ty.path "core::str::pattern::StrSearcher".
@@ -6497,9 +6946,9 @@ Module str.
                   ($smap)(($pmap)(self).into_searcher(haystack))
               }
       *)
-      Definition into_searcher (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition into_searcher (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -6537,7 +6986,7 @@ Module str.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::str::pattern::Pattern",
-                        Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         [],
                         "into_searcher",
                         []
@@ -6552,16 +7001,18 @@ Module str.
                                   [
                                     Ty.apply
                                       (Ty.path "&")
-                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                   ]
                               ]
-                              (Ty.apply (Ty.path "&") [ Ty.path "str" ]),
+                              (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                             [
                               Ty.tuple
                                 [
                                   Ty.apply
                                     (Ty.path "&")
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 ]
                             ],
                             "call",
@@ -6596,7 +7047,7 @@ Module str.
                   ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6604,16 +7055,16 @@ Module str.
                   ($pmap)(self).is_contained_in(haystack)
               }
       *)
-      Definition is_contained_in (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_contained_in (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 [],
                 "is_contained_in",
                 []
@@ -6625,12 +7076,18 @@ Module str.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ]
                       ]
-                      (Ty.apply (Ty.path "&") [ Ty.path "str" ]),
+                      (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                     [
                       Ty.tuple
-                        [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ]
                     ],
                     "call",
                     []
@@ -6661,7 +7118,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6669,16 +7126,16 @@ Module str.
                   ($pmap)(self).is_prefix_of(haystack)
               }
       *)
-      Definition is_prefix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_prefix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 [],
                 "is_prefix_of",
                 []
@@ -6690,12 +7147,18 @@ Module str.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ]
                       ]
-                      (Ty.apply (Ty.path "&") [ Ty.path "str" ]),
+                      (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                     [
                       Ty.tuple
-                        [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ]
                     ],
                     "call",
                     []
@@ -6726,7 +7189,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6734,16 +7197,16 @@ Module str.
                   ($pmap)(self).strip_prefix_of(haystack)
               }
       *)
-      Definition strip_prefix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_prefix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 [],
                 "strip_prefix_of",
                 []
@@ -6755,12 +7218,18 @@ Module str.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ]
                       ]
-                      (Ty.apply (Ty.path "&") [ Ty.path "str" ]),
+                      (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                     [
                       Ty.tuple
-                        [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ]
                     ],
                     "call",
                     []
@@ -6791,7 +7260,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6802,16 +7271,16 @@ Module str.
                   ($pmap)(self).is_suffix_of(haystack)
               }
       *)
-      Definition is_suffix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_suffix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 [],
                 "is_suffix_of",
                 []
@@ -6823,12 +7292,18 @@ Module str.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ]
                       ]
-                      (Ty.apply (Ty.path "&") [ Ty.path "str" ]),
+                      (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                     [
                       Ty.tuple
-                        [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ]
                     ],
                     "call",
                     []
@@ -6859,7 +7334,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6870,16 +7345,16 @@ Module str.
                   ($pmap)(self).strip_suffix_of(haystack)
               }
       *)
-      Definition strip_suffix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_suffix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::str::pattern::Pattern",
-                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 [],
                 "strip_suffix_of",
                 []
@@ -6891,12 +7366,18 @@ Module str.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ]
                       ]
-                      (Ty.apply (Ty.path "&") [ Ty.path "str" ]),
+                      (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                     [
                       Ty.tuple
-                        [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ]
                     ],
                     "call",
                     []
@@ -6927,7 +7408,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6948,7 +7429,7 @@ Module str.
     End Impl_core_str_pattern_Pattern_for_ref__ref__str.
     
     Module Impl_core_str_pattern_Pattern_for_ref__str.
-      Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*     type Searcher = StrSearcher<'a, 'b>; *)
       Definition _Searcher : Ty.t := Ty.path "core::str::pattern::StrSearcher".
@@ -6958,9 +7439,9 @@ Module str.
               StrSearcher::new(haystack, self)
           }
       *)
-      Definition into_searcher (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition into_searcher (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -6968,7 +7449,7 @@ Module str.
               M.get_associated_function (| Ty.path "core::str::pattern::StrSearcher", "new", [] |),
               [ M.read (| haystack |); M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6976,15 +7457,15 @@ Module str.
               haystack.as_bytes().starts_with(self.as_bytes())
           }
       *)
-      Definition is_prefix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_prefix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 "starts_with",
                 []
               |),
@@ -6999,7 +7480,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -7027,9 +7508,9 @@ Module str.
               }
           }
       *)
-      Definition is_contained_in (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_contained_in (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -7115,7 +7596,7 @@ Module str.
                                           M.return_ (|
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "contains",
                                                 []
                                               |),
@@ -7211,6 +7692,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                                 "is_some",
                                 []
@@ -7230,7 +7712,7 @@ Module str.
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::str::pattern::Pattern",
-                                            Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                             [],
                                             "into_searcher",
                                             []
@@ -7250,8 +7732,8 @@ Module str.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
-                                Ty.apply (Ty.path "&") [ Ty.path "str" ],
-                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 "eq",
                                 []
                               |),
@@ -7262,7 +7744,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -7275,9 +7757,9 @@ Module str.
               }
           }
       *)
-      Definition strip_prefix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_prefix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -7293,7 +7775,7 @@ Module str.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::str::pattern::Pattern",
-                                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                 [],
                                 "is_prefix_of",
                                 []
@@ -7313,6 +7795,7 @@ Module str.
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeFrom")
+                                    []
                                     [ Ty.path "usize" ]
                                 ]
                               |),
@@ -7324,7 +7807,7 @@ Module str.
                                     ("start",
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
@@ -7350,7 +7833,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -7358,15 +7841,15 @@ Module str.
               haystack.as_bytes().ends_with(self.as_bytes())
           }
       *)
-      Definition is_suffix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition is_suffix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 "ends_with",
                 []
               |),
@@ -7381,7 +7864,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -7395,9 +7878,9 @@ Module str.
               }
           }
       *)
-      Definition strip_suffix_of (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; haystack ] =>
+      Definition strip_suffix_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; haystack ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -7413,7 +7896,7 @@ Module str.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::str::pattern::Pattern",
-                                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                 [],
                                 "is_suffix_of",
                                 []
@@ -7432,7 +7915,7 @@ Module str.
                             |))
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
                                 []
                               |),
@@ -7452,7 +7935,11 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "str",
                                 "get_unchecked",
-                                [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
+                                    []
+                                    [ Ty.path "usize" ]
                                 ]
                               |),
                               [
@@ -7470,7 +7957,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7493,11 +7980,12 @@ Module str.
     (* StructRecord
       {
         name := "StrSearcher";
+        const_params := [];
         ty_params := [];
         fields :=
           [
-            ("haystack", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
-            ("needle", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
+            ("haystack", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]);
+            ("needle", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]);
             ("searcher", Ty.path "core::str::pattern::StrSearcherImpl")
           ];
       } *)
@@ -7506,9 +7994,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::StrSearcher".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -7518,7 +8006,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
                       "clone",
                       []
@@ -7535,7 +8023,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
                       "clone",
                       []
@@ -7566,7 +8054,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7581,9 +8069,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::StrSearcher".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -7624,7 +8112,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7638,6 +8126,7 @@ Module str.
     (*
     Enum StrSearcherImpl
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -7659,9 +8148,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::StrSearcherImpl".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -7723,7 +8212,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7738,9 +8227,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::StrSearcherImpl".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -7799,7 +8288,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7813,6 +8302,7 @@ Module str.
     (* StructRecord
       {
         name := "EmptyNeedle";
+        const_params := [];
         ty_params := [];
         fields :=
           [
@@ -7828,9 +8318,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::EmptyNeedle".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -7892,7 +8382,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7907,9 +8397,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::EmptyNeedle".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -7966,7 +8456,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8006,9 +8496,9 @@ Module str.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ haystack; needle ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ haystack; needle ] =>
           ltac:(M.monadic
             (let haystack := M.alloc (| haystack |) in
             let needle := M.alloc (| needle |) in
@@ -8092,7 +8582,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -8106,9 +8596,9 @@ Module str.
               self.haystack
           }
       *)
-      Definition haystack (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition haystack (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -8118,7 +8608,7 @@ Module str.
                 "haystack"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -8173,9 +8663,9 @@ Module str.
               }
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -8283,6 +8773,7 @@ Module str.
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeFrom")
+                                                []
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
@@ -8611,7 +9102,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -8645,9 +9136,9 @@ Module str.
               }
           }
       *)
-      Definition next_match (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_match (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -8878,7 +9369,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8943,9 +9434,9 @@ Module str.
               }
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -9053,6 +9544,7 @@ Module str.
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
+                                                []
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
@@ -9366,7 +9858,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -9399,9 +9891,9 @@ Module str.
               }
           }
       *)
-      Definition next_match_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_match_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -9632,7 +10124,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9650,6 +10142,7 @@ Module str.
     (* StructRecord
       {
         name := "TwoWaySearcher";
+        const_params := [];
         ty_params := [];
         fields :=
           [
@@ -9668,9 +10161,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::TwoWaySearcher".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -9765,7 +10258,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9780,9 +10273,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::pattern::TwoWaySearcher".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -9887,7 +10380,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9970,9 +10463,9 @@ Module str.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ needle; end_ ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ needle; end_ ] =>
           ltac:(M.monadic
             (let needle := M.alloc (| needle |) in
             let end_ := M.alloc (| end_ |) in
@@ -10062,10 +10555,14 @@ Module str.
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::cmp::PartialEq",
-                                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "slice")
+                                                            []
                                                             [ Ty.path "u8" ]
                                                         ],
                                                         "eq",
@@ -10077,11 +10574,13 @@ Module str.
                                                             "core::ops::index::Index",
                                                             Ty.apply
                                                               (Ty.path "slice")
+                                                              []
                                                               [ Ty.path "u8" ],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "core::ops::range::RangeTo")
+                                                                []
                                                                 [ Ty.path "usize" ]
                                                             ],
                                                             "index",
@@ -10099,10 +10598,12 @@ Module str.
                                                             "core::ops::index::Index",
                                                             Ty.apply
                                                               (Ty.path "slice")
+                                                              []
                                                               [ Ty.path "u8" ],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::ops::range::Range")
+                                                                []
                                                                 [ Ty.path "usize" ]
                                                             ],
                                                             "index",
@@ -10136,7 +10637,10 @@ Module str.
                                                     Integer.Usize
                                                     (M.call_closure (|
                                                       M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ],
                                                         "len",
                                                         []
                                                       |),
@@ -10198,11 +10702,13 @@ Module str.
                                                               "core::ops::index::Index",
                                                               Ty.apply
                                                                 (Ty.path "slice")
+                                                                []
                                                                 [ Ty.path "u8" ],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::ops::range::RangeTo")
+                                                                  []
                                                                   [ Ty.path "usize" ]
                                                               ],
                                                               "index",
@@ -10225,6 +10731,7 @@ Module str.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "slice")
+                                                            []
                                                             [ Ty.path "u8" ],
                                                           "len",
                                                           []
@@ -10257,6 +10764,7 @@ Module str.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [ Ty.path "u8" ],
                                                                   "len",
                                                                   []
@@ -10298,7 +10806,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -10308,28 +10816,28 @@ Module str.
               bytes.iter().fold(0, |a, &b| (1 << (b & 0x3f)) | a)
           }
       *)
-      Definition byteset_create (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ bytes ] =>
+      Definition byteset_create (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ bytes ] =>
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                 [],
                 "fold",
                 [
                   Ty.path "u64";
                   Ty.function
-                    [ Ty.tuple [ Ty.path "u64"; Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] ]
+                    [ Ty.tuple [ Ty.path "u64"; Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
                     (Ty.path "u64")
                 ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "iter",
                     []
                   |),
@@ -10369,7 +10877,7 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_byteset_create :
@@ -10380,9 +10888,9 @@ Module str.
               (self.byteset >> ((byte & 0x3f) as usize)) & 1 != 0
           }
       *)
-      Definition byteset_contains (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; byte ] =>
+      Definition byteset_contains (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; byte ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let byte := M.alloc (| byte |) in
@@ -10399,7 +10907,7 @@ Module str.
                   (M.rust_cast (BinOp.Pure.bit_and (M.read (| byte |)) (Value.Integer 63))))
                 (Value.Integer 1))
               (Value.Integer 0)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_byteset_contains :
@@ -10476,9 +10984,9 @@ Module str.
               }
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ _ as S ], [ self; haystack; needle; long_period ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; haystack; needle; long_period ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -10501,7 +11009,7 @@ Module str.
                         Integer.Usize
                         (M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
                             []
                           |),
@@ -10520,7 +11028,7 @@ Module str.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "get",
                                         [ Ty.path "usize" ]
                                       |),
@@ -10567,7 +11075,10 @@ Module str.
                                                   |),
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
@@ -10709,7 +11220,10 @@ Module str.
                                                   (M.read (| β |))
                                                   (M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
@@ -10809,6 +11323,7 @@ Module str.
                                         "core::iter::traits::collect::IntoIterator",
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ],
                                         [],
                                         "into_iter",
@@ -10822,7 +11337,7 @@ Module str.
                                             ("end_",
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "len",
                                                   []
                                                 |),
@@ -10846,6 +11361,7 @@ Module str.
                                                       "core::iter::traits::iterator::Iterator",
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::Range")
+                                                        []
                                                         [ Ty.path "usize" ],
                                                       [],
                                                       "next",
@@ -11033,9 +11549,11 @@ Module str.
                                         "core::iter::traits::collect::IntoIterator",
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::rev::Rev")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
+                                              []
                                               [ Ty.path "usize" ]
                                           ],
                                         [],
@@ -11048,6 +11566,7 @@ Module str.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
+                                              []
                                               [ Ty.path "usize" ],
                                             [],
                                             "rev",
@@ -11086,9 +11605,11 @@ Module str.
                                                       "core::iter::traits::iterator::Iterator",
                                                       Ty.apply
                                                         (Ty.path "core::iter::adapters::rev::Rev")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::Range")
+                                                            []
                                                             [ Ty.path "usize" ]
                                                         ],
                                                       [],
@@ -11218,6 +11739,7 @@ Module str.
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "slice")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "u8"
@@ -11288,7 +11810,7 @@ Module str.
                                   (M.read (| β |))
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
@@ -11340,7 +11862,7 @@ Module str.
                                     (M.read (| match_pos |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
@@ -11355,7 +11877,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next : M.IsAssociatedFunction Self "next" next.
@@ -11434,9 +11956,9 @@ Module str.
               }
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ _ as S ], [ self; haystack; needle; long_period ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; haystack; needle; long_period ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
@@ -11464,7 +11986,7 @@ Module str.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "get",
                                         [ Ty.path "usize" ]
                                       |),
@@ -11486,7 +12008,7 @@ Module str.
                                             |);
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "len",
                                                 []
                                               |),
@@ -11651,7 +12173,10 @@ Module str.
                                                   (M.read (| β |))
                                                   (M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
@@ -11685,6 +12210,7 @@ Module str.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "slice")
+                                                                []
                                                                 [ Ty.path "u8" ],
                                                               "len",
                                                               []
@@ -11760,9 +12286,11 @@ Module str.
                                         "core::iter::traits::collect::IntoIterator",
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::rev::Rev")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
+                                              []
                                               [ Ty.path "usize" ]
                                           ],
                                         [],
@@ -11775,6 +12303,7 @@ Module str.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
+                                              []
                                               [ Ty.path "usize" ],
                                             [],
                                             "rev",
@@ -11806,9 +12335,11 @@ Module str.
                                                       "core::iter::traits::iterator::Iterator",
                                                       Ty.apply
                                                         (Ty.path "core::iter::adapters::rev::Rev")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::Range")
+                                                            []
                                                             [ Ty.path "usize" ]
                                                         ],
                                                       [],
@@ -11877,6 +12408,7 @@ Module str.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "slice")
+                                                                                      []
                                                                                       [ Ty.path "u8"
                                                                                       ],
                                                                                     "len",
@@ -11959,6 +12491,7 @@ Module str.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "slice")
+                                                                                        []
                                                                                         [
                                                                                           Ty.path
                                                                                             "u8"
@@ -12014,7 +12547,7 @@ Module str.
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               "len",
                                               []
                                             |),
@@ -12040,6 +12573,7 @@ Module str.
                                         "core::iter::traits::collect::IntoIterator",
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ],
                                         [],
                                         "into_iter",
@@ -12076,6 +12610,7 @@ Module str.
                                                       "core::iter::traits::iterator::Iterator",
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::Range")
+                                                        []
                                                         [ Ty.path "usize" ],
                                                       [],
                                                       "next",
@@ -12143,6 +12678,7 @@ Module str.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "slice")
+                                                                                      []
                                                                                       [ Ty.path "u8"
                                                                                       ],
                                                                                     "len",
@@ -12265,7 +12801,7 @@ Module str.
                                   |))
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
@@ -12286,7 +12822,7 @@ Module str.
                                   (M.read (| β |))
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
@@ -12318,7 +12854,7 @@ Module str.
                                           |),
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               "len",
                                               []
                                             |),
@@ -12345,7 +12881,7 @@ Module str.
                                     (M.read (| match_pos |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
@@ -12360,7 +12896,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next_back : M.IsAssociatedFunction Self "next_back" next_back.
@@ -12400,9 +12936,9 @@ Module str.
               (left, period)
           }
       *)
-      Definition maximal_suffix (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ arr; order_greater ] =>
+      Definition maximal_suffix (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ arr; order_greater ] =>
           ltac:(M.monadic
             (let arr := M.alloc (| arr |) in
             let order_greater := M.alloc (| order_greater |) in
@@ -12423,7 +12959,7 @@ Module str.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "get",
                                     [ Ty.path "usize" ]
                                   |),
@@ -12605,7 +13141,7 @@ Module str.
                 |) in
               M.alloc (| Value.Tuple [ M.read (| left |); M.read (| period |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_maximal_suffix :
@@ -12651,9 +13187,9 @@ Module str.
               left
           }
       *)
-      Definition reverse_maximal_suffix (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ arr; known_period; order_greater ] =>
+      Definition reverse_maximal_suffix (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ arr; known_period; order_greater ] =>
           ltac:(M.monadic
             (let arr := M.alloc (| arr |) in
             let known_period := M.alloc (| known_period |) in
@@ -12667,7 +13203,7 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "len",
                       []
                     |),
@@ -12948,7 +13484,7 @@ Module str.
                 |) in
               left
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_maximal_suffix :
@@ -12961,6 +13497,7 @@ Module str.
     (*
     Enum MatchOnly
     {
+      const_params := [];
       ty_params := [];
       variants := [];
     }
@@ -12971,29 +13508,35 @@ Module str.
       
       (*     type Output = Option<(usize, usize)>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ].
       
       (*
           fn use_early_reject() -> bool {
               false
           }
       *)
-      Definition use_early_reject (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with | [], [] => ltac:(M.monadic (Value.Bool false)) | _, _ => M.impossible end.
+      Definition use_early_reject (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] => ltac:(M.monadic (Value.Bool false))
+        | _, _, _ => M.impossible
+        end.
       
       (*
           fn rejecting(_a: usize, _b: usize) -> Self::Output {
               None
           }
       *)
-      Definition rejecting (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ _a; _b ] =>
+      Definition rejecting (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ _a; _b ] =>
           ltac:(M.monadic
             (let _a := M.alloc (| _a |) in
             let _b := M.alloc (| _b |) in
             Value.StructTuple "core::option::Option::None" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -13001,16 +13544,16 @@ Module str.
               Some((a, b))
           }
       *)
-      Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ a; b ] =>
+      Definition matching (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ a; b ] =>
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
             Value.StructTuple
               "core::option::Option::Some"
               [ Value.Tuple [ M.read (| a |); M.read (| b |) ] ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13030,6 +13573,7 @@ Module str.
     (*
     Enum RejectAndMatch
     {
+      const_params := [];
       ty_params := [];
       variants := [];
     }
@@ -13046,24 +13590,27 @@ Module str.
               true
           }
       *)
-      Definition use_early_reject (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with | [], [] => ltac:(M.monadic (Value.Bool true)) | _, _ => M.impossible end.
+      Definition use_early_reject (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] => ltac:(M.monadic (Value.Bool true))
+        | _, _, _ => M.impossible
+        end.
       
       (*
           fn rejecting(a: usize, b: usize) -> Self::Output {
               SearchStep::Reject(a, b)
           }
       *)
-      Definition rejecting (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ a; b ] =>
+      Definition rejecting (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ a; b ] =>
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
             Value.StructTuple
               "core::str::pattern::SearchStep::Reject"
               [ M.read (| a |); M.read (| b |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -13071,16 +13618,16 @@ Module str.
               SearchStep::Match(a, b)
           }
       *)
-      Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ a; b ] =>
+      Definition matching (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ a; b ] =>
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
             Value.StructTuple
               "core::str::pattern::SearchStep::Match"
               [ M.read (| a |); M.read (| b |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13221,9 +13768,9 @@ Module str.
         Some(result)
     }
     *)
-    Definition simd_contains (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ needle; haystack ] =>
+    Definition simd_contains (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ needle; haystack ] =>
         ltac:(M.monadic
           (let needle := M.alloc (| needle |) in
           let haystack := M.alloc (| haystack |) in
@@ -13266,7 +13813,7 @@ Module str.
                                             (BinOp.Pure.gt
                                               (M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "len",
                                                   []
                                                 |),
@@ -13311,7 +13858,7 @@ Module str.
                       Integer.Usize
                       (M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "len",
                           []
                         |),
@@ -13332,7 +13879,7 @@ Module str.
                                   BinOp.Pure.eq
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
@@ -13352,12 +13899,14 @@ Module str.
                                     "core::iter::traits::double_ended::DoubleEndedIterator",
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
+                                      []
                                       [ Ty.path "usize" ],
                                     [],
                                     "rfind",
                                     [
                                       Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "usize" ] ] ]
+                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
+                                        ]
                                         (Ty.path "bool")
                                     ]
                                   |),
@@ -13376,7 +13925,7 @@ Module str.
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "len",
                                                     []
                                                   |),
@@ -13388,7 +13937,7 @@ Module str.
                                           ("end_",
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "len",
                                                 []
                                               |),
@@ -13451,7 +14000,7 @@ Module str.
                                 BinOp.Pure.lt
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
@@ -13478,6 +14027,7 @@ Module str.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::Windows")
+                                            []
                                             [ Ty.path "u8" ],
                                           [],
                                           "any",
@@ -13488,7 +14038,12 @@ Module str.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "&")
-                                                      [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ]
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
                                                       ]
                                                   ]
                                               ]
@@ -13499,7 +14054,7 @@ Module str.
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "windows",
                                                 []
                                               |),
@@ -13507,7 +14062,7 @@ Module str.
                                                 M.read (| haystack |);
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "len",
                                                     []
                                                   |),
@@ -13532,17 +14087,21 @@ Module str.
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [ Ty.path "u8" ]
                                                                 ],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "slice")
+                                                                      []
                                                                       [ Ty.path "u8" ]
                                                                   ]
                                                               ],
@@ -13569,7 +14128,10 @@ Module str.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::core_simd::vector::Simd") [ Ty.path "u8" ],
+                        Ty.apply
+                          (Ty.path "core::core_simd::vector::Simd")
+                          [ Value.Integer 16 ]
+                          [ Ty.path "u8" ],
                         "splat",
                         []
                       |),
@@ -13580,7 +14142,10 @@ Module str.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::core_simd::vector::Simd") [ Ty.path "u8" ],
+                        Ty.apply
+                          (Ty.path "core::core_simd::vector::Simd")
+                          [ Value.Integer 16 ]
+                          [ Ty.path "u8" ],
                         "splat",
                         []
                       |),
@@ -13599,8 +14164,8 @@ Module str.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::index::Index",
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                        [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ] ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ],
                         "index",
                         []
                       |),
@@ -13717,12 +14282,14 @@ Module str.
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path "slice")
+                                                                                  []
                                                                                   [ Ty.path "u8" ],
                                                                                 "get_unchecked",
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::ops::range::RangeTo")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "usize"
@@ -13735,6 +14302,7 @@ Module str.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "slice")
+                                                                                      []
                                                                                       [ Ty.path "u8"
                                                                                       ],
                                                                                     "get_unchecked",
@@ -13742,6 +14310,7 @@ Module str.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "core::ops::range::RangeFrom")
+                                                                                        []
                                                                                         [
                                                                                           Ty.path
                                                                                             "usize"
@@ -13771,6 +14340,7 @@ Module str.
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "slice")
+                                                                                            []
                                                                                             [
                                                                                               Ty.path
                                                                                                 "u8"
@@ -13906,9 +14476,11 @@ Module str.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "*const")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::core_simd::vector::Simd")
+                                                      [ Value.Integer 16 ]
                                                       [ Ty.path "u8" ]
                                                   ],
                                                 "read_unaligned",
@@ -13917,11 +14489,12 @@ Module str.
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                     "cast",
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::core_simd::vector::Simd")
+                                                        [ Value.Integer 16 ]
                                                         [ Ty.path "u8" ]
                                                     ]
                                                   |),
@@ -13930,6 +14503,7 @@ Module str.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "*const")
+                                                          []
                                                           [ Ty.path "u8" ],
                                                         "add",
                                                         []
@@ -13939,6 +14513,7 @@ Module str.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "slice")
+                                                              []
                                                               [ Ty.path "u8" ],
                                                             "as_ptr",
                                                             []
@@ -13959,9 +14534,11 @@ Module str.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "*const")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::core_simd::vector::Simd")
+                                                      [ Value.Integer 16 ]
                                                       [ Ty.path "u8" ]
                                                   ],
                                                 "read_unaligned",
@@ -13970,11 +14547,12 @@ Module str.
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                     "cast",
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::core_simd::vector::Simd")
+                                                        [ Value.Integer 16 ]
                                                         [ Ty.path "u8" ]
                                                     ]
                                                   |),
@@ -13983,6 +14561,7 @@ Module str.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "*const")
+                                                          []
                                                           [ Ty.path "u8" ],
                                                         "add",
                                                         []
@@ -13992,6 +14571,7 @@ Module str.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "*const")
+                                                              []
                                                               [ Ty.path "u8" ],
                                                             "add",
                                                             []
@@ -14001,6 +14581,7 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [ Ty.path "u8" ],
                                                                 "as_ptr",
                                                                 []
@@ -14025,6 +14606,7 @@ Module str.
                                                 "core::core_simd::simd::cmp::eq::SimdPartialEq",
                                                 Ty.apply
                                                   (Ty.path "core::core_simd::vector::Simd")
+                                                  [ Value.Integer 16 ]
                                                   [ Ty.path "u8" ],
                                                 [],
                                                 "simd_eq",
@@ -14040,6 +14622,7 @@ Module str.
                                                 "core::core_simd::simd::cmp::eq::SimdPartialEq",
                                                 Ty.apply
                                                   (Ty.path "core::core_simd::vector::Simd")
+                                                  [ Value.Integer 16 ]
                                                   [ Ty.path "u8" ],
                                                 [],
                                                 "simd_eq",
@@ -14055,10 +14638,12 @@ Module str.
                                                 "core::ops::bit::BitAnd",
                                                 Ty.apply
                                                   (Ty.path "core::core_simd::masks::Mask")
+                                                  [ Value.Integer 16 ]
                                                   [ Ty.path "i8" ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::core_simd::masks::Mask")
+                                                    [ Value.Integer 16 ]
                                                     [ Ty.path "i8" ]
                                                 ],
                                                 "bitand",
@@ -14074,6 +14659,7 @@ Module str.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::core_simd::masks::Mask")
+                                                    [ Value.Integer 16 ]
                                                     [ Ty.path "i8" ],
                                                   "to_bitmask",
                                                   []
@@ -14122,7 +14708,7 @@ Module str.
                                             |))))
                                         (M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "len",
                                             []
                                           |),
@@ -14136,7 +14722,8 @@ Module str.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ masks := M.alloc (| repeat (Value.Integer 0) 4 |) in
+                              let~ masks :=
+                                M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) in
                               let~ _ :=
                                 M.use
                                   (M.match_operator (|
@@ -14146,6 +14733,7 @@ Module str.
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ],
                                           [],
                                           "into_iter",
@@ -14180,6 +14768,7 @@ Module str.
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
                                                           (Ty.path "core::ops::range::Range")
+                                                          []
                                                           [ Ty.path "usize" ],
                                                         [],
                                                         "next",
@@ -14261,6 +14850,7 @@ Module str.
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ],
                                           [],
                                           "into_iter",
@@ -14295,6 +14885,7 @@ Module str.
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
                                                           (Ty.path "core::ops::range::Range")
+                                                          []
                                                           [ Ty.path "usize" ],
                                                         [],
                                                         "next",
@@ -14471,7 +15062,7 @@ Module str.
                                           |)))
                                         (M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "len",
                                             []
                                           |),
@@ -14595,7 +15186,7 @@ Module str.
                         Integer.Usize
                         (M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
                             []
                           |),
@@ -14659,7 +15250,7 @@ Module str.
                 M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_simd_contains : M.IsFunction "core::str::pattern::simd_contains" simd_contains.
@@ -14728,9 +15319,9 @@ Module str.
         }
     }
     *)
-    Definition small_slice_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ x; y ] =>
+    Definition small_slice_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ x; y ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let y := M.alloc (| y |) in
@@ -14754,7 +15345,7 @@ Module str.
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
@@ -14764,7 +15355,7 @@ Module str.
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
@@ -14847,7 +15438,7 @@ Module str.
                                 BinOp.Pure.lt
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
@@ -14869,12 +15460,15 @@ Module str.
                                             "core::iter::traits::collect::IntoIterator",
                                             Ty.apply
                                               (Ty.path "core::iter::adapters::zip::Zip")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::Iter")
+                                                  []
                                                   [ Ty.path "u8" ];
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::Iter")
+                                                  []
                                                   [ Ty.path "u8" ]
                                               ],
                                             [],
@@ -14887,19 +15481,22 @@ Module str.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::Iter")
+                                                  []
                                                   [ Ty.path "u8" ],
                                                 [],
                                                 "zip",
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
-                                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ]
                                                 ]
                                               |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "iter",
                                                     []
                                                   |),
@@ -14926,12 +15523,15 @@ Module str.
                                                           Ty.apply
                                                             (Ty.path
                                                               "core::iter::adapters::zip::Zip")
+                                                            []
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::slice::iter::Iter")
+                                                                []
                                                                 [ Ty.path "u8" ];
                                                               Ty.apply
                                                                 (Ty.path "core::slice::iter::Iter")
+                                                                []
                                                                 [ Ty.path "u8" ]
                                                             ],
                                                           [],
@@ -15026,7 +15626,7 @@ Module str.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
                             []
                           |),
@@ -15034,7 +15634,7 @@ Module str.
                         |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
                             []
                           |),
@@ -15055,7 +15655,7 @@ Module str.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                     "add",
                                     []
                                   |),
@@ -15065,7 +15665,7 @@ Module str.
                                       Integer.Usize
                                       (M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
@@ -15076,7 +15676,7 @@ Module str.
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                     "add",
                                     []
                                   |),
@@ -15086,7 +15686,7 @@ Module str.
                                       Integer.Usize
                                       (M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
@@ -15128,7 +15728,10 @@ Module str.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*const") [ Ty.path "u32" ],
+                                                      Ty.apply
+                                                        (Ty.path "*const")
+                                                        []
+                                                        [ Ty.path "u32" ],
                                                       "read_unaligned",
                                                       []
                                                     |),
@@ -15139,7 +15742,10 @@ Module str.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*const") [ Ty.path "u32" ],
+                                                      Ty.apply
+                                                        (Ty.path "*const")
+                                                        []
+                                                        [ Ty.path "u32" ],
                                                       "read_unaligned",
                                                       []
                                                     |),
@@ -15181,7 +15787,10 @@ Module str.
                                                   px,
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "*const")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "add",
                                                       []
                                                     |),
@@ -15193,7 +15802,10 @@ Module str.
                                                   py,
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "*const")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "add",
                                                       []
                                                     |),
@@ -15223,7 +15835,7 @@ Module str.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*const") [ Ty.path "u32" ],
+                                        Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ],
                                         "read_unaligned",
                                         []
                                       |),
@@ -15234,7 +15846,7 @@ Module str.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*const") [ Ty.path "u32" ],
+                                        Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ],
                                         "read_unaligned",
                                         []
                                       |),
@@ -15248,7 +15860,7 @@ Module str.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_small_slice_eq :

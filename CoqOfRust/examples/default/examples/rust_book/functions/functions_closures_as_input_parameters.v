@@ -12,9 +12,9 @@ where
     f();
 }
 *)
-Definition apply (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ F ], [ f ] =>
+Definition apply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ F ], [ f ] =>
     ltac:(M.monadic
       (let f := M.alloc (| f |) in
       M.read (|
@@ -33,7 +33,7 @@ Definition apply (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_apply : M.IsFunction "functions_closures_as_input_parameters::apply" apply.
@@ -47,9 +47,9 @@ where
     f(3)
 }
 *)
-Definition apply_to_3 (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ F ], [ f ] =>
+Definition apply_to_3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ F ], [ f ] =>
     ltac:(M.monadic
       (let f := M.alloc (| f |) in
       M.call_closure (|
@@ -62,7 +62,7 @@ Definition apply_to_3 (τ : list Ty.t) (α : list Value.t) : M :=
         |),
         [ f; Value.Tuple [ Value.Integer 3 ] ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_apply_to_3 :
@@ -103,9 +103,9 @@ fn main() {
     println!("3 doubled: {}", apply_to_3(double));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ greeting := M.copy (| Value.String "hello" |) in
@@ -161,7 +161,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
-                                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ]
+                                                        ]
                                                       |),
                                                       [ greeting ]
                                                     |)
@@ -355,7 +360,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_as_input_parameters::main" main.

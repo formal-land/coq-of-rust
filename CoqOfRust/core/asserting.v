@@ -5,6 +5,7 @@ Module asserting.
   (* StructTuple
     {
       name := "TryCaptureWithoutDebug";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -16,18 +17,19 @@ Module asserting.
     Definition Self (E : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "&")
-        [ Ty.apply (Ty.path "core::asserting::Wrapper") [ Ty.apply (Ty.path "&") [ E ] ] ].
+        []
+        [ Ty.apply (Ty.path "core::asserting::Wrapper") [] [ Ty.apply (Ty.path "&") [] [ E ] ] ].
     
     (*     fn try_capture(&self, _: &mut Capture<E, TryCaptureWithoutDebug>) {} *)
-    Definition try_capture (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_capture (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self E in
-      match τ, α with
-      | [], [ self; β1 ] =>
+      match ε, τ, α with
+      | [], [], [ self; β1 ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -44,6 +46,7 @@ Module asserting.
     Definition Self (E : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "core::asserting::Capture")
+        []
         [ E; Ty.path "core::asserting::TryCaptureWithoutDebug" ].
     
     (*
@@ -51,10 +54,10 @@ Module asserting.
             f.write_str("N/A")
         }
     *)
-    Definition fmt (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self E in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -62,7 +65,7 @@ Module asserting.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "N/A" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -77,6 +80,7 @@ Module asserting.
   (* StructTuple
     {
       name := "TryCaptureWithDebug";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -86,17 +90,17 @@ Module asserting.
   
   Module Impl_core_asserting_TryCapturePrintable_where_core_asserting_Printable_E_E_core_asserting_TryCaptureWithDebug_for_core_asserting_Wrapper_ref__E.
     Definition Self (E : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "core::asserting::Wrapper") [ Ty.apply (Ty.path "&") [ E ] ].
+      Ty.apply (Ty.path "core::asserting::Wrapper") [] [ Ty.apply (Ty.path "&") [] [ E ] ].
     
     (*
         fn try_capture(&self, to: &mut Capture<E, TryCaptureWithDebug>) {
             to.elem = Some( *self.0);
         }
     *)
-    Definition try_capture (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_capture (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self E in
-      match τ, α with
-      | [], [ self; to ] =>
+      match ε, τ, α with
+      | [], [], [ self; to ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let to := M.alloc (| to |) in
@@ -124,7 +128,7 @@ Module asserting.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -141,6 +145,7 @@ Module asserting.
     Definition Self (E : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "core::asserting::Capture")
+        []
         [ E; Ty.path "core::asserting::TryCaptureWithDebug" ].
     
     (*
@@ -151,10 +156,10 @@ Module asserting.
             }
         }
     *)
-    Definition fmt (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self E in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -197,7 +202,7 @@ Module asserting.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -212,26 +217,28 @@ Module asserting.
   (* StructRecord
     {
       name := "Capture";
+      const_params := [];
       ty_params := [ "E"; "M_" ];
       fields :=
         [
-          ("elem", Ty.apply (Ty.path "core::option::Option") [ E ]);
-          ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [ M_ ])
+          ("elem", Ty.apply (Ty.path "core::option::Option") [] [ E ]);
+          ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [] [ M_ ])
         ];
     } *)
   
   Module Impl_core_asserting_Capture_M__T.
-    Definition Self (M_ T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::asserting::Capture") [ M_; T ].
+    Definition Self (M_ T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::asserting::Capture") [] [ M_; T ].
     
     (*
         pub const fn new() -> Self {
             Self { elem: None, phantom: PhantomData }
         }
     *)
-    Definition new (M_ T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (M_ T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self M_ T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [ host ], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "core::asserting::Capture"
@@ -239,7 +246,7 @@ Module asserting.
               ("elem", Value.StructTuple "core::option::Option::None" []);
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new :
@@ -250,6 +257,7 @@ Module asserting.
   (* StructTuple
     {
       name := "Wrapper";
+      const_params := [];
       ty_params := [ "T" ];
       fields := [ T ];
     } *)

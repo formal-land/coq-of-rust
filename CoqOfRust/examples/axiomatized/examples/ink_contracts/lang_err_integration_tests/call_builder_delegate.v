@@ -2,11 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom Hash :
-  (Ty.path "call_builder_delegate::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+  (Ty.path "call_builder_delegate::Hash") =
+    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
 
 (*
 Enum LangError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -22,6 +24,7 @@ Enum LangError
 (* StructRecord
   {
     name := "CallBuilderDelegateTest";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "i32") ];
   } *)
@@ -29,7 +32,7 @@ Enum LangError
 Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
   Definition Self : Ty.t := Ty.path "call_builder_delegate::CallBuilderDelegateTest".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -42,15 +45,15 @@ End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
 Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   Definition Self : Ty.t := Ty.path "call_builder_delegate::CallBuilderDelegateTest".
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter delegate : (list Ty.t) -> (list Value.t) -> M.
+  Parameter delegate : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_delegate : M.IsAssociatedFunction Self "delegate" delegate.
   
-  Parameter invoke : (list Ty.t) -> (list Value.t) -> M.
+  Parameter invoke : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.
 End Impl_call_builder_delegate_CallBuilderDelegateTest.

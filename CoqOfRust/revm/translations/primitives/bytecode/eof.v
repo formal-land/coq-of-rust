@@ -6,6 +6,7 @@ Module bytecode.
     (* StructRecord
       {
         name := "Eof";
+        const_params := [];
         ty_params := [];
         fields :=
           [
@@ -19,9 +20,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::Eof".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -79,7 +80,7 @@ Module bytecode.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -94,9 +95,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::Eof".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -137,7 +138,7 @@ Module bytecode.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -163,9 +164,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::Eof".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -238,7 +239,7 @@ Module bytecode.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -264,9 +265,13 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::Eof".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -289,7 +294,7 @@ Module bytecode.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -305,9 +310,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::Eof".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -372,7 +377,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -400,9 +405,9 @@ Module bytecode.
               body.into_eof()
           }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.read (|
               let~ body :=
@@ -415,6 +420,7 @@ Module bytecode.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
+                              []
                               [
                                 Ty.path
                                   "revm_primitives::bytecode::eof::types_section::TypesSection"
@@ -430,9 +436,11 @@ Module bytecode.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "array")
+                                          [ Value.Integer 1 ]
                                           [
                                             Ty.path
                                               "revm_primitives::bytecode::eof::types_section::TypesSection"
@@ -469,6 +477,7 @@ Module bytecode.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
+                              []
                               [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                             "into_vec",
                             [ Ty.path "alloc::alloc::Global" ]
@@ -481,9 +490,11 @@ Module bytecode.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "array")
+                                          [ Value.Integer 1 ]
                                           [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                                         Ty.path "alloc::alloc::Global"
                                       ],
@@ -497,7 +508,10 @@ Module bytecode.
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::convert::Into",
-                                              Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer 1 ]
+                                                [ Ty.path "u8" ],
                                               [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                               "into",
                                               []
@@ -516,6 +530,7 @@ Module bytecode.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path "alloy_primitives::bytes_::Bytes";
                                 Ty.path "alloc::alloc::Global"
@@ -548,7 +563,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -567,9 +582,9 @@ Module bytecode.
               self.header.size() + self.header.body_size()
           }
       *)
-      Definition size (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Wrap.add
@@ -602,7 +617,7 @@ Module bytecode.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_size : M.IsAssociatedFunction Self "size" size.
@@ -612,9 +627,9 @@ Module bytecode.
               &self.raw
           }
       *)
-      Definition raw (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -622,7 +637,7 @@ Module bytecode.
               "revm_primitives::bytecode::eof::Eof",
               "raw"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_raw : M.IsAssociatedFunction Self "raw" raw.
@@ -636,9 +651,9 @@ Module bytecode.
                   .unwrap_or(&[])
           }
       *)
-      Definition data_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; offset; len ] =>
+      Definition data_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; offset; len ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -647,7 +662,8 @@ Module bytecode.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
                 "unwrap_or",
                 []
               |),
@@ -656,28 +672,39 @@ Module bytecode.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
-                      [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ],
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      ],
                     "and_then",
                     [
-                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                       Ty.function
                         [
                           Ty.tuple
-                            [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                             ]
                         ]
                         (Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                           ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "get",
-                        [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ] ]
+                        [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
                       |),
                       [
                         M.call_closure (|
@@ -729,11 +756,12 @@ Module bytecode.
                                     (let bytes := M.copy (| γ |) in
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "get",
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeTo")
+                                            []
                                             [ Ty.path "usize" ]
                                         ]
                                       |),
@@ -752,7 +780,10 @@ Module bytecode.
                                                   M.read (| len |);
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
@@ -772,7 +803,7 @@ Module bytecode.
                 (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_data_slice : M.IsAssociatedFunction Self "data_slice" data_slice.
@@ -782,9 +813,9 @@ Module bytecode.
               &self.body.data_section
           }
       *)
-      Definition data (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition data (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -818,7 +849,7 @@ Module bytecode.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
@@ -831,9 +862,9 @@ Module bytecode.
               buffer.into()
           }
       *)
-      Definition encode_slow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition encode_slow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -843,6 +874,7 @@ Module bytecode.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "with_capacity",
                       []
@@ -901,6 +933,7 @@ Module bytecode.
                     "core::convert::Into",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                     "into",
@@ -910,7 +943,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_encode_slow : M.IsAssociatedFunction Self "encode_slow" encode_slow.
@@ -922,9 +955,9 @@ Module bytecode.
               Ok(Self { header, body, raw })
           }
       *)
-      Definition decode (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ raw ] =>
+      Definition decode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ raw ] =>
           ltac:(M.monadic
             (let raw := M.alloc (| raw |) in
             M.catch_return (|
@@ -938,13 +971,15 @@ Module bytecode.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple
                                   [
                                     Ty.path "revm_primitives::bytecode::eof::header::EofHeader";
                                     Ty.apply
                                       (Ty.path "&")
-                                      [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ];
                                 Ty.path "revm_primitives::bytecode::eof::EofDecodeError"
                               ],
@@ -1005,6 +1040,7 @@ Module bytecode.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "revm_primitives::bytecode::eof::Eof";
                                             Ty.path "revm_primitives::bytecode::eof::EofDecodeError"
@@ -1012,6 +1048,7 @@ Module bytecode.
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path
@@ -1054,6 +1091,7 @@ Module bytecode.
                                       "core::ops::try_trait::Try",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "revm_primitives::bytecode::eof::body::EofBody";
                                           Ty.path "revm_primitives::bytecode::eof::EofDecodeError"
@@ -1093,6 +1131,7 @@ Module bytecode.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "revm_primitives::bytecode::eof::Eof";
                                                       Ty.path
@@ -1101,6 +1140,7 @@ Module bytecode.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.path "core::convert::Infallible";
                                                         Ty.path
@@ -1146,7 +1186,7 @@ Module bytecode.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.
@@ -1155,6 +1195,7 @@ Module bytecode.
     (*
     Enum EofDecodeError
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -1261,9 +1302,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::EofDecodeError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1451,7 +1492,7 @@ Module bytecode.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1466,9 +1507,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::EofDecodeError".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1490,7 +1531,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1516,9 +1557,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::EofDecodeError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1545,7 +1586,7 @@ Module bytecode.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1571,13 +1612,17 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::EofDecodeError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1593,9 +1638,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::EofDecodeError".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1633,7 +1678,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1648,9 +1693,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::EofDecodeError".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1682,7 +1727,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1697,13 +1742,13 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::EofDecodeError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

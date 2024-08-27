@@ -7,15 +7,17 @@ Module collections.
       (* StructRecord
         {
           name := "DedupSortedIter";
+          const_params := [];
           ty_params := [ "K"; "V"; "I" ];
           fields :=
-            [ ("iter", Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ]) ];
+            [ ("iter", Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ]) ];
         } *)
       
       Module Impl_alloc_collections_btree_dedup_sorted_iter_DedupSortedIter_K_V_I.
         Definition Self (K V I : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter")
+            []
             [ K; V; I ].
         
         (*
@@ -23,10 +25,10 @@ Module collections.
                 Self { iter: iter.peekable() }
             }
         *)
-        Definition new (K V I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (K V I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V I in
-          match τ, α with
-          | [], [ iter ] =>
+          match ε, τ, α with
+          | [], [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               Value.StructRecord
@@ -44,7 +46,7 @@ Module collections.
                       [ M.read (| iter |) ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -56,6 +58,7 @@ Module collections.
         Definition Self (K V I : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter")
+            []
             [ K; V; I ].
         
         (*     type Item = (K, V); *)
@@ -80,10 +83,10 @@ Module collections.
                 }
             }
         *)
-        Definition next (K V I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (K V I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -101,6 +104,7 @@ Module collections.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::peekable::Peekable")
+                                        []
                                         [ I ],
                                       [],
                                       "next",
@@ -150,6 +154,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::peekable::Peekable")
+                                        []
                                         [ I ],
                                       "peek",
                                       []
@@ -240,7 +245,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Unit";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -12,9 +13,9 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
   Definition Self : Ty.t := Ty.path "clone::Unit".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -22,7 +23,7 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "Unit" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -37,13 +38,13 @@ Module Impl_core_clone_Clone_for_clone_Unit.
   Definition Self : Ty.t := Ty.path "clone::Unit".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -64,11 +65,12 @@ End Impl_core_marker_Copy_for_clone_Unit.
 (* StructTuple
   {
     name := "Pair";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
       ];
   } *)
 
@@ -76,9 +78,9 @@ Module Impl_core_clone_Clone_for_clone_Pair.
   Definition Self : Ty.t := Ty.path "clone::Pair".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructTuple
@@ -89,6 +91,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
                 "core::clone::Clone",
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 [],
                 "clone",
@@ -101,6 +104,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
                 "core::clone::Clone",
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 [],
                 "clone",
@@ -109,7 +113,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
               [ M.SubPointer.get_struct_tuple_field (| M.read (| self |), "clone::Pair", 1 |) ]
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -124,9 +128,9 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
   Definition Self : Ty.t := Ty.path "clone::Pair".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -149,7 +153,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -196,9 +200,9 @@ fn main() {
     println!("clone: {:?}", cloned_pair);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ unit_ := M.alloc (| Value.StructTuple "clone::Unit" [] |) in
@@ -287,6 +291,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     "new",
                     []
@@ -297,6 +302,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     "new",
                     []
@@ -434,7 +440,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "clone::main" main.

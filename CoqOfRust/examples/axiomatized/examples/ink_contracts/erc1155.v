@@ -4,18 +4,19 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc1155_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [] [ K; V ].
   
-  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (K V : Ty.t),
@@ -27,39 +28,39 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc1155_Mapping_K_V.
 
 Module Impl_erc1155_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [] [ K; V ].
   
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "size" (size K V).
   
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -69,6 +70,7 @@ End Impl_erc1155_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -76,7 +78,7 @@ End Impl_erc1155_Mapping_K_V.
 Module Impl_core_default_Default_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -89,7 +91,7 @@ End Impl_core_default_Default_for_erc1155_AccountId.
 Module Impl_core_clone_Clone_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -120,7 +122,7 @@ End Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
 Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -130,29 +132,31 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_AccountId.
 
-Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
+Module Impl_core_convert_From_array_32_u8_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *)
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_u8_for_erc1155_AccountId.
+End Impl_core_convert_From_array_32_u8_for_erc1155_AccountId.
 
 Axiom Balance : (Ty.path "erc1155::Balance") = (Ty.path "u128").
 
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "erc1155::AccountId") ];
   } *)
 
-Parameter zero_address : (list Ty.t) -> (list Value.t) -> M.
+Parameter zero_address : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_zero_address : M.IsFunction "erc1155::zero_address" zero_address.
 
@@ -165,6 +169,7 @@ Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -216,7 +221,7 @@ End Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
 Module Impl_core_cmp_PartialEq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -240,7 +245,7 @@ End Impl_core_marker_StructuralEq_for_erc1155_Error.
 Module Impl_core_cmp_Eq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
   
-  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_receiver_is_total_eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -253,8 +258,8 @@ End Impl_core_cmp_Eq_for_erc1155_Error.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "erc1155::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc1155::Error" ]).
+  (Ty.apply (Ty.path "erc1155::Result") [] [ T ]) =
+    (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "erc1155::Error" ]).
 
 (* Trait *)
 (* Empty module 'Erc1155' *)
@@ -269,12 +274,13 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (* StructRecord
   {
     name := "TransferSingle";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("operator", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ]);
-        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ]);
-        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ]);
+        ("operator", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc1155::AccountId" ]);
+        ("from", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc1155::AccountId" ]);
+        ("to", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc1155::AccountId" ]);
         ("token_id", Ty.path "u128");
         ("value", Ty.path "u128")
       ];
@@ -283,6 +289,7 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (* StructRecord
   {
     name := "ApprovalForAll";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -295,6 +302,7 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (* StructRecord
   {
     name := "Uri";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "alloc::string::String"); ("token_id", Ty.path "u128") ];
   } *)
@@ -302,6 +310,7 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -327,11 +336,11 @@ Enum Event
 Module Impl_erc1155_Env.
   Definition Self : Ty.t := Ty.path "erc1155::Env".
   
-  Parameter caller : (list Ty.t) -> (list Value.t) -> M.
+  Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_erc1155_Env.
@@ -339,16 +348,19 @@ End Impl_erc1155_Env.
 (* StructRecord
   {
     name := "Contract";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("balances",
           Ty.apply
             (Ty.path "erc1155::Mapping")
+            []
             [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ]);
         ("approvals",
           Ty.apply
             (Ty.path "erc1155::Mapping")
+            []
             [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId" ]; Ty.tuple []
             ]);
         ("token_id_nonce", Ty.path "u128")
@@ -358,7 +370,7 @@ End Impl_erc1155_Env.
 Module Impl_core_default_Default_for_erc1155_Contract.
   Definition Self : Ty.t := Ty.path "erc1155::Contract".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -371,32 +383,32 @@ End Impl_core_default_Default_for_erc1155_Contract.
 Module Impl_erc1155_Contract.
   Definition Self : Ty.t := Ty.path "erc1155::Contract".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter create : (list Ty.t) -> (list Value.t) -> M.
+  Parameter create : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_create : M.IsAssociatedFunction Self "create" create.
   
-  Parameter mint : (list Ty.t) -> (list Value.t) -> M.
+  Parameter mint : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.
   
-  Parameter perform_transfer : (list Ty.t) -> (list Value.t) -> M.
+  Parameter perform_transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_perform_transfer :
     M.IsAssociatedFunction Self "perform_transfer" perform_transfer.
   
-  Parameter transfer_acceptance_check : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer_acceptance_check : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer_acceptance_check :
     M.IsAssociatedFunction Self "transfer_acceptance_check" transfer_acceptance_check.
@@ -405,17 +417,17 @@ End Impl_erc1155_Contract.
 Module Impl_erc1155_Erc1155_for_erc1155_Contract.
   Definition Self : Ty.t := Ty.path "erc1155::Contract".
   
-  Parameter is_approved_for_all : (list Ty.t) -> (list Value.t) -> M.
+  Parameter is_approved_for_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter balance_of : (list Ty.t) -> (list Value.t) -> M.
+  Parameter balance_of : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter safe_transfer_from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter safe_transfer_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter safe_batch_transfer_from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter safe_batch_transfer_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter balance_of_batch : (list Ty.t) -> (list Value.t) -> M.
+  Parameter balance_of_batch : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter set_approval_for_all : (list Ty.t) -> (list Value.t) -> M.
+  Parameter set_approval_for_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -436,9 +448,9 @@ End Impl_erc1155_Erc1155_for_erc1155_Contract.
 Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
   Definition Self : Ty.t := Ty.path "erc1155::Contract".
   
-  Parameter on_received : (list Ty.t) -> (list Value.t) -> M.
+  Parameter on_received : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter on_batch_received : (list Ty.t) -> (list Value.t) -> M.
+  Parameter on_batch_received : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance

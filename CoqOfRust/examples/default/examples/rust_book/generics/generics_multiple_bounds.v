@@ -7,9 +7,9 @@ fn compare_prints<T: Debug + Display>(t: &T) {
     println!("Display: `{}`", t);
 }
 *)
-Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ T ], [ t ] =>
+Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ T ], [ t ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
@@ -38,7 +38,7 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "&") [ T ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                                 |),
                                 [ t ]
                               |)
@@ -76,7 +76,7 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ T ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                                 |),
                                 [ t ]
                               |)
@@ -90,7 +90,7 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_compare_prints :
@@ -102,9 +102,9 @@ fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
     println!("u: `{:?}`", u);
 }
 *)
-Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ T; U ], [ t; u ] =>
+Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ T; U ], [ t; u ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       let u := M.alloc (| u |) in
@@ -134,7 +134,7 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "&") [ T ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                                 |),
                                 [ t ]
                               |)
@@ -171,7 +171,7 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "&") [ U ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ U ] ]
                                 |),
                                 [ u ]
                               |)
@@ -185,7 +185,7 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_compare_types : M.IsFunction "generics_multiple_bounds::compare_types" compare_types.
@@ -203,9 +203,9 @@ fn main() {
     compare_types(&array, &vec);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ string := M.copy (| Value.String "words" |) in
@@ -215,7 +215,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -227,8 +227,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -249,7 +250,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (|
                 "generics_multiple_bounds::compare_prints",
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [ string ]
             |)
@@ -260,9 +261,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_function (|
                 "generics_multiple_bounds::compare_types",
                 [
-                  Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                  Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                 ]
               |),
@@ -271,7 +273,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_multiple_bounds::main" main.

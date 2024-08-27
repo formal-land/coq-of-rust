@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -11,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -24,7 +25,7 @@ End Impl_core_default_Default_for_call_runtime_AccountId.
 Module Impl_core_clone_Clone_for_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -46,6 +47,7 @@ Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "call_runtime::AccountId") ];
   } *)
@@ -53,6 +55,7 @@ Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
 (*
 Enum MultiAddress
 {
+  const_params := [];
   ty_params := [ "AccountId"; "AccountIndex" ];
   variants := [];
 }
@@ -62,9 +65,10 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
   Definition Self : Ty.t :=
     Ty.apply
       (Ty.path "call_runtime::MultiAddress")
+      []
       [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ].
   
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -77,6 +81,7 @@ End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_
 (*
 Enum BalancesCall
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -88,6 +93,7 @@ Enum BalancesCall
               ("dest",
                 Ty.apply
                   (Ty.path "call_runtime::MultiAddress")
+                  []
                   [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]);
               ("value", Ty.path "u128")
             ];
@@ -100,6 +106,7 @@ Enum BalancesCall
 (*
 Enum RuntimeCall
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -115,6 +122,7 @@ Enum RuntimeCall
 (* StructTuple
   {
     name := "RuntimeCaller";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -122,7 +130,7 @@ Enum RuntimeCall
 Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeCaller".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -135,6 +143,7 @@ End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 (*
 Enum RuntimeError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -150,7 +159,7 @@ Enum RuntimeError
 Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -174,7 +183,7 @@ End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
 Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -198,7 +207,7 @@ End Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
 Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
-  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_receiver_is_total_eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -212,6 +221,7 @@ End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 (*
 Enum EnvError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -232,7 +242,7 @@ Enum EnvError
 Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -245,7 +255,7 @@ End Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
 Module Impl_call_runtime_Env.
   Definition Self : Ty.t := Ty.path "call_runtime::Env".
   
-  Parameter call_runtime : (list Ty.t) -> (list Value.t) -> M.
+  Parameter call_runtime : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_call_runtime : M.IsAssociatedFunction Self "call_runtime" call_runtime.
 End Impl_call_runtime_Env.
@@ -253,24 +263,24 @@ End Impl_call_runtime_Env.
 Module Impl_call_runtime_RuntimeCaller.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeCaller".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter transfer_through_runtime : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer_through_runtime : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer_through_runtime :
     M.IsAssociatedFunction Self "transfer_through_runtime" transfer_through_runtime.
   
-  Parameter call_nonexistent_extrinsic : (list Ty.t) -> (list Value.t) -> M.
+  Parameter call_nonexistent_extrinsic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_call_nonexistent_extrinsic :
     M.IsAssociatedFunction Self "call_nonexistent_extrinsic" call_nonexistent_extrinsic.

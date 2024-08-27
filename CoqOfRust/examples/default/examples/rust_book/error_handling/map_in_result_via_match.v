@@ -12,9 +12,9 @@ fn multiply(first_number_str: &str, second_number_str: &str) -> Result<i32, Pars
     }
 }
 *)
-Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ first_number_str; second_number_str ] =>
+Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ first_number_str; second_number_str ] =>
     ltac:(M.monadic
       (let first_number_str := M.alloc (| first_number_str |) in
       let second_number_str := M.alloc (| second_number_str |) in
@@ -82,7 +82,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_multiply : M.IsFunction "map_in_result_via_match::multiply" multiply.
@@ -95,9 +95,9 @@ fn print(result: Result<i32, ParseIntError>) {
     }
 }
 *)
-Definition print (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ result ] =>
+Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ result ] =>
     ltac:(M.monadic
       (let result := M.alloc (| result |) in
       M.read (|
@@ -201,7 +201,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_print : M.IsFunction "map_in_result_via_match::print" print.
@@ -217,9 +217,9 @@ fn main() {
     print(tt);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ twenty :=
@@ -252,7 +252,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "map_in_result_via_match::main" main.

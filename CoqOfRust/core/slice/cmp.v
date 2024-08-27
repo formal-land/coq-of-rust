@@ -4,31 +4,31 @@ Require Import CoqOfRust.CoqOfRust.
 Module slice.
   Module cmp.
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_slice_B_for_slice_A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ A ].
+      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ A ].
       
       (*
           fn eq(&self, other: &[B]) -> bool {
               SlicePartialEq::equal(self, other)
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::cmp::SlicePartialEq",
-                Ty.apply (Ty.path "slice") [ A ],
+                Ty.apply (Ty.path "slice") [] [ A ],
                 [ B ],
                 "equal",
                 []
               |),
               [ M.read (| self |); M.read (| other |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -36,24 +36,24 @@ Module slice.
               SlicePartialEq::not_equal(self, other)
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::cmp::SlicePartialEq",
-                Ty.apply (Ty.path "slice") [ A ],
+                Ty.apply (Ty.path "slice") [] [ A ],
                 [ B ],
                 "not_equal",
                 []
               |),
               [ M.read (| self |); M.read (| other |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -61,13 +61,13 @@ Module slice.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "slice") [ B ] ]
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "slice") [] [ B ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_slice_B_for_slice_A.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_slice_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -79,17 +79,17 @@ Module slice.
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_slice_T.
     
     Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_slice_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
       
       (*
           fn cmp(&self, other: &[T]) -> Ordering {
               SliceOrd::compare(self, other)
           }
       *)
-      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -97,7 +97,7 @@ Module slice.
               M.get_trait_method (| "core::slice::cmp::SliceOrd", T, [], "compare", [] |),
               [ M.read (| self |); M.read (| other |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -110,17 +110,17 @@ Module slice.
     End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_slice_T.
     
     Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_slice_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
       
       (*
           fn partial_cmp(&self, other: &[T]) -> Option<Ordering> {
               SlicePartialOrd::partial_compare(self, other)
           }
       *)
-      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -134,7 +134,7 @@ Module slice.
               |),
               [ M.read (| self |); M.read (| other |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -148,9 +148,14 @@ Module slice.
     
     (* Trait *)
     Module SlicePartialEq.
-      Definition not_equal (B Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition not_equal
+          (B Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -165,7 +170,7 @@ Module slice.
                 |),
                 [ M.read (| self |); M.read (| other |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_not_equal :
@@ -174,7 +179,7 @@ Module slice.
     End SlicePartialEq.
     
     Module Impl_core_slice_cmp_SlicePartialEq_where_core_cmp_PartialEq_A_B_B_for_slice_A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ A ].
+      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ A ].
       
       (*
           default fn equal(&self, other: &[B]) -> bool {
@@ -185,10 +190,10 @@ Module slice.
               self.iter().zip(other.iter()).all(|(x, y)| x == y)
           }
       *)
-      Definition equal (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition equal (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -207,7 +212,7 @@ Module slice.
                                   BinOp.Pure.ne
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ A ],
+                                        Ty.apply (Ty.path "slice") [] [ A ],
                                         "len",
                                         []
                                       |),
@@ -215,7 +220,7 @@ Module slice.
                                     |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ B ],
+                                        Ty.apply (Ty.path "slice") [] [ B ],
                                         "len",
                                         []
                                       |),
@@ -236,9 +241,10 @@ Module slice.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::zip::Zip")
+                          []
                           [
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [ A ];
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [ B ]
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ A ];
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ B ]
                           ],
                         [],
                         "all",
@@ -248,7 +254,10 @@ Module slice.
                               Ty.tuple
                                 [
                                   Ty.tuple
-                                    [ Ty.apply (Ty.path "&") [ A ]; Ty.apply (Ty.path "&") [ B ] ]
+                                    [
+                                      Ty.apply (Ty.path "&") [] [ A ];
+                                      Ty.apply (Ty.path "&") [] [ B ]
+                                    ]
                                 ]
                             ]
                             (Ty.path "bool")
@@ -259,15 +268,15 @@ Module slice.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ A ],
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ A ],
                               [],
                               "zip",
-                              [ Ty.apply (Ty.path "core::slice::iter::Iter") [ B ] ]
+                              [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ B ] ]
                             |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ A ],
+                                  Ty.apply (Ty.path "slice") [] [ A ],
                                   "iter",
                                   []
                                 |),
@@ -275,7 +284,7 @@ Module slice.
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ B ],
+                                  Ty.apply (Ty.path "slice") [] [ B ],
                                   "iter",
                                   []
                                 |),
@@ -301,8 +310,8 @@ Module slice.
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
-                                            Ty.apply (Ty.path "&") [ A ],
-                                            [ Ty.apply (Ty.path "&") [ B ] ],
+                                            Ty.apply (Ty.path "&") [] [ A ],
+                                            [ Ty.apply (Ty.path "&") [] [ B ] ],
                                             "eq",
                                             []
                                           |),
@@ -317,7 +326,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -330,7 +339,7 @@ Module slice.
     End Impl_core_slice_cmp_SlicePartialEq_where_core_cmp_PartialEq_A_B_B_for_slice_A.
     
     Module Impl_core_slice_cmp_SlicePartialEq_where_core_cmp_bytewise_BytewiseEq_A_B_B_for_slice_A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ A ].
+      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ A ].
       
       (*
           fn equal(&self, other: &[B]) -> bool {
@@ -346,10 +355,10 @@ Module slice.
               }
           }
       *)
-      Definition equal (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition equal (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -368,7 +377,7 @@ Module slice.
                                   BinOp.Pure.ne
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ A ],
+                                        Ty.apply (Ty.path "slice") [] [ A ],
                                         "len",
                                         []
                                       |),
@@ -376,7 +385,7 @@ Module slice.
                                     |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ B ],
+                                        Ty.apply (Ty.path "slice") [] [ B ],
                                         "len",
                                         []
                                       |),
@@ -396,7 +405,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::mem::size_of_val",
-                          [ Ty.apply (Ty.path "slice") [ A ] ]
+                          [ Ty.apply (Ty.path "slice") [] [ A ] ]
                         |),
                         [ M.read (| self |) ]
                       |)
@@ -409,7 +418,7 @@ Module slice.
                           M.rust_cast
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ A ],
+                                Ty.apply (Ty.path "slice") [] [ A ],
                                 "as_ptr",
                                 []
                               |),
@@ -418,7 +427,7 @@ Module slice.
                           M.rust_cast
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ B ],
+                                Ty.apply (Ty.path "slice") [] [ B ],
                                 "as_ptr",
                                 []
                               |),
@@ -431,7 +440,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -468,10 +477,15 @@ Module slice.
               left.len().partial_cmp(&right.len())
           }
       *)
-      Definition partial_compare (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_compare
+          (A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self A in
-        match τ, α with
-        | [], [ _ as left; _ as right ] =>
+        match ε, τ, α with
+        | [], [], [ _ as left; _ as right ] =>
           ltac:(M.monadic
             (let left := M.alloc (| left |) in
             let right := M.alloc (| right |) in
@@ -485,7 +499,7 @@ Module slice.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ A ],
+                              Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
                               []
                             |),
@@ -493,7 +507,7 @@ Module slice.
                           |);
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ A ],
+                              Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
                               []
                             |),
@@ -507,8 +521,8 @@ Module slice.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::Index",
-                          Ty.apply (Ty.path "slice") [ A ],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                          Ty.apply (Ty.path "slice") [] [ A ],
+                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                           "index",
                           []
                         |),
@@ -525,8 +539,8 @@ Module slice.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::Index",
-                          Ty.apply (Ty.path "slice") [ A ],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                          Ty.apply (Ty.path "slice") [] [ A ],
+                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                           "index",
                           []
                         |),
@@ -545,7 +559,7 @@ Module slice.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
-                              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               [],
                               "into_iter",
                               []
@@ -571,6 +585,7 @@ Module slice.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
+                                              []
                                               [ Ty.path "usize" ],
                                             [],
                                             "next",
@@ -667,7 +682,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ A ],
+                              Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
                               []
                             |),
@@ -677,7 +692,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ A ],
+                              Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
                               []
                             |),
@@ -689,7 +704,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -709,10 +724,15 @@ Module slice.
               Some(SliceOrd::compare(left, right))
           }
       *)
-      Definition partial_compare (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_compare
+          (A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self A in
-        match τ, α with
-        | [], [ _ as left; _ as right ] =>
+        match ε, τ, α with
+        | [], [], [ _ as left; _ as right ] =>
           ltac:(M.monadic
             (let left := M.alloc (| left |) in
             let right := M.alloc (| right |) in
@@ -724,7 +744,7 @@ Module slice.
                   [ M.read (| left |); M.read (| right |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -894,7 +914,7 @@ Module slice.
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_char.
     
     Module Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_marker_Sized_T_for_pointer_const_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -906,7 +926,7 @@ Module slice.
     End Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_marker_Sized_T_for_pointer_const_T.
     
     Module Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_marker_Sized_T_for_pointer_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -918,7 +938,7 @@ Module slice.
     End Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_marker_Sized_T_for_pointer_mut_T.
     
     Module Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_slice_cmp_AlwaysApplicableOrd_T_for_ref__T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -930,7 +950,7 @@ Module slice.
     End Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_slice_cmp_AlwaysApplicableOrd_T_for_ref__T.
     
     Module Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_slice_cmp_AlwaysApplicableOrd_T_for_ref_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -942,7 +962,7 @@ Module slice.
     End Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_slice_cmp_AlwaysApplicableOrd_T_for_ref_mut_T.
     
     Module Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_slice_cmp_AlwaysApplicableOrd_T_for_core_option_Option_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -978,10 +998,10 @@ Module slice.
               left.len().cmp(&right.len())
           }
       *)
-      Definition compare (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A in
-        match τ, α with
-        | [], [ _ as left; _ as right ] =>
+        match ε, τ, α with
+        | [], [], [ _ as left; _ as right ] =>
           ltac:(M.monadic
             (let left := M.alloc (| left |) in
             let right := M.alloc (| right |) in
@@ -995,7 +1015,7 @@ Module slice.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ A ],
+                              Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
                               []
                             |),
@@ -1003,7 +1023,7 @@ Module slice.
                           |);
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ A ],
+                              Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
                               []
                             |),
@@ -1017,8 +1037,8 @@ Module slice.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::Index",
-                          Ty.apply (Ty.path "slice") [ A ],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                          Ty.apply (Ty.path "slice") [] [ A ],
+                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                           "index",
                           []
                         |),
@@ -1035,8 +1055,8 @@ Module slice.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::Index",
-                          Ty.apply (Ty.path "slice") [ A ],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                          Ty.apply (Ty.path "slice") [] [ A ],
+                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                           "index",
                           []
                         |),
@@ -1055,7 +1075,7 @@ Module slice.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
-                              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               [],
                               "into_iter",
                               []
@@ -1081,6 +1101,7 @@ Module slice.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
+                                              []
                                               [ Ty.path "usize" ],
                                             [],
                                             "next",
@@ -1165,7 +1186,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ A ],
+                              Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
                               []
                             |),
@@ -1175,7 +1196,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ A ],
+                              Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
                               []
                             |),
@@ -1187,7 +1208,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1218,9 +1239,9 @@ Module slice.
               order.cmp(&0)
           }
       *)
-      Definition compare (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ _ as left; _ as right ] =>
+      Definition compare (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ _ as left; _ as right ] =>
           ltac:(M.monadic
             (let left := M.alloc (| left |) in
             let right := M.alloc (| right |) in
@@ -1232,7 +1253,7 @@ Module slice.
                     (M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "len",
                           []
                         |),
@@ -1241,7 +1262,7 @@ Module slice.
                     (M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "len",
                           []
                         |),
@@ -1261,7 +1282,7 @@ Module slice.
                                 BinOp.Pure.lt
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
@@ -1269,7 +1290,7 @@ Module slice.
                                   |))
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
@@ -1281,7 +1302,7 @@ Module slice.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
                                 []
                               |),
@@ -1293,7 +1314,7 @@ Module slice.
                           (M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
                                 []
                               |),
@@ -1311,7 +1332,7 @@ Module slice.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
                             []
                           |),
@@ -1319,7 +1340,7 @@ Module slice.
                         |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
                             []
                           |),
@@ -1352,7 +1373,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1374,25 +1395,30 @@ Module slice.
               x.iter().any(|y| *y == *self)
           }
       *)
-      Definition slice_contains (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_contains
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; x ] =>
+        match ε, τ, α with
+        | [], [], [ self; x ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let x := M.alloc (| x |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
                 "any",
-                [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ] (Ty.path "bool") ]
+                [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] (Ty.path "bool") ]
               |),
               [
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "iter", [] |),
+                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
                     [ M.read (| x |) ]
                   |)
                 |);
@@ -1423,7 +1449,7 @@ Module slice.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1443,15 +1469,15 @@ Module slice.
               memchr::memchr( *self, x).is_some()
           }
       *)
-      Definition slice_contains (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; x ] =>
+      Definition slice_contains (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; x ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let x := M.alloc (| x |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                 "is_some",
                 []
               |),
@@ -1464,7 +1490,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1489,9 +1515,9 @@ Module slice.
               memchr::memchr(byte, bytes).is_some()
           }
       *)
-      Definition slice_contains (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; x ] =>
+      Definition slice_contains (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; x ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let x := M.alloc (| x |) in
@@ -1505,7 +1531,7 @@ Module slice.
                       M.rust_cast
                         (M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "i8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                             "as_ptr",
                             []
                           |),
@@ -1513,7 +1539,7 @@ Module slice.
                         |));
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "i8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                           "len",
                           []
                         |),
@@ -1525,7 +1551,7 @@ Module slice.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                     "is_some",
                     []
                   |),
@@ -1540,7 +1566,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

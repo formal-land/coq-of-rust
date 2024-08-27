@@ -6,10 +6,10 @@ Module num.
     Module fpu.
       Module fpu_precision.
         (*     pub fn set_precision<T>() {} *)
-        Definition set_precision (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ T ], [] => ltac:(M.monadic (Value.Tuple []))
-          | _, _ => M.impossible
+        Definition set_precision (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ T ], [] => ltac:(M.monadic (Value.Tuple []))
+          | _, _, _ => M.impossible
           end.
         
         Axiom Function_set_precision :

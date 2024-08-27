@@ -28,9 +28,9 @@ fn main() {
     let mutable = true;
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ logical := M.alloc (| Value.Bool true |) in
@@ -45,7 +45,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let~ mutable := M.alloc (| Value.Bool true |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "compound_types::main" main.

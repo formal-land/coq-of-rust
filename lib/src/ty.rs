@@ -1,5 +1,6 @@
 use crate::coq;
 use crate::env::*;
+use crate::expression::*;
 use crate::path::*;
 use rustc_hir::{FnDecl, FnRetTy, Ty};
 use std::rc::Rc;
@@ -12,7 +13,8 @@ pub(crate) enum CoqType {
     },
     Application {
         func: Rc<CoqType>,
-        args: Vec<Rc<CoqType>>,
+        consts: Vec<Rc<Expr>>,
+        tys: Vec<Rc<CoqType>>,
     },
     Function {
         /// We group together the arguments that are called together, as this
@@ -50,18 +52,19 @@ impl CoqType {
 
         Rc::new(CoqType::Application {
             func: CoqType::path(&[ptr_name]),
-            args: vec![ty],
+            consts: vec![],
+            tys: vec![ty],
         })
     }
 
     pub(crate) fn match_ref(self: Rc<CoqType>) -> Option<(String, Rc<CoqType>)> {
-        if let CoqType::Application { func, args } = &*self {
+        if let CoqType::Application { func, consts, tys } = &*self {
             if let CoqType::Path { path, .. } = &**func {
                 let Path { segments } = path.as_ref();
-                if segments.len() == 1 && args.len() == 1 {
+                if segments.len() == 1 && consts.is_empty() && tys.len() == 1 {
                     let name = segments.first().unwrap();
                     if name == "&" || name == "&mut" {
-                        return Some((name.clone(), args.first().unwrap().clone()));
+                        return Some((name.clone(), tys.first().unwrap().clone()));
                     }
                 }
             }
@@ -165,14 +168,17 @@ impl CoqType {
             CoqType::Var(name) => coq::Expression::just_name(name),
             CoqType::Path { path } => coq::Expression::just_name("Ty.path")
                 .apply(&coq::Expression::String(path.to_string())),
-            CoqType::Application { func, args } => {
-                if args.is_empty() {
+            CoqType::Application { func, consts, tys } => {
+                if consts.is_empty() && tys.is_empty() {
                     func.to_coq()
                 } else {
                     coq::Expression::just_name("Ty.apply").apply_many(&[
                         func.to_coq(),
                         coq::Expression::List {
-                            exprs: args.iter().map(|arg| arg.to_coq()).collect(),
+                            exprs: consts.iter().map(|const_| const_.to_coq()).collect(),
+                        },
+                        coq::Expression::List {
+                            exprs: tys.iter().map(|ty| ty.to_coq()).collect(),
                         },
                     ])
                 }
@@ -216,11 +222,15 @@ impl CoqType {
             CoqType::Path { path, .. } => {
                 path.to_name().replace('&', "ref_").replace('*', "pointer_")
             }
-            CoqType::Application { func, args } => {
+            CoqType::Application { func, consts, tys } => {
                 let mut name = func.to_name();
-                for arg in args {
+                for const_ in consts {
                     name.push('_');
-                    name.push_str(&arg.to_name());
+                    name.push_str(&const_.to_name());
+                }
+                for ty in tys {
+                    name.push('_');
+                    name.push_str(&ty.to_name());
                 }
                 name
             }

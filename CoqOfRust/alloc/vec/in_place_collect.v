@@ -26,9 +26,9 @@ Module vec.
         }
     }
     *)
-    Definition in_place_collectible (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ DEST; SRC ], [ step_merge; step_expand ] =>
+    Definition in_place_collectible (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ DEST; SRC ], [ step_merge; step_expand ] =>
         ltac:(M.monadic
           (let step_merge := M.alloc (| step_merge |) in
           let step_expand := M.alloc (| step_expand |) in
@@ -111,7 +111,7 @@ Module vec.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_in_place_collectible :
@@ -139,9 +139,9 @@ Module vec.
         return src_cap > 0 && src_cap * mem::size_of::<SRC>() != dst_cap * mem::size_of::<DEST>();
     }
     *)
-    Definition needs_realloc (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ SRC; DEST ], [ src_cap; dst_cap ] =>
+    Definition needs_realloc (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ SRC; DEST ], [ src_cap; dst_cap ] =>
         ltac:(M.monadic
           (let src_cap := M.alloc (| src_cap |) in
           let dst_cap := M.alloc (| dst_cap |) in
@@ -217,7 +217,7 @@ Module vec.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_needs_realloc :
@@ -243,7 +243,7 @@ Module vec.
     
     Module Impl_alloc_vec_spec_from_iter_SpecFromIter_where_core_iter_traits_iterator_Iterator_I_where_alloc_vec_in_place_collect_InPlaceCollect_I_where_alloc_vec_in_place_collect_AsVecIntoIter_associated_type_T_I_for_alloc_vec_Vec_T_alloc_alloc_Global.
       Definition Self (T I : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
           default fn from_iter(mut iterator: I) -> Self {
@@ -336,10 +336,10 @@ Module vec.
               vec
           }
       *)
-      Definition from_iter (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T I in
-        match τ, α with
-        | [], [ iterator ] =>
+        match ε, τ, α with
+        | [], [], [ iterator ] =>
           ltac:(M.monadic
             (let iterator := M.alloc (| iterator |) in
             M.catch_return (|
@@ -367,6 +367,7 @@ Module vec.
                                         "alloc::vec::spec_from_iter_nested::SpecFromIterNested",
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [ T; Ty.path "alloc::alloc::Global" ],
                                         [ T; I ],
                                         "from_iter",
@@ -411,7 +412,10 @@ Module vec.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.associated ],
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.associated ],
                               "as_ptr",
                               []
                             |),
@@ -442,7 +446,10 @@ Module vec.
                           M.rust_cast
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.associated ],
                                 "as_ptr",
                                 []
                               |),
@@ -560,6 +567,7 @@ Module vec.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::ptr::non_null::NonNull")
+                                                      []
                                                       [ Ty.associated ],
                                                     "as_ptr",
                                                     []
@@ -621,9 +629,11 @@ Module vec.
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "*mut")
+                                                                      []
                                                                       [ Ty.associated ];
                                                                     Ty.apply
                                                                       (Ty.path "*mut")
+                                                                      []
                                                                       [ Ty.associated ]
                                                                   ]
                                                                 |),
@@ -702,6 +712,7 @@ Module vec.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "*mut")
+                                                                          []
                                                                           [ T ],
                                                                         "add",
                                                                         []
@@ -785,6 +796,7 @@ Module vec.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::into_iter::IntoIter")
+                                    []
                                     [ Ty.associated; Ty.path "alloc::alloc::Global" ],
                                   "forget_allocation_drop_remaining",
                                   []
@@ -1088,6 +1100,7 @@ Module vec.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
                                                   [ Ty.path "u8" ],
                                                 "new_unchecked",
                                                 []
@@ -1119,9 +1132,11 @@ Module vec.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "slice")
+                                                            []
                                                             [ Ty.path "u8" ]
                                                         ],
                                                       "as_ptr",
@@ -1262,6 +1277,7 @@ Module vec.
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::in_place_drop::InPlaceDstBufDrop")
+                                      []
                                       [ T ]
                                   ]
                                 |),
@@ -1274,6 +1290,7 @@ Module vec.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [ T; Ty.path "alloc::alloc::Global" ],
                                   "from_raw_parts",
                                   []
@@ -1286,7 +1303,7 @@ Module vec.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1317,9 +1334,9 @@ Module vec.
         }
     }
     *)
-    Definition write_in_place_with_drop (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ src_end ] =>
+    Definition write_in_place_with_drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ src_end ] =>
         ltac:(M.monadic
           (let src_end := M.alloc (| src_end |) in
           M.closure
@@ -1448,7 +1465,7 @@ Module vec.
                                           |),
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "*mut") [ T ],
+                                              Ty.apply (Ty.path "*mut") [] [ T ],
                                               "add",
                                               []
                                             |),
@@ -1477,7 +1494,7 @@ Module vec.
                   |)
                 | _ => M.impossible (||)
                 end))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_write_in_place_with_drop :
@@ -1508,10 +1525,15 @@ Module vec.
               unsafe { ManuallyDrop::new(sink).dst.sub_ptr(dst_buf) }
           }
       *)
-      Definition collect_in_place (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition collect_in_place
+          (T I : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T I in
-        match τ, α with
-        | [], [ self; dst_buf; end_ ] =>
+        match ε, τ, α with
+        | [], [], [ self; dst_buf; end_ ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dst_buf := M.alloc (| dst_buf |) in
@@ -1529,8 +1551,9 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [
-                          Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [ T ];
+                          Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ];
                           Ty.path "never"
                         ],
                       "unwrap",
@@ -1544,12 +1567,16 @@ Module vec.
                           [],
                           "try_fold",
                           [
-                            Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [ T ];
+                            Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ];
                             Ty.associated;
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
-                                Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [ T ];
+                                Ty.apply
+                                  (Ty.path "alloc::vec::in_place_drop::InPlaceDrop")
+                                  []
+                                  [ T ];
                                 Ty.path "never"
                               ]
                           ]
@@ -1571,7 +1598,7 @@ Module vec.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "sub_ptr", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "sub_ptr", [] |),
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -1580,7 +1607,9 @@ Module vec.
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                              [ Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [ T ] ],
+                              []
+                              [ Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ]
+                              ],
                             [],
                             "deref",
                             []
@@ -1591,9 +1620,11 @@ Module vec.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::vec::in_place_drop::InPlaceDrop")
+                                        []
                                         [ T ]
                                     ],
                                   "new",
@@ -1613,7 +1644,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1649,10 +1680,15 @@ Module vec.
               len
           }
       *)
-      Definition collect_in_place (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition collect_in_place
+          (T I : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T I in
-        match τ, α with
-        | [], [ self; dst_buf; end_ ] =>
+        match ε, τ, α with
+        | [], [], [ self; dst_buf; end_ ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dst_buf := M.alloc (| dst_buf |) in
@@ -1684,7 +1720,7 @@ Module vec.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
-                          Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
                           "into_iter",
                           []
@@ -1710,6 +1746,7 @@ Module vec.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ],
                                         [],
                                         "next",
@@ -1739,7 +1776,7 @@ Module vec.
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "*mut") [ T ],
+                                                Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "add",
                                                 []
                                               |),
@@ -1851,7 +1888,7 @@ Module vec.
                                             |),
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "*mut") [ T ],
+                                                Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "add",
                                                 []
                                               |),
@@ -1870,14 +1907,14 @@ Module vec.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::forget",
-                      [ Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [ T ] ]
+                      [ Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ] ]
                     |),
                     [ M.read (| drop_guard |) ]
                   |)
                 |) in
               len
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

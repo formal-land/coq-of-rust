@@ -542,15 +542,16 @@ Module bn128.
       Fq::from_slice(&input[..32]).map_err(|_| Error::Bn128FieldPointNotAMember)
   }
   *)
-  Definition read_fq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input ] =>
+  Definition read_fq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         M.call_closure (|
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
+              []
               [ Ty.path "substrate_bn::Fq"; Ty.path "substrate_bn::FieldError" ],
             "map_err",
             [
@@ -567,8 +568,8 @@ Module bn128.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                    [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                    [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                     "index",
                     []
                   |),
@@ -598,7 +599,7 @@ Module bn128.
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_read_fq : M.IsFunction "revm_precompile::bn128::read_fq" read_fq.
@@ -610,9 +611,9 @@ Module bn128.
       new_g1_point(px, py)
   }
   *)
-  Definition read_point (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input ] =>
+  Definition read_point (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         M.catch_return (|
@@ -627,6 +628,7 @@ Module bn128.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.path "substrate_bn::Fq";
                               Ty.path "revm_primitives::precompile::PrecompileError"
@@ -642,8 +644,12 @@ Module bn128.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                  [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
                                   ],
                                   "index",
                                   []
@@ -679,6 +685,7 @@ Module bn128.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "substrate_bn::G1";
                                           Ty.path "revm_primitives::precompile::PrecompileError"
@@ -686,6 +693,7 @@ Module bn128.
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.path "revm_primitives::precompile::PrecompileError"
@@ -722,6 +730,7 @@ Module bn128.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.path "substrate_bn::Fq";
                               Ty.path "revm_primitives::precompile::PrecompileError"
@@ -737,8 +746,12 @@ Module bn128.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                  [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
                                   ],
                                   "index",
                                   []
@@ -774,6 +787,7 @@ Module bn128.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "substrate_bn::G1";
                                           Ty.path "revm_primitives::precompile::PrecompileError"
@@ -781,6 +795,7 @@ Module bn128.
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.path "revm_primitives::precompile::PrecompileError"
@@ -816,7 +831,7 @@ Module bn128.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_read_point : M.IsFunction "revm_precompile::bn128::read_point" read_point.
@@ -832,9 +847,9 @@ Module bn128.
       }
   }
   *)
-  Definition new_g1_point (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ px; py ] =>
+  Definition new_g1_point (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ px; py ] =>
       ltac:(M.monadic
         (let px := M.alloc (| px |) in
         let py := M.alloc (| py |) in
@@ -919,6 +934,7 @@ Module bn128.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "substrate_bn::G1"; Ty.path "substrate_bn::groups::Error" ],
                         "map_err",
                         [
@@ -933,6 +949,7 @@ Module bn128.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.path "substrate_bn::AffineG1";
                                 Ty.path "substrate_bn::groups::Error"
@@ -986,7 +1003,7 @@ Module bn128.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_new_g1_point : M.IsFunction "revm_precompile::bn128::new_g1_point" new_g1_point.
@@ -1010,9 +1027,9 @@ Module bn128.
       Ok((gas_cost, output.into()))
   }
   *)
-  Definition run_add (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input; gas_cost; gas_limit ] =>
+  Definition run_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; gas_cost; gas_limit ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_cost := M.alloc (| gas_cost |) in
@@ -1067,6 +1084,7 @@ Module bn128.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.path "substrate_bn::G1";
                               Ty.path "revm_primitives::precompile::PrecompileError"
@@ -1082,10 +1100,11 @@ Module bn128.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
-                                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "array") [ Value.Integer 128 ] [ Ty.path "u8" ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeTo")
+                                      []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
@@ -1097,7 +1116,13 @@ Module bn128.
                                       "core::ops::deref::Deref",
                                       Ty.apply
                                         (Ty.path "alloc::borrow::Cow")
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 128 ]
+                                            [ Ty.path "u8" ]
+                                        ],
                                       [],
                                       "deref",
                                       []
@@ -1133,6 +1158,7 @@ Module bn128.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.tuple
                                             [
@@ -1144,6 +1170,7 @@ Module bn128.
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.path "revm_primitives::precompile::PrecompileError"
@@ -1180,6 +1207,7 @@ Module bn128.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.path "substrate_bn::G1";
                               Ty.path "revm_primitives::precompile::PrecompileError"
@@ -1195,10 +1223,11 @@ Module bn128.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
-                                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "array") [ Value.Integer 128 ] [ Ty.path "u8" ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeFrom")
+                                      []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
@@ -1210,7 +1239,13 @@ Module bn128.
                                       "core::ops::deref::Deref",
                                       Ty.apply
                                         (Ty.path "alloc::borrow::Cow")
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 128 ]
+                                            [ Ty.path "u8" ]
+                                        ],
                                       [],
                                       "deref",
                                       []
@@ -1246,6 +1281,7 @@ Module bn128.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.tuple
                                             [
@@ -1257,6 +1293,7 @@ Module bn128.
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.path "revm_primitives::precompile::PrecompileError"
@@ -1284,7 +1321,7 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ output := M.alloc (| repeat (Value.Integer 0) 64 |) in
+              let~ output := M.alloc (| repeat (| Value.Integer 0, Value.Integer 64 |) |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -1326,6 +1363,7 @@ Module bn128.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.tuple []; Ty.path "substrate_bn::FieldError" ],
                                 "unwrap",
                                 []
@@ -1351,10 +1389,14 @@ Module bn128.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::index::IndexMut",
-                                        Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer 64 ]
+                                          [ Ty.path "u8" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeTo")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                         "index_mut",
@@ -1378,6 +1420,7 @@ Module bn128.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.tuple []; Ty.path "substrate_bn::FieldError" ],
                                 "unwrap",
                                 []
@@ -1403,10 +1446,14 @@ Module bn128.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::index::IndexMut",
-                                        Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer 64 ]
+                                          [ Ty.path "u8" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeFrom")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                         "index_mut",
@@ -1438,7 +1485,7 @@ Module bn128.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::Into",
-                            Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "array") [ Value.Integer 64 ] [ Ty.path "u8" ],
                             [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                             "into",
                             []
@@ -1450,7 +1497,7 @@ Module bn128.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_run_add : M.IsFunction "revm_precompile::bn128::run_add" run_add.
@@ -1476,9 +1523,9 @@ Module bn128.
       Ok((gas_cost, output.into()))
   }
   *)
-  Definition run_mul (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input; gas_cost; gas_limit ] =>
+  Definition run_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; gas_cost; gas_limit ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_cost := M.alloc (| gas_cost |) in
@@ -1533,6 +1580,7 @@ Module bn128.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.path "substrate_bn::G1";
                               Ty.path "revm_primitives::precompile::PrecompileError"
@@ -1548,10 +1596,11 @@ Module bn128.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
-                                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "array") [ Value.Integer 96 ] [ Ty.path "u8" ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeTo")
+                                      []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
@@ -1563,7 +1612,13 @@ Module bn128.
                                       "core::ops::deref::Deref",
                                       Ty.apply
                                         (Ty.path "alloc::borrow::Cow")
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 96 ]
+                                            [ Ty.path "u8" ]
+                                        ],
                                       [],
                                       "deref",
                                       []
@@ -1599,6 +1654,7 @@ Module bn128.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.tuple
                                             [
@@ -1610,6 +1666,7 @@ Module bn128.
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.path "revm_primitives::precompile::PrecompileError"
@@ -1643,6 +1700,7 @@ Module bn128.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.path "substrate_bn::Fr"; Ty.path "substrate_bn::FieldError" ],
                       "unwrap",
                       []
@@ -1658,8 +1716,9 @@ Module bn128.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::Index",
-                              Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                              Ty.apply (Ty.path "array") [ Value.Integer 96 ] [ Ty.path "u8" ],
+                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
+                              ],
                               "index",
                               []
                             |),
@@ -1669,7 +1728,13 @@ Module bn128.
                                   "core::ops::deref::Deref",
                                   Ty.apply
                                     (Ty.path "alloc::borrow::Cow")
-                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 96 ]
+                                        [ Ty.path "u8" ]
+                                    ],
                                   [],
                                   "deref",
                                   []
@@ -1686,7 +1751,7 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ output := M.alloc (| repeat (Value.Integer 0) 64 |) in
+              let~ output := M.alloc (| repeat (| Value.Integer 0, Value.Integer 64 |) |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -1728,6 +1793,7 @@ Module bn128.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.tuple []; Ty.path "substrate_bn::FieldError" ],
                                 "unwrap",
                                 []
@@ -1753,10 +1819,14 @@ Module bn128.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::index::IndexMut",
-                                        Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer 64 ]
+                                          [ Ty.path "u8" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeTo")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                         "index_mut",
@@ -1780,6 +1850,7 @@ Module bn128.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.tuple []; Ty.path "substrate_bn::FieldError" ],
                                 "unwrap",
                                 []
@@ -1805,10 +1876,14 @@ Module bn128.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::index::IndexMut",
-                                        Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer 64 ]
+                                          [ Ty.path "u8" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeFrom")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                         "index_mut",
@@ -1840,7 +1915,7 @@ Module bn128.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::Into",
-                            Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "array") [ Value.Integer 64 ] [ Ty.path "u8" ],
                             [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                             "into",
                             []
@@ -1852,7 +1927,7 @@ Module bn128.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_run_mul : M.IsFunction "revm_precompile::bn128::run_mul" run_mul.
@@ -1914,9 +1989,9 @@ Module bn128.
       Ok((gas_used, bool_to_bytes32(success)))
   }
   *)
-  Definition run_pair (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input; pair_per_point_cost; pair_base_cost; gas_limit ] =>
+  Definition run_pair (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; pair_per_point_cost; pair_base_cost; gas_limit ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let pair_per_point_cost := M.alloc (| pair_per_point_cost |) in
@@ -1936,7 +2011,7 @@ Module bn128.
                           Integer.Usize
                           (M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
                               []
                             |),
@@ -1993,7 +2068,7 @@ Module bn128.
                                   Integer.Usize
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
@@ -2036,7 +2111,7 @@ Module bn128.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
                                     []
                                   |),
@@ -2054,7 +2129,7 @@ Module bn128.
                                 Integer.Usize
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
                                     []
                                   |),
@@ -2084,6 +2159,7 @@ Module bn128.
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ],
                                       [],
                                       "into_iter",
@@ -2113,6 +2189,7 @@ Module bn128.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::Range")
+                                                      []
                                                       [ Ty.path "usize" ],
                                                     [],
                                                     "next",
@@ -2273,6 +2350,7 @@ Module bn128.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "slice")
+                                                                                    []
                                                                                     [ Ty.path "u8"
                                                                                     ],
                                                                                   "get_unchecked",
@@ -2280,6 +2358,7 @@ Module bn128.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::ops::range::Range")
+                                                                                      []
                                                                                       [
                                                                                         Ty.path
                                                                                           "usize"
@@ -2315,6 +2394,7 @@ Module bn128.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::result::Result")
+                                                                                  []
                                                                                   [
                                                                                     Ty.path
                                                                                       "substrate_bn::Fq";
@@ -2389,6 +2469,7 @@ Module bn128.
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.path "substrate_bn::Fq";
                                                                     Ty.path
@@ -2408,6 +2489,7 @@ Module bn128.
                                                                       (Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "substrate_bn::Fq";
@@ -2447,6 +2529,7 @@ Module bn128.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
@@ -2461,6 +2544,7 @@ Module bn128.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
@@ -2499,6 +2583,7 @@ Module bn128.
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.path "substrate_bn::Fq";
                                                                     Ty.path
@@ -2518,6 +2603,7 @@ Module bn128.
                                                                       (Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "substrate_bn::Fq";
@@ -2557,6 +2643,7 @@ Module bn128.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
@@ -2571,6 +2658,7 @@ Module bn128.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
@@ -2609,6 +2697,7 @@ Module bn128.
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.path "substrate_bn::Fq";
                                                                     Ty.path
@@ -2628,6 +2717,7 @@ Module bn128.
                                                                       (Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "substrate_bn::Fq";
@@ -2667,6 +2757,7 @@ Module bn128.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
@@ -2681,6 +2772,7 @@ Module bn128.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
@@ -2719,6 +2811,7 @@ Module bn128.
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.path "substrate_bn::Fq";
                                                                     Ty.path
@@ -2738,6 +2831,7 @@ Module bn128.
                                                                       (Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "substrate_bn::Fq";
@@ -2777,6 +2871,7 @@ Module bn128.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
@@ -2791,6 +2886,7 @@ Module bn128.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
@@ -2829,6 +2925,7 @@ Module bn128.
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.path "substrate_bn::Fq";
                                                                     Ty.path
@@ -2848,6 +2945,7 @@ Module bn128.
                                                                       (Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "substrate_bn::Fq";
@@ -2887,6 +2985,7 @@ Module bn128.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
@@ -2901,6 +3000,7 @@ Module bn128.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
@@ -2939,6 +3039,7 @@ Module bn128.
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.path "substrate_bn::Fq";
                                                                     Ty.path
@@ -2958,6 +3059,7 @@ Module bn128.
                                                                       (Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "substrate_bn::Fq";
@@ -2997,6 +3099,7 @@ Module bn128.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
@@ -3011,6 +3114,7 @@ Module bn128.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
@@ -3049,6 +3153,7 @@ Module bn128.
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.path "substrate_bn::G1";
                                                                     Ty.path
@@ -3090,6 +3195,7 @@ Module bn128.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
@@ -3104,6 +3210,7 @@ Module bn128.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
@@ -3228,6 +3335,7 @@ Module bn128.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::result::Result")
+                                                                                  []
                                                                                   [
                                                                                     Ty.path
                                                                                       "substrate_bn::AffineG2";
@@ -3244,6 +3352,7 @@ Module bn128.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::result::Result")
+                                                                                      []
                                                                                       [
                                                                                         Ty.path
                                                                                           "substrate_bn::AffineG2";
@@ -3334,6 +3443,7 @@ Module bn128.
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "core::result::Result")
+                                                                                              []
                                                                                               [
                                                                                                 Ty.tuple
                                                                                                   [
@@ -3349,6 +3459,7 @@ Module bn128.
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "core::result::Result")
+                                                                                                []
                                                                                                 [
                                                                                                   Ty.path
                                                                                                     "core::convert::Infallible";
@@ -3464,7 +3575,7 @@ Module bn128.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_run_pair : M.IsFunction "revm_precompile::bn128::run_pair" run_pair.

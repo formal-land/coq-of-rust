@@ -6,23 +6,23 @@ fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
     first * second
 }
 *)
-Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ first; second ] =>
+Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ first; second ] =>
     ltac:(M.monadic
       (let first := M.alloc (| first |) in
       let second := M.alloc (| second |) in
       M.call_closure (|
         M.get_trait_method (|
           "core::ops::arith::Mul",
-          Ty.apply (Ty.path "&") [ Ty.path "i32" ],
-          [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
+          Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
           "mul",
           []
         |),
         [ M.read (| first |); M.read (| second |) ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_multiply : M.IsFunction "scoping_rules_lifetimes_coercion::multiply" multiply.
@@ -32,14 +32,14 @@ fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
     first
 }
 *)
-Definition choose_first (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ first; β1 ] =>
+Definition choose_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ first; β1 ] =>
     ltac:(M.monadic
       (let first := M.alloc (| first |) in
       let β1 := M.alloc (| β1 |) in
       M.match_operator (| β1, [ fun γ => ltac:(M.monadic (M.read (| first |))) ] |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_choose_first :
@@ -57,9 +57,9 @@ fn main() {
     };
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ first := M.alloc (| Value.Integer 2 |) in
@@ -143,7 +143,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                   |),
                                   [
                                     M.alloc (|
@@ -168,7 +168,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_coercion::main" main.

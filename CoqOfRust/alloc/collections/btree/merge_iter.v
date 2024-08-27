@@ -7,6 +7,7 @@ Module collections.
       (* StructRecord
         {
           name := "MergeIterInner";
+          const_params := [];
           ty_params := [ "I" ];
           fields :=
             [
@@ -15,13 +16,15 @@ Module collections.
               ("peeked",
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [ Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [ I ] ])
+                  []
+                  [ Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [] [ I ] ])
             ];
         } *)
       
       (*
       Enum Peeked
       {
+        const_params := [];
         ty_params := [ "I" ];
         variants :=
           [
@@ -41,13 +44,13 @@ Module collections.
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_for_alloc_collections_btree_merge_iter_Peeked_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [ I ].
+          Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [] [ I ].
         
         (* Clone *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -109,7 +112,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -123,13 +126,13 @@ Module collections.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_for_alloc_collections_btree_merge_iter_Peeked_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [ I ].
+          Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [] [ I ].
         
         (* Debug *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -188,7 +191,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -202,17 +205,17 @@ Module collections.
       
       Module Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_type_for_alloc_collections_btree_merge_iter_MergeIterInner_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner") [ I ].
+          Ty.apply (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner") [] [ I ].
         
         (*
             fn clone(&self) -> Self {
                 Self { a: self.a.clone(), b: self.b.clone(), peeked: self.peeked.clone() }
             }
         *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -246,7 +249,12 @@ Module collections.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [ I ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::merge_iter::Peeked")
+                              []
+                              [ I ]
                           ],
                         [],
                         "clone",
@@ -261,7 +269,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -275,17 +283,17 @@ Module collections.
       
       Module Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_where_core_fmt_Debug_associated_type_for_alloc_collections_btree_merge_iter_MergeIterInner_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner") [ I ].
+          Ty.apply (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner") [] [ I ].
         
         (*
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 f.debug_tuple("MergeIterInner").field(&self.a).field(&self.b).field(&self.peeked).finish()
             }
         *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -356,7 +364,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -370,17 +378,17 @@ Module collections.
       
       Module Impl_alloc_collections_btree_merge_iter_MergeIterInner_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner") [ I ].
+          Ty.apply (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner") [] [ I ].
         
         (*
             pub fn new(a: I, b: I) -> Self {
                 MergeIterInner { a, b, peeked: None }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ a; b ] =>
+          match ε, τ, α with
+          | [], [], [ a; b ] =>
             ltac:(M.monadic
               (let a := M.alloc (| a |) in
               let b := M.alloc (| b |) in
@@ -391,7 +399,7 @@ Module collections.
                   ("b", M.read (| b |));
                   ("peeked", Value.StructTuple "core::option::Option::None" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -432,10 +440,10 @@ Module collections.
                 (a_next, b_next)
             }
         *)
-        Definition nexts (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nexts (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Cmp ], [ self; cmp ] =>
+          match ε, τ, α with
+          | [], [ Cmp ], [ self; cmp ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let cmp := M.alloc (| cmp |) in
@@ -449,9 +457,11 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::merge_iter::Peeked")
+                                []
                                 [ I ]
                             ],
                           "take",
@@ -629,8 +639,8 @@ Module collections.
                                   [
                                     Ty.tuple
                                       [
-                                        Ty.apply (Ty.path "&") [ Ty.associated ];
-                                        Ty.apply (Ty.path "&") [ Ty.associated ]
+                                        Ty.apply (Ty.path "&") [] [ Ty.associated ];
+                                        Ty.apply (Ty.path "&") [] [ Ty.associated ]
                                       ]
                                   ],
                                   "call",
@@ -652,18 +662,23 @@ Module collections.
                                     |),
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.associated ],
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.associated ],
                                         "map",
                                         [
                                           Ty.apply
                                             (Ty.path
                                               "alloc::collections::btree::merge_iter::Peeked")
+                                            []
                                             [ I ];
                                           Ty.function
                                             [ Ty.associated ]
                                             (Ty.apply
                                               (Ty.path
                                                 "alloc::collections::btree::merge_iter::Peeked")
+                                              []
                                               [ I ])
                                         ]
                                       |),
@@ -672,6 +687,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.associated ],
                                             "take",
                                             []
@@ -695,18 +711,23 @@ Module collections.
                                     |),
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.associated ],
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.associated ],
                                         "map",
                                         [
                                           Ty.apply
                                             (Ty.path
                                               "alloc::collections::btree::merge_iter::Peeked")
+                                            []
                                             [ I ];
                                           Ty.function
                                             [ Ty.associated ]
                                             (Ty.apply
                                               (Ty.path
                                                 "alloc::collections::btree::merge_iter::Peeked")
+                                              []
                                               [ I ])
                                         ]
                                       |),
@@ -715,6 +736,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.associated ],
                                             "take",
                                             []
@@ -738,7 +760,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| a_next |); M.read (| b_next |) ] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_nexts :
@@ -757,10 +779,10 @@ Module collections.
                 }
             }
         *)
-        Definition lens (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition lens (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -921,7 +943,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_lens :

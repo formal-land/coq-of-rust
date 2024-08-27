@@ -40,16 +40,16 @@ Module char.
               super::decode::decode_utf16(iter)
           }
       *)
-      Definition decode_utf16 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ _ as I ], [ iter ] =>
+      Definition decode_utf16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ _ as I ], [ iter ] =>
           ltac:(M.monadic
             (let iter := M.alloc (| iter |) in
             M.call_closure (|
               M.get_function (| "core::char::decode::decode_utf16", [ I ] |),
               [ M.read (| iter |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_decode_utf16 :
@@ -60,16 +60,16 @@ Module char.
               super::convert::from_u32(i)
           }
       *)
-      Definition from_u32 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ i ] =>
+      Definition from_u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ i ] =>
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
             M.call_closure (|
               M.get_function (| "core::char::convert::from_u32", [] |),
               [ M.read (| i |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_u32 : M.IsAssociatedFunction Self "from_u32" from_u32.
@@ -80,16 +80,16 @@ Module char.
               unsafe { super::convert::from_u32_unchecked(i) }
           }
       *)
-      Definition from_u32_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ i ] =>
+      Definition from_u32_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ i ] =>
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
             M.call_closure (|
               M.get_function (| "core::char::convert::from_u32_unchecked", [] |),
               [ M.read (| i |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_u32_unchecked :
@@ -100,9 +100,9 @@ Module char.
               super::convert::from_digit(num, radix)
           }
       *)
-      Definition from_digit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ num; radix ] =>
+      Definition from_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ num; radix ] =>
           ltac:(M.monadic
             (let num := M.alloc (| num |) in
             let radix := M.alloc (| radix |) in
@@ -110,7 +110,7 @@ Module char.
               M.get_function (| "core::char::convert::from_digit", [] |),
               [ M.read (| num |); M.read (| radix |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_digit : M.IsAssociatedFunction Self "from_digit" from_digit.
@@ -120,15 +120,15 @@ Module char.
               self.to_digit(radix).is_some()
           }
       *)
-      Definition is_digit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; radix ] =>
+      Definition is_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; radix ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let radix := M.alloc (| radix |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                 "is_some",
                 []
               |),
@@ -141,7 +141,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_digit : M.IsAssociatedFunction Self "is_digit" is_digit.
@@ -162,9 +162,9 @@ Module char.
               if digit < radix { Some(digit) } else { None }
           }
       *)
-      Definition to_digit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; radix ] =>
+      Definition to_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; radix ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let radix := M.alloc (| radix |) in
@@ -325,7 +325,7 @@ Module char.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_digit : M.IsAssociatedFunction Self "to_digit" to_digit.
@@ -335,16 +335,16 @@ Module char.
               EscapeUnicode::new(self)
           }
       *)
-      Definition escape_unicode (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition escape_unicode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::char::EscapeUnicode", "new", [] |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_escape_unicode :
@@ -369,9 +369,9 @@ Module char.
           }
       "
       *)
-      Definition escape_debug_ext (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; args ] =>
+      Definition escape_debug_ext (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; args ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let args := M.alloc (| args |) in
@@ -572,7 +572,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_escape_debug_ext :
@@ -583,9 +583,9 @@ Module char.
               self.escape_debug_ext(EscapeDebugExtArgs::ESCAPE_ALL)
           }
       *)
-      Definition escape_debug (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition escape_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -595,7 +595,7 @@ Module char.
                 M.read (| M.get_constant (| "core::char::methods::ESCAPE_ALL" |) |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_escape_debug :
@@ -614,9 +614,9 @@ Module char.
           }
       "
       *)
-      Definition escape_default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition escape_default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -712,6 +712,7 @@ Module char.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                                           "unwrap",
                                           []
@@ -747,6 +748,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                                 "unwrap",
                                 []
@@ -781,7 +783,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_escape_default :
@@ -792,16 +794,16 @@ Module char.
               len_utf8(self as u32)
           }
       *)
-      Definition len_utf8 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition len_utf8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::char::methods::len_utf8", [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_len_utf8 : M.IsAssociatedFunction Self "len_utf8" len_utf8.
@@ -812,9 +814,9 @@ Module char.
               if (ch & 0xFFFF) == ch { 1 } else { 2 }
           }
       *)
-      Definition len_utf16 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition len_utf16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -837,7 +839,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_len_utf16 : M.IsAssociatedFunction Self "len_utf16" len_utf16.
@@ -848,9 +850,9 @@ Module char.
               unsafe { from_utf8_unchecked_mut(encode_utf8_raw(self as u32, dst)) }
           }
       *)
-      Definition encode_utf8 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; dst ] =>
+      Definition encode_utf8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; dst ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dst := M.alloc (| dst |) in
@@ -863,7 +865,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_encode_utf8 : M.IsAssociatedFunction Self "encode_utf8" encode_utf8.
@@ -873,9 +875,9 @@ Module char.
               encode_utf16_raw(self as u32, dst)
           }
       *)
-      Definition encode_utf16 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; dst ] =>
+      Definition encode_utf16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; dst ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dst := M.alloc (| dst |) in
@@ -883,7 +885,7 @@ Module char.
               M.get_function (| "core::char::methods::encode_utf16_raw", [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| dst |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_encode_utf16 :
@@ -897,9 +899,9 @@ Module char.
               }
           }
       *)
-      Definition is_alphabetic (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_alphabetic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -941,7 +943,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_alphabetic :
@@ -955,9 +957,9 @@ Module char.
               }
           }
       *)
-      Definition is_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_lowercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -984,7 +986,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_lowercase :
@@ -998,9 +1000,9 @@ Module char.
               }
           }
       *)
-      Definition is_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_uppercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1027,7 +1029,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_uppercase :
@@ -1041,9 +1043,9 @@ Module char.
               }
           }
       *)
-      Definition is_whitespace (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_whitespace (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1092,7 +1094,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_whitespace :
@@ -1103,9 +1105,9 @@ Module char.
               self.is_alphabetic() || self.is_numeric()
           }
       *)
-      Definition is_alphanumeric (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_alphanumeric (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.or (|
@@ -1119,7 +1121,7 @@ Module char.
                   [ M.read (| self |) ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_alphanumeric :
@@ -1130,16 +1132,16 @@ Module char.
               unicode::Cc(self)
           }
       *)
-      Definition is_control (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_control (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::unicode::unicode_data::cc::lookup", [] |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_control : M.IsAssociatedFunction Self "is_control" is_control.
@@ -1149,16 +1151,16 @@ Module char.
               unicode::Grapheme_Extend(self)
           }
       *)
-      Definition is_grapheme_extended (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_grapheme_extended (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::unicode::unicode_data::grapheme_extend::lookup", [] |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_grapheme_extended :
@@ -1172,9 +1174,9 @@ Module char.
               }
           }
       *)
-      Definition is_numeric (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_numeric (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1198,7 +1200,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_numeric : M.IsAssociatedFunction Self "is_numeric" is_numeric.
@@ -1208,9 +1210,9 @@ Module char.
               ToLowercase(CaseMappingIter::new(conversions::to_lower(self)))
           }
       *)
-      Definition to_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_lowercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -1226,7 +1228,7 @@ Module char.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_lowercase :
@@ -1237,9 +1239,9 @@ Module char.
               ToUppercase(CaseMappingIter::new(conversions::to_upper(self)))
           }
       *)
-      Definition to_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_uppercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -1255,7 +1257,7 @@ Module char.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_uppercase :
@@ -1266,13 +1268,13 @@ Module char.
               *self as u32 <= 0x7F
           }
       *)
-      Definition is_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.le (M.rust_cast (M.read (| M.read (| self |) |))) (Value.Integer 127)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii : M.IsAssociatedFunction Self "is_ascii" is_ascii.
@@ -1287,9 +1289,9 @@ Module char.
               }
           }
       *)
-      Definition as_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1327,7 +1329,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
@@ -1341,9 +1343,9 @@ Module char.
               }
           }
       *)
-      Definition to_ascii_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_ascii_uppercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1380,7 +1382,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_ascii_uppercase :
@@ -1395,9 +1397,9 @@ Module char.
               }
           }
       *)
-      Definition to_ascii_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_ascii_lowercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1434,7 +1436,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_ascii_lowercase :
@@ -1445,9 +1447,9 @@ Module char.
               self.to_ascii_lowercase() == other.to_ascii_lowercase()
           }
       *)
-      Definition eq_ignore_ascii_case (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq_ignore_ascii_case (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1460,7 +1462,7 @@ Module char.
                 M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [] |),
                 [ M.read (| other |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_eq_ignore_ascii_case :
@@ -1471,9 +1473,9 @@ Module char.
               *self = self.to_ascii_uppercase();
           }
       *)
-      Definition make_ascii_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition make_ascii_uppercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1487,7 +1489,7 @@ Module char.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_make_ascii_uppercase :
@@ -1498,9 +1500,9 @@ Module char.
               *self = self.to_ascii_lowercase();
           }
       *)
-      Definition make_ascii_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition make_ascii_lowercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1514,7 +1516,7 @@ Module char.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_make_ascii_lowercase :
@@ -1525,9 +1527,9 @@ Module char.
               matches!( *self, 'A'..='Z' | 'a'..='z')
           }
       *)
-      Definition is_ascii_alphabetic (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii_alphabetic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1554,7 +1556,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii_alphabetic :
@@ -1565,9 +1567,9 @@ Module char.
               matches!( *self, 'A'..='Z')
           }
       *)
-      Definition is_ascii_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii_uppercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1579,7 +1581,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii_uppercase :
@@ -1590,9 +1592,9 @@ Module char.
               matches!( *self, 'a'..='z')
           }
       *)
-      Definition is_ascii_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii_lowercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1604,7 +1606,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii_lowercase :
@@ -1615,9 +1617,9 @@ Module char.
               matches!( *self, '0'..='9') | matches!( *self, 'A'..='Z') | matches!( *self, 'a'..='z')
           }
       *)
-      Definition is_ascii_alphanumeric (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii_alphanumeric (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.bit_or
@@ -1649,7 +1651,7 @@ Module char.
                   ]
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii_alphanumeric :
@@ -1660,9 +1662,9 @@ Module char.
               matches!( *self, '0'..='9')
           }
       *)
-      Definition is_ascii_digit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1674,7 +1676,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii_digit :
@@ -1685,9 +1687,9 @@ Module char.
               matches!( *self, '0'..='7')
           }
       *)
-      Definition is_ascii_octdigit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii_octdigit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1699,7 +1701,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii_octdigit :
@@ -1710,9 +1712,9 @@ Module char.
               matches!( *self, '0'..='9') | matches!( *self, 'A'..='F') | matches!( *self, 'a'..='f')
           }
       *)
-      Definition is_ascii_hexdigit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii_hexdigit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.bit_or
@@ -1744,7 +1746,7 @@ Module char.
                   ]
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii_hexdigit :
@@ -1758,9 +1760,9 @@ Module char.
                   | matches!( *self, '{'..='~')
           }
       *)
-      Definition is_ascii_punctuation (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii_punctuation (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.bit_or
@@ -1802,7 +1804,7 @@ Module char.
                   ]
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii_punctuation :
@@ -1813,9 +1815,9 @@ Module char.
               matches!( *self, '!'..='~')
           }
       *)
-      Definition is_ascii_graphic (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii_graphic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1827,7 +1829,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii_graphic :
@@ -1838,9 +1840,9 @@ Module char.
               matches!( *self, '\t' | '\n' | '\x0C' | '\r' | ' ')
           }
       *)
-      Definition is_ascii_whitespace (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii_whitespace (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1905,7 +1907,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii_whitespace :
@@ -1916,9 +1918,9 @@ Module char.
               matches!( *self, '\0'..='\x1F' | '\x7F')
           }
       *)
-      Definition is_ascii_control (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii_control (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1952,7 +1954,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii_control :
@@ -1962,6 +1964,7 @@ Module char.
     (* StructRecord
       {
         name := "EscapeDebugExtArgs";
+        const_params := [];
         ty_params := [];
         fields :=
           [
@@ -2012,9 +2015,9 @@ Module char.
         }
     }
     *)
-    Definition len_utf8 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ code ] =>
+    Definition len_utf8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ code ] =>
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           M.read (|
@@ -2079,7 +2082,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_len_utf8 : M.IsFunction "core::char::methods::len_utf8" len_utf8.
@@ -2116,9 +2119,9 @@ Module char.
         &mut dst[..len]
     }
     *)
-    Definition encode_utf8_raw (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ code; dst ] =>
+    Definition encode_utf8_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ code; dst ] =>
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           let dst := M.alloc (| dst |) in
@@ -2139,7 +2142,7 @@ Module char.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::IndexMut",
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           [ Ty.path "core::ops::range::RangeFull" ],
                           "index_mut",
                           []
@@ -2345,7 +2348,7 @@ Module char.
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "len",
                                                     []
                                                   |),
@@ -2368,8 +2371,8 @@ Module char.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::index::IndexMut",
-                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                  [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                  [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                   "index_mut",
                   []
                 |),
@@ -2380,7 +2383,7 @@ Module char.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_encode_utf8_raw :
@@ -2411,9 +2414,9 @@ Module char.
         }
     }
     *)
-    Definition encode_utf16_raw (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ code; dst ] =>
+    Definition encode_utf16_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ code; dst ] =>
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           let dst := M.alloc (| dst |) in
@@ -2434,7 +2437,7 @@ Module char.
                               (UnOp.Pure.not
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                     "is_empty",
                                     []
                                   |),
@@ -2449,7 +2452,7 @@ Module char.
                           M.write (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                 "get_unchecked_mut",
                                 [ Ty.path "usize" ]
                               |),
@@ -2466,7 +2469,7 @@ Module char.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                   "as_mut_ptr",
                                   []
                                 |),
@@ -2491,7 +2494,7 @@ Module char.
                                   BinOp.Pure.ge
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                         "len",
                                         []
                                       |),
@@ -2516,7 +2519,7 @@ Module char.
                                   M.write (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                         "get_unchecked_mut",
                                         [ Ty.path "usize" ]
                                       |),
@@ -2531,7 +2534,7 @@ Module char.
                                   M.write (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                         "get_unchecked_mut",
                                         [ Ty.path "usize" ]
                                       |),
@@ -2552,7 +2555,7 @@ Module char.
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                           "as_mut_ptr",
                                           []
                                         |),
@@ -2641,6 +2644,7 @@ Module char.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "slice")
+                                                            []
                                                             [ Ty.path "u16" ],
                                                           "len",
                                                           []
@@ -2663,7 +2667,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_encode_utf16_raw :

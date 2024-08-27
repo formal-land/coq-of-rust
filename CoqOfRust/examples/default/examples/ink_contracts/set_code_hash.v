@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -14,13 +15,14 @@ fn set_code_hash<E>(code_hash: &E) -> Result<(), Error> {
     unimplemented!()
 }
 *)
-Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
+Parameter set_code_hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_set_code_hash : M.IsFunction "set_code_hash::set_code_hash" set_code_hash.
 
 (* StructRecord
   {
     name := "Incrementer";
+    const_params := [];
     ty_params := [];
     fields := [ ("count", Ty.path "u32") ];
   } *)
@@ -29,9 +31,9 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   Definition Self : Ty.t := Ty.path "set_code_hash::Incrementer".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "set_code_hash::Incrementer"
@@ -42,7 +44,7 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -61,9 +63,9 @@ Module Impl_set_code_hash_Incrementer.
           Default::default()
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_trait_method (|
@@ -75,7 +77,7 @@ Module Impl_set_code_hash_Incrementer.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -89,9 +91,9 @@ Module Impl_set_code_hash_Incrementer.
           );
       }
   *)
-  Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition inc (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -154,7 +156,7 @@ Module Impl_set_code_hash_Incrementer.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
@@ -164,9 +166,9 @@ Module Impl_set_code_hash_Incrementer.
           self.count
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -176,7 +178,7 @@ Module Impl_set_code_hash_Incrementer.
             "count"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -189,9 +191,9 @@ Module Impl_set_code_hash_Incrementer.
           println!("Switched code hash to {:?}.", code_hash);
       }
   *)
-  Definition set_code (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; code_hash ] =>
+  Definition set_code (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; code_hash ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let code_hash := M.alloc (| code_hash |) in
@@ -202,6 +204,7 @@ Module Impl_set_code_hash_Incrementer.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.tuple []; Ty.path "set_code_hash::Error" ],
                   "unwrap_or_else",
                   [ Ty.function [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ] (Ty.tuple []) ]
@@ -210,7 +213,7 @@ Module Impl_set_code_hash_Incrementer.
                   M.call_closure (|
                     M.get_function (|
                       "set_code_hash::set_code_hash",
-                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                      [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
                     |),
                     [ code_hash ]
                   |);
@@ -229,7 +232,7 @@ Module Impl_set_code_hash_Incrementer.
                                     M.call_closure (|
                                       M.get_function (|
                                         "std::panicking::begin_panic",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [
                                         M.read (|
@@ -274,7 +277,12 @@ Module Impl_set_code_hash_Incrementer.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_debug",
-                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 32 ]
+                                        [ Ty.path "u8" ]
+                                    ]
                                   |),
                                   [ code_hash ]
                                 |)
@@ -288,7 +296,7 @@ Module Impl_set_code_hash_Incrementer.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.

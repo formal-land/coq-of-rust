@@ -6,6 +6,7 @@ Module ascii.
     (*
     Enum AsciiChar
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -668,13 +669,13 @@ Module ascii.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -700,13 +701,17 @@ Module ascii.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -733,9 +738,9 @@ Module ascii.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -762,7 +767,7 @@ Module ascii.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -777,9 +782,9 @@ Module ascii.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -811,7 +816,7 @@ Module ascii.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -826,9 +831,9 @@ Module ascii.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -866,7 +871,7 @@ Module ascii.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -881,9 +886,9 @@ Module ascii.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -905,7 +910,7 @@ Module ascii.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -929,9 +934,9 @@ Module ascii.
               }
           }
       *)
-      Definition from_u8 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ b ] =>
+      Definition from_u8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.read (|
@@ -963,7 +968,7 @@ Module ascii.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
@@ -974,9 +979,9 @@ Module ascii.
               unsafe { transmute(b) }
           }
       *)
-      Definition from_u8_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ b ] =>
+      Definition from_u8_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.call_closure (|
@@ -986,7 +991,7 @@ Module ascii.
               |),
               [ M.read (| b |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_u8_unchecked :
@@ -1002,9 +1007,9 @@ Module ascii.
               }
           }
       *)
-      Definition digit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ d ] =>
+      Definition digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ d ] =>
           ltac:(M.monadic
             (let d := M.alloc (| d |) in
             M.read (|
@@ -1036,7 +1041,7 @@ Module ascii.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_digit : M.IsAssociatedFunction Self "digit" digit.
@@ -1054,9 +1059,9 @@ Module ascii.
               }
           }
       *)
-      Definition digit_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ d ] =>
+      Definition digit_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ d ] =>
           ltac:(M.monadic
             (let d := M.alloc (| d |) in
             M.read (|
@@ -1119,7 +1124,7 @@ Module ascii.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_digit_unchecked :
@@ -1130,13 +1135,13 @@ Module ascii.
               self as u8
           }
       *)
-      Definition to_u8 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_u8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| self |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_u8 : M.IsAssociatedFunction Self "to_u8" to_u8.
@@ -1146,13 +1151,13 @@ Module ascii.
               self as u8 as char
           }
       *)
-      Definition to_char (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_char (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.rust_cast (M.read (| self |)))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_char : M.IsAssociatedFunction Self "to_char" to_char.
@@ -1162,14 +1167,14 @@ Module ascii.
               crate::slice::from_ref(self).as_str()
           }
       *)
-      Definition as_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                 "as_str",
                 []
               |),
@@ -1183,7 +1188,7 @@ Module ascii.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
@@ -1191,7 +1196,7 @@ Module ascii.
     
     Module Impl_slice_core_ascii_ascii_char_AsciiChar.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "slice") [ Ty.path "core::ascii::ascii_char::AsciiChar" ].
+        Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ].
       
       (*
           pub const fn as_str(&self) -> &str {
@@ -1202,9 +1207,9 @@ Module ascii.
               unsafe { &*str_ptr }
           }
       *)
-      Definition as_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1212,7 +1217,7 @@ Module ascii.
               let~ str_ptr := M.alloc (| M.rust_cast (M.read (| ascii_ptr |)) |) in
               M.alloc (| M.read (| str_ptr |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
@@ -1222,9 +1227,9 @@ Module ascii.
               self.as_str().as_bytes()
           }
       *)
-      Definition as_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1232,7 +1237,7 @@ Module ascii.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                     "as_str",
                     []
                   |),
@@ -1240,7 +1245,7 @@ Module ascii.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
@@ -1254,9 +1259,9 @@ Module ascii.
               <str as fmt::Display>::fmt(self.as_str(), f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1274,7 +1279,7 @@ Module ascii.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1323,9 +1328,9 @@ Module ascii.
               f.write_char('\'')
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1570,6 +1575,7 @@ Module ascii.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     [],
                                     "branch",
@@ -1608,10 +1614,12 @@ Module ascii.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "core::convert::Infallible";
                                                       Ty.path "core::fmt::Error"
@@ -1647,9 +1655,11 @@ Module ascii.
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.apply
                                         (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "slice")
+                                            []
                                             [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                                         ],
                                       [],
@@ -1662,10 +1672,12 @@ Module ascii.
                                           "core::ops::index::Index",
                                           Ty.apply
                                             (Ty.path "array")
+                                            [ Value.Integer 4 ]
                                             [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::RangeTo")
+                                              []
                                               [ Ty.path "usize" ]
                                           ],
                                           "index",
@@ -1695,6 +1707,7 @@ Module ascii.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
                                                       (Ty.path "core::slice::iter::Iter")
+                                                      []
                                                       [ Ty.path "core::ascii::ascii_char::AsciiChar"
                                                       ],
                                                     [],
@@ -1732,6 +1745,7 @@ Module ascii.
                                                               "core::ops::try_trait::Try",
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
+                                                                []
                                                                 [
                                                                   Ty.tuple [];
                                                                   Ty.path "core::fmt::Error"
@@ -1783,6 +1797,7 @@ Module ascii.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
+                                                                            []
                                                                             [
                                                                               Ty.tuple [];
                                                                               Ty.path
@@ -1792,6 +1807,7 @@ Module ascii.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.path
                                                                                   "core::convert::Infallible";
@@ -1843,7 +1859,7 @@ Module ascii.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

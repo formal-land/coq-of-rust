@@ -10,9 +10,9 @@ Module unit_.
             iter.into_iter().for_each(|()| {})
         }
     *)
-    Definition from_iter (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I ], [ iter ] =>
+    Definition from_iter (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
@@ -47,7 +47,7 @@ Module unit_.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

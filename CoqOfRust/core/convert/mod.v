@@ -7,13 +7,13 @@ Module convert.
       x
   }
   *)
-  Definition identity (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ x ] =>
+  Definition identity (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.read (| x |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_identity : M.IsFunction "core::convert::identity" identity.
@@ -37,24 +37,24 @@ Module convert.
   (* Empty module 'TryFrom' *)
   
   Module Impl_core_convert_AsRef_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_convert_AsRef_T_U_U_for_ref__T.
-    Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     (*
         fn as_ref(&self) -> &U {
             <T as AsRef<U>>::as_ref( *self)
         }
     *)
-    Definition as_ref (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (T U : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T U in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::convert::AsRef", T, [ U ], "as_ref", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -67,24 +67,24 @@ Module convert.
   End Impl_core_convert_AsRef_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_convert_AsRef_T_U_U_for_ref__T.
   
   Module Impl_core_convert_AsRef_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_convert_AsRef_T_U_U_for_ref_mut_T.
-    Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+    Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
     
     (*
         fn as_ref(&self) -> &U {
             <T as AsRef<U>>::as_ref( *self)
         }
     *)
-    Definition as_ref (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (T U : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T U in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::convert::AsRef", T, [ U ], "as_ref", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -97,24 +97,24 @@ Module convert.
   End Impl_core_convert_AsRef_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_convert_AsRef_T_U_U_for_ref_mut_T.
   
   Module Impl_core_convert_AsMut_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_convert_AsMut_T_U_U_for_ref_mut_T.
-    Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+    Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
     
     (*
         fn as_mut(&mut self) -> &mut U {
             ( *self).as_mut()
         }
     *)
-    Definition as_mut (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_mut (T U : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T U in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::convert::AsMut", T, [ U ], "as_mut", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -134,17 +134,17 @@ Module convert.
             U::from(self)
         }
     *)
-    Definition into (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into (T U : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T U in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::convert::From", U, [ T ], "from", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -164,14 +164,14 @@ Module convert.
             t
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ t ] =>
+      match ε, τ, α with
+      | [], [], [ t ] =>
         ltac:(M.monadic
           (let t := M.alloc (| t |) in
           M.read (| t |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -191,14 +191,14 @@ Module convert.
             t
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ t ] =>
+      match ε, τ, α with
+      | [], [], [ t ] =>
         ltac:(M.monadic
           (let t := M.alloc (| t |) in
           M.never_to_any (| M.read (| t |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -221,17 +221,17 @@ Module convert.
             U::try_from(self)
         }
     *)
-    Definition try_into (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_into (T U : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T U in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::convert::TryFrom", U, [ T ], "try_from", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -258,10 +258,10 @@ Module convert.
             Ok(U::into(value))
         }
     *)
-    Definition try_from (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_from (T U : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T U in
-      match τ, α with
-      | [], [ value ] =>
+      match ε, τ, α with
+      | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           Value.StructTuple
@@ -272,7 +272,7 @@ Module convert.
                 [ M.read (| value |) ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -289,21 +289,21 @@ Module convert.
   End Impl_core_convert_TryFrom_where_core_convert_Into_U_T_U_for_T.
   
   Module Impl_core_convert_AsRef_slice_T_for_slice_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
     
     (*
         fn as_ref(&self) -> &[T] {
             self
         }
     *)
-    Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -311,26 +311,26 @@ Module convert.
       M.IsTraitInstance
         "core::convert::AsRef"
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [ T ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T)) ].
   End Impl_core_convert_AsRef_slice_T_for_slice_T.
   
   Module Impl_core_convert_AsMut_slice_T_for_slice_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
     
     (*
         fn as_mut(&mut self) -> &mut [T] {
             self
         }
     *)
-    Definition as_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -338,7 +338,7 @@ Module convert.
       M.IsTraitInstance
         "core::convert::AsMut"
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [ T ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("as_mut", InstanceField.Method (as_mut T)) ].
   End Impl_core_convert_AsMut_slice_T_for_slice_T.
   
@@ -350,13 +350,13 @@ Module convert.
             self
         }
     *)
-    Definition as_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -375,13 +375,13 @@ Module convert.
             self
         }
     *)
-    Definition as_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -395,6 +395,7 @@ Module convert.
   (*
   Enum Infallible
   {
+    const_params := [];
     ty_params := [];
     variants := [];
   }
@@ -419,13 +420,13 @@ Module convert.
             match *self {}
         }
     *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -444,9 +445,9 @@ Module convert.
             match *self {}
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; β1 ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; β1 ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
@@ -458,7 +459,7 @@ Module convert.
                   (M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -477,9 +478,9 @@ Module convert.
             match *self {}
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; β1 ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; β1 ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
@@ -491,7 +492,7 @@ Module convert.
                   (M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -510,13 +511,13 @@ Module convert.
             match *self {}
         }
     *)
-    Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -535,9 +536,9 @@ Module convert.
             match *self {}
         }
     *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; β1 ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; β1 ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
@@ -549,7 +550,7 @@ Module convert.
                   (M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -575,14 +576,14 @@ Module convert.
             match *self {}
         }
     *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; _other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; _other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -601,14 +602,14 @@ Module convert.
             match *self {}
         }
     *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; _other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; _other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -627,13 +628,13 @@ Module convert.
             x
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ x ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.never_to_any (| M.read (| x |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -652,9 +653,9 @@ Module convert.
             match *self {}
         }
     *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ self; β1 ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ self; β1 ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
@@ -666,7 +667,7 @@ Module convert.
                   (M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

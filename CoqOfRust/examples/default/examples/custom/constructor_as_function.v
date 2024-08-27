@@ -9,9 +9,9 @@ fn matching(tuple: (i32, i32)) -> i32 {
     }
 }
 *)
-Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ tuple ] =>
+Definition matching (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ tuple ] =>
     ltac:(M.monadic
       (let tuple := M.alloc (| tuple |) in
       M.read (|
@@ -33,7 +33,7 @@ Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_matching : M.IsFunction "constructor_as_function::matching" matching.
@@ -41,6 +41,7 @@ Axiom Function_matching : M.IsFunction "constructor_as_function::matching" match
 (* StructTuple
   {
     name := "Constructor";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i32" ];
   } *)
@@ -49,9 +50,9 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
   Definition Self : Ty.t := Ty.path "constructor_as_function::Constructor".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -75,7 +76,7 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -93,9 +94,9 @@ fn main() {
     println!("{v:?}");
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ v :=
@@ -105,9 +106,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::into_iter::IntoIter")
+                      []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
                     Ty.function [ Ty.path "i32" ] (Ty.path "constructor_as_function::Constructor")
                   ],
@@ -116,6 +119,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "constructor_as_function::Constructor"; Ty.path "alloc::alloc::Global"
                     ]
                 ]
@@ -126,6 +130,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
                       (Ty.path "alloc::vec::into_iter::IntoIter")
+                      []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     [],
                     "map",
@@ -140,6 +145,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                         [],
                         "into_iter",
@@ -148,7 +154,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                             "into_vec",
                             [ Ty.path "alloc::alloc::Global" ]
                           |),
@@ -160,8 +166,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
-                                        Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer 3 ]
+                                          [ Ty.path "i32" ];
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "new",
@@ -213,6 +223,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "constructor_as_function::Constructor";
                                         Ty.path "alloc::alloc::Global"
@@ -231,7 +242,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "constructor_as_function::main" main.

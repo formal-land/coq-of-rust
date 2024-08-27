@@ -24,14 +24,14 @@ Module iter.
                 self
             }
         *)
-        Definition into_iter (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_iter (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (| self |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -50,9 +50,14 @@ Module iter.
       
       (* Trait *)
       Module Extend.
-        Definition extend_one (A Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; item ] =>
+        Definition extend_one
+            (A Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; item ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let item := M.alloc (| item |) in
@@ -65,7 +70,7 @@ Module iter.
                         Self,
                         [ A ],
                         "extend",
-                        [ Ty.apply (Ty.path "core::option::Option") [ A ] ]
+                        [ Ty.apply (Ty.path "core::option::Option") [] [ A ] ]
                       |),
                       [
                         M.read (| self |);
@@ -75,15 +80,20 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_extend_one :
           forall (A : Ty.t),
           M.IsProvidedMethod "core::iter::traits::collect::Extend" "extend_one" (extend_one A).
-        Definition extend_reserve (A Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; additional ] =>
+        Definition extend_reserve
+            (A Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; additional ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let additional := M.alloc (| additional |) in
@@ -93,7 +103,7 @@ Module iter.
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_extend_reserve :
@@ -112,9 +122,9 @@ Module iter.
                 iter.into_iter().for_each(drop)
             }
         *)
-        Definition extend (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ T ], [ self; iter ] =>
+        Definition extend (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ T ], [ self; iter ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let iter := M.alloc (| iter |) in
@@ -140,18 +150,18 @@ Module iter.
                   M.get_function (| "core::mem::drop", [ Ty.tuple [] ] |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*     fn extend_one(&mut self, _item: ()) {} *)
-        Definition extend_one (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; _item ] =>
+        Definition extend_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; _item ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let _item := M.alloc (| _item |) in
               Value.Tuple []))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -193,10 +203,15 @@ Module iter.
                 iter.fold((), extend(a, b));
             }
         *)
-        Definition extend (A B ExtendA ExtendB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition extend
+            (A B ExtendA ExtendB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self A B ExtendA ExtendB in
-          match τ, α with
-          | [ T ], [ self; into_iter ] =>
+          match ε, τ, α with
+          | [], [ T ], [ self; into_iter ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let into_iter := M.alloc (| into_iter |) in
@@ -317,7 +332,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -326,10 +341,15 @@ Module iter.
                 self.1.extend_one(item.1);
             }
         *)
-        Definition extend_one (A B ExtendA ExtendB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition extend_one
+            (A B ExtendA ExtendB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self A B ExtendA ExtendB in
-          match τ, α with
-          | [], [ self; item ] =>
+          match ε, τ, α with
+          | [], [], [ self; item ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let item := M.alloc (| item |) in
@@ -368,7 +388,7 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -379,12 +399,13 @@ Module iter.
         *)
         Definition extend_reserve
             (A B ExtendA ExtendB : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self A B ExtendA ExtendB in
-          match τ, α with
-          | [], [ self; additional ] =>
+          match ε, τ, α with
+          | [], [], [ self; additional ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let additional := M.alloc (| additional |) in
@@ -423,7 +444,7 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

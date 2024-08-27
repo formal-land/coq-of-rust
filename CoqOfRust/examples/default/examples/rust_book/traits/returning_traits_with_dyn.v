@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Sheep";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -11,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Cow";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -26,13 +28,13 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
           "baaaaah!"
       }
   *)
-  Definition noise (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition noise (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| Value.String "baaaaah!" |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -51,13 +53,13 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
           "moooooo!"
       }
   *)
-  Definition noise (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition noise (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| Value.String "moooooo!" |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -77,9 +79,9 @@ fn random_animal(random_number: f64) -> Box<dyn Animal> {
     }
 }
 *)
-Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ random_number ] =>
+Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ random_number ] =>
     ltac:(M.monadic
       (let random_number := M.alloc (| random_number |) in
       (* Unsize *)
@@ -109,6 +111,7 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
                                   Ty.path "returning_traits_with_dyn::Sheep";
                                   Ty.path "alloc::alloc::Global"
@@ -128,6 +131,7 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
+                              []
                               [
                                 Ty.path "returning_traits_with_dyn::Cow";
                                 Ty.path "alloc::alloc::Global"
@@ -141,7 +145,7 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |)))))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_random_animal :
@@ -157,9 +161,9 @@ fn main() {
     );
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ random_number := M.copy (| UnsupportedLiteral |) in
@@ -200,7 +204,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -227,7 +231,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "returning_traits_with_dyn::main" main.

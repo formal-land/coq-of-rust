@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Foo";
+    const_params := [];
     ty_params := [];
     fields := [ ("x", Ty.tuple [ Ty.path "u32"; Ty.path "u32" ]); ("y", Ty.path "u32") ];
   } *)
@@ -27,9 +28,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ foo :=
@@ -226,7 +227,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "match_destructuring_structs::main" main.

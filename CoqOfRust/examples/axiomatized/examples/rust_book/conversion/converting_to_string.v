@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Circle";
+    const_params := [];
     ty_params := [];
     fields := [ ("radius", Ty.path "i32") ];
   } *)
@@ -11,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Definition Self : Ty.t := Ty.path "converting_to_string::Circle".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -21,6 +22,6 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "converting_to_string::main" main.

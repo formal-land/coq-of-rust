@@ -20,9 +20,9 @@ fn main() {
     _mutable_integer = 3;
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _mutable_integer := M.alloc (| Value.Integer 7 |) in
@@ -32,7 +32,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ := M.write (| _mutable_integer, Value.Integer 3 |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "freezing::main" main.

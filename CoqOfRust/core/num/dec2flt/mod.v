@@ -14,16 +14,16 @@ Module num.
                       dec2flt(src)
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.call_closure (|
               M.get_function (| "core::num::dec2flt::dec2flt", [ Ty.path "f32" ] |),
               [ M.read (| src |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -46,16 +46,16 @@ Module num.
                       dec2flt(src)
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.call_closure (|
               M.get_function (| "core::num::dec2flt::dec2flt", [ Ty.path "f64" ] |),
               [ M.read (| src |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -70,6 +70,7 @@ Module num.
     (* StructRecord
       {
         name := "ParseFloatError";
+        const_params := [];
         ty_params := [];
         fields := [ ("kind", Ty.path "core::num::dec2flt::FloatErrorKind") ];
       } *)
@@ -78,9 +79,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -105,7 +106,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -120,9 +121,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -146,7 +147,7 @@ Module num.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -172,9 +173,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -199,7 +200,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -225,9 +226,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -236,7 +241,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -251,6 +256,7 @@ Module num.
     (*
     Enum FloatErrorKind
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -272,9 +278,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -309,7 +315,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -324,9 +330,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -352,7 +358,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -378,9 +384,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -407,7 +413,7 @@ Module num.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -433,13 +439,17 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -462,9 +472,9 @@ Module num.
               }
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -490,7 +500,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -510,9 +520,9 @@ Module num.
               self.description().fmt(f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -532,7 +542,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -548,14 +558,14 @@ Module num.
         ParseFloatError { kind: FloatErrorKind::Empty }
     }
     *)
-    Definition pfe_empty (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition pfe_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "core::num::dec2flt::ParseFloatError"
             [ ("kind", Value.StructTuple "core::num::dec2flt::FloatErrorKind::Empty" []) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_pfe_empty : M.IsFunction "core::num::dec2flt::pfe_empty" pfe_empty.
@@ -565,14 +575,14 @@ Module num.
         ParseFloatError { kind: FloatErrorKind::Invalid }
     }
     *)
-    Definition pfe_invalid (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition pfe_invalid (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "core::num::dec2flt::ParseFloatError"
             [ ("kind", Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" []) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_pfe_invalid : M.IsFunction "core::num::dec2flt::pfe_invalid" pfe_invalid.
@@ -584,9 +594,9 @@ Module num.
         T::from_u64_bits(word)
     }
     *)
-    Definition biased_fp_to_float (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ x ] =>
+    Definition biased_fp_to_float (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.read (|
@@ -632,7 +642,7 @@ Module num.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_biased_fp_to_float :
@@ -685,9 +695,9 @@ Module num.
         Ok(float)
     }
     *)
-    Definition dec2flt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ F ], [ s ] =>
+    Definition dec2flt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ F ], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.catch_return (|
@@ -711,7 +721,7 @@ Module num.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "first",
                                     []
                                   |),
@@ -775,10 +785,11 @@ Module num.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeFrom")
+                                      []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
@@ -807,7 +818,7 @@ Module num.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
                                     []
                                   |),
@@ -1139,7 +1150,7 @@ Module num.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| float |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_dec2flt : M.IsFunction "core::num::dec2flt::dec2flt" dec2flt.

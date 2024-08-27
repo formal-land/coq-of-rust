@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -12,9 +13,9 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "e2e_call_runtime::AccountId"
@@ -24,7 +25,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -39,9 +40,9 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -50,7 +51,7 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -73,6 +74,7 @@ Axiom Balance : (Ty.path "e2e_call_runtime::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "e2e_call_runtime::AccountId") ];
   } *)
@@ -85,7 +87,7 @@ Module Impl_e2e_call_runtime_Env.
           unimplemented!()
       }
   *)
-  Parameter balance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
 End Impl_e2e_call_runtime_Env.
@@ -93,6 +95,7 @@ End Impl_e2e_call_runtime_Env.
 (* StructTuple
   {
     name := "Contract";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -101,10 +104,10 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
   Definition Self : Ty.t := Ty.path "e2e_call_runtime::Contract".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] => ltac:(M.monadic (Value.StructTuple "e2e_call_runtime::Contract" []))
-    | _, _ => M.impossible
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "e2e_call_runtime::Contract" []))
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -123,7 +126,7 @@ Module Impl_e2e_call_runtime_Contract.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -132,16 +135,16 @@ Module Impl_e2e_call_runtime_Contract.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "e2e_call_runtime::Contract", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -151,10 +154,10 @@ Module Impl_e2e_call_runtime_Contract.
           Self {}
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] => ltac:(M.monadic (Value.StructTuple "e2e_call_runtime::Contract" []))
-    | _, _ => M.impossible
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "e2e_call_runtime::Contract" []))
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -164,9 +167,9 @@ Module Impl_e2e_call_runtime_Contract.
           self.env().balance()
       }
   *)
-  Definition get_contract_balance (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get_contract_balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
@@ -180,7 +183,7 @@ Module Impl_e2e_call_runtime_Contract.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_contract_balance :

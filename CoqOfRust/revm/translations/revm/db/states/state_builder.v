@@ -7,6 +7,7 @@ Module db.
       (* StructRecord
         {
           name := "StateBuilder";
+          const_params := [];
           ty_params := [ "DB" ];
           fields :=
             [
@@ -15,19 +16,25 @@ Module db.
               ("with_bundle_prestate",
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "revm::db::states::bundle_state::BundleState" ]);
               ("with_cache_prestate",
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "revm::db::states::cache::CacheState" ]);
               ("with_bundle_update", Ty.path "bool");
               ("with_background_transition_merge", Ty.path "bool");
               ("with_block_hashes",
                 Ty.apply
                   (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
                   [
                     Ty.path "u64";
-                    Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [];
                     Ty.path "alloc::alloc::Global"
                   ])
             ];
@@ -35,13 +42,13 @@ Module db.
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_DB_for_revm_db_states_state_builder_StateBuilder_DB.
         Definition Self (DB : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [ DB ].
+          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ].
         
         (* Clone *)
-        Definition clone (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -81,6 +88,7 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [ Ty.path "revm::db::states::bundle_state::BundleState" ],
                         [],
                         "clone",
@@ -100,6 +108,7 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [ Ty.path "revm::db::states::cache::CacheState" ],
                         [],
                         "clone",
@@ -153,9 +162,13 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
                           [
                             Ty.path "u64";
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
@@ -171,7 +184,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -185,13 +198,13 @@ Module db.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_DB_for_revm_db_states_state_builder_StateBuilder_DB.
         Definition Self (DB : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [ DB ].
+          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ].
         
         (* Debug *)
-        Definition fmt (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -288,7 +301,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -302,7 +315,7 @@ Module db.
       
       Module Impl_core_marker_StructuralPartialEq_for_revm_db_states_state_builder_StateBuilder_DB.
         Definition Self (DB : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [ DB ].
+          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ].
         
         Axiom Implements :
           forall (DB : Ty.t),
@@ -315,13 +328,13 @@ Module db.
       
       Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_DB_for_revm_db_states_state_builder_StateBuilder_DB.
         Definition Self (DB : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [ DB ].
+          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ].
         
         (* PartialEq *)
-        Definition eq (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition eq (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [ self; other ] =>
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -369,10 +382,12 @@ Module db.
                               "core::cmp::PartialEq",
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [ Ty.path "revm::db::states::bundle_state::BundleState" ],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.path "revm::db::states::bundle_state::BundleState" ]
                               ],
                               "eq",
@@ -398,10 +413,12 @@ Module db.
                             "core::cmp::PartialEq",
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [ Ty.path "revm::db::states::cache::CacheState" ],
                             [
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [ Ty.path "revm::db::states::cache::CacheState" ]
                             ],
                             "eq",
@@ -461,17 +478,25 @@ Module db.
                       "core::cmp::PartialEq",
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
+                        []
                         [
                           Ty.path "u64";
-                          Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [];
                           Ty.path "alloc::alloc::Global"
                         ],
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
                           [
                             Ty.path "u64";
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "alloc::alloc::Global"
                           ]
                       ],
@@ -492,7 +517,7 @@ Module db.
                     ]
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -506,7 +531,7 @@ Module db.
       
       Module Impl_core_marker_StructuralEq_for_revm_db_states_state_builder_StateBuilder_DB.
         Definition Self (DB : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [ DB ].
+          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ].
         
         Axiom Implements :
           forall (DB : Ty.t),
@@ -519,13 +544,18 @@ Module db.
       
       Module Impl_core_cmp_Eq_where_core_cmp_Eq_DB_for_revm_db_states_state_builder_StateBuilder_DB.
         Definition Self (DB : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [ DB ].
+          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ].
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition assert_receiver_is_total_eq
+            (DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -566,7 +596,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -584,9 +614,11 @@ Module db.
         Definition Self : Ty.t :=
           Ty.apply
             (Ty.path "revm::db::states::state_builder::StateBuilder")
+            []
             [
               Ty.apply
                 (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                []
                 [ Ty.path "core::convert::Infallible" ]
             ].
         
@@ -595,18 +627,20 @@ Module db.
                 Self::default()
             }
         *)
-        Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "revm::db::states::state_builder::StateBuilder")
+                    []
                     [
                       Ty.apply
                         (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                        []
                         [ Ty.path "core::convert::Infallible" ]
                     ],
                   [],
@@ -615,7 +649,7 @@ Module db.
                 |),
                 []
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -623,21 +657,21 @@ Module db.
       
       Module Impl_core_default_Default_where_revm_primitives_db_Database_DB_where_core_default_Default_DB_for_revm_db_states_state_builder_StateBuilder_DB.
         Definition Self (DB : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [ DB ].
+          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ].
         
         (*
             fn default() -> Self {
                 Self::new_with_database(DB::default())
             }
         *)
-        Definition default (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition default (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [] =>
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [ DB ],
+                  Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ],
                   "new_with_database",
                   []
                 |),
@@ -648,7 +682,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -662,7 +696,7 @@ Module db.
       
       Module Impl_revm_db_states_state_builder_StateBuilder_DB.
         Definition Self (DB : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [ DB ].
+          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ].
         
         (*
             pub fn new_with_database(database: DB) -> Self {
@@ -677,10 +711,15 @@ Module db.
                 }
             }
         *)
-        Definition new_with_database (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new_with_database
+            (DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [ database ] =>
+          match ε, τ, α with
+          | [], [], [ database ] =>
             ltac:(M.monadic
               (let database := M.alloc (| database |) in
               Value.StructRecord
@@ -697,9 +736,13 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
                           [
                             Ty.path "u64";
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -708,7 +751,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new_with_database :
@@ -730,10 +773,15 @@ Module db.
                 }
             }
         *)
-        Definition with_database (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition with_database
+            (DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [ ODB ], [ self; database ] =>
+          match ε, τ, α with
+          | [], [ ODB ], [ self; database ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let database := M.alloc (| database |) in
@@ -790,7 +838,7 @@ Module db.
                       |)
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_with_database :
@@ -805,25 +853,30 @@ Module db.
                 self.with_database(WrapDatabaseRef(database))
             }
         *)
-        Definition with_database_ref (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition with_database_ref
+            (DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [ ODB ], [ self; database ] =>
+          match ε, τ, α with
+          | [], [ ODB ], [ self; database ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let database := M.alloc (| database |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [ DB ],
+                  Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ],
                   "with_database",
-                  [ Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ ODB ] ]
+                  [ Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ ODB ] ]
                 |),
                 [
                   M.read (| self |);
                   Value.StructTuple "revm_primitives::db::WrapDatabaseRef" [ M.read (| database |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_with_database_ref :
@@ -838,20 +891,26 @@ Module db.
                 self.with_database(database)
             }
         *)
-        Definition with_database_boxed (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition with_database_boxed
+            (DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [ Error ], [ self; database ] =>
+          match ε, τ, α with
+          | [], [ Error ], [ self; database ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let database := M.alloc (| database |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [ DB ],
+                  Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ],
                   "with_database",
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [
                         Ty.dyn
                           [
@@ -864,7 +923,7 @@ Module db.
                 |),
                 [ M.read (| self |); (* Unsize *) M.pointer_coercion (M.read (| database |)) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_with_database_boxed :
@@ -879,16 +938,21 @@ Module db.
                 }
             }
         *)
-        Definition without_state_clear (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition without_state_clear
+            (DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.struct_record_update
                 (M.read (| self |))
                 [ ("with_state_clear", Value.Bool false) ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_without_state_clear :
@@ -903,10 +967,15 @@ Module db.
                 }
             }
         *)
-        Definition with_bundle_prestate (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition with_bundle_prestate
+            (DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [ self; bundle ] =>
+          match ε, τ, α with
+          | [], [], [ self; bundle ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let bundle := M.alloc (| bundle |) in
@@ -916,7 +985,7 @@ Module db.
                   ("with_bundle_prestate",
                     Value.StructTuple "core::option::Option::Some" [ M.read (| bundle |) ])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_with_bundle_prestate :
@@ -931,16 +1000,21 @@ Module db.
                 }
             }
         *)
-        Definition with_bundle_update (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition with_bundle_update
+            (DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.struct_record_update
                 (M.read (| self |))
                 [ ("with_bundle_update", Value.Bool true) ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_with_bundle_update :
@@ -955,10 +1029,15 @@ Module db.
                 }
             }
         *)
-        Definition with_cached_prestate (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition with_cached_prestate
+            (DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [ self; cache ] =>
+          match ε, τ, α with
+          | [], [], [ self; cache ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let cache := M.alloc (| cache |) in
@@ -968,7 +1047,7 @@ Module db.
                   ("with_cache_prestate",
                     Value.StructTuple "core::option::Option::Some" [ M.read (| cache |) ])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_with_cached_prestate :
@@ -985,18 +1064,19 @@ Module db.
         *)
         Definition with_background_transition_merge
             (DB : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.struct_record_update
                 (M.read (| self |))
                 [ ("with_background_transition_merge", Value.Bool true) ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_with_background_transition_merge :
@@ -1014,17 +1094,22 @@ Module db.
                 }
             }
         *)
-        Definition with_block_hashes (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition with_block_hashes
+            (DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [ self; block_hashes ] =>
+          match ε, τ, α with
+          | [], [], [ self; block_hashes ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let block_hashes := M.alloc (| block_hashes |) in
               M.struct_record_update
                 (M.read (| self |))
                 [ ("with_block_hashes", M.read (| block_hashes |)) ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_with_block_hashes :
@@ -1051,10 +1136,10 @@ Module db.
                 }
             }
         *)
-        Definition build (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition build (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self DB in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -1072,6 +1157,7 @@ Module db.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [ Ty.path "revm::db::states::cache::CacheState" ],
                                       "is_some",
                                       []
@@ -1104,6 +1190,7 @@ Module db.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
+                                    []
                                     [ Ty.path "revm::db::states::bundle_state::BundleState" ],
                                   "is_some",
                                   []
@@ -1129,6 +1216,7 @@ Module db.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [ Ty.path "revm::db::states::cache::CacheState" ],
                             "unwrap_or_else",
                             [
@@ -1219,6 +1307,7 @@ Module db.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [ Ty.path "revm::db::states::bundle_state::BundleState" ],
                             "unwrap_or_default",
                             []
@@ -1245,7 +1334,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_build :

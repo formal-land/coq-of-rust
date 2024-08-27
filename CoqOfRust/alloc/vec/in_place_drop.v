@@ -6,28 +6,32 @@ Module vec.
     (* StructRecord
       {
         name := "InPlaceDrop";
+        const_params := [];
         ty_params := [ "T" ];
         fields :=
-          [ ("inner", Ty.apply (Ty.path "*mut") [ T ]); ("dst", Ty.apply (Ty.path "*mut") [ T ]) ];
+          [
+            ("inner", Ty.apply (Ty.path "*mut") [] [ T ]);
+            ("dst", Ty.apply (Ty.path "*mut") [] [ T ])
+          ];
       } *)
     
     Module Impl_alloc_vec_in_place_drop_InPlaceDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [ T ].
+        Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ].
       
       (*
           fn len(&self) -> usize {
               unsafe { self.dst.sub_ptr(self.inner) }
           }
       *)
-      Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "sub_ptr", [] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "sub_ptr", [] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -47,7 +51,7 @@ Module vec.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_len :
@@ -57,7 +61,7 @@ Module vec.
     
     Module Impl_core_ops_drop_Drop_for_alloc_vec_in_place_drop_InPlaceDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [ T ].
+        Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ].
       
       (*
           fn drop(&mut self) {
@@ -66,10 +70,10 @@ Module vec.
               }
           }
       *)
-      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -78,7 +82,7 @@ Module vec.
                   M.call_closure (|
                     M.get_function (|
                       "core::ptr::drop_in_place",
-                      [ Ty.apply (Ty.path "slice") [ T ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
                     |),
                     [
                       M.call_closure (|
@@ -93,7 +97,7 @@ Module vec.
                           |);
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [ T ],
+                              Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ],
                               "len",
                               []
                             |),
@@ -106,7 +110,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -121,10 +125,11 @@ Module vec.
     (* StructRecord
       {
         name := "InPlaceDstBufDrop";
+        const_params := [];
         ty_params := [ "T" ];
         fields :=
           [
-            ("ptr", Ty.apply (Ty.path "*mut") [ T ]);
+            ("ptr", Ty.apply (Ty.path "*mut") [] [ T ]);
             ("len", Ty.path "usize");
             ("cap", Ty.path "usize")
           ];
@@ -132,17 +137,17 @@ Module vec.
     
     Module Impl_core_ops_drop_Drop_for_alloc_vec_in_place_drop_InPlaceDstBufDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDstBufDrop") [ T ].
+        Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDstBufDrop") [] [ T ].
       
       (*
           fn drop(&mut self) {
               unsafe { super::Vec::from_raw_parts(self.ptr, self.len, self.cap) };
           }
       *)
-      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -150,7 +155,7 @@ Module vec.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "from_raw_parts",
                       []
                     |),
@@ -181,7 +186,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

@@ -53,9 +53,9 @@ Module gas.
         }
     }
     *)
-    Definition sstore_refund (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ spec_id; original; current; new ] =>
+    Definition sstore_refund (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ spec_id; original; current; new ] =>
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           let original := M.alloc (| original |) in
@@ -155,8 +155,16 @@ Module gas.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.path "ruint::Uint",
-                                      [ Ty.path "ruint::Uint" ],
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          []
+                                      ],
                                       "eq",
                                       []
                                     |),
@@ -180,8 +188,16 @@ Module gas.
                                             M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::cmp::PartialEq",
-                                                Ty.path "ruint::Uint",
-                                                [ Ty.path "ruint::Uint" ],
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    []
+                                                ],
                                                 "eq",
                                                 []
                                               |),
@@ -191,8 +207,16 @@ Module gas.
                                               (M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
-                                                  Ty.path "ruint::Uint",
-                                                  [ Ty.path "ruint::Uint" ],
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      []
+                                                  ],
                                                   "eq",
                                                   []
                                                 |),
@@ -221,8 +245,16 @@ Module gas.
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::cmp::PartialEq",
-                                                        Ty.path "ruint::Uint",
-                                                        [ Ty.path "ruint::Uint" ],
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [],
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            []
+                                                        ],
                                                         "ne",
                                                         []
                                                       |),
@@ -246,8 +278,22 @@ Module gas.
                                                             M.call_closure (|
                                                               M.get_trait_method (|
                                                                 "core::cmp::PartialEq",
-                                                                Ty.path "ruint::Uint",
-                                                                [ Ty.path "ruint::Uint" ],
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    []
+                                                                ],
                                                                 "eq",
                                                                 []
                                                               |),
@@ -285,8 +331,22 @@ Module gas.
                                                                     M.call_closure (|
                                                                       M.get_trait_method (|
                                                                         "core::cmp::PartialEq",
-                                                                        Ty.path "ruint::Uint",
-                                                                        [ Ty.path "ruint::Uint" ],
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          [],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [
+                                                                              Value.Integer 256;
+                                                                              Value.Integer 4
+                                                                            ]
+                                                                            []
+                                                                        ],
                                                                         "eq",
                                                                         []
                                                                       |),
@@ -337,8 +397,16 @@ Module gas.
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::cmp::PartialEq",
-                                                        Ty.path "ruint::Uint",
-                                                        [ Ty.path "ruint::Uint" ],
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [],
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            []
+                                                        ],
                                                         "eq",
                                                         []
                                                       |),
@@ -445,8 +513,22 @@ Module gas.
                                                                     M.call_closure (|
                                                                       M.get_trait_method (|
                                                                         "core::cmp::PartialEq",
-                                                                        Ty.path "ruint::Uint",
-                                                                        [ Ty.path "ruint::Uint" ],
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          [],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [
+                                                                              Value.Integer 256;
+                                                                              Value.Integer 4
+                                                                            ]
+                                                                            []
+                                                                        ],
                                                                         "eq",
                                                                         []
                                                                       |),
@@ -525,8 +607,16 @@ Module gas.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.path "ruint::Uint",
-                                        [ Ty.path "ruint::Uint" ],
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
                                         "ne",
                                         []
                                       |),
@@ -536,8 +626,16 @@ Module gas.
                                       (M.call_closure (|
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
-                                          Ty.path "ruint::Uint",
-                                          [ Ty.path "ruint::Uint" ],
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ],
                                           "eq",
                                           []
                                         |),
@@ -556,7 +654,7 @@ Module gas.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_sstore_refund :
@@ -567,9 +665,9 @@ Module gas.
         CREATE.checked_add(tri!(cost_per_word(len, KECCAK256WORD)))
     }
     *)
-    Definition create2_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ len ] =>
+    Definition create2_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.catch_return (|
@@ -618,7 +716,7 @@ Module gas.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_create2_cost :
@@ -647,9 +745,9 @@ Module gas.
         l
     }
     *)
-    Definition log2floor (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ value ] =>
+    Definition log2floor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           M.catch_return (|
@@ -674,7 +772,10 @@ Module gas.
                                           M.SubPointer.get_array_field (|
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.path "ruint::Uint",
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [],
                                                 "as_limbs",
                                                 []
                                               |),
@@ -718,7 +819,10 @@ Module gas.
                                               M.SubPointer.get_array_field (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.path "ruint::Uint",
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [],
                                                     "as_limbs",
                                                     []
                                                   |),
@@ -799,7 +903,7 @@ Module gas.
                 l
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_log2floor : M.IsFunction "revm_interpreter::gas::calc::log2floor" log2floor.
@@ -822,9 +926,9 @@ Module gas.
         }
     }
     *)
-    Definition exp_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ spec_id; power ] =>
+    Definition exp_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ spec_id; power ] =>
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           let power := M.alloc (| power |) in
@@ -842,8 +946,16 @@ Module gas.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "ruint::Uint",
-                                  [ Ty.path "ruint::Uint" ],
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                   "eq",
                                   []
                                 |),
@@ -867,7 +979,10 @@ Module gas.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 "from",
                                 [ Ty.path "i32" ]
                               |),
@@ -918,7 +1033,13 @@ Module gas.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::option::Option")
-                                      [ Ty.path "ruint::Uint" ],
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          []
+                                      ],
                                     [],
                                     "branch",
                                     []
@@ -926,14 +1047,20 @@ Module gas.
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.path "ruint::Uint",
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [],
                                         "checked_add",
                                         []
                                       |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.path "ruint::Uint",
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [],
                                             "from",
                                             [ Ty.path "u64" ]
                                           |),
@@ -953,7 +1080,13 @@ Module gas.
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
-                                                    [ Ty.path "ruint::Uint" ],
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        []
+                                                    ],
                                                   [],
                                                   "branch",
                                                   []
@@ -961,7 +1094,10 @@ Module gas.
                                                 [
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.path "ruint::Uint",
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [],
                                                       "checked_mul",
                                                       []
                                                     |),
@@ -969,7 +1105,10 @@ Module gas.
                                                       M.read (| gas_byte |);
                                                       M.call_closure (|
                                                         M.get_associated_function (|
-                                                          Ty.path "ruint::Uint",
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [],
                                                           "from",
                                                           [ Ty.path "u64" ]
                                                         |),
@@ -1013,10 +1152,12 @@ Module gas.
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
+                                                                []
                                                                 [ Ty.path "u64" ],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "core::convert::Infallible"
@@ -1068,10 +1209,12 @@ Module gas.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
+                                                  []
                                                   [ Ty.path "u64" ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [ Ty.path "core::convert::Infallible" ]
                                                 ],
                                                 "from_residual",
@@ -1101,9 +1244,13 @@ Module gas.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [
                                   Ty.path "u64";
-                                  Ty.apply (Ty.path "ruint::from::FromUintError") [ Ty.path "u64" ]
+                                  Ty.apply
+                                    (Ty.path "ruint::from::FromUintError")
+                                    []
+                                    [ Ty.path "u64" ]
                                 ],
                               "ok",
                               []
@@ -1113,7 +1260,12 @@ Module gas.
                                 M.get_trait_method (|
                                   "core::convert::TryFrom",
                                   Ty.path "u64",
-                                  [ Ty.path "ruint::Uint" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                   "try_from",
                                   []
                                 |),
@@ -1126,7 +1278,7 @@ Module gas.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_exp_cost : M.IsFunction "revm_interpreter::gas::calc::exp_cost" exp_cost.
@@ -1136,9 +1288,9 @@ Module gas.
         VERYLOW.checked_add(tri!(cost_per_word(len, COPY)))
     }
     *)
-    Definition verylowcopy_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ len ] =>
+    Definition verylowcopy_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.catch_return (|
@@ -1187,7 +1339,7 @@ Module gas.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_verylowcopy_cost :
@@ -1205,9 +1357,9 @@ Module gas.
         base_gas.checked_add(tri!(cost_per_word(len, COPY)))
     }
     *)
-    Definition extcodecopy_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ spec_id; len; is_cold ] =>
+    Definition extcodecopy_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ spec_id; len; is_cold ] =>
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           let len := M.alloc (| len |) in
@@ -1335,7 +1487,7 @@ Module gas.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_extcodecopy_cost :
@@ -1346,9 +1498,9 @@ Module gas.
         tri!(LOG.checked_add(tri!(LOGDATA.checked_mul(len)))).checked_add(LOGTOPIC * n as u64)
     }
     *)
-    Definition log_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ n; len ] =>
+    Definition log_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ n; len ] =>
         ltac:(M.monadic
           (let n := M.alloc (| n |) in
           let len := M.alloc (| len |) in
@@ -1446,7 +1598,7 @@ Module gas.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_log_cost : M.IsFunction "revm_interpreter::gas::calc::log_cost" log_cost.
@@ -1456,9 +1608,9 @@ Module gas.
         KECCAK256.checked_add(tri!(cost_per_word(len, KECCAK256WORD)))
     }
     *)
-    Definition keccak256_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ len ] =>
+    Definition keccak256_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.catch_return (|
@@ -1507,7 +1659,7 @@ Module gas.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_keccak256_cost :
@@ -1518,9 +1670,9 @@ Module gas.
         multiple.checked_mul(num_words(len))
     }
     *)
-    Definition cost_per_word (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ len; multiple ] =>
+    Definition cost_per_word (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ len; multiple ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           let multiple := M.alloc (| multiple |) in
@@ -1534,7 +1686,7 @@ Module gas.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_cost_per_word :
@@ -1548,9 +1700,9 @@ Module gas.
         cost
     }
     *)
-    Definition initcode_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ len ] =>
+    Definition initcode_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.read (|
@@ -1580,7 +1732,7 @@ Module gas.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_initcode_cost :
@@ -1605,9 +1757,9 @@ Module gas.
         }
     }
     *)
-    Definition sload_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ spec_id; is_cold ] =>
+    Definition sload_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ spec_id; is_cold ] =>
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           let is_cold := M.alloc (| is_cold |) in
@@ -1718,7 +1870,7 @@ Module gas.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_sload_cost : M.IsFunction "revm_interpreter::gas::calc::sload_cost" sload_cost.
@@ -1758,9 +1910,9 @@ Module gas.
         }
     }
     *)
-    Definition sstore_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ spec_id; original; current; new; gas; is_cold ] =>
+    Definition sstore_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ spec_id; original; current; new; gas; is_cold ] =>
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           let original := M.alloc (| original |) in
@@ -1949,7 +2101,7 @@ Module gas.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_sstore_cost :
@@ -1972,9 +2124,9 @@ Module gas.
         }
     }
     *)
-    Definition istanbul_sstore_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ original; current; new ] =>
+    Definition istanbul_sstore_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ SLOAD_GAS; SSTORE_RESET_GAS ], [], [ original; current; new ] =>
         ltac:(M.monadic
           (let original := M.alloc (| original |) in
           let current := M.alloc (| current |) in
@@ -1991,8 +2143,16 @@ Module gas.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
-                              Ty.path "ruint::Uint",
-                              [ Ty.path "ruint::Uint" ],
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [],
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  []
+                              ],
                               "eq",
                               []
                             |),
@@ -2017,8 +2177,16 @@ Module gas.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.path "ruint::Uint",
-                                        [ Ty.path "ruint::Uint" ],
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
                                         "eq",
                                         []
                                       |),
@@ -2028,8 +2196,16 @@ Module gas.
                                       (M.call_closure (|
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
-                                          Ty.path "ruint::Uint",
-                                          [ Ty.path "ruint::Uint" ],
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ],
                                           "eq",
                                           []
                                         |),
@@ -2053,8 +2229,16 @@ Module gas.
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
-                                              Ty.path "ruint::Uint",
-                                              [ Ty.path "ruint::Uint" ],
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  []
+                                              ],
                                               "eq",
                                               []
                                             |),
@@ -2081,7 +2265,7 @@ Module gas.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_istanbul_sstore_cost :
@@ -2096,9 +2280,9 @@ Module gas.
         }
     }
     *)
-    Definition frontier_sstore_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ current; new ] =>
+    Definition frontier_sstore_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ current; new ] =>
         ltac:(M.monadic
           (let current := M.alloc (| current |) in
           let new := M.alloc (| new |) in
@@ -2115,8 +2299,16 @@ Module gas.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
-                                Ty.path "ruint::Uint",
-                                [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    []
+                                ],
                                 "eq",
                                 []
                               |),
@@ -2126,8 +2318,16 @@ Module gas.
                               (M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "ruint::Uint",
-                                  [ Ty.path "ruint::Uint" ],
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                   "ne",
                                   []
                                 |),
@@ -2143,7 +2343,7 @@ Module gas.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_frontier_sstore_cost :
@@ -2180,9 +2380,9 @@ Module gas.
         gas
     }
     *)
-    Definition selfdestruct_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ spec_id; res ] =>
+    Definition selfdestruct_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ spec_id; res ] =>
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           let res := M.alloc (| res |) in
@@ -2371,7 +2571,7 @@ Module gas.
               |) in
             gas
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_selfdestruct_cost :
@@ -2415,9 +2615,9 @@ Module gas.
         gas
     }
     *)
-    Definition call_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ spec_id; transfers_value; is_cold; new_account_accounting ] =>
+    Definition call_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ spec_id; transfers_value; is_cold; new_account_accounting ] =>
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           let transfers_value := M.alloc (| transfers_value |) in
@@ -2601,7 +2801,7 @@ Module gas.
               |) in
             gas
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_call_cost : M.IsFunction "revm_interpreter::gas::calc::call_cost" call_cost.
@@ -2615,9 +2815,9 @@ Module gas.
         }
     }
     *)
-    Definition warm_cold_cost (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ is_cold ] =>
+    Definition warm_cold_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ is_cold ] =>
         ltac:(M.monadic
           (let is_cold := M.alloc (| is_cold |) in
           M.read (|
@@ -2639,7 +2839,7 @@ Module gas.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_warm_cold_cost :
@@ -2650,9 +2850,9 @@ Module gas.
         memory_gas(crate::interpreter::num_words(len as u64))
     }
     *)
-    Definition memory_gas_for_len (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ len ] =>
+    Definition memory_gas_for_len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.call_closure (|
@@ -2664,7 +2864,7 @@ Module gas.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_memory_gas_for_len :
@@ -2677,9 +2877,9 @@ Module gas.
             .saturating_add(num_words.saturating_mul(num_words) / 512)
     }
     *)
-    Definition memory_gas (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ num_words ] =>
+    Definition memory_gas (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ num_words ] =>
         ltac:(M.monadic
           (let num_words := M.alloc (| num_words |) in
           M.call_closure (|
@@ -2701,7 +2901,7 @@ Module gas.
                 (Value.Integer 512)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_memory_gas : M.IsFunction "revm_interpreter::gas::calc::memory_gas" memory_gas.
@@ -2765,9 +2965,9 @@ Module gas.
         initial_gas
     }
     *)
-    Definition validate_initial_tx_gas (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ spec_id; input; is_create; access_list; initcodes ] =>
+    Definition validate_initial_tx_gas (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ spec_id; input; is_create; access_list; initcodes ] =>
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           let input := M.alloc (| input |) in
@@ -2784,12 +2984,17 @@ Module gas.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
                         (Ty.path "core::iter::adapters::filter::Filter")
+                        []
                         [
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ];
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
                           Ty.function
                             [
                               Ty.tuple
-                                [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                 ]
                             ]
                             (Ty.path "bool")
@@ -2802,7 +3007,7 @@ Module gas.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                           [],
                           "filter",
                           [
@@ -2812,7 +3017,8 @@ Module gas.
                                   [
                                     Ty.apply
                                       (Ty.path "&")
-                                      [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                   ]
                               ]
                               (Ty.path "bool")
@@ -2821,7 +3027,7 @@ Module gas.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "iter",
                               []
                             |),
@@ -2857,7 +3063,7 @@ Module gas.
                   (M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
                         []
                       |),
@@ -2874,7 +3080,12 @@ Module gas.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "&")
-                          [ Ty.apply (Ty.path "slice") [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                           ],
                         [],
                         "into_iter",
@@ -2897,6 +3108,7 @@ Module gas.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::slice::iter::Iter")
+                                        []
                                         [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                       [],
                                       "next",
@@ -2930,9 +3142,11 @@ Module gas.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::iter::adapters::filter::Filter")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::slice::iter::Iter")
+                                                      []
                                                       [ Ty.path "u8" ];
                                                     Ty.function
                                                       [
@@ -2940,9 +3154,11 @@ Module gas.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&")
+                                                                  []
                                                                   [ Ty.path "u8" ]
                                                               ]
                                                           ]
@@ -2959,6 +3175,7 @@ Module gas.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
                                                       (Ty.path "core::slice::iter::Iter")
+                                                      []
                                                       [ Ty.path "u8" ],
                                                     [],
                                                     "filter",
@@ -2969,9 +3186,11 @@ Module gas.
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "&")
+                                                                    []
                                                                     [ Ty.path "u8" ]
                                                                 ]
                                                             ]
@@ -2982,7 +3201,10 @@ Module gas.
                                                   [
                                                     M.call_closure (|
                                                       M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ],
                                                         "iter",
                                                         []
                                                       |),
@@ -3172,13 +3394,21 @@ Module gas.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
                                 (Ty.path "core::slice::iter::Iter")
+                                []
                                 [
                                   Ty.tuple
                                     [
                                       Ty.path "alloy_primitives::bits::address::Address";
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
-                                        [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ]
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ]
                                 ],
                               [],
@@ -3192,14 +3422,19 @@ Module gas.
                                         Ty.path "u64";
                                         Ty.apply
                                           (Ty.path "&")
+                                          []
                                           [
                                             Ty.tuple
                                               [
                                                 Ty.path "alloy_primitives::bits::address::Address";
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
-                                                    Ty.path "ruint::Uint";
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [];
                                                     Ty.path "alloc::alloc::Global"
                                                   ]
                                               ]
@@ -3214,13 +3449,20 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
+                                    []
                                     [
                                       Ty.tuple
                                         [
                                           Ty.path "alloy_primitives::bits::address::Address";
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
-                                            [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global"
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [];
+                                              Ty.path "alloc::alloc::Global"
                                             ]
                                         ]
                                     ],
@@ -3260,8 +3502,15 @@ Module gas.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "alloc::vec::Vec")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               "len",
@@ -3292,14 +3541,19 @@ Module gas.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
+                                      []
                                       [
                                         Ty.tuple
                                           [
                                             Ty.path "alloy_primitives::bits::address::Address";
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
-                                                Ty.path "ruint::Uint";
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [];
                                                 Ty.path "alloc::alloc::Global"
                                               ]
                                           ]
@@ -3426,7 +3680,7 @@ Module gas.
                               M.rust_cast
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
                                     []
                                   |),
@@ -3440,7 +3694,7 @@ Module gas.
               |) in
             initial_gas
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_validate_initial_tx_gas :

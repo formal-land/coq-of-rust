@@ -11,9 +11,9 @@ Module instructions.
         }
     }
     *)
-    Definition pop (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition pop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -117,7 +117,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_pop : M.IsFunction "revm_interpreter::instructions::stack::pop" pop.
@@ -131,9 +131,9 @@ Module instructions.
         }
     }
     *)
-    Definition push0 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; _host ] =>
+    Definition push0 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -286,7 +286,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_push0 : M.IsFunction "revm_interpreter::instructions::stack::push0" push0.
@@ -307,9 +307,9 @@ Module instructions.
         interpreter.instruction_pointer = unsafe { ip.add(N) };
     }
     *)
-    Definition push (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition push (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ N ], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -449,7 +449,7 @@ Module instructions.
                     |),
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "add",
                         []
                       |),
@@ -464,7 +464,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_push : M.IsFunction "revm_interpreter::instructions::stack::push" push.
@@ -477,9 +477,9 @@ Module instructions.
         }
     }
     *)
-    Definition dup (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition dup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ N ], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -588,7 +588,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_dup : M.IsFunction "revm_interpreter::instructions::stack::dup" dup.
@@ -601,9 +601,9 @@ Module instructions.
         }
     }
     *)
-    Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ N ], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -712,7 +712,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_swap : M.IsFunction "revm_interpreter::instructions::stack::swap" swap.
@@ -728,9 +728,9 @@ Module instructions.
         interpreter.instruction_pointer = unsafe { interpreter.instruction_pointer.offset(1) };
     }
     *)
-    Definition dupn (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition dupn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -897,7 +897,7 @@ Module instructions.
                     |),
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "offset",
                         []
                       |),
@@ -916,7 +916,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_dupn : M.IsFunction "revm_interpreter::instructions::stack::dupn" dupn.
@@ -932,9 +932,9 @@ Module instructions.
         interpreter.instruction_pointer = unsafe { interpreter.instruction_pointer.offset(1) };
     }
     *)
-    Definition swapn (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition swapn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1101,7 +1101,7 @@ Module instructions.
                     |),
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "offset",
                         []
                       |),
@@ -1120,7 +1120,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_swapn : M.IsFunction "revm_interpreter::instructions::stack::swapn" swapn.
@@ -1139,9 +1139,9 @@ Module instructions.
         interpreter.instruction_pointer = unsafe { interpreter.instruction_pointer.offset(1) };
     }
     *)
-    Definition exchange (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; _host ] =>
+    Definition exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ interpreter; _host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
@@ -1320,7 +1320,7 @@ Module instructions.
                     |),
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "offset",
                         []
                       |),
@@ -1339,7 +1339,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_exchange :

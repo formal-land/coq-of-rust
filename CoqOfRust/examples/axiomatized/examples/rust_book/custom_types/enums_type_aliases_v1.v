@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum VeryVerboseEnumOfThingsToDoWithNumbers
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -25,6 +26,6 @@ Axiom Operations :
   (Ty.path "enums_type_aliases_v1::Operations") =
     (Ty.path "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers").
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "enums_type_aliases_v1::main" main.

@@ -26,9 +26,9 @@ fn main() {
     );
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -83,7 +83,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "diverging_functions_example_sum_odd_numbers::main" main.
@@ -108,9 +108,9 @@ Module main.
           acc
       }
   *)
-  Definition sum_odd_numbers (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ up_to ] =>
+  Definition sum_odd_numbers (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ up_to ] =>
       ltac:(M.monadic
         (let up_to := M.alloc (| up_to |) in
         M.read (|
@@ -122,7 +122,7 @@ Module main.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
-                      Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ],
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                       [],
                       "into_iter",
                       []
@@ -146,7 +146,10 @@ Module main.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
-                                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ],
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "u32" ],
                                     [],
                                     "next",
                                     []
@@ -220,7 +223,7 @@ Module main.
               |)) in
           acc
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_sum_odd_numbers :

@@ -5,6 +5,7 @@ Module result.
   (*
   Enum Result
   {
+    const_params := [];
     ty_params := [ "T"; "E" ];
     variants :=
       [
@@ -23,7 +24,7 @@ Module result.
   *)
   
   Module Impl_core_marker_Copy_where_core_marker_Copy_T_where_core_marker_Copy_E_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     Axiom Implements :
       forall (T E : Ty.t),
@@ -35,7 +36,7 @@ Module result.
   End Impl_core_marker_Copy_where_core_marker_Copy_T_where_core_marker_Copy_E_for_core_result_Result_T_E.
   
   Module Impl_core_marker_StructuralPartialEq_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     Axiom Implements :
       forall (T E : Ty.t),
@@ -47,13 +48,13 @@ Module result.
   End Impl_core_marker_StructuralPartialEq_for_core_result_Result_T_E.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_cmp_PartialEq_E_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     (* PartialEq *)
-    Definition eq (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -63,7 +64,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ]
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| self |) ]
                 |)
@@ -73,7 +74,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ]
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| other |) ]
                 |)
@@ -154,7 +155,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -167,13 +168,13 @@ Module result.
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_cmp_PartialEq_E_for_core_result_Result_T_E.
   
   Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_cmp_PartialOrd_E_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     (* PartialOrd *)
-    Definition partial_cmp (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -183,7 +184,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ]
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| self |) ]
                 |)
@@ -193,7 +194,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ]
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| other |) ]
                 |)
@@ -282,7 +283,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -295,7 +296,7 @@ Module result.
   End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_cmp_PartialOrd_E_for_core_result_Result_T_E.
   
   Module Impl_core_marker_StructuralEq_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     Axiom Implements :
       forall (T E : Ty.t),
@@ -307,13 +308,18 @@ Module result.
   End Impl_core_marker_StructuralEq_for_core_result_Result_T_E.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_cmp_Eq_E_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq
+        (T E : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -329,7 +335,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -343,13 +349,13 @@ Module result.
   End Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_cmp_Eq_E_for_core_result_Result_T_E.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_cmp_Ord_E_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     (* Ord *)
-    Definition cmp (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -359,7 +365,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ]
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| self |) ]
                 |)
@@ -369,7 +375,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ]
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| other |) ]
                 |)
@@ -459,7 +465,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -472,13 +478,13 @@ Module result.
   End Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_cmp_Ord_E_for_core_result_Result_T_E.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_fmt_Debug_E_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     (* Debug *)
-    Definition fmt (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -529,7 +535,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -542,13 +548,13 @@ Module result.
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_fmt_Debug_E_for_core_result_Result_T_E.
   
   Module Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_E_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     (* Hash *)
-    Definition hash (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -558,7 +564,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ]
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| self |) ]
                 |)
@@ -600,7 +606,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -613,17 +619,17 @@ Module result.
   End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_E_for_core_result_Result_T_E.
   
   Module Impl_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     (*
         pub const fn is_ok(&self) -> bool {
             matches!( *self, Ok(_))
         }
     *)
-    Definition is_ok (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_ok (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -639,7 +645,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_ok :
@@ -654,10 +660,10 @@ Module result.
             }
         }
     *)
-    Definition is_ok_and (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_ok_and (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ impl_FnOnce_T__arrow_bool ], [ self; f ] =>
+      match ε, τ, α with
+      | [], [ impl_FnOnce_T__arrow_bool ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -690,7 +696,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_ok_and :
@@ -702,22 +708,22 @@ Module result.
             !self.is_ok()
         }
     *)
-    Definition is_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_err (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
             (M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                 "is_ok",
                 []
               |),
               [ M.read (| self |) ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_err :
@@ -732,10 +738,10 @@ Module result.
             }
         }
     *)
-    Definition is_err_and (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_err_and (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ impl_FnOnce_E__arrow_bool ], [ self; f ] =>
+      match ε, τ, α with
+      | [], [ impl_FnOnce_E__arrow_bool ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -768,7 +774,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_err_and :
@@ -783,10 +789,10 @@ Module result.
             }
         }
     *)
-    Definition ok (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ok (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -809,7 +815,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_ok :
@@ -824,10 +830,10 @@ Module result.
             }
         }
     *)
-    Definition err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition err (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -850,7 +856,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_err :
@@ -865,10 +871,10 @@ Module result.
             }
         }
     *)
-    Definition as_ref (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -890,7 +896,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_ref :
@@ -905,10 +911,10 @@ Module result.
             }
         }
     *)
-    Definition as_mut (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_mut (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -930,7 +936,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_mut :
@@ -945,10 +951,10 @@ Module result.
             }
         }
     *)
-    Definition map (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ U; F ], [ self; op ] =>
+      match ε, τ, α with
+      | [], [ U; F ], [ self; op ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let op := M.alloc (| op |) in
@@ -986,7 +992,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_map :
@@ -1001,10 +1007,10 @@ Module result.
             }
         }
     *)
-    Definition map_or (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map_or (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ U; F ], [ self; default; f ] =>
+      match ε, τ, α with
+      | [], [ U; F ], [ self; default; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let default := M.alloc (| default |) in
@@ -1038,7 +1044,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_map_or :
@@ -1053,10 +1059,10 @@ Module result.
             }
         }
     *)
-    Definition map_or_else (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map_or_else (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ U; D; F ], [ self; default; f ] =>
+      match ε, τ, α with
+      | [], [ U; D; F ], [ self; default; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let default := M.alloc (| default |) in
@@ -1102,7 +1108,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_map_or_else :
@@ -1117,10 +1123,10 @@ Module result.
             }
         }
     *)
-    Definition map_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map_err (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ F; _ as O ], [ self; op ] =>
+      match ε, τ, α with
+      | [], [ F; _ as O ], [ self; op ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let op := M.alloc (| op |) in
@@ -1158,7 +1164,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_map_err :
@@ -1174,10 +1180,10 @@ Module result.
             self
         }
     *)
-    Definition inspect (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition inspect (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ F ], [ self; f ] =>
+      match ε, τ, α with
+      | [], [ F ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1202,7 +1208,7 @@ Module result.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                               "call_once",
                               []
                             |),
@@ -1215,7 +1221,7 @@ Module result.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_inspect :
@@ -1231,10 +1237,10 @@ Module result.
             self
         }
     *)
-    Definition inspect_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition inspect_err (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ F ], [ self; f ] =>
+      match ε, τ, α with
+      | [], [ F ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1259,7 +1265,7 @@ Module result.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ E ] ] ],
+                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ E ] ] ],
                               "call_once",
                               []
                             |),
@@ -1272,7 +1278,7 @@ Module result.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_inspect_err :
@@ -1287,29 +1293,30 @@ Module result.
             self.as_ref().map(|t| t.deref())
         }
     *)
-    Definition as_deref (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_deref (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
-                [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "&") [ E ] ],
+                []
+                [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ E ] ],
               "map",
               [
-                Ty.apply (Ty.path "&") [ Ty.associated ];
+                Ty.apply (Ty.path "&") [] [ Ty.associated ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ]
-                  (Ty.apply (Ty.path "&") [ Ty.associated ])
+                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                  (Ty.apply (Ty.path "&") [] [ Ty.associated ])
               ]
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                  Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                   "as_ref",
                   []
                 |),
@@ -1342,7 +1349,7 @@ Module result.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_deref :
@@ -1357,29 +1364,35 @@ Module result.
             self.as_mut().map(|t| t.deref_mut())
         }
     *)
-    Definition as_deref_mut (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_deref_mut
+        (T E : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
-                [ Ty.apply (Ty.path "&mut") [ T ]; Ty.apply (Ty.path "&mut") [ E ] ],
+                []
+                [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ E ] ],
               "map",
               [
-                Ty.apply (Ty.path "&mut") [ Ty.associated ];
+                Ty.apply (Ty.path "&mut") [] [ Ty.associated ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ]
-                  (Ty.apply (Ty.path "&mut") [ Ty.associated ])
+                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.associated ])
               ]
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                  Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                   "as_mut",
                   []
                 |),
@@ -1412,7 +1425,7 @@ Module result.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_deref_mut :
@@ -1424,10 +1437,10 @@ Module result.
             Iter { inner: self.as_ref().ok() }
         }
     *)
-    Definition iter (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition iter (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -1438,14 +1451,15 @@ Module result.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
-                      [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "&") [ E ] ],
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ E ] ],
                     "ok",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                        Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                         "as_ref",
                         []
                       |),
@@ -1454,7 +1468,7 @@ Module result.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_iter :
@@ -1466,10 +1480,10 @@ Module result.
             IterMut { inner: self.as_mut().ok() }
         }
     *)
-    Definition iter_mut (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition iter_mut (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -1480,14 +1494,15 @@ Module result.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
-                      [ Ty.apply (Ty.path "&mut") [ T ]; Ty.apply (Ty.path "&mut") [ E ] ],
+                      []
+                      [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ E ] ],
                     "ok",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                        Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                         "as_mut",
                         []
                       |),
@@ -1496,7 +1511,7 @@ Module result.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_iter_mut :
@@ -1514,10 +1529,10 @@ Module result.
             }
         }
     *)
-    Definition expect (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition expect (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self; msg ] =>
+      match ε, τ, α with
+      | [], [], [ self; msg ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let msg := M.alloc (| msg |) in
@@ -1547,7 +1562,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_expect :
@@ -1565,10 +1580,10 @@ Module result.
             }
         }
     *)
-    Definition unwrap (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1600,7 +1615,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_unwrap :
@@ -1618,10 +1633,15 @@ Module result.
             }
         }
     *)
-    Definition unwrap_or_default (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_or_default
+        (T E : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1647,7 +1667,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_unwrap_or_default :
@@ -1665,10 +1685,10 @@ Module result.
             }
         }
     *)
-    Definition expect_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition expect_err (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self; msg ] =>
+      match ε, τ, α with
+      | [], [], [ self; msg ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let msg := M.alloc (| msg |) in
@@ -1698,7 +1718,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_expect_err :
@@ -1716,10 +1736,10 @@ Module result.
             }
         }
     *)
-    Definition unwrap_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_err (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1753,7 +1773,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_unwrap_err :
@@ -1771,10 +1791,10 @@ Module result.
             }
         }
     *)
-    Definition into_ok (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_ok (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1809,7 +1829,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_ok :
@@ -1827,10 +1847,10 @@ Module result.
             }
         }
     *)
-    Definition into_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_err (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1865,7 +1885,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_err :
@@ -1880,10 +1900,10 @@ Module result.
             }
         }
     *)
-    Definition and (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition and (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ U ], [ self; res ] =>
+      match ε, τ, α with
+      | [], [ U ], [ self; res ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let res := M.alloc (| res |) in
@@ -1905,7 +1925,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_and :
@@ -1920,10 +1940,10 @@ Module result.
             }
         }
     *)
-    Definition and_then (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition and_then (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ U; F ], [ self; op ] =>
+      match ε, τ, α with
+      | [], [ U; F ], [ self; op ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let op := M.alloc (| op |) in
@@ -1957,7 +1977,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_and_then :
@@ -1972,10 +1992,10 @@ Module result.
             }
         }
     *)
-    Definition or (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition or (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ F ], [ self; res ] =>
+      match ε, τ, α with
+      | [], [ F ], [ self; res ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let res := M.alloc (| res |) in
@@ -1997,7 +2017,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_or :
@@ -2012,10 +2032,10 @@ Module result.
             }
         }
     *)
-    Definition or_else (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition or_else (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ F; _ as O ], [ self; op ] =>
+      match ε, τ, α with
+      | [], [ F; _ as O ], [ self; op ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let op := M.alloc (| op |) in
@@ -2049,7 +2069,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_or_else :
@@ -2064,10 +2084,10 @@ Module result.
             }
         }
     *)
-    Definition unwrap_or (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_or (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self; default ] =>
+      match ε, τ, α with
+      | [], [], [ self; default ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let default := M.alloc (| default |) in
@@ -2089,7 +2109,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_unwrap_or :
@@ -2104,10 +2124,15 @@ Module result.
             }
         }
     *)
-    Definition unwrap_or_else (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_or_else
+        (T E : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [ F ], [ self; op ] =>
+      match ε, τ, α with
+      | [], [ F ], [ self; op ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let op := M.alloc (| op |) in
@@ -2141,7 +2166,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_unwrap_or_else :
@@ -2158,10 +2183,15 @@ Module result.
             }
         }
     *)
-    Definition unwrap_unchecked (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_unchecked
+        (T E : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2185,7 +2215,7 @@ Module result.
                                       UnOp.Pure.not
                                         (M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                                            Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                                             "is_ok",
                                             []
                                           |),
@@ -2236,7 +2266,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_unwrap_unchecked :
@@ -2253,10 +2283,15 @@ Module result.
             }
         }
     *)
-    Definition unwrap_err_unchecked (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_err_unchecked
+        (T E : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2280,7 +2315,7 @@ Module result.
                                       UnOp.Pure.not
                                         (M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                                            Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                                             "is_err",
                                             []
                                           |),
@@ -2332,7 +2367,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_unwrap_err_unchecked :
@@ -2342,7 +2377,7 @@ Module result.
   
   Module Impl_core_result_Result_ref__T_E.
     Definition Self (T E : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "core::result::Result") [ Ty.apply (Ty.path "&") [ T ]; E ].
+      Ty.apply (Ty.path "core::result::Result") [] [ Ty.apply (Ty.path "&") [] [ T ]; E ].
     
     (*
         pub fn copied(self) -> Result<T, E>
@@ -2352,17 +2387,17 @@ Module result.
             self.map(|&t| t)
         }
     *)
-    Definition copied (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition copied (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::result::Result") [ Ty.apply (Ty.path "&") [ T ]; E ],
+              Ty.apply (Ty.path "core::result::Result") [] [ Ty.apply (Ty.path "&") [] [ T ]; E ],
               "map",
-              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ] T ]
+              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ]
             |),
             [
               M.read (| self |);
@@ -2385,7 +2420,7 @@ Module result.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_copied :
@@ -2400,17 +2435,17 @@ Module result.
             self.map(|t| t.clone())
         }
     *)
-    Definition cloned (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cloned (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::result::Result") [ Ty.apply (Ty.path "&") [ T ]; E ],
+              Ty.apply (Ty.path "core::result::Result") [] [ Ty.apply (Ty.path "&") [] [ T ]; E ],
               "map",
-              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ] T ]
+              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ]
             |),
             [
               M.read (| self |);
@@ -2435,7 +2470,7 @@ Module result.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_cloned :
@@ -2445,7 +2480,7 @@ Module result.
   
   Module Impl_core_result_Result_ref_mut_T_E.
     Definition Self (T E : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "core::result::Result") [ Ty.apply (Ty.path "&mut") [ T ]; E ].
+      Ty.apply (Ty.path "core::result::Result") [] [ Ty.apply (Ty.path "&mut") [] [ T ]; E ].
     
     (*
         pub fn copied(self) -> Result<T, E>
@@ -2455,17 +2490,20 @@ Module result.
             self.map(|&mut t| t)
         }
     *)
-    Definition copied (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition copied (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::result::Result") [ Ty.apply (Ty.path "&mut") [ T ]; E ],
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.apply (Ty.path "&mut") [] [ T ]; E ],
               "map",
-              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ] T ]
+              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ] T ]
             |),
             [
               M.read (| self |);
@@ -2488,7 +2526,7 @@ Module result.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_copied :
@@ -2503,17 +2541,20 @@ Module result.
             self.map(|t| t.clone())
         }
     *)
-    Definition cloned (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cloned (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::result::Result") [ Ty.apply (Ty.path "&mut") [ T ]; E ],
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.apply (Ty.path "&mut") [] [ T ]; E ],
               "map",
-              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ] T ]
+              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ] T ]
             |),
             [
               M.read (| self |);
@@ -2538,7 +2579,7 @@ Module result.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_cloned :
@@ -2550,7 +2591,8 @@ Module result.
     Definition Self (T E : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "core::result::Result")
-        [ Ty.apply (Ty.path "core::option::Option") [ T ]; E ].
+        []
+        [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ].
     
     (*
         pub const fn transpose(self) -> Option<Result<T, E>> {
@@ -2561,10 +2603,10 @@ Module result.
             }
         }
     *)
-    Definition transpose (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition transpose (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2606,7 +2648,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_transpose :
@@ -2618,41 +2660,43 @@ Module result.
     Definition Self (T E : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "core::result::Result")
-        [ Ty.apply (Ty.path "core::result::Result") [ T; E ]; E ].
+        []
+        [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ]; E ].
     
     (*
         pub fn flatten(self) -> Result<T, E> {
             self.and_then(convert::identity)
         }
     *)
-    Definition flatten (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition flatten (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
-                [ Ty.apply (Ty.path "core::result::Result") [ T; E ]; E ],
+                []
+                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ]; E ],
               "and_then",
               [
                 T;
                 Ty.function
-                  [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ]
-                  (Ty.apply (Ty.path "core::result::Result") [ T; E ])
+                  [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                  (Ty.apply (Ty.path "core::result::Result") [] [ T; E ])
               ]
             |),
             [
               M.read (| self |);
               M.get_function (|
                 "core::convert::identity",
-                [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ]
+                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_flatten :
@@ -2665,9 +2709,9 @@ Module result.
       panic!("{msg}: {error:?}")
   }
   *)
-  Definition unwrap_failed (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ msg; error ] =>
+  Definition unwrap_failed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ msg; error ] =>
       ltac:(M.monadic
         (let msg := M.alloc (| msg |) in
         let error := M.alloc (| error |) in
@@ -2691,7 +2735,7 @@ Module result.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [ msg ]
                         |);
@@ -2699,7 +2743,11 @@ Module result.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_debug",
-                            [ Ty.apply (Ty.path "&") [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
                             ]
                           |),
                           [ error ]
@@ -2710,13 +2758,13 @@ Module result.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_unwrap_failed : M.IsFunction "core::result::unwrap_failed" unwrap_failed.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_E_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     (*
         fn clone(&self) -> Self {
@@ -2726,10 +2774,10 @@ Module result.
             }
         }
     *)
-    Definition clone (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2771,7 +2819,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -2783,10 +2831,10 @@ Module result.
             }
         }
     *)
-    Definition clone_from (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_from (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self; source ] =>
+      match ε, τ, α with
+      | [], [], [ self; source ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let source := M.alloc (| source |) in
@@ -2857,7 +2905,7 @@ Module result.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
-                          Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                          Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                           [],
                           "clone",
                           []
@@ -2868,7 +2916,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2885,23 +2933,24 @@ Module result.
   End Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_E_for_core_result_Result_T_E.
   
   Module Impl_core_iter_traits_collect_IntoIterator_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     (*     type Item = T; *)
     Definition _Item (T E : Ty.t) : Ty.t := T.
     
     (*     type IntoIter = IntoIter<T>; *)
-    Definition _IntoIter (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [ T ].
+    Definition _IntoIter (T E : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::result::IntoIter") [] [ T ].
     
     (*
         fn into_iter(self) -> IntoIter<T> {
             IntoIter { inner: self.ok() }
         }
     *)
-    Definition into_iter (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_iter (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -2910,14 +2959,14 @@ Module result.
               ("inner",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                    Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                     "ok",
                     []
                   |),
                   [ M.read (| self |) ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2936,34 +2985,34 @@ Module result.
   
   Module Impl_core_iter_traits_collect_IntoIterator_for_ref__core_result_Result_T_E.
     Definition Self (T E : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ].
+      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ].
     
     (*     type Item = &'a T; *)
-    Definition _Item (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition _Item (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     (*     type IntoIter = Iter<'a, T>; *)
-    Definition _IntoIter (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [ T ].
+    Definition _IntoIter (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [] [ T ].
     
     (*
         fn into_iter(self) -> Iter<'a, T> {
             self.iter()
         }
     *)
-    Definition into_iter (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_iter (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::result::Result") [ T; E ],
+              Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
               "iter",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2982,34 +3031,34 @@ Module result.
   
   Module Impl_core_iter_traits_collect_IntoIterator_for_ref_mut_core_result_Result_T_E.
     Definition Self (T E : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ].
+      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ].
     
     (*     type Item = &'a mut T; *)
-    Definition _Item (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+    Definition _Item (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
     
     (*     type IntoIter = IterMut<'a, T>; *)
-    Definition _IntoIter (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [ T ].
+    Definition _IntoIter (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [] [ T ].
     
     (*
         fn into_iter(self) -> IterMut<'a, T> {
             self.iter_mut()
         }
     *)
-    Definition into_iter (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_iter (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::result::Result") [ T; E ],
+              Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
               "iter_mut",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3029,19 +3078,23 @@ Module result.
   (* StructRecord
     {
       name := "Iter";
+      const_params := [];
       ty_params := [ "T" ];
       fields :=
-        [ ("inner", Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ T ] ]) ];
+        [
+          ("inner",
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ])
+        ];
     } *)
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_result_Iter_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [] [ T ].
     
     (* Debug *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -3066,7 +3119,7 @@ Module result.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3079,25 +3132,25 @@ Module result.
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_result_Iter_T.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_result_Iter_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [] [ T ].
     
     (*     type Item = &'a T; *)
-    Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     (*
         fn next(&mut self) -> Option<&'a T> {
             self.inner.take()
         }
     *)
-    Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ T ] ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
               "take",
               []
             |),
@@ -3109,7 +3162,7 @@ Module result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3118,10 +3171,10 @@ Module result.
             (n, Some(n))
         }
     *)
-    Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition size_hint (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -3139,7 +3192,8 @@ Module result.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
-                                    [ Ty.apply (Ty.path "&") [ T ] ],
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ T ] ],
                                   "is_some",
                                   []
                                 |),
@@ -3165,7 +3219,7 @@ Module result.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3183,22 +3237,22 @@ Module result.
   End Impl_core_iter_traits_iterator_Iterator_for_core_result_Iter_T.
   
   Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_result_Iter_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [] [ T ].
     
     (*
         fn next_back(&mut self) -> Option<&'a T> {
             self.inner.take()
         }
     *)
-    Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ T ] ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
               "take",
               []
             |),
@@ -3210,7 +3264,7 @@ Module result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3223,7 +3277,7 @@ Module result.
   End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_result_Iter_T.
   
   Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_result_Iter_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -3235,7 +3289,7 @@ Module result.
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_result_Iter_T.
   
   Module Impl_core_iter_traits_marker_FusedIterator_for_core_result_Iter_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -3247,7 +3301,7 @@ Module result.
   End Impl_core_iter_traits_marker_FusedIterator_for_core_result_Iter_T.
   
   Module Impl_core_iter_traits_marker_TrustedLen_for_core_result_Iter_A.
-    Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [ A ].
+    Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [] [ A ].
     
     Axiom Implements :
       forall (A : Ty.t),
@@ -3259,17 +3313,17 @@ Module result.
   End Impl_core_iter_traits_marker_TrustedLen_for_core_result_Iter_A.
   
   Module Impl_core_clone_Clone_for_core_result_Iter_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [] [ T ].
     
     (*
         fn clone(&self) -> Self {
             Iter { inner: self.inner }
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -3284,7 +3338,7 @@ Module result.
                   |)
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3299,20 +3353,23 @@ Module result.
   (* StructRecord
     {
       name := "IterMut";
+      const_params := [];
       ty_params := [ "T" ];
       fields :=
-        [ ("inner", Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&mut") [ T ] ])
+        [
+          ("inner",
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ])
         ];
     } *)
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_result_IterMut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [] [ T ].
     
     (* Debug *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -3337,7 +3394,7 @@ Module result.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3350,25 +3407,25 @@ Module result.
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_result_IterMut_T.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_result_IterMut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [] [ T ].
     
     (*     type Item = &'a mut T; *)
-    Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+    Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
     
     (*
         fn next(&mut self) -> Option<&'a mut T> {
             self.inner.take()
         }
     *)
-    Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&mut") [ T ] ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               "take",
               []
             |),
@@ -3380,7 +3437,7 @@ Module result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3389,10 +3446,10 @@ Module result.
             (n, Some(n))
         }
     *)
-    Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition size_hint (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -3410,7 +3467,8 @@ Module result.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
-                                    [ Ty.apply (Ty.path "&mut") [ T ] ],
+                                    []
+                                    [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                   "is_some",
                                   []
                                 |),
@@ -3436,7 +3494,7 @@ Module result.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3454,22 +3512,22 @@ Module result.
   End Impl_core_iter_traits_iterator_Iterator_for_core_result_IterMut_T.
   
   Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_result_IterMut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [] [ T ].
     
     (*
         fn next_back(&mut self) -> Option<&'a mut T> {
             self.inner.take()
         }
     *)
-    Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&mut") [ T ] ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               "take",
               []
             |),
@@ -3481,7 +3539,7 @@ Module result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3494,7 +3552,7 @@ Module result.
   End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_result_IterMut_T.
   
   Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_result_IterMut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -3506,7 +3564,7 @@ Module result.
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_result_IterMut_T.
   
   Module Impl_core_iter_traits_marker_FusedIterator_for_core_result_IterMut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -3518,7 +3576,7 @@ Module result.
   End Impl_core_iter_traits_marker_FusedIterator_for_core_result_IterMut_T.
   
   Module Impl_core_iter_traits_marker_TrustedLen_for_core_result_IterMut_A.
-    Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [ A ].
+    Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [] [ A ].
     
     Axiom Implements :
       forall (A : Ty.t),
@@ -3532,18 +3590,19 @@ Module result.
   (* StructRecord
     {
       name := "IntoIter";
+      const_params := [];
       ty_params := [ "T" ];
-      fields := [ ("inner", Ty.apply (Ty.path "core::option::Option") [ T ]) ];
+      fields := [ ("inner", Ty.apply (Ty.path "core::option::Option") [] [ T ]) ];
     } *)
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_result_IntoIter_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [] [ T ].
     
     (* Clone *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -3553,7 +3612,7 @@ Module result.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::option::Option") [ T ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     [],
                     "clone",
                     []
@@ -3567,7 +3626,7 @@ Module result.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3580,13 +3639,13 @@ Module result.
   End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_result_IntoIter_T.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_result_IntoIter_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [] [ T ].
     
     (* Debug *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -3611,7 +3670,7 @@ Module result.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3624,7 +3683,7 @@ Module result.
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_result_IntoIter_T.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_result_IntoIter_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [] [ T ].
     
     (*     type Item = T; *)
     Definition _Item (T : Ty.t) : Ty.t := T.
@@ -3634,15 +3693,15 @@ Module result.
             self.inner.take()
         }
     *)
-    Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ T ],
+              Ty.apply (Ty.path "core::option::Option") [] [ T ],
               "take",
               []
             |),
@@ -3654,7 +3713,7 @@ Module result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3663,10 +3722,10 @@ Module result.
             (n, Some(n))
         }
     *)
-    Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition size_hint (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -3682,7 +3741,7 @@ Module result.
                             (M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ T ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                   "is_some",
                                   []
                                 |),
@@ -3708,7 +3767,7 @@ Module result.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3726,22 +3785,22 @@ Module result.
   End Impl_core_iter_traits_iterator_Iterator_for_core_result_IntoIter_T.
   
   Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_result_IntoIter_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [] [ T ].
     
     (*
         fn next_back(&mut self) -> Option<T> {
             self.inner.take()
         }
     *)
-    Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ T ],
+              Ty.apply (Ty.path "core::option::Option") [] [ T ],
               "take",
               []
             |),
@@ -3753,7 +3812,7 @@ Module result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3766,7 +3825,7 @@ Module result.
   End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_result_IntoIter_T.
   
   Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_result_IntoIter_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -3778,7 +3837,7 @@ Module result.
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_result_IntoIter_T.
   
   Module Impl_core_iter_traits_marker_FusedIterator_for_core_result_IntoIter_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -3790,7 +3849,7 @@ Module result.
   End Impl_core_iter_traits_marker_FusedIterator_for_core_result_IntoIter_T.
   
   Module Impl_core_iter_traits_marker_TrustedLen_for_core_result_IntoIter_A.
-    Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [ A ].
+    Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [] [ A ].
     
     Axiom Implements :
       forall (A : Ty.t),
@@ -3802,17 +3861,17 @@ Module result.
   End Impl_core_iter_traits_marker_TrustedLen_for_core_result_IntoIter_A.
   
   Module Impl_core_iter_traits_collect_FromIterator_where_core_iter_traits_collect_FromIterator_V_A_core_result_Result_A_E_for_core_result_Result_V_E.
-    Definition Self (A E V : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ V; E ].
+    Definition Self (A E V : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ V; E ].
     
     (*
         fn from_iter<I: IntoIterator<Item = Result<A, E>>>(iter: I) -> Result<V, E> {
             iter::try_process(iter.into_iter(), |i| i.collect())
         }
     *)
-    Definition from_iter (A E V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_iter (A E V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self A E V in
-      match τ, α with
-      | [ _ as I ], [ iter ] =>
+      match ε, τ, α with
+      | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
@@ -3823,6 +3882,7 @@ Module result.
                 A;
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.path "core::convert::Infallible"; E ];
                 Ty.function
                   [
@@ -3830,10 +3890,12 @@ Module result.
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::GenericShunt")
+                          []
                           [
                             Ty.associated;
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.path "core::convert::Infallible"; E ]
                           ]
                       ]
@@ -3869,10 +3931,12 @@ Module result.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::GenericShunt")
+                                    []
                                     [
                                       Ty.associated;
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [ Ty.path "core::convert::Infallible"; E ]
                                     ],
                                   [],
@@ -3887,7 +3951,7 @@ Module result.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3895,33 +3959,34 @@ Module result.
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
         (Self A E V)
-        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "core::result::Result") [ A; E ] ]
+        (* Trait polymorphic types *)
+        [ (* A *) Ty.apply (Ty.path "core::result::Result") [] [ A; E ] ]
         (* Instance *) [ ("from_iter", InstanceField.Method (from_iter A E V)) ].
   End Impl_core_iter_traits_collect_FromIterator_where_core_iter_traits_collect_FromIterator_V_A_core_result_Result_A_E_for_core_result_Result_V_E.
   
   Module Impl_core_ops_try_trait_Try_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     (*     type Output = T; *)
     Definition _Output (T E : Ty.t) : Ty.t := T.
     
     (*     type Residual = Result<convert::Infallible, E>; *)
     Definition _Residual (T E : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "core::result::Result") [ Ty.path "core::convert::Infallible"; E ].
+      Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ].
     
     (*
         fn from_output(output: Self::Output) -> Self {
             Ok(output)
         }
     *)
-    Definition from_output (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_output (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ output ] =>
+      match ε, τ, α with
+      | [], [], [ output ] =>
         ltac:(M.monadic
           (let output := M.alloc (| output |) in
           Value.StructTuple "core::result::Result::Ok" [ M.read (| output |) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3932,10 +3997,10 @@ Module result.
             }
         }
     *)
-    Definition branch (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition branch (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -3965,7 +4030,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3984,7 +4049,7 @@ Module result.
   End Impl_core_ops_try_trait_Try_for_core_result_Result_T_E.
   
   Module Impl_core_ops_try_trait_FromResidual_where_core_convert_From_F_E_core_result_Result_core_convert_Infallible_E_for_core_result_Result_T_F.
-    Definition Self (T E F : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; F ].
+    Definition Self (T E F : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; F ].
     
     (*
         fn from_residual(residual: Result<convert::Infallible, E>) -> Self {
@@ -3993,10 +4058,15 @@ Module result.
             }
         }
     *)
-    Definition from_residual (T E F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_residual
+        (T E F : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T E F in
-      match τ, α with
-      | [], [ residual ] =>
+      match ε, τ, α with
+      | [], [], [ residual ] =>
         ltac:(M.monadic
           (let residual := M.alloc (| residual |) in
           M.read (|
@@ -4021,7 +4091,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4032,23 +4102,28 @@ Module result.
         (* Trait polymorphic types *)
         [
           (* R *)
-          Ty.apply (Ty.path "core::result::Result") [ Ty.path "core::convert::Infallible"; E ]
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ]
         ]
         (* Instance *) [ ("from_residual", InstanceField.Method (from_residual T E F)) ].
   End Impl_core_ops_try_trait_FromResidual_where_core_convert_From_F_E_core_result_Result_core_convert_Infallible_E_for_core_result_Result_T_F.
   
   Module Impl_core_ops_try_trait_FromResidual_where_core_convert_From_F_E_core_ops_try_trait_Yeet_E_for_core_result_Result_T_F.
-    Definition Self (T E F : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; F ].
+    Definition Self (T E F : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; F ].
     
     (*
         fn from_residual(ops::Yeet(e): ops::Yeet<E>) -> Self {
             Err(From::from(e))
         }
     *)
-    Definition from_residual (T E F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_residual
+        (T E F : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T E F in
-      match τ, α with
-      | [], [ β0 ] =>
+      match ε, τ, α with
+      | [], [], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (|
@@ -4069,7 +4144,7 @@ Module result.
                     ]))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4078,16 +4153,17 @@ Module result.
         "core::ops::try_trait::FromResidual"
         (Self T E F)
         (* Trait polymorphic types *)
-        [ (* R *) Ty.apply (Ty.path "core::ops::try_trait::Yeet") [ E ] ]
+        [ (* R *) Ty.apply (Ty.path "core::ops::try_trait::Yeet") [] [ E ] ]
         (* Instance *) [ ("from_residual", InstanceField.Method (from_residual T E F)) ].
   End Impl_core_ops_try_trait_FromResidual_where_core_convert_From_F_E_core_ops_try_trait_Yeet_E_for_core_result_Result_T_F.
   
   Module Impl_core_ops_try_trait_Residual_T_for_core_result_Result_core_convert_Infallible_E.
     Definition Self (T E : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "core::result::Result") [ Ty.path "core::convert::Infallible"; E ].
+      Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ].
     
     (*     type TryType = Result<T, E>; *)
-    Definition _TryType (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
+    Definition _TryType (T E : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     Axiom Implements :
       forall (T E : Ty.t),

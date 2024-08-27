@@ -5,6 +5,7 @@ Module raw_vec.
   (*
   Enum AllocInit
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -25,10 +26,11 @@ Module raw_vec.
   (* StructRecord
     {
       name := "RawVec";
+      const_params := [];
       ty_params := [ "T"; "A" ];
       fields :=
         [
-          ("ptr", Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ]);
+          ("ptr", Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ]);
           ("cap", Ty.path "usize");
           ("alloc", A)
         ];
@@ -36,10 +38,10 @@ Module raw_vec.
   
   Module Impl_alloc_raw_vec_RawVec_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*     pub const NEW: Self = Self::new(); *)
-    (* Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; Ty.path "alloc::alloc::Global" ] *)
+    (* Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ] *)
     Definition value_NEW (T : Ty.t) : Value.t :=
       let Self : Ty.t := Self T in
       M.run
@@ -47,7 +49,10 @@ Module raw_vec.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; Ty.path "alloc::alloc::Global" ],
+                Ty.apply
+                  (Ty.path "alloc::raw_vec::RawVec")
+                  []
+                  [ T; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
               |),
@@ -64,20 +69,20 @@ Module raw_vec.
             Self::new_in(Global)
         }
     *)
-    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new_in",
               []
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -87,21 +92,21 @@ Module raw_vec.
             Self::with_capacity_in(capacity, Global)
         }
     *)
-    Definition with_capacity (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_capacity (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ capacity ] =>
+      match ε, τ, α with
+      | [], [], [ capacity ] =>
         ltac:(M.monadic
           (let capacity := M.alloc (| capacity |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "with_capacity_in",
               []
             |),
             [ M.read (| capacity |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_capacity :
@@ -113,21 +118,26 @@ Module raw_vec.
             Self::with_capacity_zeroed_in(capacity, Global)
         }
     *)
-    Definition with_capacity_zeroed (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_capacity_zeroed
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ capacity ] =>
+      match ε, τ, α with
+      | [], [], [ capacity ] =>
         ltac:(M.monadic
           (let capacity := M.alloc (| capacity |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "with_capacity_zeroed_in",
               []
             |),
             [ M.read (| capacity |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_capacity_zeroed :
@@ -136,7 +146,7 @@ Module raw_vec.
   End Impl_alloc_raw_vec_RawVec_T_alloc_alloc_Global.
   
   Module Impl_alloc_raw_vec_RawVec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ].
     
     (*
         pub(crate) const MIN_NON_ZERO_CAP: usize = if mem::size_of::<T>() == 1 {
@@ -205,10 +215,10 @@ Module raw_vec.
             Self { ptr: Unique::dangling(), cap: 0, alloc }
         }
     *)
-    Definition new_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ alloc ] =>
+      match ε, τ, α with
+      | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           Value.StructRecord
@@ -217,7 +227,7 @@ Module raw_vec.
               ("ptr",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+                    Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                     "dangling",
                     []
                   |),
@@ -226,7 +236,7 @@ Module raw_vec.
               ("cap", Value.Integer 0);
               ("alloc", M.read (| alloc |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_in :
@@ -238,16 +248,21 @@ Module raw_vec.
             Self::allocate_in(capacity, AllocInit::Uninitialized, alloc)
         }
     *)
-    Definition with_capacity_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_capacity_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ capacity; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ capacity; alloc ] =>
         ltac:(M.monadic
           (let capacity := M.alloc (| capacity |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "allocate_in",
               []
             |),
@@ -257,7 +272,7 @@ Module raw_vec.
               M.read (| alloc |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_capacity_in :
@@ -269,16 +284,21 @@ Module raw_vec.
             Self::allocate_in(capacity, AllocInit::Zeroed, alloc)
         }
     *)
-    Definition with_capacity_zeroed_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_capacity_zeroed_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ capacity; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ capacity; alloc ] =>
         ltac:(M.monadic
           (let capacity := M.alloc (| capacity |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "allocate_in",
               []
             |),
@@ -288,7 +308,7 @@ Module raw_vec.
               M.read (| alloc |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_capacity_zeroed_in :
@@ -310,10 +330,10 @@ Module raw_vec.
             }
         }
     *)
-    Definition into_box (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_box (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; len ] =>
+      match ε, τ, α with
+      | [], [], [ self; len ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -340,7 +360,10 @@ Module raw_vec.
                                           (M.read (| len |))
                                           (M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                              Ty.apply
+                                                (Ty.path "alloc::raw_vec::RawVec")
+                                                []
+                                                [ T; A ],
                                               "capacity",
                                               []
                                             |),
@@ -394,7 +417,8 @@ Module raw_vec.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ],
                     "new",
                     []
                   |),
@@ -406,13 +430,13 @@ Module raw_vec.
                 M.call_closure (|
                   M.get_function (|
                     "core::slice::raw::from_raw_parts_mut",
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   [
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                           "ptr",
                           []
                         |),
@@ -422,7 +446,8 @@ Module raw_vec.
                               "core::ops::deref::Deref",
                               Ty.apply
                                 (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ] ],
+                                []
+                                [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ],
                               [],
                               "deref",
                               []
@@ -440,10 +465,12 @@ Module raw_vec.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                       A
                     ],
                   "from_raw_in",
@@ -460,7 +487,8 @@ Module raw_vec.
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                              [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ] ],
+                              []
+                              [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ],
                             [],
                             "deref",
                             []
@@ -476,7 +504,7 @@ Module raw_vec.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_box :
@@ -519,10 +547,10 @@ Module raw_vec.
             }
         }
     *)
-    Definition allocate_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocate_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ capacity; init; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ capacity; init; alloc ] =>
         ltac:(M.monadic
           (let capacity := M.alloc (| capacity |) in
           let init := M.alloc (| init |) in
@@ -548,7 +576,7 @@ Module raw_vec.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                           "new_in",
                           []
                         |),
@@ -729,14 +757,14 @@ Module raw_vec.
                           ("ptr",
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+                                Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                                 "new_unchecked",
                                 []
                               |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                     "as_ptr",
                                     []
                                   |),
@@ -745,7 +773,8 @@ Module raw_vec.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::ptr::non_null::NonNull")
-                                          [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                         "cast",
                                         [ T ]
                                       |),
@@ -762,7 +791,7 @@ Module raw_vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_allocate_in :
@@ -774,10 +803,15 @@ Module raw_vec.
             Self { ptr: unsafe { Unique::new_unchecked(ptr) }, cap: capacity, alloc }
         }
     *)
-    Definition from_raw_parts_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_raw_parts_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ ptr; capacity; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ ptr; capacity; alloc ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           let capacity := M.alloc (| capacity |) in
@@ -788,7 +822,7 @@ Module raw_vec.
               ("ptr",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+                    Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                     "new_unchecked",
                     []
                   |),
@@ -797,7 +831,7 @@ Module raw_vec.
               ("cap", M.read (| capacity |));
               ("alloc", M.read (| alloc |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_raw_parts_in :
@@ -809,15 +843,15 @@ Module raw_vec.
             self.ptr.as_ptr()
         }
     *)
-    Definition ptr (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ptr (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+              Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
               "as_ptr",
               []
             |),
@@ -831,7 +865,7 @@ Module raw_vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_ptr :
@@ -843,10 +877,10 @@ Module raw_vec.
             if T::IS_ZST { usize::MAX } else { self.cap }
         }
     *)
-    Definition capacity (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition capacity (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -869,7 +903,7 @@ Module raw_vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_capacity :
@@ -881,10 +915,10 @@ Module raw_vec.
             &self.alloc
         }
     *)
-    Definition allocator (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocator (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -892,7 +926,7 @@ Module raw_vec.
             "alloc::raw_vec::RawVec",
             "alloc"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_allocator :
@@ -918,10 +952,15 @@ Module raw_vec.
             }
         }
     *)
-    Definition current_memory (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition current_memory
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1010,10 +1049,12 @@ Module raw_vec.
                                           "core::convert::Into",
                                           Ty.apply
                                             (Ty.path "core::ptr::unique::Unique")
+                                            []
                                             [ Ty.path "u8" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
+                                              []
                                               [ Ty.path "u8" ]
                                           ],
                                           "into",
@@ -1022,7 +1063,10 @@ Module raw_vec.
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+                                              Ty.apply
+                                                (Ty.path "core::ptr::unique::Unique")
+                                                []
+                                                [ T ],
                                               "cast",
                                               [ Ty.path "u8" ]
                                             |),
@@ -1047,7 +1091,7 @@ Module raw_vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_current_memory :
@@ -1074,10 +1118,10 @@ Module raw_vec.
             }
         }
     *)
-    Definition reserve (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition reserve (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; len; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; len; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -1093,7 +1137,7 @@ Module raw_vec.
                         (M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                               "needs_to_grow",
                               []
                             |),
@@ -1113,7 +1157,7 @@ Module raw_vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_reserve :
@@ -1125,10 +1169,15 @@ Module raw_vec.
             handle_reserve(self.grow_amortized(len, 1));
         }
     *)
-    Definition reserve_for_push (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition reserve_for_push
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; len ] =>
+      match ε, τ, α with
+      | [], [], [ self; len ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -1140,7 +1189,7 @@ Module raw_vec.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                         "grow_amortized",
                         []
                       |),
@@ -1151,7 +1200,7 @@ Module raw_vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_reserve_for_push :
@@ -1170,10 +1219,10 @@ Module raw_vec.
             Ok(())
         }
     *)
-    Definition try_reserve (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_reserve (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; len; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; len; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -1192,7 +1241,7 @@ Module raw_vec.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                     "needs_to_grow",
                                     []
                                   |),
@@ -1209,6 +1258,7 @@ Module raw_vec.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError"
                                       ],
                                     [],
@@ -1218,7 +1268,7 @@ Module raw_vec.
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                         "grow_amortized",
                                         []
                                       |),
@@ -1247,6 +1297,7 @@ Module raw_vec.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.tuple [];
                                                     Ty.path "alloc::collections::TryReserveError"
@@ -1254,6 +1305,7 @@ Module raw_vec.
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "core::convert::Infallible";
                                                       Ty.path "alloc::collections::TryReserveError"
@@ -1293,7 +1345,7 @@ Module raw_vec.
                           UnOp.Pure.not
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                 "needs_to_grow",
                                 []
                               |),
@@ -1306,7 +1358,7 @@ Module raw_vec.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_reserve :
@@ -1318,10 +1370,15 @@ Module raw_vec.
             handle_reserve(self.try_reserve_exact(len, additional));
         }
     *)
-    Definition reserve_exact (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition reserve_exact
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; len; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; len; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -1334,7 +1391,7 @@ Module raw_vec.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                         "try_reserve_exact",
                         []
                       |),
@@ -1345,7 +1402,7 @@ Module raw_vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_reserve_exact :
@@ -1368,10 +1425,15 @@ Module raw_vec.
             Ok(())
         }
     *)
-    Definition try_reserve_exact (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_reserve_exact
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; len; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; len; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -1390,7 +1452,7 @@ Module raw_vec.
                               (M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                     "needs_to_grow",
                                     []
                                   |),
@@ -1407,6 +1469,7 @@ Module raw_vec.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError"
                                       ],
                                     [],
@@ -1416,7 +1479,7 @@ Module raw_vec.
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                         "grow_exact",
                                         []
                                       |),
@@ -1445,6 +1508,7 @@ Module raw_vec.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.tuple [];
                                                     Ty.path "alloc::collections::TryReserveError"
@@ -1452,6 +1516,7 @@ Module raw_vec.
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "core::convert::Infallible";
                                                       Ty.path "alloc::collections::TryReserveError"
@@ -1491,7 +1556,7 @@ Module raw_vec.
                           UnOp.Pure.not
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                 "needs_to_grow",
                                 []
                               |),
@@ -1504,7 +1569,7 @@ Module raw_vec.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_reserve_exact :
@@ -1516,10 +1581,15 @@ Module raw_vec.
             handle_reserve(self.shrink(cap));
         }
     *)
-    Definition shrink_to_fit (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition shrink_to_fit
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; cap ] =>
+      match ε, τ, α with
+      | [], [], [ self; cap ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let cap := M.alloc (| cap |) in
@@ -1531,7 +1601,7 @@ Module raw_vec.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                         "shrink",
                         []
                       |),
@@ -1542,7 +1612,7 @@ Module raw_vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_shrink_to_fit :
@@ -1553,10 +1623,15 @@ Module raw_vec.
             additional > self.capacity().wrapping_sub(len)
         }
     *)
-    Definition needs_to_grow (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition needs_to_grow
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; len; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; len; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -1568,7 +1643,7 @@ Module raw_vec.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "capacity",
                     []
                   |),
@@ -1577,7 +1652,7 @@ Module raw_vec.
                 M.read (| len |)
               ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_needs_to_grow :
@@ -1593,10 +1668,15 @@ Module raw_vec.
             self.cap = cap;
         }
     *)
-    Definition set_ptr_and_cap (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition set_ptr_and_cap
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; ptr; cap ] =>
+      match ε, τ, α with
+      | [], [], [ self; ptr; cap ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let ptr := M.alloc (| ptr |) in
@@ -1611,14 +1691,14 @@ Module raw_vec.
                 |),
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+                    Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                     "new_unchecked",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                         "as_ptr",
                         []
                       |),
@@ -1627,7 +1707,8 @@ Module raw_vec.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
-                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             "cast",
                             [ T ]
                           |),
@@ -1649,7 +1730,7 @@ Module raw_vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_set_ptr_and_cap :
@@ -1683,10 +1764,15 @@ Module raw_vec.
             Ok(())
         }
     *)
-    Definition grow_amortized (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition grow_amortized
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; len; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; len; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -1789,6 +1875,7 @@ Module raw_vec.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.path "usize"; Ty.path "alloc::collections::TryReserveErrorKind"
                               ],
                             [],
@@ -1798,7 +1885,7 @@ Module raw_vec.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "ok_or",
                                 [ Ty.path "alloc::collections::TryReserveErrorKind" ]
                               |),
@@ -1838,6 +1925,7 @@ Module raw_vec.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.path "alloc::collections::TryReserveError"
@@ -1845,6 +1933,7 @@ Module raw_vec.
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "alloc::collections::TryReserveErrorKind"
@@ -1921,10 +2010,12 @@ Module raw_vec.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                 Ty.path "alloc::collections::TryReserveError"
                               ],
                             [],
@@ -1938,7 +2029,7 @@ Module raw_vec.
                                 M.read (| new_layout |);
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                     "current_memory",
                                     []
                                   |),
@@ -1973,6 +2064,7 @@ Module raw_vec.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.path "alloc::collections::TryReserveError"
@@ -1980,6 +2072,7 @@ Module raw_vec.
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "alloc::collections::TryReserveError"
@@ -2011,7 +2104,7 @@ Module raw_vec.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                         "set_ptr_and_cap",
                         []
                       |),
@@ -2021,7 +2114,7 @@ Module raw_vec.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_grow_amortized :
@@ -2045,10 +2138,10 @@ Module raw_vec.
             Ok(())
         }
     *)
-    Definition grow_exact (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition grow_exact (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; len; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; len; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -2104,6 +2197,7 @@ Module raw_vec.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.path "usize"; Ty.path "alloc::collections::TryReserveErrorKind"
                               ],
                             [],
@@ -2113,7 +2207,7 @@ Module raw_vec.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "ok_or",
                                 [ Ty.path "alloc::collections::TryReserveErrorKind" ]
                               |),
@@ -2153,6 +2247,7 @@ Module raw_vec.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.path "alloc::collections::TryReserveError"
@@ -2160,6 +2255,7 @@ Module raw_vec.
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "alloc::collections::TryReserveErrorKind"
@@ -2207,10 +2303,12 @@ Module raw_vec.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                 Ty.path "alloc::collections::TryReserveError"
                               ],
                             [],
@@ -2224,7 +2322,7 @@ Module raw_vec.
                                 M.read (| new_layout |);
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                     "current_memory",
                                     []
                                   |),
@@ -2259,6 +2357,7 @@ Module raw_vec.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.path "alloc::collections::TryReserveError"
@@ -2266,6 +2365,7 @@ Module raw_vec.
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "alloc::collections::TryReserveError"
@@ -2297,7 +2397,7 @@ Module raw_vec.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                         "set_ptr_and_cap",
                         []
                       |),
@@ -2307,7 +2407,7 @@ Module raw_vec.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_grow_exact :
@@ -2344,10 +2444,10 @@ Module raw_vec.
             Ok(())
         }
     *)
-    Definition shrink (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition shrink (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; cap ] =>
+      match ε, τ, α with
+      | [], [], [ self; cap ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let cap := M.alloc (| cap |) in
@@ -2368,7 +2468,7 @@ Module raw_vec.
                                     (M.read (| cap |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                        Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                         "capacity",
                                         []
                                       |),
@@ -2418,7 +2518,7 @@ Module raw_vec.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                   "current_memory",
                                   []
                                 |),
@@ -2506,6 +2606,7 @@ Module raw_vec.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::ptr::unique::Unique")
+                                                    []
                                                     [ T ],
                                                   "dangling",
                                                   []
@@ -2575,12 +2676,15 @@ Module raw_vec.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ptr::non_null::NonNull")
+                                                            []
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "slice")
+                                                                []
                                                                 [ Ty.path "u8" ]
                                                             ];
                                                           Ty.path
@@ -2595,13 +2699,16 @@ Module raw_vec.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "core::ptr::non_null::NonNull")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [ Ty.path "u8" ]
                                                                 ];
                                                               Ty.path "core::alloc::AllocError"
@@ -2690,6 +2797,7 @@ Module raw_vec.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.tuple [];
                                                                       Ty.path
@@ -2699,6 +2807,7 @@ Module raw_vec.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
@@ -2734,6 +2843,7 @@ Module raw_vec.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::raw_vec::RawVec")
+                                                    []
                                                     [ T; A ],
                                                   "set_ptr_and_cap",
                                                   []
@@ -2757,7 +2867,7 @@ Module raw_vec.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_shrink :
@@ -2794,9 +2904,9 @@ Module raw_vec.
       memory.map_err(|_| AllocError { layout: new_layout, non_exhaustive: () }.into())
   }
   *)
-  Definition finish_grow (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ A ], [ new_layout; current_memory; alloc ] =>
+  Definition finish_grow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ A ], [ new_layout; current_memory; alloc ] =>
       ltac:(M.monadic
         (let new_layout := M.alloc (| new_layout |) in
         let current_memory := M.alloc (| current_memory |) in
@@ -2813,6 +2923,7 @@ Module raw_vec.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.path "core::alloc::layout::Layout";
                               Ty.path "alloc::collections::TryReserveErrorKind"
@@ -2826,6 +2937,7 @@ Module raw_vec.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [
                                   Ty.path "core::alloc::layout::Layout";
                                   Ty.path "core::alloc::layout::LayoutError"
@@ -2881,15 +2993,18 @@ Module raw_vec.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
-                                            [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                           Ty.path "alloc::collections::TryReserveError"
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.path "alloc::collections::TryReserveErrorKind"
@@ -2925,6 +3040,7 @@ Module raw_vec.
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ],
                         [],
                         "branch",
@@ -2966,15 +3082,18 @@ Module raw_vec.
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::ptr::non_null::NonNull")
-                                          [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                         Ty.path "alloc::collections::TryReserveError"
                                       ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "alloc::collections::TryReserveError"
@@ -3183,10 +3302,12 @@ Module raw_vec.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                         Ty.path "core::alloc::AllocError"
                       ],
                     "map_err",
@@ -3235,13 +3356,13 @@ Module raw_vec.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_finish_grow : M.IsFunction "alloc::raw_vec::finish_grow" finish_grow.
   
   Module Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_raw_vec_RawVec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ].
     
     (*
         fn drop(&mut self) {
@@ -3250,10 +3371,10 @@ Module raw_vec.
             }
         }
     *)
-    Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -3266,7 +3387,7 @@ Module raw_vec.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                            Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                             "current_memory",
                             []
                           |),
@@ -3301,7 +3422,7 @@ Module raw_vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3322,9 +3443,9 @@ Module raw_vec.
       }
   }
   *)
-  Definition handle_reserve (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ result ] =>
+  Definition handle_reserve (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ result ] =>
       ltac:(M.monadic
         (let result := M.alloc (| result |) in
         M.read (|
@@ -3334,6 +3455,7 @@ Module raw_vec.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ],
                   "map_err",
                   [
@@ -3416,7 +3538,7 @@ Module raw_vec.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_handle_reserve : M.IsFunction "alloc::raw_vec::handle_reserve" handle_reserve.
@@ -3430,9 +3552,9 @@ Module raw_vec.
       }
   }
   *)
-  Definition alloc_guard (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ alloc_size ] =>
+  Definition alloc_guard (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ alloc_size ] =>
       ltac:(M.monadic
         (let alloc_size := M.alloc (| alloc_size |) in
         M.read (|
@@ -3481,7 +3603,7 @@ Module raw_vec.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_alloc_guard : M.IsFunction "alloc::raw_vec::alloc_guard" alloc_guard.
@@ -3491,9 +3613,9 @@ Module raw_vec.
       panic!("capacity overflow");
   }
   *)
-  Definition capacity_overflow (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition capacity_overflow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -3508,7 +3630,7 @@ Module raw_vec.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_capacity_overflow :

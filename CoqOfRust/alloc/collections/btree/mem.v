@@ -9,9 +9,9 @@ Module collections.
           replace(v, |value| (change(value), ()))
       }
       *)
-      Definition take_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T; impl_FnOnce_T__arrow_T ], [ v; change ] =>
+      Definition take_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T; impl_FnOnce_T__arrow_T ], [ v; change ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             let change := M.alloc (| change |) in
@@ -53,7 +53,7 @@ Module collections.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_take_mut : M.IsFunction "alloc::collections::btree::mem::take_mut" take_mut.
@@ -76,9 +76,9 @@ Module collections.
           ret
       }
       *)
-      Definition replace (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T; R; impl_FnOnce_T__arrow__T__R_ ], [ v; change ] =>
+      Definition replace (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T; R; impl_FnOnce_T__arrow__T__R_ ], [ v; change ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             let change := M.alloc (| change |) in
@@ -137,7 +137,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_replace : M.IsFunction "alloc::collections::btree::mem::replace" replace.
@@ -146,6 +146,7 @@ Module collections.
         (* StructTuple
           {
             name := "PanicGuard";
+            const_params := [];
             ty_params := [];
             fields := [];
           } *)
@@ -158,15 +159,15 @@ Module collections.
                       intrinsics::abort()
                   }
           *)
-          Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
-            match τ, α with
-            | [], [ self ] =>
+          Definition drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            match ε, τ, α with
+            | [], [], [ self ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 M.never_to_any (|
                   M.call_closure (| M.get_function (| "core::intrinsics::abort", [] |), [] |)
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Implements :

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Person";
+    const_params := [];
     ty_params := [];
     fields :=
       [ ("id", Ty.path "u32"); ("name", Ty.path "alloc::string::String"); ("phone", Ty.path "u64")
@@ -14,9 +15,9 @@ Module Impl_core_hash_Hash_for_hash_Person.
   Definition Self : Ty.t := Ty.path "hash::Person".
   
   (* Hash *)
-  Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ __H ], [ self; state ] =>
+  Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ __H ], [ self; state ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
@@ -69,7 +70,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -87,9 +88,9 @@ fn calculate_hash<T: Hash>(t: &T) -> u64 {
     s.finish()
 }
 *)
-Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ T ], [ t ] =>
+Definition calculate_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ T ], [ t ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
@@ -126,7 +127,7 @@ Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
           |)
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_calculate_hash : M.IsFunction "hash::calculate_hash" calculate_hash.
@@ -147,9 +148,9 @@ fn main() {
     assert!(calculate_hash(&person1) != calculate_hash(&person2));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ person1 :=
@@ -237,7 +238,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "hash::main" main.

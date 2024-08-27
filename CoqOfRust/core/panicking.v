@@ -26,9 +26,9 @@ Module panicking.
       unsafe { panic_impl(&pi) }
   }
   *)
-  Definition panic_fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ fmt ] =>
+  Definition panic_fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [], [ fmt ] =>
       ltac:(M.monadic
         (let fmt := M.alloc (| fmt |) in
         M.read (|
@@ -78,13 +78,13 @@ Module panicking.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_panic_fmt : M.IsFunction "core::panicking::panic_fmt" panic_fmt.
   
   Module panic_fmt.
-    Parameter panic_impl : (list Ty.t) -> (list Value.t) -> M.
+    Parameter panic_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_panic_impl : M.IsFunction "core::panicking::panic_fmt::panic_impl" panic_impl.
   End panic_fmt.
@@ -130,9 +130,9 @@ Module panicking.
       }
   }
   *)
-  Definition panic_nounwind_fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ fmt; force_no_backtrace ] =>
+  Definition panic_nounwind_fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [], [ fmt; force_no_backtrace ] =>
       ltac:(M.monadic
         (let fmt := M.alloc (| fmt |) in
         let force_no_backtrace := M.alloc (| force_no_backtrace |) in
@@ -152,7 +152,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_nounwind_fmt.runtime", [] |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_panic_nounwind_fmt :
@@ -184,9 +184,9 @@ Module panicking.
             unsafe { panic_impl(&pi) }
         }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ fmt; force_no_backtrace ] =>
+    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ fmt; force_no_backtrace ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           let force_no_backtrace := M.alloc (| force_no_backtrace |) in
@@ -240,13 +240,13 @@ Module panicking.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_runtime : M.IsFunction "core::panicking::panic_nounwind_fmt::runtime" runtime.
     
     Module runtime.
-      Parameter panic_impl : (list Ty.t) -> (list Value.t) -> M.
+      Parameter panic_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
       
       Axiom Function_panic_impl :
         M.IsFunction "core::panicking::panic_nounwind_fmt::runtime::panic_impl" panic_impl.
@@ -258,9 +258,9 @@ Module panicking.
             panic_fmt(fmt);
         }
     *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ fmt; _force_no_backtrace ] =>
+    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ fmt; _force_no_backtrace ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           let _force_no_backtrace := M.alloc (| _force_no_backtrace |) in
@@ -268,7 +268,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [] |),
             [ M.read (| fmt |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_comptime : M.IsFunction "core::panicking::panic_nounwind_fmt::comptime" comptime.
@@ -285,9 +285,9 @@ Module panicking.
       panic_fmt(fmt::Arguments::new_const(&[expr]));
   }
   *)
-  Definition panic (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ expr ] =>
+  Definition panic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [], [ expr ] =>
       ltac:(M.monadic
         (let expr := M.alloc (| expr |) in
         M.call_closure (|
@@ -299,7 +299,7 @@ Module panicking.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_panic : M.IsFunction "core::panicking::panic" panic.
@@ -309,9 +309,9 @@ Module panicking.
       panic_nounwind_fmt(fmt::Arguments::new_const(&[expr]), /* force_no_backtrace */ false);
   }
   *)
-  Definition panic_nounwind (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ expr ] =>
+  Definition panic_nounwind (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [], [ expr ] =>
       ltac:(M.monadic
         (let expr := M.alloc (| expr |) in
         M.call_closure (|
@@ -324,7 +324,7 @@ Module panicking.
             Value.Bool false
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_panic_nounwind : M.IsFunction "core::panicking::panic_nounwind" panic_nounwind.
@@ -334,9 +334,9 @@ Module panicking.
       panic_nounwind_fmt(fmt::Arguments::new_const(&[expr]), /* force_no_backtrace */ true);
   }
   *)
-  Definition panic_nounwind_nobacktrace (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ expr ] =>
+  Definition panic_nounwind_nobacktrace (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ expr ] =>
       ltac:(M.monadic
         (let expr := M.alloc (| expr |) in
         M.call_closure (|
@@ -349,7 +349,7 @@ Module panicking.
             Value.Bool true
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_panic_nounwind_nobacktrace :
@@ -360,19 +360,19 @@ Module panicking.
       panic_display(&expr);
   }
   *)
-  Definition panic_str (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ expr ] =>
+  Definition panic_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [], [ expr ] =>
       ltac:(M.monadic
         (let expr := M.alloc (| expr |) in
         M.call_closure (|
           M.get_function (|
             "core::panicking::panic_display",
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
           |),
           [ expr ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_panic_str : M.IsFunction "core::panicking::panic_str" panic_str.
@@ -382,18 +382,18 @@ Module panicking.
       panic_display(&"explicit panic");
   }
   *)
-  Definition panic_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition panic_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_function (|
             "core::panicking::panic_display",
-            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
           |),
           [ Value.String "explicit panic" ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_panic_explicit : M.IsFunction "core::panicking::panic_explicit" panic_explicit.
@@ -403,9 +403,9 @@ Module panicking.
       panic_fmt(format_args!("internal error: entered unreachable code: {}", *x));
   }
   *)
-  Definition unreachable_display (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ x ] =>
+  Definition unreachable_display (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.call_closure (|
@@ -439,7 +439,7 @@ Module panicking.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_unreachable_display :
@@ -450,9 +450,9 @@ Module panicking.
       panic_fmt(format_args!("{}", *x));
   }
   *)
-  Definition panic_display (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ x ] =>
+  Definition panic_display (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.call_closure (|
@@ -482,7 +482,7 @@ Module panicking.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_panic_display : M.IsFunction "core::panicking::panic_display" panic_display.
@@ -496,9 +496,9 @@ Module panicking.
       panic!("index out of bounds: the len is {len} but the index is {index}")
   }
   *)
-  Definition panic_bounds_check (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ index; len ] =>
+  Definition panic_bounds_check (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ index; len ] =>
       ltac:(M.monadic
         (let index := M.alloc (| index |) in
         let len := M.alloc (| len |) in
@@ -564,7 +564,7 @@ Module panicking.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_panic_bounds_check :
@@ -584,9 +584,13 @@ Module panicking.
       )
   }
   *)
-  Definition panic_misaligned_pointer_dereference (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ required; found ] =>
+  Definition panic_misaligned_pointer_dereference
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ required; found ] =>
       ltac:(M.monadic
         (let required := M.alloc (| required |) in
         let found := M.alloc (| found |) in
@@ -701,7 +705,7 @@ Module panicking.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_panic_misaligned_pointer_dereference :
@@ -715,15 +719,15 @@ Module panicking.
       panic_nounwind("panic in a function that cannot unwind")
   }
   *)
-  Definition panic_cannot_unwind (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition panic_cannot_unwind (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_function (| "core::panicking::panic_nounwind", [] |),
           [ M.read (| Value.String "panic in a function that cannot unwind" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_panic_cannot_unwind :
@@ -735,15 +739,15 @@ Module panicking.
       panic_nounwind_nobacktrace("panic in a destructor during cleanup")
   }
   *)
-  Definition panic_in_cleanup (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition panic_in_cleanup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_function (| "core::panicking::panic_nounwind_nobacktrace", [] |),
           [ M.read (| Value.String "panic in a destructor during cleanup" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_panic_in_cleanup :
@@ -762,9 +766,9 @@ Module panicking.
       }
   }
   *)
-  Definition const_panic_fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ fmt ] =>
+  Definition const_panic_fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [], [ fmt ] =>
       ltac:(M.monadic
         (let fmt := M.alloc (| fmt |) in
         M.read (|
@@ -791,7 +795,7 @@ Module panicking.
                     M.call_closure (|
                       M.get_function (|
                         "core::panicking::panic_display",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
                       [ msg ]
                     |)
@@ -811,7 +815,7 @@ Module panicking.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_const_panic_fmt : M.IsFunction "core::panicking::const_panic_fmt" const_panic_fmt.
@@ -819,6 +823,7 @@ Module panicking.
   (*
   Enum AssertKind
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -845,9 +850,9 @@ Module panicking.
     Definition Self : Ty.t := Ty.path "core::panicking::AssertKind".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -879,7 +884,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -904,9 +909,9 @@ Module panicking.
       assert_failed_inner(kind, &left, &right, args)
   }
   *)
-  Definition assert_failed (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; U ], [ kind; _ as left; _ as right; args ] =>
+  Definition assert_failed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; U ], [ kind; _ as left; _ as right; args ] =>
       ltac:(M.monadic
         (let kind := M.alloc (| kind |) in
         let left := M.alloc (| left |) in
@@ -921,7 +926,7 @@ Module panicking.
             M.read (| args |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_assert_failed : M.IsFunction "core::panicking::assert_failed" assert_failed.
@@ -942,9 +947,9 @@ Module panicking.
       assert_failed_inner(AssertKind::Match, &left, &Pattern(right), args);
   }
   *)
-  Definition assert_matches_failed (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ _ as left; _ as right; args ] =>
+  Definition assert_matches_failed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _ as left; _ as right; args ] =>
       ltac:(M.monadic
         (let left := M.alloc (| left |) in
         let right := M.alloc (| right |) in
@@ -964,7 +969,7 @@ Module panicking.
             M.read (| args |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_assert_matches_failed :
@@ -974,8 +979,9 @@ Module panicking.
     (* StructTuple
       {
         name := "Pattern";
+        const_params := [];
         ty_params := [];
-        fields := [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+        fields := [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
       } *)
     
     Module Impl_core_fmt_Debug_for_core_panicking_assert_matches_failed_Pattern.
@@ -986,9 +992,9 @@ Module panicking.
                   f.write_str(self.0)
               }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1005,7 +1011,7 @@ Module panicking.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1044,9 +1050,9 @@ Module panicking.
       }
   }
   *)
-  Definition assert_failed_inner (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ kind; _ as left; _ as right; args ] =>
+  Definition assert_failed_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ kind; _ as left; _ as right; args ] =>
       ltac:(M.monadic
         (let kind := M.alloc (| kind |) in
         let left := M.alloc (| left |) in
@@ -1114,7 +1120,7 @@ Module panicking.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [ op ]
                                     |);
@@ -1133,6 +1139,7 @@ Module panicking.
                                         [
                                           Ty.apply
                                             (Ty.path "&")
+                                            []
                                             [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
                                         ]
                                       |),
@@ -1145,6 +1152,7 @@ Module panicking.
                                         [
                                           Ty.apply
                                             (Ty.path "&")
+                                            []
                                             [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
                                         ]
                                       |),
@@ -1192,7 +1200,7 @@ Module panicking.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [ op ]
                                     |);
@@ -1203,6 +1211,7 @@ Module panicking.
                                         [
                                           Ty.apply
                                             (Ty.path "&")
+                                            []
                                             [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
                                         ]
                                       |),
@@ -1215,6 +1224,7 @@ Module panicking.
                                         [
                                           Ty.apply
                                             (Ty.path "&")
+                                            []
                                             [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
                                         ]
                                       |),
@@ -1230,7 +1240,7 @@ Module panicking.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_assert_failed_inner :

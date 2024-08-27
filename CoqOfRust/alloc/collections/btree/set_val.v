@@ -7,6 +7,7 @@ Module collections.
       (* StructTuple
         {
           name := "SetValZST";
+          const_params := [];
           ty_params := [];
           fields := [];
         } *)
@@ -15,9 +16,9 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -25,7 +26,7 @@ Module collections.
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
                 [ M.read (| f |); M.read (| Value.String "SetValZST" |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -51,13 +52,17 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.Tuple []))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -84,14 +89,14 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               Value.Bool true))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -106,14 +111,14 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* Ord *)
-        Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               Value.StructTuple "core::cmp::Ordering::Equal" []))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -128,16 +133,16 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* PartialOrd *)
-        Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               Value.StructTuple
                 "core::option::Option::Some"
                 [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -152,14 +157,14 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* Hash *)
-        Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ __H ], [ self; state ] =>
+        Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ __H ], [ self; state ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
               Value.Tuple []))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -174,13 +179,13 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -195,11 +200,11 @@ Module collections.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic (Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -221,11 +226,16 @@ Module collections.
                 false
             }
         *)
-        Definition is_set_val (V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_set_val
+            (V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self V in
-          match τ, α with
-          | [], [] => ltac:(M.monadic (Value.Bool false))
-          | _, _ => M.impossible
+          match ε, τ, α with
+          | [], [], [] => ltac:(M.monadic (Value.Bool false))
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -245,8 +255,11 @@ Module collections.
                 true
             }
         *)
-        Definition is_set_val (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with | [], [] => ltac:(M.monadic (Value.Bool true)) | _, _ => M.impossible end.
+        Definition is_set_val (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] => ltac:(M.monadic (Value.Bool true))
+          | _, _, _ => M.impossible
+          end.
         
         Axiom Implements :
           M.IsTraitInstance

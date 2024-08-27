@@ -7,7 +7,7 @@ Module future.
     (* Empty module 'Future' *)
     
     Module Impl_core_future_future_Future_where_core_marker_Sized_F_where_core_future_future_Future_F_where_core_marker_Unpin_F_for_ref_mut_F.
-      Definition Self (F : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ F ].
+      Definition Self (F : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ F ].
       
       (*     type Output = F::Output; *)
       Definition _Output (F : Ty.t) : Ty.t := Ty.associated.
@@ -17,10 +17,10 @@ Module future.
               F::poll(Pin::new(&mut **self), cx)
           }
       *)
-      Definition poll (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; cx ] =>
+        match ε, τ, α with
+        | [], [], [ self; cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
@@ -29,7 +29,7 @@ Module future.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ F ] ],
+                    Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ],
                     "new",
                     []
                   |),
@@ -40,7 +40,8 @@ Module future.
                           "core::ops::deref::DerefMut",
                           Ty.apply
                             (Ty.path "core::pin::Pin")
-                            [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "&mut") [ F ] ] ],
+                            []
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ] ],
                           [],
                           "deref_mut",
                           []
@@ -53,7 +54,7 @@ Module future.
                 M.read (| cx |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -67,7 +68,7 @@ Module future.
     End Impl_core_future_future_Future_where_core_marker_Sized_F_where_core_future_future_Future_F_where_core_marker_Unpin_F_for_ref_mut_F.
     
     Module Impl_core_future_future_Future_where_core_ops_deref_DerefMut_P_for_core_pin_Pin_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
       
       (*     type Output = <<P as ops::Deref>::Target as Future>::Output; *)
       Definition _Output (P : Ty.t) : Ty.t := Ty.associated.
@@ -77,10 +78,10 @@ Module future.
               <P::Target as Future>::poll(self.as_deref_mut(), cx)
           }
       *)
-      Definition poll (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; cx ] =>
+        match ε, τ, α with
+        | [], [], [ self; cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
@@ -97,7 +98,13 @@ Module future.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::pin::Pin")
-                      [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "core::pin::Pin") [ P ] ] ],
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::pin::Pin") [] [ P ] ]
+                      ],
                     "as_deref_mut",
                     []
                   |),
@@ -106,7 +113,7 @@ Module future.
                 M.read (| cx |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

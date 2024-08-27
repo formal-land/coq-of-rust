@@ -5,6 +5,7 @@ Module specification.
   (*
   Enum SpecId
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -116,13 +117,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -148,9 +149,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -347,7 +348,7 @@ Module specification.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -362,11 +363,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::SpecId::LATEST" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -392,9 +393,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -421,7 +422,7 @@ Module specification.
               |) in
             M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -447,13 +448,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -469,9 +474,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
     
     (* PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -509,7 +514,7 @@ Module specification.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -524,9 +529,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
     
     (* Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -558,7 +563,7 @@ Module specification.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -573,9 +578,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -597,7 +602,7 @@ Module specification.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -612,9 +617,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
     
     (* enumn::N *)
-    Definition n (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ value ] =>
+    Definition n (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           M.read (|
@@ -812,7 +817,7 @@ Module specification.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_n : M.IsAssociatedFunction Self "n" n.
@@ -821,9 +826,9 @@ Module specification.
             Self::n(spec_id)
         }
     *)
-    Definition try_from_u8 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ spec_id ] =>
+    Definition try_from_u8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ spec_id ] =>
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           M.call_closure (|
@@ -834,7 +839,7 @@ Module specification.
             |),
             [ M.read (| spec_id |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_from_u8 : M.IsAssociatedFunction Self "try_from_u8" try_from_u8.
@@ -844,9 +849,9 @@ Module specification.
             Self::enabled(self, other)
         }
     *)
-    Definition is_enabled_in (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition is_enabled_in (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -858,7 +863,7 @@ Module specification.
             |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_enabled_in :
@@ -869,14 +874,14 @@ Module specification.
             our as u8 >= other as u8
         }
     *)
-    Definition enabled (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ our; other ] =>
+    Definition enabled (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ our; other ] =>
         ltac:(M.monadic
           (let our := M.alloc (| our |) in
           let other := M.alloc (| other |) in
           BinOp.Pure.ge (M.rust_cast (M.read (| our |))) (M.rust_cast (M.read (| other |)))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_enabled : M.IsAssociatedFunction Self "enabled" enabled.
@@ -916,9 +921,9 @@ Module specification.
             }
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ name ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ name ] =>
         ltac:(M.monadic
           (let name := M.alloc (| name |) in
           M.read (|
@@ -1047,19 +1052,19 @@ Module specification.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_revm_primitives_specification_SpecId.
   
   Module Impl_core_convert_From_revm_primitives_specification_SpecId_for_ref__str.
-    Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+    Definition Self : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
     
     (*
         fn from(spec_id: SpecId) -> Self {
@@ -1095,9 +1100,9 @@ Module specification.
             }
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ spec_id ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ spec_id ] =>
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           M.read (|
@@ -1249,7 +1254,7 @@ Module specification.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1262,9 +1267,9 @@ Module specification.
   
   (* Trait *)
   Module Spec.
-    Definition enabled (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ spec_id ] =>
+    Definition enabled (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ spec_id ] =>
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           M.call_closure (|
@@ -1278,7 +1283,7 @@ Module specification.
               M.read (| spec_id |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_enabled :
@@ -1288,6 +1293,7 @@ Module specification.
   (* StructTuple
     {
       name := "FrontierSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -1296,13 +1302,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::FrontierSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1328,9 +1334,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::FrontierSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1338,7 +1344,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "FrontierSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1353,11 +1359,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::FrontierSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::FrontierSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1383,14 +1389,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::FrontierSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1416,13 +1422,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::FrontierSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1438,16 +1448,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::FrontierSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1462,14 +1472,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::FrontierSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1484,14 +1494,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::FrontierSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1523,6 +1533,7 @@ Module specification.
   (* StructTuple
     {
       name := "HomesteadSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -1531,13 +1542,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::HomesteadSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1563,9 +1574,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::HomesteadSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1573,7 +1584,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "HomesteadSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1588,11 +1599,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::HomesteadSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::HomesteadSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1618,14 +1629,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::HomesteadSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1651,13 +1662,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::HomesteadSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1673,16 +1688,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::HomesteadSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1697,14 +1712,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::HomesteadSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1719,14 +1734,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::HomesteadSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1758,6 +1773,7 @@ Module specification.
   (* StructTuple
     {
       name := "TangerineSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -1766,13 +1782,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::TangerineSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1798,9 +1814,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::TangerineSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1808,7 +1824,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "TangerineSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1823,11 +1839,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::TangerineSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::TangerineSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1853,14 +1869,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::TangerineSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1886,13 +1902,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::TangerineSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1908,16 +1928,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::TangerineSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1932,14 +1952,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::TangerineSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1954,14 +1974,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::TangerineSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1993,6 +2013,7 @@ Module specification.
   (* StructTuple
     {
       name := "SpuriousDragonSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -2001,13 +2022,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpuriousDragonSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2033,9 +2054,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpuriousDragonSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -2043,7 +2064,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "SpuriousDragonSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2058,11 +2079,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpuriousDragonSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::SpuriousDragonSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2088,14 +2109,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpuriousDragonSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2121,13 +2142,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpuriousDragonSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2143,16 +2168,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpuriousDragonSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2167,14 +2192,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpuriousDragonSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2189,14 +2214,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpuriousDragonSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2230,6 +2255,7 @@ Module specification.
   (* StructTuple
     {
       name := "ByzantiumSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -2238,13 +2264,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ByzantiumSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2270,9 +2296,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ByzantiumSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -2280,7 +2306,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "ByzantiumSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2295,11 +2321,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ByzantiumSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::ByzantiumSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2325,14 +2351,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ByzantiumSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2358,13 +2384,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ByzantiumSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2380,16 +2410,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ByzantiumSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2404,14 +2434,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ByzantiumSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2426,14 +2456,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ByzantiumSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2465,6 +2495,7 @@ Module specification.
   (* StructTuple
     {
       name := "PetersburgSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -2473,13 +2504,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PetersburgSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2505,9 +2536,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PetersburgSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -2515,7 +2546,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "PetersburgSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2530,11 +2561,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PetersburgSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::PetersburgSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2560,14 +2591,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PetersburgSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2593,13 +2624,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PetersburgSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2615,16 +2650,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PetersburgSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2639,14 +2674,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PetersburgSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2661,14 +2696,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PetersburgSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2702,6 +2737,7 @@ Module specification.
   (* StructTuple
     {
       name := "IstanbulSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -2710,13 +2746,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::IstanbulSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2742,9 +2778,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::IstanbulSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -2752,7 +2788,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "IstanbulSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2767,11 +2803,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::IstanbulSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::IstanbulSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2797,14 +2833,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::IstanbulSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2830,13 +2866,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::IstanbulSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2852,16 +2892,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::IstanbulSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2876,14 +2916,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::IstanbulSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2898,14 +2938,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::IstanbulSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2937,6 +2977,7 @@ Module specification.
   (* StructTuple
     {
       name := "BerlinSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -2945,13 +2986,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::BerlinSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2977,9 +3018,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::BerlinSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -2987,7 +3028,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "BerlinSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3002,11 +3043,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::BerlinSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::BerlinSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3032,14 +3073,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::BerlinSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3065,13 +3106,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::BerlinSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3087,16 +3132,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::BerlinSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3111,14 +3156,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::BerlinSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3133,14 +3178,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::BerlinSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3172,6 +3217,7 @@ Module specification.
   (* StructTuple
     {
       name := "LondonSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -3180,13 +3226,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LondonSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3212,9 +3258,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LondonSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -3222,7 +3268,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "LondonSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3237,11 +3283,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LondonSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::LondonSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3267,14 +3313,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LondonSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3300,13 +3346,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LondonSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3322,16 +3372,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LondonSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3346,14 +3396,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LondonSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3368,14 +3418,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LondonSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3407,6 +3457,7 @@ Module specification.
   (* StructTuple
     {
       name := "MergeSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -3415,13 +3466,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::MergeSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3447,9 +3498,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::MergeSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -3457,7 +3508,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "MergeSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3472,11 +3523,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::MergeSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::MergeSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3502,14 +3553,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::MergeSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3535,13 +3586,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::MergeSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3557,16 +3612,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::MergeSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3581,14 +3636,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::MergeSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3603,14 +3658,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::MergeSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3642,6 +3697,7 @@ Module specification.
   (* StructTuple
     {
       name := "ShanghaiSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -3650,13 +3706,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ShanghaiSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3682,9 +3738,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ShanghaiSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -3692,7 +3748,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "ShanghaiSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3707,11 +3763,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ShanghaiSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::ShanghaiSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3737,14 +3793,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ShanghaiSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3770,13 +3826,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ShanghaiSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3792,16 +3852,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ShanghaiSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3816,14 +3876,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ShanghaiSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3838,14 +3898,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ShanghaiSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3877,6 +3937,7 @@ Module specification.
   (* StructTuple
     {
       name := "CancunSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -3885,13 +3946,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::CancunSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3917,9 +3978,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::CancunSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -3927,7 +3988,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "CancunSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3942,11 +4003,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::CancunSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::CancunSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3972,14 +4033,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::CancunSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4005,13 +4066,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::CancunSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4027,16 +4092,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::CancunSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4051,14 +4116,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::CancunSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4073,14 +4138,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::CancunSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4112,6 +4177,7 @@ Module specification.
   (* StructTuple
     {
       name := "PragueSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -4120,13 +4186,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PragueSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4152,9 +4218,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PragueSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -4162,7 +4228,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "PragueSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4177,11 +4243,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PragueSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::PragueSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4207,14 +4273,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PragueSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4240,13 +4306,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PragueSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4262,16 +4332,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PragueSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4286,14 +4356,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PragueSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4308,14 +4378,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PragueSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4347,6 +4417,7 @@ Module specification.
   (* StructTuple
     {
       name := "LatestSpec";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -4355,13 +4426,13 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LatestSpec".
     
     (*         Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4387,9 +4458,9 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LatestSpec".
     
     (*         Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -4397,7 +4468,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "LatestSpec" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4412,11 +4483,11 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LatestSpec".
     
     (*         Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::LatestSpec" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4442,14 +4513,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LatestSpec".
     
     (*         PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4475,13 +4546,17 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LatestSpec".
     
     (*         Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4497,16 +4572,16 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LatestSpec".
     
     (*         PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4521,14 +4596,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LatestSpec".
     
     (*         Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4543,14 +4618,14 @@ Module specification.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LatestSpec".
     
     (*         Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

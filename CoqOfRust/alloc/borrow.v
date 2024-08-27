@@ -3,30 +3,30 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module borrow.
   Module Impl_core_borrow_Borrow_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_B_for_alloc_borrow_Cow_B.
-    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ B ].
+    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*
         fn borrow(&self) -> &B {
             &**self
         }
     *)
-    Definition borrow (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::deref::Deref",
-              Ty.apply (Ty.path "alloc::borrow::Cow") [ B ],
+              Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
               [],
               "deref",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -40,9 +40,9 @@ Module borrow.
   
   (* Trait *)
   Module ToOwned.
-    Definition clone_into (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; target ] =>
+    Definition clone_into (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; target ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let target := M.alloc (| target |) in
@@ -57,7 +57,7 @@ Module borrow.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_clone_into :
@@ -75,17 +75,17 @@ Module borrow.
             self.clone()
         }
     *)
-    Definition to_owned (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_owned (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -93,10 +93,10 @@ Module borrow.
             target.clone_from(self);
         }
     *)
-    Definition clone_into (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_into (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; target ] =>
+      match ε, τ, α with
+      | [], [], [ self; target ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let target := M.alloc (| target |) in
@@ -110,7 +110,7 @@ Module borrow.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -130,12 +130,13 @@ Module borrow.
   (*
   Enum Cow
   {
+    const_params := [];
     ty_params := [ "B" ];
     variants :=
       [
         {
           name := "Borrowed";
-          item := StructTuple [ Ty.apply (Ty.path "&") [ B ] ];
+          item := StructTuple [ Ty.apply (Ty.path "&") [] [ B ] ];
           discriminant := None;
         };
         {
@@ -148,7 +149,7 @@ Module borrow.
   *)
   
   Module Impl_core_clone_Clone_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
-    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ B ].
+    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*
         fn clone(&self) -> Self {
@@ -161,10 +162,10 @@ Module borrow.
             }
         }
     *)
-    Definition clone (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -220,7 +221,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -231,10 +232,10 @@ Module borrow.
             }
         }
     *)
-    Definition clone_from (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_from (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ self; source ] =>
+      match ε, τ, α with
+      | [], [], [ self; source ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let source := M.alloc (| source |) in
@@ -291,7 +292,7 @@ Module borrow.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
-                          Ty.apply (Ty.path "alloc::borrow::Cow") [ B ],
+                          Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                           [],
                           "clone",
                           []
@@ -302,7 +303,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -319,7 +320,7 @@ Module borrow.
   End Impl_core_clone_Clone_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
   Module Impl_alloc_borrow_Cow_B.
-    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ B ].
+    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*
         pub const fn is_borrowed(&self) -> bool {
@@ -329,10 +330,10 @@ Module borrow.
             }
         }
     *)
-    Definition is_borrowed (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_borrowed (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -356,7 +357,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_borrowed :
@@ -368,22 +369,22 @@ Module borrow.
             !self.is_borrowed()
         }
     *)
-    Definition is_owned (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_owned (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
             (M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::borrow::Cow") [ B ],
+                Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                 "is_borrowed",
                 []
               |),
               [ M.read (| self |) ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_owned :
@@ -404,10 +405,10 @@ Module borrow.
             }
         }
     *)
-    Definition to_mut (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_mut (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -490,7 +491,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_to_mut :
@@ -505,10 +506,10 @@ Module borrow.
             }
         }
     *)
-    Definition into_owned (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_owned (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -539,7 +540,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_owned :
@@ -548,7 +549,7 @@ Module borrow.
   End Impl_alloc_borrow_Cow_B.
   
   Module Impl_core_ops_deref_Deref_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_type_B_for_alloc_borrow_Cow_B.
-    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ B ].
+    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*     type Target = B; *)
     Definition _Target (B : Ty.t) : Ty.t := B.
@@ -561,10 +562,10 @@ Module borrow.
             }
         }
     *)
-    Definition deref (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -601,7 +602,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -615,7 +616,7 @@ Module borrow.
   End Impl_core_ops_deref_Deref_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_type_B_for_alloc_borrow_Cow_B.
   
   Module Impl_core_cmp_Eq_where_core_marker_Sized_B_where_core_cmp_Eq_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
-    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ B ].
+    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     Axiom Implements :
       forall (B : Ty.t),
@@ -623,17 +624,17 @@ Module borrow.
   End Impl_core_cmp_Eq_where_core_marker_Sized_B_where_core_cmp_Eq_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
   Module Impl_core_cmp_Ord_where_core_marker_Sized_B_where_core_cmp_Ord_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
-    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ B ].
+    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*
         fn cmp(&self, other: &Self) -> Ordering {
             Ord::cmp(&**self, &**other)
         }
     *)
-    Definition cmp (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -643,7 +644,7 @@ Module borrow.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [ B ],
+                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                   [],
                   "deref",
                   []
@@ -653,7 +654,7 @@ Module borrow.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [ B ],
+                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                   [],
                   "deref",
                   []
@@ -662,7 +663,7 @@ Module borrow.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -675,17 +676,17 @@ Module borrow.
   End Impl_core_cmp_Ord_where_core_marker_Sized_B_where_core_cmp_Ord_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
   Module Impl_core_cmp_PartialEq_where_core_marker_Sized_B_where_core_marker_Sized_C_where_core_cmp_PartialEq_B_C_where_alloc_borrow_ToOwned_B_where_alloc_borrow_ToOwned_C_alloc_borrow_Cow_C_for_alloc_borrow_Cow_B.
-    Definition Self (B C : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ B ].
+    Definition Self (B C : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*
         fn eq(&self, other: &Cow<'b, C>) -> bool {
             PartialEq::eq(&**self, &**other)
         }
     *)
-    Definition eq (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (B C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B C in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -695,7 +696,7 @@ Module borrow.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [ B ],
+                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                   [],
                   "deref",
                   []
@@ -705,7 +706,7 @@ Module borrow.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [ C ],
+                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ C ],
                   [],
                   "deref",
                   []
@@ -714,7 +715,7 @@ Module borrow.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -722,22 +723,22 @@ Module borrow.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (Self B C)
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "alloc::borrow::Cow") [ C ] ]
+        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ C ] ]
         (* Instance *) [ ("eq", InstanceField.Method (eq B C)) ].
   End Impl_core_cmp_PartialEq_where_core_marker_Sized_B_where_core_marker_Sized_C_where_core_cmp_PartialEq_B_C_where_alloc_borrow_ToOwned_B_where_alloc_borrow_ToOwned_C_alloc_borrow_Cow_C_for_alloc_borrow_Cow_B.
   
   Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_B_where_core_cmp_PartialOrd_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
-    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ B ].
+    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*
         fn partial_cmp(&self, other: &Cow<'a, B>) -> Option<Ordering> {
             PartialOrd::partial_cmp(&**self, &**other)
         }
     *)
-    Definition partial_cmp (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -747,7 +748,7 @@ Module borrow.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [ B ],
+                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                   [],
                   "deref",
                   []
@@ -757,7 +758,7 @@ Module borrow.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [ B ],
+                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                   [],
                   "deref",
                   []
@@ -766,7 +767,7 @@ Module borrow.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -779,7 +780,7 @@ Module borrow.
   End Impl_core_cmp_PartialOrd_where_core_marker_Sized_B_where_core_cmp_PartialOrd_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
   Module Impl_core_fmt_Debug_where_core_marker_Sized_B_where_core_fmt_Debug_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
-    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ B ].
+    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -789,10 +790,10 @@ Module borrow.
             }
         }
     *)
-    Definition fmt (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -813,7 +814,7 @@ Module borrow.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::fmt::Debug",
-                          Ty.apply (Ty.path "&") [ B ],
+                          Ty.apply (Ty.path "&") [] [ B ],
                           [],
                           "fmt",
                           []
@@ -835,7 +836,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -848,7 +849,7 @@ Module borrow.
   End Impl_core_fmt_Debug_where_core_marker_Sized_B_where_core_fmt_Debug_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
   Module Impl_core_fmt_Display_where_core_marker_Sized_B_where_core_fmt_Display_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
-    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ B ].
+    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -858,10 +859,10 @@ Module borrow.
             }
         }
     *)
-    Definition fmt (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -882,7 +883,7 @@ Module borrow.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::fmt::Display",
-                          Ty.apply (Ty.path "&") [ B ],
+                          Ty.apply (Ty.path "&") [] [ B ],
                           [],
                           "fmt",
                           []
@@ -904,7 +905,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -917,17 +918,17 @@ Module borrow.
   End Impl_core_fmt_Display_where_core_marker_Sized_B_where_core_fmt_Display_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
   Module Impl_core_default_Default_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
-    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ B ].
+    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*
         fn default() -> Self {
             Owned(<B as ToOwned>::Owned::default())
         }
     *)
-    Definition default (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructTuple
             "alloc::borrow::Cow::Owned"
@@ -937,7 +938,7 @@ Module borrow.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -950,17 +951,17 @@ Module borrow.
   End Impl_core_default_Default_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
   Module Impl_core_hash_Hash_where_core_marker_Sized_B_where_core_hash_Hash_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
-    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ B ].
+    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*
         fn hash<H: Hasher>(&self, state: &mut H) {
             Hash::hash(&**self, state)
         }
     *)
-    Definition hash (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [ H ], [ self; state ] =>
+      match ε, τ, α with
+      | [], [ H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -970,7 +971,7 @@ Module borrow.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [ B ],
+                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                   [],
                   "deref",
                   []
@@ -980,7 +981,7 @@ Module borrow.
               M.read (| state |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -993,30 +994,30 @@ Module borrow.
   End Impl_core_hash_Hash_where_core_marker_Sized_B_where_core_hash_Hash_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
   Module Impl_core_convert_AsRef_where_core_marker_Sized_T_where_alloc_borrow_ToOwned_T_T_for_alloc_borrow_Cow_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ T ].
     
     (*
         fn as_ref(&self) -> &T {
             self
         }
     *)
-    Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::deref::Deref",
-              Ty.apply (Ty.path "alloc::borrow::Cow") [ T ],
+              Ty.apply (Ty.path "alloc::borrow::Cow") [] [ T ],
               [],
               "deref",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1029,10 +1030,10 @@ Module borrow.
   End Impl_core_convert_AsRef_where_core_marker_Sized_T_where_alloc_borrow_ToOwned_T_T_for_alloc_borrow_Cow_T.
   
   Module Impl_core_ops_arith_Add_ref__str_for_alloc_borrow_Cow_str.
-    Definition Self : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ].
+    Definition Self : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ].
     
     (*     type Output = Cow<'a, str>; *)
-    Definition _Output : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ].
+    Definition _Output : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ].
     
     (*
         fn add(mut self, rhs: &'a str) -> Self::Output {
@@ -1040,9 +1041,9 @@ Module borrow.
             self
         }
     *)
-    Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -1052,8 +1053,8 @@ Module borrow.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::AddAssign",
-                    Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ],
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                    Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                     "add_assign",
                     []
                   |),
@@ -1062,22 +1063,22 @@ Module borrow.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Add"
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
   End Impl_core_ops_arith_Add_ref__str_for_alloc_borrow_Cow_str.
   
   Module Impl_core_ops_arith_Add_alloc_borrow_Cow_str_for_alloc_borrow_Cow_str.
-    Definition Self : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ].
+    Definition Self : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ].
     
     (*     type Output = Cow<'a, str>; *)
-    Definition _Output : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ].
+    Definition _Output : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ].
     
     (*
         fn add(mut self, rhs: Cow<'a, str>) -> Self::Output {
@@ -1085,9 +1086,9 @@ Module borrow.
             self
         }
     *)
-    Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -1097,8 +1098,8 @@ Module borrow.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::AddAssign",
-                    Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ],
-                    [ Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ],
+                    Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                    [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
                     "add_assign",
                     []
                   |),
@@ -1107,7 +1108,7 @@ Module borrow.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1115,12 +1116,12 @@ Module borrow.
         "core::ops::arith::Add"
         Self
         (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ]
+        [ (* Rhs *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
   End Impl_core_ops_arith_Add_alloc_borrow_Cow_str_for_alloc_borrow_Cow_str.
   
   Module Impl_core_ops_arith_AddAssign_ref__str_for_alloc_borrow_Cow_str.
-    Definition Self : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ].
+    Definition Self : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ].
     
     (*
         fn add_assign(&mut self, rhs: &'a str) {
@@ -1136,9 +1137,9 @@ Module borrow.
             }
         }
     *)
-    Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -1157,7 +1158,7 @@ Module borrow.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
-                                  Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ],
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
                                   [],
                                   "deref",
                                   []
@@ -1267,7 +1268,10 @@ Module borrow.
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ],
+                                        Ty.apply
+                                          (Ty.path "alloc::borrow::Cow")
+                                          []
+                                          [ Ty.path "str" ],
                                         "to_mut",
                                         []
                                       |),
@@ -1284,19 +1288,19 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::AddAssign"
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
   End Impl_core_ops_arith_AddAssign_ref__str_for_alloc_borrow_Cow_str.
   
   Module Impl_core_ops_arith_AddAssign_alloc_borrow_Cow_str_for_alloc_borrow_Cow_str.
-    Definition Self : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ].
+    Definition Self : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ].
     
     (*
         fn add_assign(&mut self, rhs: Cow<'a, str>) {
@@ -1312,9 +1316,9 @@ Module borrow.
             }
         }
     *)
-    Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -1333,7 +1337,7 @@ Module borrow.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
-                                  Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ],
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
                                   [],
                                   "deref",
                                   []
@@ -1364,6 +1368,7 @@ Module borrow.
                                             "core::ops::deref::Deref",
                                             Ty.apply
                                               (Ty.path "alloc::borrow::Cow")
+                                              []
                                               [ Ty.path "str" ],
                                             [],
                                             "deref",
@@ -1421,6 +1426,7 @@ Module borrow.
                                                         "core::ops::deref::Deref",
                                                         Ty.apply
                                                           (Ty.path "alloc::borrow::Cow")
+                                                          []
                                                           [ Ty.path "str" ],
                                                         [],
                                                         "deref",
@@ -1466,7 +1472,10 @@ Module borrow.
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ],
+                                        Ty.apply
+                                          (Ty.path "alloc::borrow::Cow")
+                                          []
+                                          [ Ty.path "str" ],
                                         "to_mut",
                                         []
                                       |),
@@ -1475,7 +1484,10 @@ Module borrow.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::deref::Deref",
-                                        Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ],
+                                        Ty.apply
+                                          (Ty.path "alloc::borrow::Cow")
+                                          []
+                                          [ Ty.path "str" ],
                                         [],
                                         "deref",
                                         []
@@ -1492,7 +1504,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1500,7 +1512,7 @@ Module borrow.
         "core::ops::arith::AddAssign"
         Self
         (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ]
+        [ (* Rhs *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
   End Impl_core_ops_arith_AddAssign_alloc_borrow_Cow_str_for_alloc_borrow_Cow_str.
 End borrow.

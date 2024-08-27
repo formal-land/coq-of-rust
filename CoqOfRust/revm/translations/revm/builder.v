@@ -5,21 +5,24 @@ Module builder.
   (* StructRecord
     {
       name := "EvmBuilder";
+      const_params := [];
       ty_params := [ "BuilderStage"; "EXT"; "DB" ];
       fields :=
         [
-          ("context", Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ]);
+          ("context", Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ]);
           ("handler",
             Ty.apply
               (Ty.path "revm::handler::Handler")
-              [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ]);
-          ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [ BuilderStage ])
+              []
+              [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ]);
+          ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [] [ BuilderStage ])
         ];
     } *)
   
   (* StructTuple
     {
       name := "SetGenericStage";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -27,6 +30,7 @@ Module builder.
   (* StructTuple
     {
       name := "HandlerStage";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -35,11 +39,13 @@ Module builder.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "revm::builder::EvmBuilder")
+        []
         [
           Ty.path "revm::builder::SetGenericStage";
           Ty.tuple [];
           Ty.apply
             (Ty.path "revm::db::emptydb::EmptyDBTyped")
+            []
             [ Ty.path "core::convert::Infallible" ]
         ].
     
@@ -64,9 +70,9 @@ Module builder.
             }
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ handler_cfg :=
@@ -90,10 +96,12 @@ Module builder.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "revm::context::Context")
+                          []
                           [
                             Ty.tuple [];
                             Ty.apply
                               (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                              []
                               [ Ty.path "core::convert::Infallible" ]
                           ],
                         [],
@@ -107,11 +115,13 @@ Module builder.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::builder::EvmBuilder")
+                          []
                           [
                             Ty.path "revm::builder::SetGenericStage";
                             Ty.tuple [];
                             Ty.apply
                               (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                              []
                               [ Ty.path "core::convert::Infallible" ]
                           ],
                         "handler",
@@ -123,7 +133,7 @@ Module builder.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -138,6 +148,7 @@ Module builder.
     Definition Self (EXT DB : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "revm::builder::EvmBuilder")
+        []
         [ Ty.path "revm::builder::SetGenericStage"; EXT; DB ].
     
     (*
@@ -152,10 +163,15 @@ Module builder.
             }
         }
     *)
-    Definition with_empty_db (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_empty_db
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -166,10 +182,12 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::context::Context")
+                      []
                       [
                         EXT;
                         Ty.apply
                           (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                          []
                           [ Ty.path "core::convert::Infallible" ]
                       ],
                     "new",
@@ -178,11 +196,12 @@ Module builder.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                         "with_db",
                         [
                           Ty.apply
                             (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                            []
                             [ Ty.path "core::convert::Infallible" ]
                         ]
                       |),
@@ -203,6 +222,7 @@ Module builder.
                             "core::default::Default",
                             Ty.apply
                               (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                              []
                               [ Ty.path "core::convert::Infallible" ],
                             [],
                             "default",
@@ -230,11 +250,13 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::builder::EvmBuilder")
+                      []
                       [
                         Ty.path "revm::builder::SetGenericStage";
                         EXT;
                         Ty.apply
                           (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                          []
                           [ Ty.path "core::convert::Infallible" ]
                       ],
                     "handler",
@@ -245,7 +267,8 @@ Module builder.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "cfg",
                         []
                       |),
@@ -261,7 +284,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_empty_db :
@@ -277,10 +300,10 @@ Module builder.
             }
         }
     *)
-    Definition with_db (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_db (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [ ODB ], [ self; db ] =>
+      match ε, τ, α with
+      | [], [ ODB ], [ self; db ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let db := M.alloc (| db |) in
@@ -290,14 +313,14 @@ Module builder.
               ("context",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "revm::context::Context") [ EXT; ODB ],
+                    Ty.apply (Ty.path "revm::context::Context") [] [ EXT; ODB ],
                     "new",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                         "with_db",
                         [ ODB ]
                       |),
@@ -334,6 +357,7 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::builder::EvmBuilder")
+                      []
                       [ Ty.path "revm::builder::SetGenericStage"; EXT; ODB ],
                     "handler",
                     []
@@ -343,7 +367,8 @@ Module builder.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "cfg",
                         []
                       |),
@@ -359,7 +384,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_db :
@@ -383,10 +408,15 @@ Module builder.
             }
         }
     *)
-    Definition with_ref_db (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_ref_db
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [ ODB ], [ self; db ] =>
+      match ε, τ, α with
+      | [], [ ODB ], [ self; db ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let db := M.alloc (| db |) in
@@ -398,16 +428,17 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::context::Context")
-                      [ EXT; Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ ODB ] ],
+                      []
+                      [ EXT; Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ ODB ] ],
                     "new",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                         "with_db",
-                        [ Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ ODB ] ]
+                        [ Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ ODB ] ]
                       |),
                       [
                         M.read (|
@@ -442,10 +473,11 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::builder::EvmBuilder")
+                      []
                       [
                         Ty.path "revm::builder::SetGenericStage";
                         EXT;
-                        Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ ODB ]
+                        Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ ODB ]
                       ],
                     "handler",
                     []
@@ -455,7 +487,8 @@ Module builder.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "cfg",
                         []
                       |),
@@ -471,7 +504,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_ref_db :
@@ -490,10 +523,15 @@ Module builder.
             }
         }
     *)
-    Definition with_external_context (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_external_context
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [ OEXT ], [ self; external ] =>
+      match ε, τ, α with
+      | [], [ OEXT ], [ self; external ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let external := M.alloc (| external |) in
@@ -503,7 +541,7 @@ Module builder.
               ("context",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "revm::context::Context") [ OEXT; DB ],
+                    Ty.apply (Ty.path "revm::context::Context") [] [ OEXT; DB ],
                     "new",
                     []
                   |),
@@ -527,6 +565,7 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::builder::EvmBuilder")
+                      []
                       [ Ty.path "revm::builder::SetGenericStage"; OEXT; DB ],
                     "handler",
                     []
@@ -536,7 +575,8 @@ Module builder.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "cfg",
                         []
                       |),
@@ -552,7 +592,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_external_context :
@@ -573,10 +613,15 @@ Module builder.
             }
         }
     *)
-    Definition with_env_with_handler_cfg (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_env_with_handler_cfg
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; env_with_handler_cfg ] =>
+      match ε, τ, α with
+      | [], [], [ self; env_with_handler_cfg ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let env_with_handler_cfg := M.alloc (| env_with_handler_cfg |) in
@@ -606,7 +651,7 @@ Module builder.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::deref::DerefMut",
-                              Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                              Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                               [],
                               "deref_mut",
                               []
@@ -645,6 +690,7 @@ Module builder.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "revm::builder::EvmBuilder")
+                                  []
                                   [ Ty.path "revm::builder::HandlerStage"; EXT; DB ],
                                 "handler",
                                 []
@@ -657,7 +703,7 @@ Module builder.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_env_with_handler_cfg :
@@ -683,12 +729,13 @@ Module builder.
     *)
     Definition with_context_with_handler_cfg
         (EXT DB : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [ OEXT; ODB ], [ self; context_with_handler_cfg ] =>
+      match ε, τ, α with
+      | [], [ OEXT; ODB ], [ self; context_with_handler_cfg ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let context_with_handler_cfg := M.alloc (| context_with_handler_cfg |) in
@@ -708,6 +755,7 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::builder::EvmBuilder")
+                      []
                       [ Ty.path "revm::builder::HandlerStage"; OEXT; ODB ],
                     "handler",
                     []
@@ -724,7 +772,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_context_with_handler_cfg :
@@ -752,12 +800,13 @@ Module builder.
     *)
     Definition with_cfg_env_with_handler_cfg
         (EXT DB : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; cfg_env_and_spec_id ] =>
+      match ε, τ, α with
+      | [], [], [ self; cfg_env_and_spec_id ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let cfg_env_and_spec_id := M.alloc (| cfg_env_and_spec_id |) in
@@ -770,7 +819,7 @@ Module builder.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -819,6 +868,7 @@ Module builder.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::builder::EvmBuilder")
+                          []
                           [ Ty.path "revm::builder::HandlerStage"; EXT; DB ],
                         "handler",
                         []
@@ -837,7 +887,7 @@ Module builder.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_cfg_env_with_handler_cfg :
@@ -859,10 +909,15 @@ Module builder.
             }
         }
     *)
-    Definition with_handler_cfg (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_handler_cfg
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; handler_cfg ] =>
+      match ε, τ, α with
+      | [], [], [ self; handler_cfg ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let handler_cfg := M.alloc (| handler_cfg |) in
@@ -882,6 +937,7 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::builder::EvmBuilder")
+                      []
                       [ Ty.path "revm::builder::HandlerStage"; EXT; DB ],
                     "handler",
                     []
@@ -890,7 +946,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_handler_cfg :
@@ -902,6 +958,7 @@ Module builder.
     Definition Self (EXT DB : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "revm::builder::EvmBuilder")
+        []
         [ Ty.path "revm::builder::HandlerStage"; EXT; DB ].
     
     (*
@@ -913,10 +970,10 @@ Module builder.
             }
         }
     *)
-    Definition new (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ evm ] =>
+      match ε, τ, α with
+      | [], [], [ evm ] =>
         ltac:(M.monadic
           (let evm := M.alloc (| evm |) in
           Value.StructRecord
@@ -932,7 +989,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new :
@@ -951,10 +1008,15 @@ Module builder.
             }
         }
     *)
-    Definition reset_handler_with_empty_db (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition reset_handler_with_empty_db
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -965,10 +1027,12 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::context::Context")
+                      []
                       [
                         EXT;
                         Ty.apply
                           (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                          []
                           [ Ty.path "core::convert::Infallible" ]
                       ],
                     "new",
@@ -977,11 +1041,12 @@ Module builder.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                         "with_db",
                         [
                           Ty.apply
                             (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                            []
                             [ Ty.path "core::convert::Infallible" ]
                         ]
                       |),
@@ -1002,6 +1067,7 @@ Module builder.
                             "core::default::Default",
                             Ty.apply
                               (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                              []
                               [ Ty.path "core::convert::Infallible" ],
                             [],
                             "default",
@@ -1029,11 +1095,13 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::builder::EvmBuilder")
+                      []
                       [
                         Ty.path "revm::builder::HandlerStage";
                         EXT;
                         Ty.apply
                           (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                          []
                           [ Ty.path "core::convert::Infallible" ]
                       ],
                     "handler",
@@ -1044,7 +1112,8 @@ Module builder.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "cfg",
                         []
                       |),
@@ -1060,7 +1129,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_reset_handler_with_empty_db :
@@ -1082,10 +1151,15 @@ Module builder.
             }
         }
     *)
-    Definition reset_handler_with_db (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition reset_handler_with_db
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [ ODB ], [ self; db ] =>
+      match ε, τ, α with
+      | [], [ ODB ], [ self; db ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let db := M.alloc (| db |) in
@@ -1095,14 +1169,14 @@ Module builder.
               ("context",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "revm::context::Context") [ EXT; ODB ],
+                    Ty.apply (Ty.path "revm::context::Context") [] [ EXT; ODB ],
                     "new",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                         "with_db",
                         [ ODB ]
                       |),
@@ -1139,6 +1213,7 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::builder::EvmBuilder")
+                      []
                       [ Ty.path "revm::builder::SetGenericStage"; EXT; ODB ],
                     "handler",
                     []
@@ -1148,7 +1223,8 @@ Module builder.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "cfg",
                         []
                       |),
@@ -1164,7 +1240,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_reset_handler_with_db :
@@ -1188,10 +1264,15 @@ Module builder.
             }
         }
     *)
-    Definition reset_handler_with_ref_db (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition reset_handler_with_ref_db
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [ ODB ], [ self; db ] =>
+      match ε, τ, α with
+      | [], [ ODB ], [ self; db ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let db := M.alloc (| db |) in
@@ -1203,16 +1284,17 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::context::Context")
-                      [ EXT; Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ ODB ] ],
+                      []
+                      [ EXT; Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ ODB ] ],
                     "new",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                         "with_db",
-                        [ Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ ODB ] ]
+                        [ Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ ODB ] ]
                       |),
                       [
                         M.read (|
@@ -1247,10 +1329,11 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::builder::EvmBuilder")
+                      []
                       [
                         Ty.path "revm::builder::SetGenericStage";
                         EXT;
-                        Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [ ODB ]
+                        Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ ODB ]
                       ],
                     "handler",
                     []
@@ -1260,7 +1343,8 @@ Module builder.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "cfg",
                         []
                       |),
@@ -1276,7 +1360,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_reset_handler_with_ref_db :
@@ -1300,12 +1384,13 @@ Module builder.
     *)
     Definition reset_handler_with_external_context
         (EXT DB : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [ OEXT ], [ self; external ] =>
+      match ε, τ, α with
+      | [], [ OEXT ], [ self; external ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let external := M.alloc (| external |) in
@@ -1315,7 +1400,7 @@ Module builder.
               ("context",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "revm::context::Context") [ OEXT; DB ],
+                    Ty.apply (Ty.path "revm::context::Context") [] [ OEXT; DB ],
                     "new",
                     []
                   |),
@@ -1339,6 +1424,7 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::builder::EvmBuilder")
+                      []
                       [ Ty.path "revm::builder::SetGenericStage"; OEXT; DB ],
                     "handler",
                     []
@@ -1348,7 +1434,8 @@ Module builder.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "cfg",
                         []
                       |),
@@ -1364,7 +1451,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_reset_handler_with_external_context :
@@ -1377,30 +1464,36 @@ Module builder.
   
   Module Impl_revm_builder_EvmBuilder_BuilderStage_EXT_DB.
     Definition Self (BuilderStage EXT DB : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm::builder::EvmBuilder") [ BuilderStage; EXT; DB ].
+      Ty.apply (Ty.path "revm::builder::EvmBuilder") [] [ BuilderStage; EXT; DB ].
     
     (*
         fn handler(handler_cfg: HandlerCfg) -> Handler<'a, Evm<'a, EXT, DB>, EXT, DB> {
             Handler::new(handler_cfg)
         }
     *)
-    Definition handler (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition handler
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ handler_cfg ] =>
+      match ε, τ, α with
+      | [], [], [ handler_cfg ] =>
         ltac:(M.monadic
           (let handler_cfg := M.alloc (| handler_cfg |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "revm::handler::Handler")
-                [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                []
+                [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
               "new",
               []
             |),
             [ M.read (| handler_cfg |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_handler :
@@ -1419,10 +1512,15 @@ Module builder.
             }
         }
     *)
-    Definition with_handler (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_handler
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ self; handler ] =>
+      match ε, τ, α with
+      | [], [], [ self; handler ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let handler := M.alloc (| handler |) in
@@ -1440,7 +1538,7 @@ Module builder.
               ("handler", M.read (| handler |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_handler :
@@ -1455,15 +1553,20 @@ Module builder.
             Evm::new(self.context, self.handler)
         }
     *)
-    Definition build (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition build
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+              Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
               "new",
               []
             |),
@@ -1484,7 +1587,7 @@ Module builder.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_build :
@@ -1508,12 +1611,13 @@ Module builder.
     *)
     Definition append_handler_register
         (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ self; handle_register ] =>
+      match ε, τ, α with
+      | [], [], [ self; handle_register ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let handle_register := M.alloc (| handle_register |) in
@@ -1524,7 +1628,8 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::handler::Handler")
-                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                      []
+                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                     "append_handler_register",
                     []
                   |),
@@ -1564,7 +1669,7 @@ Module builder.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_append_handler_register :
@@ -1591,12 +1696,13 @@ Module builder.
     *)
     Definition append_handler_register_box
         (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ self; handle_register ] =>
+      match ε, τ, α with
+      | [], [], [ self; handle_register ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let handle_register := M.alloc (| handle_register |) in
@@ -1607,7 +1713,8 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::handler::Handler")
-                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                      []
+                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                     "append_handler_register",
                     []
                   |),
@@ -1647,7 +1754,7 @@ Module builder.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_append_handler_register_box :
@@ -1668,10 +1775,15 @@ Module builder.
             }
         }
     *)
-    Definition with_spec_id (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_spec_id
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ self; spec_id ] =>
+      match ε, τ, α with
+      | [], [], [ self; spec_id ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let spec_id := M.alloc (| spec_id |) in
@@ -1682,7 +1794,8 @@ Module builder.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::handler::Handler")
-                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                      []
+                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                     "modify_spec_id",
                     []
                   |),
@@ -1720,7 +1833,7 @@ Module builder.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_spec_id :
@@ -1736,10 +1849,15 @@ Module builder.
             self
         }
     *)
-    Definition modify_db (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition modify_db
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [ impl_FnOnce__mut_DB_ ], [ self; f ] =>
+      match ε, τ, α with
+      | [], [ impl_FnOnce__mut_DB_ ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1750,7 +1868,7 @@ Module builder.
                   M.get_trait_method (|
                     "core::ops::function::FnOnce",
                     impl_FnOnce__mut_DB_,
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ DB ] ] ],
+                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ DB ] ] ],
                     "call_once",
                     []
                   |),
@@ -1762,7 +1880,7 @@ Module builder.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::deref::DerefMut",
-                              Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                              Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                               [],
                               "deref_mut",
                               []
@@ -1788,7 +1906,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_modify_db :
@@ -1803,12 +1921,13 @@ Module builder.
     *)
     Definition modify_external_context
         (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [ impl_FnOnce__mut_EXT_ ], [ self; f ] =>
+      match ε, τ, α with
+      | [], [ impl_FnOnce__mut_EXT_ ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1819,7 +1938,7 @@ Module builder.
                   M.get_trait_method (|
                     "core::ops::function::FnOnce",
                     impl_FnOnce__mut_EXT_,
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ EXT ] ] ],
+                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ EXT ] ] ],
                     "call_once",
                     []
                   |),
@@ -1842,7 +1961,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_modify_external_context :
@@ -1858,10 +1977,15 @@ Module builder.
             self
         }
     *)
-    Definition modify_env (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition modify_env
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [ impl_FnOnce__mut_Box_Env__ ], [ self; f ] =>
+      match ε, τ, α with
+      | [], [ impl_FnOnce__mut_Box_Env__ ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1877,9 +2001,11 @@ Module builder.
                         [
                           Ty.apply
                             (Ty.path "&mut")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
                                   Ty.path "revm_primitives::env::Env";
                                   Ty.path "alloc::alloc::Global"
@@ -1898,7 +2024,7 @@ Module builder.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::deref::DerefMut",
-                              Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                              Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                               [],
                               "deref_mut",
                               []
@@ -1924,7 +2050,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_modify_env :
@@ -1940,10 +2066,15 @@ Module builder.
             self
         }
     *)
-    Definition with_env (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_env
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ self; env ] =>
+      match ε, τ, α with
+      | [], [], [ self; env ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let env := M.alloc (| env |) in
@@ -1954,7 +2085,7 @@ Module builder.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::deref::DerefMut",
-                      Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                      Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                       [],
                       "deref_mut",
                       []
@@ -1978,7 +2109,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_env :
@@ -1991,10 +2122,15 @@ Module builder.
             self
         }
     *)
-    Definition modify_tx_env (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition modify_tx_env
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [ impl_FnOnce__mut_TxEnv_ ], [ self; f ] =>
+      match ε, τ, α with
+      | [], [ impl_FnOnce__mut_TxEnv_ ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -2007,7 +2143,7 @@ Module builder.
                     impl_FnOnce__mut_TxEnv_,
                     [
                       Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [ Ty.path "revm_primitives::env::TxEnv" ] ]
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_primitives::env::TxEnv" ] ]
                     ],
                     "call_once",
                     []
@@ -2024,6 +2160,7 @@ Module builder.
                                   "core::ops::deref::DerefMut",
                                   Ty.apply
                                     (Ty.path "revm::context::evm_context::EvmContext")
+                                    []
                                     [ DB ],
                                   [],
                                   "deref_mut",
@@ -2054,7 +2191,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_modify_tx_env :
@@ -2070,10 +2207,15 @@ Module builder.
             self
         }
     *)
-    Definition with_tx_env (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_tx_env
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ self; tx_env ] =>
+      match ε, τ, α with
+      | [], [], [ self; tx_env ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let tx_env := M.alloc (| tx_env |) in
@@ -2086,7 +2228,7 @@ Module builder.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -2114,7 +2256,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_tx_env :
@@ -2132,12 +2274,13 @@ Module builder.
     *)
     Definition modify_block_env
         (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [ impl_FnOnce__mut_BlockEnv_ ], [ self; f ] =>
+      match ε, τ, α with
+      | [], [ impl_FnOnce__mut_BlockEnv_ ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -2150,7 +2293,8 @@ Module builder.
                     impl_FnOnce__mut_BlockEnv_,
                     [
                       Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [ Ty.path "revm_primitives::env::BlockEnv" ] ]
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_primitives::env::BlockEnv" ]
+                        ]
                     ],
                     "call_once",
                     []
@@ -2167,6 +2311,7 @@ Module builder.
                                   "core::ops::deref::DerefMut",
                                   Ty.apply
                                     (Ty.path "revm::context::evm_context::EvmContext")
+                                    []
                                     [ DB ],
                                   [],
                                   "deref_mut",
@@ -2197,7 +2342,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_modify_block_env :
@@ -2213,10 +2358,15 @@ Module builder.
             self
         }
     *)
-    Definition with_block_env (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_block_env
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ self; block_env ] =>
+      match ε, τ, α with
+      | [], [], [ self; block_env ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let block_env := M.alloc (| block_env |) in
@@ -2229,7 +2379,7 @@ Module builder.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -2257,7 +2407,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_block_env :
@@ -2273,10 +2423,15 @@ Module builder.
             self
         }
     *)
-    Definition modify_cfg_env (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition modify_cfg_env
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [ impl_FnOnce__mut_CfgEnv_ ], [ self; f ] =>
+      match ε, τ, α with
+      | [], [ impl_FnOnce__mut_CfgEnv_ ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -2289,7 +2444,7 @@ Module builder.
                     impl_FnOnce__mut_CfgEnv_,
                     [
                       Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [ Ty.path "revm_primitives::env::CfgEnv" ] ]
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_primitives::env::CfgEnv" ] ]
                     ],
                     "call_once",
                     []
@@ -2306,6 +2461,7 @@ Module builder.
                                   "core::ops::deref::DerefMut",
                                   Ty.apply
                                     (Ty.path "revm::context::evm_context::EvmContext")
+                                    []
                                     [ DB ],
                                   [],
                                   "deref_mut",
@@ -2336,7 +2492,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_modify_cfg_env :
@@ -2352,10 +2508,15 @@ Module builder.
             self
         }
     *)
-    Definition with_clear_env (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_clear_env
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2369,7 +2530,7 @@ Module builder.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::deref::DerefMut",
-                            Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                            Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                             [],
                             "deref_mut",
                             []
@@ -2395,7 +2556,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_clear_env :
@@ -2413,12 +2574,13 @@ Module builder.
     *)
     Definition with_clear_tx_env
         (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2437,7 +2599,7 @@ Module builder.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::deref::DerefMut",
-                              Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                              Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                               [],
                               "deref_mut",
                               []
@@ -2466,7 +2628,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_clear_tx_env :
@@ -2484,12 +2646,13 @@ Module builder.
     *)
     Definition with_clear_block_env
         (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2508,7 +2671,7 @@ Module builder.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::deref::DerefMut",
-                              Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                              Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                               [],
                               "deref_mut",
                               []
@@ -2537,7 +2700,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_clear_block_env :
@@ -2553,10 +2716,15 @@ Module builder.
             self
         }
     *)
-    Definition reset_handler (BuilderStage EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition reset_handler
+        (BuilderStage EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BuilderStage EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2569,7 +2737,7 @@ Module builder.
                 |),
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "revm::builder::EvmBuilder") [ BuilderStage; EXT; DB ],
+                    Ty.apply (Ty.path "revm::builder::EvmBuilder") [] [ BuilderStage; EXT; DB ],
                     "handler",
                     []
                   |),
@@ -2578,7 +2746,8 @@ Module builder.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "cfg",
                         []
                       |),
@@ -2595,7 +2764,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_reset_handler :

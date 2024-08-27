@@ -9,15 +9,15 @@ Module iter.
           OnceWith { gen: Some(gen) }
       }
       *)
-      Definition once_with (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ A; F ], [ gen ] =>
+      Definition once_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ A; F ], [ gen ] =>
           ltac:(M.monadic
             (let gen := M.alloc (| gen |) in
             Value.StructRecord
               "core::iter::sources::once_with::OnceWith"
               [ ("gen", Value.StructTuple "core::option::Option::Some" [ M.read (| gen |) ]) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_once_with : M.IsFunction "core::iter::sources::once_with::once_with" once_with.
@@ -25,19 +25,20 @@ Module iter.
       (* StructRecord
         {
           name := "OnceWith";
+          const_params := [];
           ty_params := [ "F" ];
-          fields := [ ("gen", Ty.apply (Ty.path "core::option::Option") [ F ]) ];
+          fields := [ ("gen", Ty.apply (Ty.path "core::option::Option") [] [ F ]) ];
         } *)
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_F_for_core_iter_sources_once_with_OnceWith_F.
         Definition Self (F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [] [ F ].
         
         (* Clone *)
-        Definition clone (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -47,7 +48,7 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::clone::Clone",
-                        Ty.apply (Ty.path "core::option::Option") [ F ],
+                        Ty.apply (Ty.path "core::option::Option") [] [ F ],
                         [],
                         "clone",
                         []
@@ -61,7 +62,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -75,7 +76,7 @@ Module iter.
       
       Module Impl_core_fmt_Debug_for_core_iter_sources_once_with_OnceWith_F.
         Definition Self (F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [] [ F ].
         
         (*
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -86,10 +87,10 @@ Module iter.
                 }
             }
         *)
-        Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self F in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -104,7 +105,7 @@ Module iter.
                             (M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ F ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ F ],
                                   "is_some",
                                   []
                                 |),
@@ -144,7 +145,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -158,7 +159,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnOnce_F_Tuple__for_core_iter_sources_once_with_OnceWith_F.
         Definition Self (A F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [] [ F ].
         
         (*     type Item = A; *)
         Definition _Item (A F : Ty.t) : Ty.t := A.
@@ -169,10 +170,10 @@ Module iter.
                 Some(f())
             }
         *)
-        Definition next (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (A F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self A F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -185,7 +186,7 @@ Module iter.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
-                                Ty.apply (Ty.path "core::option::Option") [ F ],
+                                Ty.apply (Ty.path "core::option::Option") [] [ F ],
                                 [],
                                 "branch",
                                 []
@@ -193,7 +194,7 @@ Module iter.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::option::Option") [ F ],
+                                    Ty.apply (Ty.path "core::option::Option") [] [ F ],
                                     "take",
                                     []
                                   |),
@@ -225,10 +226,11 @@ Module iter.
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
-                                            Ty.apply (Ty.path "core::option::Option") [ A ],
+                                            Ty.apply (Ty.path "core::option::Option") [] [ A ],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
@@ -271,7 +273,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -279,16 +281,21 @@ Module iter.
                 self.gen.iter().size_hint()
             }
         *)
-        Definition size_hint (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint
+            (A F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self A F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::option::Iter") [ F ],
+                  Ty.apply (Ty.path "core::option::Iter") [] [ F ],
                   [],
                   "size_hint",
                   []
@@ -297,7 +304,7 @@ Module iter.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::option::Option") [ F ],
+                        Ty.apply (Ty.path "core::option::Option") [] [ F ],
                         "iter",
                         []
                       |),
@@ -312,7 +319,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -331,30 +338,35 @@ Module iter.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnOnce_F_Tuple__for_core_iter_sources_once_with_OnceWith_F.
         Definition Self (A F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [] [ F ].
         
         (*
             fn next_back(&mut self) -> Option<A> {
                 self.next()
             }
         *)
-        Definition next_back (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back
+            (A F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self A F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [ F ],
+                  Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [] [ F ],
                   [],
                   "next",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -368,23 +380,23 @@ Module iter.
       
       Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_ops_function_FnOnce_F_Tuple__for_core_iter_sources_once_with_OnceWith_F.
         Definition Self (A F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [] [ F ].
         
         (*
             fn len(&self) -> usize {
                 self.gen.iter().len()
             }
         *)
-        Definition len (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (A F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self A F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::exact_size::ExactSizeIterator",
-                  Ty.apply (Ty.path "core::option::Iter") [ F ],
+                  Ty.apply (Ty.path "core::option::Iter") [] [ F ],
                   [],
                   "len",
                   []
@@ -393,7 +405,7 @@ Module iter.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::option::Option") [ F ],
+                        Ty.apply (Ty.path "core::option::Option") [] [ F ],
                         "iter",
                         []
                       |),
@@ -408,7 +420,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -422,7 +434,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnOnce_F_Tuple__for_core_iter_sources_once_with_OnceWith_F.
         Definition Self (A F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [] [ F ].
         
         Axiom Implements :
           forall (A F : Ty.t),
@@ -435,7 +447,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_TrustedLen_where_core_ops_function_FnOnce_F_Tuple__for_core_iter_sources_once_with_OnceWith_F.
         Definition Self (A F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [] [ F ].
         
         Axiom Implements :
           forall (A F : Ty.t),

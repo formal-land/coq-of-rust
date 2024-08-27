@@ -73,9 +73,9 @@ Module kzg_point_evaluation.
       Ok((GAS_COST, RETURN_VALUE.into()))
   }
   *)
-  Definition run (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input; gas_limit; env ] =>
+  Definition run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; gas_limit; env ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
@@ -176,8 +176,8 @@ Module kzg_point_evaluation.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::index::Index",
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                       "index",
                       []
                     |),
@@ -212,8 +212,8 @@ Module kzg_point_evaluation.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::index::Index",
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                       "index",
                       []
                     |),
@@ -257,11 +257,12 @@ Module kzg_point_evaluation.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
-                                      [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ],
                                   "ne",
                                   []
@@ -315,8 +316,8 @@ Module kzg_point_evaluation.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::Index",
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                          [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                           "index",
                           []
                         |),
@@ -358,8 +359,8 @@ Module kzg_point_evaluation.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::Index",
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                          [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                           "index",
                           []
                         |),
@@ -401,8 +402,8 @@ Module kzg_point_evaluation.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::Index",
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                          [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                           "index",
                           []
                         |),
@@ -510,7 +511,10 @@ Module kzg_point_evaluation.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::Into",
-                            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "array") [ Value.Integer 64 ] [ Ty.path "u8" ] ],
                             [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                             "into",
                             []
@@ -528,7 +532,7 @@ Module kzg_point_evaluation.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_run : M.IsFunction "revm_precompile::kzg_point_evaluation::run" run.
@@ -540,9 +544,9 @@ Module kzg_point_evaluation.
       hash
   }
   *)
-  Definition kzg_to_versioned_hash (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ commitment ] =>
+  Definition kzg_to_versioned_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ commitment ] =>
       ltac:(M.monadic
         (let commitment := M.alloc (| commitment |) in
         M.read (|
@@ -553,25 +557,32 @@ Module kzg_point_evaluation.
                   "core::convert::Into",
                   Ty.apply
                     (Ty.path "generic_array::GenericArray")
+                    []
                     [
                       Ty.path "u8";
                       Ty.apply
                         (Ty.path "typenum::uint::UInt")
+                        []
                         [
                           Ty.apply
                             (Ty.path "typenum::uint::UInt")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "typenum::uint::UInt")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "typenum::uint::UInt")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "typenum::uint::UInt")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "typenum::uint::UInt")
+                                            []
                                             [
                                               Ty.path "typenum::uint::UTerm";
                                               Ty.path "typenum::bit::B1"
@@ -587,7 +598,7 @@ Module kzg_point_evaluation.
                           Ty.path "typenum::bit::B0"
                         ]
                     ],
-                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                  [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
                   "into",
                   []
                 |),
@@ -597,28 +608,36 @@ Module kzg_point_evaluation.
                       "digest::digest::Digest",
                       Ty.apply
                         (Ty.path "digest::core_api::wrapper::CoreWrapper")
+                        []
                         [
                           Ty.apply
                             (Ty.path "digest::core_api::ct_variable::CtVariableCoreWrapper")
+                            []
                             [
                               Ty.path "sha2::core_api::Sha256VarCore";
                               Ty.apply
                                 (Ty.path "typenum::uint::UInt")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "typenum::uint::UInt")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "typenum::uint::UInt")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "typenum::uint::UInt")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "typenum::uint::UInt")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "typenum::uint::UInt")
+                                                    []
                                                     [
                                                       Ty.path "typenum::uint::UTerm";
                                                       Ty.path "typenum::bit::B1"
@@ -638,7 +657,8 @@ Module kzg_point_evaluation.
                         ],
                       [],
                       "digest",
-                      [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      ]
                     |),
                     [ M.read (| commitment |) ]
                   |)
@@ -656,7 +676,7 @@ Module kzg_point_evaluation.
             |) in
           hash
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_kzg_to_versioned_hash :
@@ -675,9 +695,9 @@ Module kzg_point_evaluation.
       KzgProof::verify_kzg_proof(commitment, z, y, proof, kzg_settings).unwrap_or(false)
   }
   *)
-  Definition verify_kzg_proof (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ commitment; z; y; proof; kzg_settings ] =>
+  Definition verify_kzg_proof (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ commitment; z; y; proof; kzg_settings ] =>
       ltac:(M.monadic
         (let commitment := M.alloc (| commitment |) in
         let z := M.alloc (| z |) in
@@ -688,6 +708,7 @@ Module kzg_point_evaluation.
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
+              []
               [ Ty.path "bool"; Ty.path "c_kzg::bindings::Error" ],
             "unwrap_or",
             []
@@ -710,7 +731,7 @@ Module kzg_point_evaluation.
             Value.Bool false
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_verify_kzg_proof :
@@ -721,17 +742,18 @@ Module kzg_point_evaluation.
       bytes.try_into().expect("slice with incorrect length")
   }
   *)
-  Definition as_array (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ bytes ] =>
+  Definition as_array (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ N ], [], [ bytes ] =>
       ltac:(M.monadic
         (let bytes := M.alloc (| bytes |) in
         M.call_closure (|
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
+              []
               [
-                Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ];
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ];
                 Ty.path "core::array::TryFromSliceError"
               ],
             "expect",
@@ -741,8 +763,8 @@ Module kzg_point_evaluation.
             M.call_closure (|
               M.get_trait_method (|
                 "core::convert::TryInto",
-                Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
-                [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ] ],
                 "try_into",
                 []
               |),
@@ -751,7 +773,7 @@ Module kzg_point_evaluation.
             M.read (| Value.String "slice with incorrect length" |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_as_array : M.IsFunction "revm_precompile::kzg_point_evaluation::as_array" as_array.
@@ -762,21 +784,21 @@ Module kzg_point_evaluation.
       unsafe { &*as_array::<32>(bytes).as_ptr().cast() }
   }
   *)
-  Definition as_bytes32 (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ bytes ] =>
+  Definition as_bytes32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ bytes ] =>
       ltac:(M.monadic
         (let bytes := M.alloc (| bytes |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
             "cast",
             [ Ty.path "c_kzg::bindings::Bytes32" ]
           |),
           [
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 "as_ptr",
                 []
               |),
@@ -791,7 +813,7 @@ Module kzg_point_evaluation.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_as_bytes32 :
@@ -803,21 +825,21 @@ Module kzg_point_evaluation.
       unsafe { &*as_array::<48>(bytes).as_ptr().cast() }
   }
   *)
-  Definition as_bytes48 (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ bytes ] =>
+  Definition as_bytes48 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ bytes ] =>
       ltac:(M.monadic
         (let bytes := M.alloc (| bytes |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
             "cast",
             [ Ty.path "c_kzg::bindings::Bytes48" ]
           |),
           [
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 "as_ptr",
                 []
               |),
@@ -832,7 +854,7 @@ Module kzg_point_evaluation.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_as_bytes48 :

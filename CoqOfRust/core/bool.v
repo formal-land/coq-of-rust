@@ -10,9 +10,9 @@ Module bool.
             if self { Some(t) } else { None }
         }
     *)
-    Definition then_some (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self; t ] =>
+    Definition then_some (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self; t ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let t := M.alloc (| t |) in
@@ -32,7 +32,7 @@ Module bool.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_then_some : M.IsAssociatedFunction Self "then_some" then_some.
@@ -42,9 +42,9 @@ Module bool.
             if self { Some(f()) } else { None }
         }
     *)
-    Definition then_ (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T; F ], [ self; f ] =>
+    Definition then_ (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T; F ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -77,7 +77,7 @@ Module bool.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_then_ : M.IsAssociatedFunction Self "then_" then_.

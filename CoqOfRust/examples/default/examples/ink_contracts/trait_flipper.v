@@ -7,6 +7,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Flipper";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "bool") ];
   } *)
@@ -21,9 +22,9 @@ Module Impl_trait_flipper_Flipper.
           }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "trait_flipper::Flipper"
@@ -40,7 +41,7 @@ Module Impl_trait_flipper_Flipper.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -54,9 +55,9 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
           self.value = !self.value;
       }
   *)
-  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition flip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -78,7 +79,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -86,9 +87,9 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
           self.value
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -98,7 +99,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
             "value"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :

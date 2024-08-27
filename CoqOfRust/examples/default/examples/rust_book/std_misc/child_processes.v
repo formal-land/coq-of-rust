@@ -19,9 +19,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ output :=
@@ -30,6 +30,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.path "std::process::Output"; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
                 [
@@ -46,7 +47,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "std::process::Command",
                         "arg",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
                       [
                         M.alloc (|
@@ -54,7 +55,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "std::process::Command",
                               "new",
-                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                             |),
                             [ M.read (| Value.String "rustc" |) ]
                           |)
@@ -161,6 +162,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             [],
                             "deref",
@@ -209,6 +211,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::borrow::Cow")
+                                              []
                                               [ Ty.path "str" ]
                                           ]
                                         |),
@@ -239,6 +242,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             [],
                             "deref",
@@ -287,6 +291,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::borrow::Cow")
+                                              []
                                               [ Ty.path "str" ]
                                           ]
                                         |),
@@ -304,7 +309,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "child_processes::main" main.

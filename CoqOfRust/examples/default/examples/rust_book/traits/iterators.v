@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Fibonacci";
+    const_params := [];
     ty_params := [];
     fields := [ ("curr", Ty.path "u32"); ("next", Ty.path "u32") ];
   } *)
@@ -26,9 +27,9 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
           Some(current)
       }
   *)
-  Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -75,7 +76,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
             |) in
           M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| current |) ] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -91,14 +92,14 @@ fn fibonacci() -> Fibonacci {
     Fibonacci { curr: 0, next: 1 }
 }
 *)
-Definition fibonacci (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition fibonacci (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (Value.StructRecord
         "iterators::Fibonacci"
         [ ("curr", Value.Integer 0); ("next", Value.Integer 1) ]))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_fibonacci : M.IsFunction "iterators::fibonacci" fibonacci.
@@ -142,9 +143,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ sequence :=
@@ -200,7 +201,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -209,6 +210,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "i32" ],
                                         [],
                                         "next",
@@ -252,7 +254,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -261,6 +263,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "i32" ],
                                         [],
                                         "next",
@@ -304,7 +307,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -313,6 +316,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "i32" ],
                                         [],
                                         "next",
@@ -356,7 +360,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -365,6 +369,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "i32" ],
                                         [],
                                         "next",
@@ -412,7 +417,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                     [],
                     "into_iter",
                     []
@@ -436,7 +441,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                                   [],
                                   "next",
                                   []
@@ -545,6 +550,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
                       (Ty.path "core::iter::adapters::take::Take")
+                      []
                       [ Ty.path "iterators::Fibonacci" ],
                     [],
                     "into_iter",
@@ -581,6 +587,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::take::Take")
+                                    []
                                     [ Ty.path "iterators::Fibonacci" ],
                                   [],
                                   "next",
@@ -690,9 +697,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
                       (Ty.path "core::iter::adapters::take::Take")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::skip::Skip")
+                          []
                           [ Ty.path "iterators::Fibonacci" ]
                       ],
                     [],
@@ -705,6 +714,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::skip::Skip")
+                          []
                           [ Ty.path "iterators::Fibonacci" ],
                         [],
                         "take",
@@ -747,9 +757,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::take::Take")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::skip::Skip")
+                                        []
                                         [ Ty.path "iterators::Fibonacci" ]
                                     ],
                                   [],
@@ -860,7 +872,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "&")
-                                      [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ]
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer 4 ]
+                                          [ Ty.path "u32" ]
+                                      ]
                                   ]
                                 |),
                                 [ M.alloc (| array |) ]
@@ -879,7 +897,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
-                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ],
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                   [],
                   "into_iter",
                   []
@@ -887,7 +905,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                       "iter",
                       []
                     |),
@@ -908,7 +926,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
-                                Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ],
+                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                                 [],
                                 "next",
                                 []
@@ -962,7 +980,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
-                                                          [ Ty.apply (Ty.path "&") [ Ty.path "u32" ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "u32" ]
                                                           ]
                                                         |),
                                                         [ i ]
@@ -983,7 +1005,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "iterators::main" main.

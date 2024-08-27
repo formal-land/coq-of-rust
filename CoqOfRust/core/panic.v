@@ -9,12 +9,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -29,12 +29,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -49,12 +49,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -69,12 +69,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -89,12 +89,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -107,12 +107,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -125,12 +125,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -143,12 +143,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -161,12 +161,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -179,12 +179,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -197,12 +197,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -215,12 +215,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -233,12 +233,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -251,12 +251,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -269,12 +269,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -287,12 +287,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -305,12 +305,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -323,12 +323,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -341,12 +341,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -359,12 +359,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -377,12 +377,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -395,12 +395,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -415,12 +415,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -433,12 +433,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -451,12 +451,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -469,12 +469,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -489,12 +489,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -509,12 +509,12 @@ Module intrinsics.
                   $crate::panicking::panic_explicit()
               }
       *)
-      Definition panic_cold_explicit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition panic_cold_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_panic_cold_explicit :

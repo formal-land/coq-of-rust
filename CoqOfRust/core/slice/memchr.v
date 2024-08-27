@@ -35,9 +35,9 @@ Module slice.
         x.wrapping_sub(LO_USIZE) & !x & HI_USIZE != 0
     }
     *)
-    Definition contains_zero_byte (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ x ] =>
+    Definition contains_zero_byte (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           BinOp.Pure.ne
@@ -53,7 +53,7 @@ Module slice.
                 (UnOp.Pure.not (M.read (| x |))))
               (M.read (| M.get_constant (| "core::slice::memchr::HI_USIZE" |) |)))
             (Value.Integer 0)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_contains_zero_byte :
@@ -69,9 +69,9 @@ Module slice.
         memchr_aligned(x, text)
     }
     *)
-    Definition memchr (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ x; text ] =>
+    Definition memchr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ x; text ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let text := M.alloc (| text |) in
@@ -90,7 +90,7 @@ Module slice.
                                 BinOp.Pure.lt
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
@@ -128,7 +128,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_memchr : M.IsFunction "core::slice::memchr::memchr" memchr.
@@ -149,9 +149,9 @@ Module slice.
         None
     }
     *)
-    Definition memchr_naive (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ x; text ] =>
+    Definition memchr_naive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ x; text ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let text := M.alloc (| text |) in
@@ -174,7 +174,7 @@ Module slice.
                                       (M.read (| i |))
                                       (M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
@@ -249,7 +249,7 @@ Module slice.
                 M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_memchr_naive : M.IsFunction "core::slice::memchr::memchr_naive" memchr_naive.
@@ -306,9 +306,9 @@ Module slice.
         if let Some(i) = memchr_naive(x, slice) { Some(offset + i) } else { None }
     }
     *)
-    Definition memchr_aligned (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ x; text ] =>
+    Definition memchr_aligned (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ x; text ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let text := M.alloc (| text |) in
@@ -319,7 +319,7 @@ Module slice.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
                         []
                       |),
@@ -330,7 +330,7 @@ Module slice.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
                         []
                       |),
@@ -341,7 +341,7 @@ Module slice.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "align_offset",
                         []
                       |),
@@ -399,7 +399,7 @@ Module slice.
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "as_ptr",
                                       []
                                     |),
@@ -489,7 +489,7 @@ Module slice.
                                     M.rust_cast
                                       (M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                           "add",
                                           []
                                         |),
@@ -501,7 +501,7 @@ Module slice.
                                     M.rust_cast
                                       (M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                           "add",
                                           []
                                         |),
@@ -608,14 +608,14 @@ Module slice.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                             "add",
                             []
                           |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "as_ptr",
                                 []
                               |),
@@ -628,7 +628,7 @@ Module slice.
                           Integer.Usize
                           (M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
                               []
                             |),
@@ -669,7 +669,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_memchr_aligned :
@@ -728,9 +728,9 @@ Module slice.
         text[..offset].iter().rposition(|elt| *elt == x)
     }
     *)
-    Definition memrchr (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ x; text ] =>
+    Definition memrchr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ x; text ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let text := M.alloc (| text |) in
@@ -741,7 +741,7 @@ Module slice.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
                         []
                       |),
@@ -752,7 +752,7 @@ Module slice.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
                         []
                       |),
@@ -764,7 +764,7 @@ Module slice.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "align_to",
                           [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
                         |),
@@ -784,7 +784,7 @@ Module slice.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
                                     []
                                   |),
@@ -795,7 +795,7 @@ Module slice.
                                   (M.read (| len |))
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
@@ -826,12 +826,15 @@ Module slice.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::Iter")
+                                            []
                                             [ Ty.path "u8" ],
                                           [],
                                           "rposition",
                                           [
                                             Ty.function
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
+                                              [
+                                                Ty.tuple
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                               ]
                                               (Ty.path "bool")
                                           ]
@@ -840,7 +843,7 @@ Module slice.
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "iter",
                                                 []
                                               |),
@@ -848,10 +851,11 @@ Module slice.
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::ops::index::Index",
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::RangeFrom")
+                                                        []
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index",
@@ -954,7 +958,7 @@ Module slice.
                                             M.rust_cast
                                               (M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                   "add",
                                                   []
                                                 |),
@@ -975,7 +979,7 @@ Module slice.
                                             M.rust_cast
                                               (M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                   "add",
                                                   []
                                                 |),
@@ -1073,12 +1077,12 @@ Module slice.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                               [],
                               "rposition",
                               [
                                 Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] ]
+                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
                                   (Ty.path "bool")
                               ]
                             |),
@@ -1086,7 +1090,7 @@ Module slice.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "iter",
                                     []
                                   |),
@@ -1094,10 +1098,11 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::index::Index",
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeTo")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                         "index",
@@ -1138,7 +1143,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_memrchr : M.IsFunction "core::slice::memchr::memrchr" memrchr.

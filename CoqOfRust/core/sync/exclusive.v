@@ -6,19 +6,20 @@ Module sync.
     (* StructRecord
       {
         name := "Exclusive";
+        const_params := [];
         ty_params := [ "T" ];
         fields := [ ("inner", T) ];
       } *)
     
     Module Impl_core_default_Default_where_core_default_Default_T_where_core_marker_Sized_T_for_core_sync_exclusive_Exclusive_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ T ].
+        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ].
       
       (* Default *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::sync::exclusive::Exclusive"
@@ -29,7 +30,7 @@ Module sync.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -43,7 +44,7 @@ Module sync.
     
     Module Impl_core_marker_Sync_where_core_marker_Sized_T_for_core_sync_exclusive_Exclusive_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ T ].
+        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -56,17 +57,17 @@ Module sync.
     
     Module Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_sync_exclusive_Exclusive_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ T ].
+        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
               f.debug_struct("Exclusive").finish_non_exhaustive()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -89,7 +90,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -103,21 +104,21 @@ Module sync.
     
     Module Impl_core_sync_exclusive_Exclusive_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ T ].
+        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ].
       
       (*
           pub const fn new(t: T) -> Self {
               Self { inner: t }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ t ] =>
+        match ε, τ, α with
+        | [ host ], [], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             Value.StructRecord "core::sync::exclusive::Exclusive" [ ("inner", M.read (| t |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -129,10 +130,10 @@ Module sync.
               self.inner
           }
       *)
-      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -142,7 +143,7 @@ Module sync.
                 "inner"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -153,10 +154,10 @@ Module sync.
               &mut self.inner
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -164,7 +165,7 @@ Module sync.
               "core::sync::exclusive::Exclusive",
               "inner"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut :
@@ -178,15 +179,15 @@ Module sync.
               unsafe { Pin::new_unchecked(&mut self.get_unchecked_mut().inner) }
           }
       *)
-      Definition get_pin_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_pin_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ T ] ],
+                Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                 "new_unchecked",
                 []
               |),
@@ -196,10 +197,12 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::pin::Pin")
+                        []
                         [
                           Ty.apply
                             (Ty.path "&mut")
-                            [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ] ]
                         ],
                       "get_unchecked_mut",
                       []
@@ -211,7 +214,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_pin_mut :
@@ -224,14 +227,14 @@ Module sync.
               unsafe { &mut *(r as *mut T as *mut Exclusive<T>) }
           }
       *)
-      Definition from_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ r ] =>
+        match ε, τ, α with
+        | [ host ], [], [ r ] =>
           ltac:(M.monadic
             (let r := M.alloc (| r |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| r |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_mut :
@@ -245,20 +248,27 @@ Module sync.
               unsafe { Pin::new_unchecked(Self::from_mut(r.get_unchecked_mut())) }
           }
       *)
-      Definition from_pin_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_pin_mut
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ r ] =>
+        match ε, τ, α with
+        | [ host ], [], [ r ] =>
           ltac:(M.monadic
             (let r := M.alloc (| r |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::pin::Pin")
+                  []
                   [
                     Ty.apply
                       (Ty.path "&mut")
-                      [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ T ] ]
+                      []
+                      [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ] ]
                   ],
                 "new_unchecked",
                 []
@@ -266,14 +276,17 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ T ],
+                    Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ],
                     "from_mut",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ T ] ],
+                        Ty.apply
+                          (Ty.path "core::pin::Pin")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                         "get_unchecked_mut",
                         []
                       |),
@@ -283,7 +296,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_pin_mut :
@@ -294,28 +307,28 @@ Module sync.
     
     Module Impl_core_convert_From_T_for_core_sync_exclusive_Exclusive_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ T ].
+        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ].
       
       (*
           fn from(t: T) -> Self {
               Self::new(t)
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ t ] =>
+        match ε, τ, α with
+        | [], [], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ T ],
+                Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ],
                 "new",
                 []
               |),
               [ M.read (| t |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -329,7 +342,7 @@ Module sync.
     
     Module Impl_core_ops_function_FnOnce_where_core_ops_function_FnOnce_F_Args_where_core_marker_Tuple_Args_Args_for_core_sync_exclusive_Exclusive_F.
       Definition Self (F Args : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ F ].
+        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ F ].
       
       (*     type Output = F::Output; *)
       Definition _Output (F Args : Ty.t) : Ty.t := Ty.associated.
@@ -339,10 +352,15 @@ Module sync.
               self.into_inner().call_once(args)
           }
       *)
-      Definition call_once (F Args : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call_once
+          (F Args : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self F Args in
-        match τ, α with
-        | [], [ self; args ] =>
+        match ε, τ, α with
+        | [], [], [ self; args ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let args := M.alloc (| args |) in
@@ -351,7 +369,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ F ],
+                    Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ F ],
                     "into_inner",
                     []
                   |),
@@ -360,7 +378,7 @@ Module sync.
                 M.read (| args |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -378,17 +396,22 @@ Module sync.
     
     Module Impl_core_ops_function_FnMut_where_core_ops_function_FnMut_F_Args_where_core_marker_Tuple_Args_Args_for_core_sync_exclusive_Exclusive_F.
       Definition Self (F Args : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ F ].
+        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ F ].
       
       (*
           extern "rust-call" fn call_mut(&mut self, args: Args) -> Self::Output {
               self.get_mut().call_mut(args)
           }
       *)
-      Definition call_mut (F Args : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call_mut
+          (F Args : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self F Args in
-        match τ, α with
-        | [], [ self; args ] =>
+        match ε, τ, α with
+        | [], [], [ self; args ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let args := M.alloc (| args |) in
@@ -397,7 +420,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ F ],
+                    Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ F ],
                     "get_mut",
                     []
                   |),
@@ -406,7 +429,7 @@ Module sync.
                 M.read (| args |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -420,7 +443,7 @@ Module sync.
     
     Module Impl_core_future_future_Future_where_core_future_future_Future_T_where_core_marker_Sized_T_for_core_sync_exclusive_Exclusive_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ T ].
+        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ].
       
       (*     type Output = T::Output; *)
       Definition _Output (T : Ty.t) : Ty.t := Ty.associated.
@@ -430,10 +453,10 @@ Module sync.
               self.get_pin_mut().poll(cx)
           }
       *)
-      Definition poll (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; cx ] =>
+        match ε, τ, α with
+        | [], [], [ self; cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
@@ -442,7 +465,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ T ],
+                    Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ],
                     "get_pin_mut",
                     []
                   |),
@@ -451,7 +474,7 @@ Module sync.
                 M.read (| cx |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -466,7 +489,7 @@ Module sync.
     
     Module Impl_core_ops_coroutine_Coroutine_where_core_ops_coroutine_Coroutine_G_R_where_core_marker_Sized_G_R_for_core_sync_exclusive_Exclusive_G.
       Definition Self (R G : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ G ].
+        Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ G ].
       
       (*     type Yield = G::Yield; *)
       Definition _Yield (R G : Ty.t) : Ty.t := Ty.associated.
@@ -479,10 +502,10 @@ Module sync.
               G::resume(self.get_pin_mut(), arg)
           }
       *)
-      Definition resume (R G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition resume (R G : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self R G in
-        match τ, α with
-        | [], [ self; arg ] =>
+        match ε, τ, α with
+        | [], [], [ self; arg ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arg := M.alloc (| arg |) in
@@ -491,7 +514,7 @@ Module sync.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ G ],
+                    Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ G ],
                     "get_pin_mut",
                     []
                   |),
@@ -500,7 +523,7 @@ Module sync.
                 M.read (| arg |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

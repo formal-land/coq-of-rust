@@ -5,9 +5,14 @@ Module future.
   (* StructTuple
     {
       name := "ResumeTy";
+      const_params := [];
       ty_params := [];
       fields :=
-        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "core::task::wake::Context" ]
+        [
+          Ty.apply
+            (Ty.path "core::ptr::non_null::NonNull")
+            []
+            [ Ty.path "core::task::wake::Context" ]
         ];
     } *)
   
@@ -15,9 +20,9 @@ Module future.
     Definition Self : Ty.t := Ty.path "core::future::ResumeTy".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -41,7 +46,7 @@ Module future.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -67,9 +72,9 @@ Module future.
     Definition Self : Ty.t := Ty.path "core::future::ResumeTy".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -78,7 +83,7 @@ Module future.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -118,14 +123,14 @@ Module future.
       unsafe { &mut *cx.0.as_ptr().cast() }
   }
   *)
-  Definition get_context (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ cx ] =>
+  Definition get_context (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ cx ] =>
       ltac:(M.monadic
         (let cx := M.alloc (| cx |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "*mut") [ Ty.path "core::task::wake::Context" ],
+            Ty.apply (Ty.path "*mut") [] [ Ty.path "core::task::wake::Context" ],
             "cast",
             [ Ty.path "core::task::wake::Context" ]
           |),
@@ -134,6 +139,7 @@ Module future.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::ptr::non_null::NonNull")
+                  []
                   [ Ty.path "core::task::wake::Context" ],
                 "as_ptr",
                 []
@@ -146,7 +152,7 @@ Module future.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_get_context : M.IsFunction "core::future::get_context" get_context.

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "DoubleError";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -11,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   Definition Self : Ty.t := Ty.path "defining_an_error_type::DoubleError".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -24,7 +25,7 @@ End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Definition Self : Ty.t := Ty.path "defining_an_error_type::DoubleError".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -36,15 +37,16 @@ End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "defining_an_error_type::Result") [ T ]) =
+  (Ty.apply (Ty.path "defining_an_error_type::Result") [] [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
+      []
       [ T; Ty.path "defining_an_error_type::DoubleError" ]).
 
 Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Definition Self : Ty.t := Ty.path "defining_an_error_type::DoubleError".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -54,14 +56,14 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
-Parameter double_first : (list Ty.t) -> (list Value.t) -> M.
+Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_double_first : M.IsFunction "defining_an_error_type::double_first" double_first.
 
-Parameter print : (list Ty.t) -> (list Value.t) -> M.
+Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_print : M.IsFunction "defining_an_error_type::print" print.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "defining_an_error_type::main" main.

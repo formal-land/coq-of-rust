@@ -6,14 +6,14 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 *)
-Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ a; b ] =>
+Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ a; b ] =>
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
       BinOp.Wrap.add Integer.I32 (M.read (| a |)) (M.read (| b |))))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_add : M.IsFunction "documentation_testing::add" add.
@@ -27,9 +27,9 @@ pub fn div(a: i32, b: i32) -> i32 {
     a / b
 }
 *)
-Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ a; b ] =>
+Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ a; b ] =>
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
@@ -48,7 +48,7 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
                       M.call_closure (|
                         M.get_function (|
                           "std::panicking::begin_panic",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ M.read (| Value.String "Divide-by-zero error" |) ]
                       |)
@@ -59,7 +59,7 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| BinOp.Wrap.div Integer.I32 (M.read (| a |)) (M.read (| b |)) |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_div : M.IsFunction "documentation_testing::div" div.

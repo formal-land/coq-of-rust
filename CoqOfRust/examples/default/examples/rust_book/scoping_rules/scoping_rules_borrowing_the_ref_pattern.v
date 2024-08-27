@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Point";
+    const_params := [];
     ty_params := [];
     fields := [ ("x", Ty.path "i32"); ("y", Ty.path "i32") ];
   } *)
@@ -12,9 +13,9 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Definition Self : Ty.t := Ty.path "scoping_rules_borrowing_the_ref_pattern::Point".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -23,7 +24,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -98,9 +99,9 @@ fn main() {
     println!("tuple is {:?}", mutable_tuple);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ c := M.alloc (| Value.UnicodeChar 81 |) in
@@ -353,6 +354,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
+                              []
                               [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                             "new",
                             []
@@ -412,6 +414,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
+                                                  []
                                                   [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ];
                                                 Ty.path "u32"
                                               ]
@@ -431,7 +434,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_borrowing_the_ref_pattern::main" main.

@@ -4,10 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Foo";
+    const_params := [];
     ty_params := [];
     fields := [ ("x", Ty.tuple [ Ty.path "u32"; Ty.path "u32" ]); ("y", Ty.path "u32") ];
   } *)
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "match_destructuring_structs::main" main.

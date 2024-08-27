@@ -5,6 +5,7 @@ Module checked.
   (*
   Enum MathError
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -31,9 +32,9 @@ Module checked.
     Definition Self : Ty.t := Ty.path "result_chaining_with_question_mark::checked::MathError".
     
     (*     Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -77,7 +78,7 @@ Module checked.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -92,6 +93,7 @@ Module checked.
     (Ty.path "result_chaining_with_question_mark::checked::MathResult") =
       (Ty.apply
         (Ty.path "core::result::Result")
+        []
         [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ]).
   
   (*
@@ -103,9 +105,9 @@ Module checked.
           }
       }
   *)
-  Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ x; y ] =>
+  Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ x; y ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
@@ -140,7 +142,7 @@ Module checked.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_div : M.IsFunction "result_chaining_with_question_mark::checked::div" div.
@@ -154,9 +156,9 @@ Module checked.
           }
       }
   *)
-  Definition sqrt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ x ] =>
+  Definition sqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.read (|
@@ -195,7 +197,7 @@ Module checked.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_sqrt : M.IsFunction "result_chaining_with_question_mark::checked::sqrt" sqrt.
@@ -209,9 +211,9 @@ Module checked.
           }
       }
   *)
-  Definition ln (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ x ] =>
+  Definition ln (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.read (|
@@ -250,7 +252,7 @@ Module checked.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_ln : M.IsFunction "result_chaining_with_question_mark::checked::ln" ln.
@@ -266,9 +268,9 @@ Module checked.
           sqrt(ln)
       }
   *)
-  Definition op_ (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ x; y ] =>
+  Definition op_ (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ x; y ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
@@ -284,6 +286,7 @@ Module checked.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.path "f64";
                               Ty.path "result_chaining_with_question_mark::checked::MathError"
@@ -322,6 +325,7 @@ Module checked.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "f64";
                                           Ty.path
@@ -330,6 +334,7 @@ Module checked.
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.path
@@ -367,6 +372,7 @@ Module checked.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.path "f64";
                               Ty.path "result_chaining_with_question_mark::checked::MathError"
@@ -405,6 +411,7 @@ Module checked.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "f64";
                                           Ty.path
@@ -413,6 +420,7 @@ Module checked.
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.path
@@ -449,7 +457,7 @@ Module checked.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_op_ : M.IsFunction "result_chaining_with_question_mark::checked::op_" op_.
@@ -469,9 +477,9 @@ Module checked.
           }
       }
   *)
-  Definition op (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ x; y ] =>
+  Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ x; y ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
@@ -494,7 +502,7 @@ Module checked.
                       M.call_closure (|
                         M.get_function (|
                           "core::panicking::panic_display",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [
                           M.match_operator (|
@@ -580,7 +588,7 @@ Module checked.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_op : M.IsFunction "result_chaining_with_question_mark::checked::op" op.
@@ -591,9 +599,9 @@ fn main() {
     checked::op(1.0, 10.0);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -605,7 +613,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "result_chaining_with_question_mark::main" main.

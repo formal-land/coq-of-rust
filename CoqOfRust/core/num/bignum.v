@@ -18,9 +18,9 @@ Module num.
                           ((v >> <$ty>::BITS) as $ty, v as $ty)
                       }
       *)
-      Definition full_mul_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other; other2; carry ] =>
+      Definition full_mul_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other; other2; carry ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -51,7 +51,7 @@ Module num.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -63,9 +63,9 @@ Module num.
                           ((lhs / rhs) as $ty, (lhs % rhs) as $ty)
                       }
       *)
-      Definition full_div_rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other; borrow ] =>
+      Definition full_div_rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other; borrow ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -133,7 +133,7 @@ Module num.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -160,9 +160,9 @@ Module num.
                           ((v >> <$ty>::BITS) as $ty, v as $ty)
                       }
       *)
-      Definition full_mul_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other; other2; carry ] =>
+      Definition full_mul_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other; other2; carry ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -193,7 +193,7 @@ Module num.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -205,9 +205,9 @@ Module num.
                           ((lhs / rhs) as $ty, (lhs % rhs) as $ty)
                       }
       *)
-      Definition full_div_rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other; borrow ] =>
+      Definition full_div_rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other; borrow ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -275,7 +275,7 @@ Module num.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -302,9 +302,9 @@ Module num.
                           ((v >> <$ty>::BITS) as $ty, v as $ty)
                       }
       *)
-      Definition full_mul_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other; other2; carry ] =>
+      Definition full_mul_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other; other2; carry ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -335,7 +335,7 @@ Module num.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -347,9 +347,9 @@ Module num.
                           ((lhs / rhs) as $ty, (lhs % rhs) as $ty)
                       }
       *)
-      Definition full_div_rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other; borrow ] =>
+      Definition full_div_rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other; borrow ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -417,7 +417,7 @@ Module num.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -449,9 +449,13 @@ Module num.
     (* StructRecord
       {
         name := "Big32x40";
+        const_params := [];
         ty_params := [];
         fields :=
-          [ ("size", Ty.path "usize"); ("base", Ty.apply (Ty.path "array") [ Ty.path "u32" ]) ];
+          [
+            ("size", Ty.path "usize");
+            ("base", Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ])
+          ];
       } *)
     
     Module Impl_core_num_bignum_Big32x40.
@@ -464,13 +468,13 @@ Module num.
                       $name { size: 1, base }
                   }
       *)
-      Definition from_small (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_small (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
-              let~ base := M.alloc (| repeat (Value.Integer 0) 40 |) in
+              let~ base := M.alloc (| repeat (| Value.Integer 0, Value.Integer 40 |) |) in
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_array_field (| base, M.alloc (| Value.Integer 0 |) |),
@@ -482,7 +486,7 @@ Module num.
                   [ ("size", Value.Integer 1); ("base", M.read (| base |)) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_small : M.IsAssociatedFunction Self "from_small" from_small.
@@ -499,13 +503,13 @@ Module num.
                       $name { size: sz, base }
                   }
       *)
-      Definition from_u64 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition from_u64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
-              let~ base := M.alloc (| repeat (Value.Integer 0) 40 |) in
+              let~ base := M.alloc (| repeat (| Value.Integer 0, Value.Integer 40 |) |) in
               let~ sz := M.alloc (| Value.Integer 0 |) in
               let~ _ :=
                 M.loop (|
@@ -560,7 +564,7 @@ Module num.
                   [ ("size", M.read (| sz |)); ("base", M.read (| base |)) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_u64 : M.IsAssociatedFunction Self "from_u64" from_u64.
@@ -570,16 +574,16 @@ Module num.
                       &self.base[..self.size]
                   }
       *)
-      Definition digits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition digits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::index::Index",
-                Ty.apply (Ty.path "array") [ Ty.path "u32" ],
-                [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ],
+                [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                 "index",
                 []
               |),
@@ -603,7 +607,7 @@ Module num.
                   ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_digits : M.IsAssociatedFunction Self "digits" digits.
@@ -616,9 +620,9 @@ Module num.
                       ((self.base[d] >> b) & 1) as u8
                   }
       *)
-      Definition get_bit (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; i ] =>
+      Definition get_bit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; i ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let i := M.alloc (| i |) in
@@ -651,7 +655,7 @@ Module num.
                     (Value.Integer 1))
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_bit : M.IsAssociatedFunction Self "get_bit" get_bit.
@@ -661,20 +665,20 @@ Module num.
                       self.digits().iter().all(|&v| v == 0)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                 [],
                 "all",
                 [
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                     (Ty.path "bool")
                 ]
               |),
@@ -682,7 +686,7 @@ Module num.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                       "iter",
                       []
                     |),
@@ -717,7 +721,7 @@ Module num.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_zero : M.IsAssociatedFunction Self "is_zero" is_zero.
@@ -735,9 +739,9 @@ Module num.
                       }
                   }
       *)
-      Definition bit_length (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition bit_length (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -759,12 +763,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                       [],
                       "rposition",
                       [
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                           (Ty.path "bool")
                       ]
                     |),
@@ -772,7 +776,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                             "iter",
                             []
                           |),
@@ -835,7 +839,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_bit_length : M.IsAssociatedFunction Self "bit_length" bit_length.
@@ -860,9 +864,9 @@ Module num.
                       self
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -899,9 +903,10 @@ Module num.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::zip::Zip")
+                            []
                             [
-                              Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "u32" ];
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ]
+                              Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u32" ];
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ]
                             ],
                           [],
                           "into_iter",
@@ -914,20 +919,23 @@ Module num.
                               [
                                 Ty.apply
                                   (Ty.path "&mut")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ];
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ];
                                 Ty.apply
                                   (Ty.path "&")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
                               ]
                             |),
                             [
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::IndexMut",
-                                  Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                                  Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeTo")
+                                      []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index_mut",
@@ -947,10 +955,11 @@ Module num.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
-                                  Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                                  Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeTo")
+                                      []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
@@ -986,12 +995,15 @@ Module num.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::zip::Zip")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::slice::iter::IterMut")
+                                              []
                                               [ Ty.path "u32" ];
                                             Ty.apply
                                               (Ty.path "core::slice::iter::Iter")
+                                              []
                                               [ Ty.path "u32" ]
                                           ],
                                         [],
@@ -1099,7 +1111,7 @@ Module num.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_add : M.IsAssociatedFunction Self "add" add.
@@ -1121,9 +1133,9 @@ Module num.
                       self
                   }
       *)
-      Definition add_small (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_small (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1295,7 +1307,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_add_small : M.IsAssociatedFunction Self "add_small" add_small.
@@ -1317,9 +1329,9 @@ Module num.
                       self
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1356,9 +1368,10 @@ Module num.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::zip::Zip")
+                            []
                             [
-                              Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "u32" ];
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ]
+                              Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u32" ];
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ]
                             ],
                           [],
                           "into_iter",
@@ -1371,20 +1384,23 @@ Module num.
                               [
                                 Ty.apply
                                   (Ty.path "&mut")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ];
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ];
                                 Ty.apply
                                   (Ty.path "&")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
                               ]
                             |),
                             [
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::IndexMut",
-                                  Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                                  Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeTo")
+                                      []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index_mut",
@@ -1404,10 +1420,11 @@ Module num.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
-                                  Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                                  Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeTo")
+                                      []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
@@ -1443,12 +1460,15 @@ Module num.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::zip::Zip")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::slice::iter::IterMut")
+                                              []
                                               [ Ty.path "u32" ];
                                             Ty.apply
                                               (Ty.path "core::slice::iter::Iter")
+                                              []
                                               [ Ty.path "u32" ]
                                           ],
                                         [],
@@ -1545,7 +1565,7 @@ Module num.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_sub : M.IsAssociatedFunction Self "sub" sub.
@@ -1567,9 +1587,9 @@ Module num.
                       self
                   }
       *)
-      Definition mul_small (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_small (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1592,7 +1612,8 @@ Module num.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "&mut")
-                            [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ],
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
                           [],
                           "into_iter",
                           []
@@ -1601,8 +1622,12 @@ Module num.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::IndexMut",
-                              Ty.apply (Ty.path "array") [ Ty.path "u32" ],
-                              [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ]
+                              Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ],
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ops::range::RangeTo")
+                                  []
+                                  [ Ty.path "usize" ]
                               ],
                               "index_mut",
                               []
@@ -1635,6 +1660,7 @@ Module num.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::slice::iter::IterMut")
+                                          []
                                           [ Ty.path "u32" ],
                                         [],
                                         "next",
@@ -1740,7 +1766,7 @@ Module num.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_mul_small : M.IsAssociatedFunction Self "mul_small" mul_small.
@@ -1784,9 +1810,9 @@ Module num.
                       self
                   }
       *)
-      Definition mul_pow2 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; bits ] =>
+      Definition mul_pow2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; bits ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let bits := M.alloc (| bits |) in
@@ -1849,6 +1875,7 @@ Module num.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::Iter")
+                                                []
                                                 [ Ty.path "u32" ],
                                               [],
                                               "all",
@@ -1856,7 +1883,8 @@ Module num.
                                                 Ty.function
                                                   [
                                                     Ty.tuple
-                                                      [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ]
+                                                      ]
                                                   ]
                                                   (Ty.path "bool")
                                               ]
@@ -1865,7 +1893,7 @@ Module num.
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                                                     "iter",
                                                     []
                                                   |),
@@ -1875,10 +1903,12 @@ Module num.
                                                         "core::ops::index::Index",
                                                         Ty.apply
                                                           (Ty.path "array")
+                                                          [ Value.Integer 40 ]
                                                           [ Ty.path "u32" ],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::RangeFrom")
+                                                            []
                                                             [ Ty.path "usize" ]
                                                         ],
                                                         "index",
@@ -2034,7 +2064,8 @@ Module num.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::rev::Rev")
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                           [],
                           "into_iter",
                           []
@@ -2043,7 +2074,7 @@ Module num.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               [],
                               "rev",
                               []
@@ -2081,9 +2112,11 @@ Module num.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::rev::Rev")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
+                                              []
                                               [ Ty.path "usize" ]
                                           ],
                                         [],
@@ -2150,7 +2183,7 @@ Module num.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
-                          Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
                           "into_iter",
                           []
@@ -2176,6 +2209,7 @@ Module num.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ],
                                         [],
                                         "next",
@@ -2318,9 +2352,11 @@ Module num.
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::rev::Rev")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ]
                                       ],
                                     [],
@@ -2333,6 +2369,7 @@ Module num.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ],
                                         [],
                                         "rev",
@@ -2368,9 +2405,11 @@ Module num.
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
                                                     (Ty.path "core::iter::adapters::rev::Rev")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::Range")
+                                                        []
                                                         [ Ty.path "usize" ]
                                                     ],
                                                   [],
@@ -2477,7 +2516,7 @@ Module num.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_mul_pow2 : M.IsAssociatedFunction Self "mul_pow2" mul_pow2.
@@ -2509,9 +2548,9 @@ Module num.
                       self
                   }
       *)
-      Definition mul_pow5 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; e ] =>
+      Definition mul_pow5 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; e ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let e := M.alloc (| e |) in
@@ -2605,7 +2644,10 @@ Module num.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::collect::IntoIterator",
-                                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ],
                                   [],
                                   "into_iter",
                                   []
@@ -2631,6 +2673,7 @@ Module num.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::Range")
+                                                  []
                                                   [ Ty.path "usize" ],
                                                 [],
                                                 "next",
@@ -2689,7 +2732,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_mul_pow5 : M.IsAssociatedFunction Self "mul_pow5" mul_pow5.
@@ -2734,14 +2777,14 @@ Module num.
                       self
                   }
       *)
-      Definition mul_digits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_digits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ ret := M.alloc (| repeat (Value.Integer 0) 40 |) in
+              let~ ret := M.alloc (| repeat (| Value.Integer 0, Value.Integer 40 |) |) in
               let~ retsz :=
                 M.copy (|
                   M.match_operator (|
@@ -2762,7 +2805,7 @@ Module num.
                                   |))
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                                       "len",
                                       []
                                     |),
@@ -2830,7 +2873,7 @@ Module num.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_mul_digits : M.IsAssociatedFunction Self "mul_digits" mul_digits.
@@ -2851,9 +2894,9 @@ Module num.
                       (self, borrow)
                   }
       *)
-      Definition div_rem_small (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_rem_small (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2900,7 +2943,9 @@ Module num.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::rev::Rev")
-                            [ Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "u32" ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u32" ]
+                            ],
                           [],
                           "into_iter",
                           []
@@ -2909,7 +2954,7 @@ Module num.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "u32" ],
+                              Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u32" ],
                               [],
                               "rev",
                               []
@@ -2917,7 +2962,7 @@ Module num.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                                   "iter_mut",
                                   []
                                 |),
@@ -2925,10 +2970,14 @@ Module num.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::index::IndexMut",
-                                      Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 40 ]
+                                        [ Ty.path "u32" ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
+                                          []
                                           [ Ty.path "usize" ]
                                       ],
                                       "index_mut",
@@ -2966,9 +3015,11 @@ Module num.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::rev::Rev")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::slice::iter::IterMut")
+                                              []
                                               [ Ty.path "u32" ]
                                           ],
                                         [],
@@ -3035,7 +3086,7 @@ Module num.
                   |)) in
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| borrow |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_div_rem_small :
@@ -3077,9 +3128,9 @@ Module num.
                       debug_assert!(r.base[r.size..].iter().all(|&d| d == 0));
                   }
       *)
-      Definition div_rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; d; q; r ] =>
+      Definition div_rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; d; q; r ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let d := M.alloc (| d |) in
@@ -3130,7 +3181,8 @@ Module num.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "&mut")
-                            [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ],
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
                           [],
                           "into_iter",
                           []
@@ -3139,7 +3191,7 @@ Module num.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::IndexMut",
-                              Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                              Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ],
                               [ Ty.path "core::ops::range::RangeFull" ],
                               "index_mut",
                               []
@@ -3170,6 +3222,7 @@ Module num.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::slice::iter::IterMut")
+                                          []
                                           [ Ty.path "u32" ],
                                         [],
                                         "next",
@@ -3213,7 +3266,8 @@ Module num.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "&mut")
-                            [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ],
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
                           [],
                           "into_iter",
                           []
@@ -3222,7 +3276,7 @@ Module num.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::index::IndexMut",
-                              Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                              Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ],
                               [ Ty.path "core::ops::range::RangeFull" ],
                               "index_mut",
                               []
@@ -3253,6 +3307,7 @@ Module num.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::slice::iter::IterMut")
+                                          []
                                           [ Ty.path "u32" ],
                                         [],
                                         "next",
@@ -3332,7 +3387,8 @@ Module num.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::rev::Rev")
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                           [],
                           "into_iter",
                           []
@@ -3341,7 +3397,7 @@ Module num.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               [],
                               "rev",
                               []
@@ -3369,9 +3425,11 @@ Module num.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::rev::Rev")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
+                                              []
                                               [ Ty.path "usize" ]
                                           ],
                                         [],
@@ -3446,11 +3504,13 @@ Module num.
                                                           "core::cmp::PartialOrd",
                                                           Ty.apply
                                                             (Ty.path "&")
+                                                            []
                                                             [ Ty.path "core::num::bignum::Big32x40"
                                                             ],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "core::num::bignum::Big32x40"
@@ -3582,6 +3642,7 @@ Module num.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::Iter")
+                                                []
                                                 [ Ty.path "u32" ],
                                               [],
                                               "all",
@@ -3589,7 +3650,8 @@ Module num.
                                                 Ty.function
                                                   [
                                                     Ty.tuple
-                                                      [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ]
+                                                      ]
                                                   ]
                                                   (Ty.path "bool")
                                               ]
@@ -3598,7 +3660,7 @@ Module num.
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                                                     "iter",
                                                     []
                                                   |),
@@ -3608,10 +3670,12 @@ Module num.
                                                         "core::ops::index::Index",
                                                         Ty.apply
                                                           (Ty.path "array")
+                                                          [ Value.Integer 40 ]
                                                           [ Ty.path "u32" ],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::RangeFrom")
+                                                            []
                                                             [ Ty.path "usize" ]
                                                         ],
                                                         "index",
@@ -3711,6 +3775,7 @@ Module num.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::Iter")
+                                                []
                                                 [ Ty.path "u32" ],
                                               [],
                                               "all",
@@ -3718,7 +3783,8 @@ Module num.
                                                 Ty.function
                                                   [
                                                     Ty.tuple
-                                                      [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ]
+                                                      ]
                                                   ]
                                                   (Ty.path "bool")
                                               ]
@@ -3727,7 +3793,7 @@ Module num.
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                                                     "iter",
                                                     []
                                                   |),
@@ -3737,10 +3803,12 @@ Module num.
                                                         "core::ops::index::Index",
                                                         Ty.apply
                                                           (Ty.path "array")
+                                                          [ Value.Integer 40 ]
                                                           [ Ty.path "u32" ],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::RangeFrom")
+                                                            []
                                                             [ Ty.path "usize" ]
                                                         ],
                                                         "index",
@@ -3818,7 +3886,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_div_rem : M.IsAssociatedFunction Self "div_rem" div_rem.
@@ -3832,17 +3900,17 @@ Module num.
                       self.base[..] == other.base[..]
                   }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
-                [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
                 "eq",
                 []
               |),
@@ -3850,7 +3918,7 @@ Module num.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -3867,7 +3935,7 @@ Module num.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -3883,7 +3951,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3909,9 +3977,9 @@ Module num.
                       crate::option::Option::Some(self.cmp(other))
                   }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3929,7 +3997,7 @@ Module num.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3952,9 +4020,9 @@ Module num.
                       lhs.cmp(rhs)
                   }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3988,7 +4056,8 @@ Module num.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
                         (Ty.path "core::iter::adapters::cloned::Cloned")
-                        [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ] ],
                       [],
                       "rev",
                       []
@@ -3997,7 +4066,7 @@ Module num.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ],
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                           [],
                           "cloned",
                           [ Ty.path "u32" ]
@@ -4005,7 +4074,7 @@ Module num.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                               "iter",
                               []
                             |),
@@ -4013,10 +4082,11 @@ Module num.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
-                                  Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                                  Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeTo")
+                                      []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
@@ -4047,7 +4117,8 @@ Module num.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
                         (Ty.path "core::iter::adapters::cloned::Cloned")
-                        [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ] ],
                       [],
                       "rev",
                       []
@@ -4056,7 +4127,7 @@ Module num.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ],
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                           [],
                           "cloned",
                           [ Ty.path "u32" ]
@@ -4064,7 +4135,7 @@ Module num.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                               "iter",
                               []
                             |),
@@ -4072,10 +4143,11 @@ Module num.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
-                                  Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                                  Ty.apply (Ty.path "array") [ Value.Integer 40 ] [ Ty.path "u32" ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeTo")
+                                      []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
@@ -4105,20 +4177,24 @@ Module num.
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
                       (Ty.path "core::iter::adapters::rev::Rev")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
-                          [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ] ]
+                          []
+                          [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ] ]
                       ],
                     [],
                     "cmp",
                     [
                       Ty.apply
                         (Ty.path "core::iter::adapters::rev::Rev")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::iter::adapters::cloned::Cloned")
-                            [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ] ]
+                            []
+                            [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ] ]
                         ]
                     ]
                   |),
@@ -4126,7 +4202,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4145,9 +4221,9 @@ Module num.
                       Self { size: self.size, base: self.base }
                   }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -4170,7 +4246,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4196,9 +4272,9 @@ Module num.
                       crate::result::Result::Ok(())
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4256,6 +4332,7 @@ Module num.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -4369,10 +4446,12 @@ Module num.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -4408,7 +4487,9 @@ Module num.
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
                                 (Ty.path "core::iter::adapters::rev::Rev")
-                                [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ] ],
+                                []
+                                [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ]
+                                ],
                               [],
                               "into_iter",
                               []
@@ -4417,7 +4498,7 @@ Module num.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ],
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                                   [],
                                   "rev",
                                   []
@@ -4425,7 +4506,7 @@ Module num.
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                                       "iter",
                                       []
                                     |),
@@ -4433,10 +4514,14 @@ Module num.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::ops::index::Index",
-                                          Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 40 ]
+                                            [ Ty.path "u32" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::RangeTo")
+                                              []
                                               [ Ty.path "usize" ]
                                           ],
                                           "index",
@@ -4480,9 +4565,11 @@ Module num.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
                                               (Ty.path "core::iter::adapters::rev::Rev")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::Iter")
+                                                  []
                                                   [ Ty.path "u32" ]
                                               ],
                                             [],
@@ -4521,6 +4608,7 @@ Module num.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                       [],
                                                       "branch",
@@ -4638,6 +4726,7 @@ Module num.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.tuple [];
                                                                       Ty.path "core::fmt::Error"
@@ -4646,6 +4735,7 @@ Module num.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
@@ -4683,7 +4773,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4698,9 +4788,13 @@ Module num.
       (* StructRecord
         {
           name := "Big8x3";
+          const_params := [];
           ty_params := [];
           fields :=
-            [ ("size", Ty.path "usize"); ("base", Ty.apply (Ty.path "array") [ Ty.path "u8" ]) ];
+            [
+              ("size", Ty.path "usize");
+              ("base", Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ])
+            ];
         } *)
       
       Module Impl_core_num_bignum_tests_Big8x3.
@@ -4713,13 +4807,13 @@ Module num.
                         $name { size: 1, base }
                     }
         *)
-        Definition from_small (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ v ] =>
+        Definition from_small (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ v ] =>
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.read (|
-                let~ base := M.alloc (| repeat (Value.Integer 0) 3 |) in
+                let~ base := M.alloc (| repeat (| Value.Integer 0, Value.Integer 3 |) |) in
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_array_field (| base, M.alloc (| Value.Integer 0 |) |),
@@ -4731,7 +4825,7 @@ Module num.
                     [ ("size", Value.Integer 1); ("base", M.read (| base |)) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_from_small : M.IsAssociatedFunction Self "from_small" from_small.
@@ -4748,13 +4842,13 @@ Module num.
                         $name { size: sz, base }
                     }
         *)
-        Definition from_u64 (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ v ] =>
+        Definition from_u64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ v ] =>
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.read (|
-                let~ base := M.alloc (| repeat (Value.Integer 0) 3 |) in
+                let~ base := M.alloc (| repeat (| Value.Integer 0, Value.Integer 3 |) |) in
                 let~ sz := M.alloc (| Value.Integer 0 |) in
                 let~ _ :=
                   M.loop (|
@@ -4816,7 +4910,7 @@ Module num.
                     [ ("size", M.read (| sz |)); ("base", M.read (| base |)) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_from_u64 : M.IsAssociatedFunction Self "from_u64" from_u64.
@@ -4826,16 +4920,16 @@ Module num.
                         &self.base[..self.size]
                     }
         *)
-        Definition digits (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition digits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::index::Index",
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                  [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                  Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
+                  [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                   "index",
                   []
                 |),
@@ -4859,7 +4953,7 @@ Module num.
                     ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_digits : M.IsAssociatedFunction Self "digits" digits.
@@ -4872,9 +4966,9 @@ Module num.
                         ((self.base[d] >> b) & 1) as u8
                     }
         *)
-        Definition get_bit (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; i ] =>
+        Definition get_bit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; i ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let i := M.alloc (| i |) in
@@ -4907,7 +5001,7 @@ Module num.
                       (Value.Integer 1)
                   |))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_get_bit : M.IsAssociatedFunction Self "get_bit" get_bit.
@@ -4917,20 +5011,20 @@ Module num.
                         self.digits().iter().all(|&v| v == 0)
                     }
         *)
-        Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                   [],
                   "all",
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] ]
+                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
                       (Ty.path "bool")
                   ]
                 |),
@@ -4938,7 +5032,7 @@ Module num.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "iter",
                         []
                       |),
@@ -4973,7 +5067,7 @@ Module num.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_is_zero : M.IsAssociatedFunction Self "is_zero" is_zero.
@@ -4991,9 +5085,9 @@ Module num.
                         }
                     }
         *)
-        Definition bit_length (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition bit_length (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -5015,12 +5109,12 @@ Module num.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
-                        Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                         [],
                         "rposition",
                         [
                           Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] ]
+                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
                             (Ty.path "bool")
                         ]
                       |),
@@ -5028,7 +5122,7 @@ Module num.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "iter",
                               []
                             |),
@@ -5091,7 +5185,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_bit_length : M.IsAssociatedFunction Self "bit_length" bit_length.
@@ -5116,9 +5210,9 @@ Module num.
                         self
                     }
         *)
-        Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -5155,9 +5249,10 @@ Module num.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "core::iter::adapters::zip::Zip")
+                              []
                               [
-                                Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "u8" ];
-                                Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ]
+                                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u8" ];
+                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ]
                               ],
                             [],
                             "into_iter",
@@ -5170,20 +5265,23 @@ Module num.
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                   Ty.apply
                                     (Ty.path "&")
-                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                 ]
                               |),
                               [
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::ops::index::IndexMut",
-                                    Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
+                                        []
                                         [ Ty.path "usize" ]
                                     ],
                                     "index_mut",
@@ -5203,10 +5301,11 @@ Module num.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
-                                    Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
+                                        []
                                         [ Ty.path "usize" ]
                                     ],
                                     "index",
@@ -5242,12 +5341,15 @@ Module num.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::zip::Zip")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::IterMut")
+                                                []
                                                 [ Ty.path "u8" ];
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::Iter")
+                                                []
                                                 [ Ty.path "u8" ]
                                             ],
                                           [],
@@ -5358,7 +5460,7 @@ Module num.
                   |) in
                 M.alloc (| M.read (| self |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_add : M.IsAssociatedFunction Self "add" add.
@@ -5380,9 +5482,9 @@ Module num.
                         self
                     }
         *)
-        Definition add_small (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition add_small (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -5555,7 +5657,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_add_small : M.IsAssociatedFunction Self "add_small" add_small.
@@ -5577,9 +5679,9 @@ Module num.
                         self
                     }
         *)
-        Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -5616,9 +5718,10 @@ Module num.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "core::iter::adapters::zip::Zip")
+                              []
                               [
-                                Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "u8" ];
-                                Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ]
+                                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u8" ];
+                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ]
                               ],
                             [],
                             "into_iter",
@@ -5631,20 +5734,23 @@ Module num.
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                   Ty.apply
                                     (Ty.path "&")
-                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                 ]
                               |),
                               [
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::ops::index::IndexMut",
-                                    Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
+                                        []
                                         [ Ty.path "usize" ]
                                     ],
                                     "index_mut",
@@ -5664,10 +5770,11 @@ Module num.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
-                                    Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
+                                        []
                                         [ Ty.path "usize" ]
                                     ],
                                     "index",
@@ -5703,12 +5810,15 @@ Module num.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::zip::Zip")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::IterMut")
+                                                []
                                                 [ Ty.path "u8" ];
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::Iter")
+                                                []
                                                 [ Ty.path "u8" ]
                                             ],
                                           [],
@@ -5809,7 +5919,7 @@ Module num.
                   |) in
                 M.alloc (| M.read (| self |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_sub : M.IsAssociatedFunction Self "sub" sub.
@@ -5831,9 +5941,9 @@ Module num.
                         self
                     }
         *)
-        Definition mul_small (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition mul_small (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -5856,7 +5966,8 @@ Module num.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "&mut")
-                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             [],
                             "into_iter",
                             []
@@ -5865,8 +5976,12 @@ Module num.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::index::IndexMut",
-                                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                                [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ]
+                                Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeTo")
+                                    []
+                                    [ Ty.path "usize" ]
                                 ],
                                 "index_mut",
                                 []
@@ -5899,6 +6014,7 @@ Module num.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::IterMut")
+                                            []
                                             [ Ty.path "u8" ],
                                           [],
                                           "next",
@@ -6009,7 +6125,7 @@ Module num.
                   |) in
                 M.alloc (| M.read (| self |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_mul_small : M.IsAssociatedFunction Self "mul_small" mul_small.
@@ -6053,9 +6169,9 @@ Module num.
                         self
                     }
         *)
-        Definition mul_pow2 (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; bits ] =>
+        Definition mul_pow2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; bits ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let bits := M.alloc (| bits |) in
@@ -6119,6 +6235,7 @@ Module num.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::Iter")
+                                                  []
                                                   [ Ty.path "u8" ],
                                                 [],
                                                 "all",
@@ -6126,7 +6243,8 @@ Module num.
                                                   Ty.function
                                                     [
                                                       Ty.tuple
-                                                        [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
+                                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                                                        ]
                                                     ]
                                                     (Ty.path "bool")
                                                 ]
@@ -6135,7 +6253,10 @@ Module num.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "iter",
                                                       []
                                                     |),
@@ -6145,11 +6266,13 @@ Module num.
                                                           "core::ops::index::Index",
                                                           Ty.apply
                                                             (Ty.path "array")
+                                                            [ Value.Integer 3 ]
                                                             [ Ty.path "u8" ],
                                                           [
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::ops::range::RangeFrom")
+                                                              []
                                                               [ Ty.path "usize" ]
                                                           ],
                                                           "index",
@@ -6305,7 +6428,9 @@ Module num.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "core::iter::adapters::rev::Rev")
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
+                              ],
                             [],
                             "into_iter",
                             []
@@ -6314,7 +6439,7 @@ Module num.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [],
                                 "rev",
                                 []
@@ -6352,9 +6477,11 @@ Module num.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::rev::Rev")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "usize" ]
                                             ],
                                           [],
@@ -6424,7 +6551,7 @@ Module num.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
                             "into_iter",
                             []
@@ -6450,6 +6577,7 @@ Module num.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ],
                                           [],
                                           "next",
@@ -6595,9 +6723,11 @@ Module num.
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::rev::Rev")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                       [],
@@ -6610,6 +6740,7 @@ Module num.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ],
                                           [],
                                           "rev",
@@ -6645,9 +6776,11 @@ Module num.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
                                                       (Ty.path "core::iter::adapters::rev::Rev")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::ops::range::Range")
+                                                          []
                                                           [ Ty.path "usize" ]
                                                       ],
                                                     [],
@@ -6754,7 +6887,7 @@ Module num.
                   |) in
                 M.alloc (| M.read (| self |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_mul_pow2 : M.IsAssociatedFunction Self "mul_pow2" mul_pow2.
@@ -6786,9 +6919,9 @@ Module num.
                         self
                     }
         *)
-        Definition mul_pow5 (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; e ] =>
+        Definition mul_pow5 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; e ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let e := M.alloc (| e |) in
@@ -6884,6 +7017,7 @@ Module num.
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
+                                      []
                                       [ Ty.path "usize" ],
                                     [],
                                     "into_iter",
@@ -6910,6 +7044,7 @@ Module num.
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
                                                     (Ty.path "core::ops::range::Range")
+                                                    []
                                                     [ Ty.path "usize" ],
                                                   [],
                                                   "next",
@@ -6968,7 +7103,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_mul_pow5 : M.IsAssociatedFunction Self "mul_pow5" mul_pow5.
@@ -7013,14 +7148,14 @@ Module num.
                         self
                     }
         *)
-        Definition mul_digits (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition mul_digits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let~ ret := M.alloc (| repeat (Value.Integer 0) 3 |) in
+                let~ ret := M.alloc (| repeat (| Value.Integer 0, Value.Integer 3 |) |) in
                 let~ retsz :=
                   M.copy (|
                     M.match_operator (|
@@ -7041,7 +7176,7 @@ Module num.
                                     |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
@@ -7109,7 +7244,7 @@ Module num.
                   |) in
                 M.alloc (| M.read (| self |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_mul_digits : M.IsAssociatedFunction Self "mul_digits" mul_digits.
@@ -7130,9 +7265,9 @@ Module num.
                         (self, borrow)
                     }
         *)
-        Definition div_rem_small (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition div_rem_small (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -7179,7 +7314,9 @@ Module num.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "core::iter::adapters::rev::Rev")
-                              [ Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "u8" ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u8" ]
+                              ],
                             [],
                             "into_iter",
                             []
@@ -7188,7 +7325,7 @@ Module num.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
-                                Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u8" ],
                                 [],
                                 "rev",
                                 []
@@ -7196,7 +7333,7 @@ Module num.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "iter_mut",
                                     []
                                   |),
@@ -7204,10 +7341,14 @@ Module num.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::index::IndexMut",
-                                        Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer 3 ]
+                                          [ Ty.path "u8" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeTo")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                         "index_mut",
@@ -7245,9 +7386,11 @@ Module num.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::rev::Rev")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::IterMut")
+                                                []
                                                 [ Ty.path "u8" ]
                                             ],
                                           [],
@@ -7317,7 +7460,7 @@ Module num.
                     |)) in
                 M.alloc (| Value.Tuple [ M.read (| self |); M.read (| borrow |) ] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_div_rem_small :
@@ -7359,9 +7502,9 @@ Module num.
                         debug_assert!(r.base[r.size..].iter().all(|&d| d == 0));
                     }
         *)
-        Definition div_rem (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; d; q; r ] =>
+        Definition div_rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; d; q; r ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let d := M.alloc (| d |) in
@@ -7412,7 +7555,8 @@ Module num.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "&mut")
-                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             [],
                             "into_iter",
                             []
@@ -7421,7 +7565,7 @@ Module num.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::index::IndexMut",
-                                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
                                 [ Ty.path "core::ops::range::RangeFull" ],
                                 "index_mut",
                                 []
@@ -7452,6 +7596,7 @@ Module num.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::IterMut")
+                                            []
                                             [ Ty.path "u8" ],
                                           [],
                                           "next",
@@ -7498,7 +7643,8 @@ Module num.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "&mut")
-                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             [],
                             "into_iter",
                             []
@@ -7507,7 +7653,7 @@ Module num.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::index::IndexMut",
-                                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
                                 [ Ty.path "core::ops::range::RangeFull" ],
                                 "index_mut",
                                 []
@@ -7538,6 +7684,7 @@ Module num.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::IterMut")
+                                            []
                                             [ Ty.path "u8" ],
                                           [],
                                           "next",
@@ -7620,7 +7767,9 @@ Module num.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "core::iter::adapters::rev::Rev")
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
+                              ],
                             [],
                             "into_iter",
                             []
@@ -7629,7 +7778,7 @@ Module num.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [],
                                 "rev",
                                 []
@@ -7657,9 +7806,11 @@ Module num.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::rev::Rev")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "usize" ]
                                             ],
                                           [],
@@ -7742,6 +7893,7 @@ Module num.
                                                             "core::cmp::PartialOrd",
                                                             Ty.apply
                                                               (Ty.path "&")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "core::num::bignum::tests::Big8x3"
@@ -7749,6 +7901,7 @@ Module num.
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "core::num::bignum::tests::Big8x3"
@@ -7882,6 +8035,7 @@ Module num.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::Iter")
+                                                  []
                                                   [ Ty.path "u8" ],
                                                 [],
                                                 "all",
@@ -7889,7 +8043,8 @@ Module num.
                                                   Ty.function
                                                     [
                                                       Ty.tuple
-                                                        [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
+                                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                                                        ]
                                                     ]
                                                     (Ty.path "bool")
                                                 ]
@@ -7898,7 +8053,10 @@ Module num.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "iter",
                                                       []
                                                     |),
@@ -7908,11 +8066,13 @@ Module num.
                                                           "core::ops::index::Index",
                                                           Ty.apply
                                                             (Ty.path "array")
+                                                            [ Value.Integer 3 ]
                                                             [ Ty.path "u8" ],
                                                           [
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::ops::range::RangeFrom")
+                                                              []
                                                               [ Ty.path "usize" ]
                                                           ],
                                                           "index",
@@ -8012,6 +8172,7 @@ Module num.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::Iter")
+                                                  []
                                                   [ Ty.path "u8" ],
                                                 [],
                                                 "all",
@@ -8019,7 +8180,8 @@ Module num.
                                                   Ty.function
                                                     [
                                                       Ty.tuple
-                                                        [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
+                                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                                                        ]
                                                     ]
                                                     (Ty.path "bool")
                                                 ]
@@ -8028,7 +8190,10 @@ Module num.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "iter",
                                                       []
                                                     |),
@@ -8038,11 +8203,13 @@ Module num.
                                                           "core::ops::index::Index",
                                                           Ty.apply
                                                             (Ty.path "array")
+                                                            [ Value.Integer 3 ]
                                                             [ Ty.path "u8" ],
                                                           [
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::ops::range::RangeFrom")
+                                                              []
                                                               [ Ty.path "usize" ]
                                                           ],
                                                           "index",
@@ -8120,7 +8287,7 @@ Module num.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_div_rem : M.IsAssociatedFunction Self "div_rem" div_rem.
@@ -8134,17 +8301,17 @@ Module num.
                         self.base[..] == other.base[..]
                     }
         *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
-                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                   "eq",
                   []
                 |),
@@ -8152,7 +8319,7 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::index::Index",
-                      Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
                       [ Ty.path "core::ops::range::RangeFull" ],
                       "index",
                       []
@@ -8169,7 +8336,7 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::index::Index",
-                      Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
                       [ Ty.path "core::ops::range::RangeFull" ],
                       "index",
                       []
@@ -8185,7 +8352,7 @@ Module num.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -8211,9 +8378,9 @@ Module num.
                         crate::option::Option::Some(self.cmp(other))
                     }
         *)
-        Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -8231,7 +8398,7 @@ Module num.
                     [ M.read (| self |); M.read (| other |) ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -8254,9 +8421,9 @@ Module num.
                         lhs.cmp(rhs)
                     }
         *)
-        Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -8290,7 +8457,8 @@ Module num.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
-                          [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                          []
+                          [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                         [],
                         "rev",
                         []
@@ -8299,7 +8467,7 @@ Module num.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                             [],
                             "cloned",
                             [ Ty.path "u8" ]
@@ -8307,7 +8475,7 @@ Module num.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "iter",
                                 []
                               |),
@@ -8315,10 +8483,11 @@ Module num.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
-                                    Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
+                                        []
                                         [ Ty.path "usize" ]
                                     ],
                                     "index",
@@ -8349,7 +8518,8 @@ Module num.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
-                          [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                          []
+                          [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                         [],
                         "rev",
                         []
@@ -8358,7 +8528,7 @@ Module num.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                             [],
                             "cloned",
                             [ Ty.path "u8" ]
@@ -8366,7 +8536,7 @@ Module num.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "iter",
                                 []
                               |),
@@ -8374,10 +8544,11 @@ Module num.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
-                                    Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
+                                        []
                                         [ Ty.path "usize" ]
                                     ],
                                     "index",
@@ -8407,20 +8578,24 @@ Module num.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
                         (Ty.path "core::iter::adapters::rev::Rev")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::iter::adapters::cloned::Cloned")
-                            [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ]
+                            []
+                            [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ]
                         ],
                       [],
                       "cmp",
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::rev::Rev")
+                          []
                           [
                             Ty.apply
                               (Ty.path "core::iter::adapters::cloned::Cloned")
-                              [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ]
+                              []
+                              [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ]
                           ]
                       ]
                     |),
@@ -8428,7 +8603,7 @@ Module num.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -8447,9 +8622,9 @@ Module num.
                         Self { size: self.size, base: self.base }
                     }
         *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -8472,7 +8647,7 @@ Module num.
                       |)
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -8498,9 +8673,9 @@ Module num.
                         crate::result::Result::Ok(())
                     }
         *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -8558,6 +8733,7 @@ Module num.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               [],
                               "branch",
@@ -8675,10 +8851,12 @@ Module num.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.path "core::convert::Infallible";
                                                 Ty.path "core::fmt::Error"
@@ -8714,7 +8892,9 @@ Module num.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::rev::Rev")
-                                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ]
+                                  ],
                                 [],
                                 "into_iter",
                                 []
@@ -8723,7 +8903,10 @@ Module num.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "u8" ],
                                     [],
                                     "rev",
                                     []
@@ -8731,7 +8914,7 @@ Module num.
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "iter",
                                         []
                                       |),
@@ -8739,10 +8922,14 @@ Module num.
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::ops::index::Index",
-                                            Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer 3 ]
+                                              [ Ty.path "u8" ],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
+                                                []
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
@@ -8786,9 +8973,11 @@ Module num.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::iter::adapters::rev::Rev")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::slice::iter::Iter")
+                                                    []
                                                     [ Ty.path "u8" ]
                                                 ],
                                               [],
@@ -8827,6 +9016,7 @@ Module num.
                                                         "core::ops::try_trait::Try",
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
+                                                          []
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
                                                         [],
@@ -8949,6 +9139,7 @@ Module num.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.tuple [];
                                                                         Ty.path "core::fmt::Error"
@@ -8957,6 +9148,7 @@ Module num.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "core::convert::Infallible";
@@ -8994,7 +9186,7 @@ Module num.
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

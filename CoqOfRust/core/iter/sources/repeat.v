@@ -9,15 +9,15 @@ Module iter.
           Repeat { element: elt }
       }
       *)
-      Definition repeat (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ elt ] =>
+      Definition repeat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ elt ] =>
           ltac:(M.monadic
             (let elt := M.alloc (| elt |) in
             Value.StructRecord
               "core::iter::sources::repeat::Repeat"
               [ ("element", M.read (| elt |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_repeat : M.IsFunction "core::iter::sources::repeat::repeat" repeat.
@@ -25,19 +25,20 @@ Module iter.
       (* StructRecord
         {
           name := "Repeat";
+          const_params := [];
           ty_params := [ "A" ];
           fields := [ ("element", A) ];
         } *)
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_A_for_core_iter_sources_repeat_Repeat_A.
         Definition Self (A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [ A ].
+          Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ A ].
         
         (* Clone *)
-        Definition clone (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self A in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -55,7 +56,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -69,13 +70,13 @@ Module iter.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_A_for_core_iter_sources_repeat_Repeat_A.
         Definition Self (A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [ A ].
+          Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ A ].
         
         (* Debug *)
-        Definition fmt (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self A in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -100,7 +101,7 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -114,7 +115,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_clone_Clone_A_for_core_iter_sources_repeat_Repeat_A.
         Definition Self (A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [ A ].
+          Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ A ].
         
         (*     type Item = A; *)
         Definition _Item (A : Ty.t) : Ty.t := A.
@@ -124,10 +125,10 @@ Module iter.
                 Some(self.element.clone())
             }
         *)
-        Definition next (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self A in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple
@@ -144,7 +145,7 @@ Module iter.
                     ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -152,10 +153,10 @@ Module iter.
                 (usize::MAX, None)
             }
         *)
-        Definition size_hint (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self A in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.Tuple
@@ -163,7 +164,7 @@ Module iter.
                   M.read (| M.get_constant (| "core::num::MAX" |) |);
                   Value.StructTuple "core::option::Option::None" []
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -173,10 +174,15 @@ Module iter.
                 Ok(())
             }
         *)
-        Definition advance_by (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_by
+            (A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self A in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -192,7 +198,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -201,10 +207,10 @@ Module iter.
                 Some(self.element.clone())
             }
         *)
-        Definition nth (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self A in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -233,7 +239,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -241,16 +247,16 @@ Module iter.
                 loop {}
             }
         *)
-        Definition last (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition last (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self A in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.never_to_any (|
                 M.read (| M.loop (| ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -258,16 +264,16 @@ Module iter.
                 loop {}
             }
         *)
-        Definition count (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition count (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self A in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.never_to_any (|
                 M.read (| M.loop (| ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -290,17 +296,17 @@ Module iter.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_clone_Clone_A_for_core_iter_sources_repeat_Repeat_A.
         Definition Self (A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [ A ].
+          Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ A ].
         
         (*
             fn next_back(&mut self) -> Option<A> {
                 Some(self.element.clone())
             }
         *)
-        Definition next_back (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self A in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple
@@ -317,7 +323,7 @@ Module iter.
                     ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -327,10 +333,15 @@ Module iter.
                 Ok(())
             }
         *)
-        Definition advance_back_by (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_back_by
+            (A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self A in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -346,7 +357,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -355,10 +366,10 @@ Module iter.
                 Some(self.element.clone())
             }
         *)
-        Definition nth_back (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth_back (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self A in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -387,7 +398,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -406,7 +417,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_FusedIterator_where_core_clone_Clone_A_for_core_iter_sources_repeat_Repeat_A.
         Definition Self (A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [ A ].
+          Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ A ].
         
         Axiom Implements :
           forall (A : Ty.t),
@@ -419,7 +430,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_TrustedLen_where_core_clone_Clone_A_for_core_iter_sources_repeat_Repeat_A.
         Definition Self (A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [ A ].
+          Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ A ].
         
         Axiom Implements :
           forall (A : Ty.t),

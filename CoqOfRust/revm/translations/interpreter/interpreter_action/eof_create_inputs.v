@@ -6,16 +6,17 @@ Module interpreter_action.
     (* StructRecord
       {
         name := "EOFCreateInput";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("caller", Ty.path "alloy_primitives::bits::address::Address");
             ("created_address", Ty.path "alloy_primitives::bits::address::Address");
-            ("value", Ty.path "ruint::Uint");
+            ("value", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
             ("eof_init_code", Ty.path "revm_primitives::bytecode::eof::Eof");
             ("gas_limit", Ty.path "u64");
             ("return_memory_range",
-              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ])
+              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ])
           ];
       } *)
     
@@ -24,9 +25,9 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -115,7 +116,7 @@ Module interpreter_action.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -131,9 +132,9 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
@@ -164,7 +165,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
-                      Ty.path "ruint::Uint",
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                       [],
                       "default",
                       []
@@ -197,7 +198,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
-                      Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       [],
                       "default",
                       []
@@ -205,7 +206,7 @@ Module interpreter_action.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -221,9 +222,9 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -267,7 +268,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.path "ruint::Uint",
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                       [],
                       "clone",
                       []
@@ -312,7 +313,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       [],
                       "clone",
                       []
@@ -326,7 +327,7 @@ Module interpreter_action.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -354,9 +355,9 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -413,8 +414,16 @@ Module interpreter_action.
                       (M.call_closure (|
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
-                          Ty.path "ruint::Uint",
-                          [ Ty.path "ruint::Uint" ],
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [],
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              []
+                          ],
                           "eq",
                           []
                         |),
@@ -476,8 +485,8 @@ Module interpreter_action.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
-                    [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                     "eq",
                     []
                   |),
@@ -495,7 +504,7 @@ Module interpreter_action.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -523,9 +532,13 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -565,7 +578,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -600,9 +613,11 @@ Module interpreter_action.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ caller; created_address; value; eof_init_code; gas_limit; return_memory_range ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [],
+            [],
+            [ caller; created_address; value; eof_init_code; gas_limit; return_memory_range ] =>
           ltac:(M.monadic
             (let caller := M.alloc (| caller |) in
             let created_address := M.alloc (| created_address |) in
@@ -620,7 +635,7 @@ Module interpreter_action.
                 ("gas_limit", M.read (| gas_limit |));
                 ("return_memory_range", M.read (| return_memory_range |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.

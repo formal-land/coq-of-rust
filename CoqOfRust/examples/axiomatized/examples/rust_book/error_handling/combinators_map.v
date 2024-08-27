@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Food
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -29,7 +30,7 @@ Enum Food
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Definition Self : Ty.t := Ty.path "combinators_map::Food".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -42,6 +43,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Food.
 (* StructTuple
   {
     name := "Peeled";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "combinators_map::Food" ];
   } *)
@@ -49,7 +51,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Food.
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Definition Self : Ty.t := Ty.path "combinators_map::Peeled".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -62,6 +64,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 (* StructTuple
   {
     name := "Chopped";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "combinators_map::Food" ];
   } *)
@@ -69,7 +72,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Definition Self : Ty.t := Ty.path "combinators_map::Chopped".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -82,6 +85,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 (* StructTuple
   {
     name := "Cooked";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "combinators_map::Food" ];
   } *)
@@ -89,7 +93,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Definition Self : Ty.t := Ty.path "combinators_map::Cooked".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -99,26 +103,26 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
-Parameter peel : (list Ty.t) -> (list Value.t) -> M.
+Parameter peel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_peel : M.IsFunction "combinators_map::peel" peel.
 
-Parameter chop : (list Ty.t) -> (list Value.t) -> M.
+Parameter chop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_chop : M.IsFunction "combinators_map::chop" chop.
 
-Parameter cook : (list Ty.t) -> (list Value.t) -> M.
+Parameter cook : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_cook : M.IsFunction "combinators_map::cook" cook.
 
-Parameter process : (list Ty.t) -> (list Value.t) -> M.
+Parameter process : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_process : M.IsFunction "combinators_map::process" process.
 
-Parameter eat : (list Ty.t) -> (list Value.t) -> M.
+Parameter eat : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_eat : M.IsFunction "combinators_map::eat" eat.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "combinators_map::main" main.

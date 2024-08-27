@@ -7,25 +7,30 @@ Module collections.
       (* StructRecord
         {
           name := "Drain";
+          const_params := [];
           ty_params := [ "T"; "A" ];
           fields :=
             [
               ("deque",
                 Ty.apply
                   (Ty.path "core::ptr::non_null::NonNull")
-                  [ Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ] ]);
+                  []
+                  [ Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ] ]);
               ("drain_len", Ty.path "usize");
               ("idx", Ty.path "usize");
               ("tail_len", Ty.path "usize");
               ("remaining", Ty.path "usize");
               ("_marker",
-                Ty.apply (Ty.path "core::marker::PhantomData") [ Ty.apply (Ty.path "&") [ T ] ])
+                Ty.apply
+                  (Ty.path "core::marker::PhantomData")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ T ] ])
             ];
         } *)
       
       Module Impl_alloc_collections_vec_deque_drain_Drain_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [] [ T; A ].
         
         (*
             pub(super) unsafe fn new(
@@ -45,10 +50,10 @@ Module collections.
                 }
             }
         *)
-        Definition new (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T A in
-          match τ, α with
-          | [], [ deque; drain_start; drain_len ] =>
+          match ε, τ, α with
+          | [], [], [ deque; drain_start; drain_len ] =>
             ltac:(M.monadic
               (let deque := M.alloc (| deque |) in
               let drain_start := M.alloc (| drain_start |) in
@@ -88,17 +93,21 @@ Module collections.
                             "core::convert::From",
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                  []
                                   [ T; A ]
                               ],
                             [
                               Ty.apply
                                 (Ty.path "&mut")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                    []
                                     [ T; A ]
                                 ]
                             ],
@@ -115,7 +124,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -141,10 +150,15 @@ Module collections.
                 }
             }
         *)
-        Definition as_slices (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_slices
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T A in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -154,7 +168,9 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ]
+                          ],
                         "as_ref",
                         []
                       |),
@@ -203,16 +219,16 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "slice_ranges",
-                        [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                        [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                       |),
                       [
                         M.read (| deque |);
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::clone::Clone",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
                             "clone",
                             []
@@ -243,6 +259,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                    []
                                     [ T; A ],
                                   "buffer_range",
                                   []
@@ -253,6 +270,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                    []
                                     [ T; A ],
                                   "buffer_range",
                                   []
@@ -264,7 +282,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_as_slices :
@@ -274,7 +292,7 @@ Module collections.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [] [ T; A ].
         
         (*
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -286,10 +304,10 @@ Module collections.
                     .finish()
             }
         *)
-        Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T A in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -376,7 +394,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -390,7 +408,7 @@ Module collections.
       
       Module Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [] [ T; A ].
         
         Axiom Implements :
           forall (T A : Ty.t),
@@ -403,7 +421,7 @@ Module collections.
       
       Module Impl_core_marker_Send_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Send_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [] [ T; A ].
         
         Axiom Implements :
           forall (T A : Ty.t),
@@ -416,7 +434,7 @@ Module collections.
       
       Module Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [] [ T; A ].
         
         (*
             fn drop(&mut self) {
@@ -501,10 +519,10 @@ Module collections.
                 // Dropping `guard` handles moving the remaining elements into place.
             }
         *)
-        Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition drop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T A in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -546,6 +564,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::vec_deque::drain::Drain")
+                                  []
                                   [ T; A ],
                                 "as_slices",
                                 []
@@ -590,7 +609,8 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "*mut")
-                                            [ Ty.apply (Ty.path "slice") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                           "len",
                                           []
                                         |),
@@ -619,7 +639,8 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "*mut")
-                                            [ Ty.apply (Ty.path "slice") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                           "len",
                                           []
                                         |),
@@ -631,7 +652,7 @@ Module collections.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::ptr::drop_in_place",
-                                        [ Ty.apply (Ty.path "slice") [ T ] ]
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                       |),
                                       [ M.read (| front |) ]
                                     |)
@@ -656,7 +677,7 @@ Module collections.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::ptr::drop_in_place",
-                                        [ Ty.apply (Ty.path "slice") [ T ] ]
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                       |),
                                       [ M.read (| back |) ]
                                     |)
@@ -668,7 +689,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -682,7 +703,7 @@ Module collections.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [] [ T; A ].
         
         (*     type Item = T; *)
         Definition _Item (T A : Ty.t) : Ty.t := T.
@@ -698,10 +719,10 @@ Module collections.
                 Some(unsafe { self.deque.as_mut().buffer_read(wrapped_idx) })
             }
         *)
-        Definition next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T A in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -747,7 +768,10 @@ Module collections.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                            Ty.apply
+                              (Ty.path "alloc::collections::vec_deque::VecDeque")
+                              []
+                              [ T; A ],
                             "to_physical_idx",
                             []
                           |),
@@ -756,9 +780,11 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                      []
                                       [ T; A ]
                                   ],
                                 "as_ref",
@@ -810,7 +836,10 @@ Module collections.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                              Ty.apply
+                                (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                []
+                                [ T; A ],
                               "buffer_read",
                               []
                             |),
@@ -819,9 +848,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                        []
                                         [ T; A ]
                                     ],
                                   "as_mut",
@@ -842,7 +873,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -851,10 +882,15 @@ Module collections.
                 (len, Some(len))
             }
         *)
-        Definition size_hint (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T A in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -874,7 +910,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -893,7 +929,7 @@ Module collections.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [] [ T; A ].
         
         (*
             fn next_back(&mut self) -> Option<T> {
@@ -905,10 +941,15 @@ Module collections.
                 Some(unsafe { self.deque.as_mut().buffer_read(wrapped_idx) })
             }
         *)
-        Definition next_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T A in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -965,7 +1006,10 @@ Module collections.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                            Ty.apply
+                              (Ty.path "alloc::collections::vec_deque::VecDeque")
+                              []
+                              [ T; A ],
                             "to_physical_idx",
                             []
                           |),
@@ -974,9 +1018,11 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                      []
                                       [ T; A ]
                                   ],
                                 "as_ref",
@@ -1015,7 +1061,10 @@ Module collections.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                              Ty.apply
+                                (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                []
+                                [ T; A ],
                               "buffer_read",
                               []
                             |),
@@ -1024,9 +1073,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                        []
                                         [ T; A ]
                                     ],
                                   "as_mut",
@@ -1047,7 +1098,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1061,7 +1112,7 @@ Module collections.
       
       Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [] [ T; A ].
         
         Axiom Implements :
           forall (T A : Ty.t),
@@ -1074,7 +1125,7 @@ Module collections.
       
       Module Impl_core_iter_traits_marker_FusedIterator_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [] [ T; A ].
         
         Axiom Implements :
           forall (T A : Ty.t),

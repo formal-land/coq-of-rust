@@ -7,19 +7,20 @@ Module iter.
       (* StructRecord
         {
           name := "Inspect";
+          const_params := [];
           ty_params := [ "I"; "F" ];
           fields := [ ("iter", I); ("f", F) ];
         } *)
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_clone_Clone_F_for_core_iter_adapters_inspect_Inspect_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ I; F ].
+          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ].
         
         (* Clone *)
-        Definition clone (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -48,7 +49,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -62,24 +63,24 @@ Module iter.
       
       Module Impl_core_iter_adapters_inspect_Inspect_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ I; F ].
+          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ].
         
         (*
             pub(in crate::iter) fn new(iter: I, f: F) -> Inspect<I, F> {
                 Inspect { iter, f }
             }
         *)
-        Definition new (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ iter; f ] =>
+          match ε, τ, α with
+          | [], [], [ iter; f ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               let f := M.alloc (| f |) in
               Value.StructRecord
                 "core::iter::adapters::inspect::Inspect"
                 [ ("iter", M.read (| iter |)); ("f", M.read (| f |)) ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -94,10 +95,15 @@ Module iter.
                 elt
             }
         *)
-        Definition do_inspect (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition do_inspect
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ self; elt ] =>
+          match ε, τ, α with
+          | [], [], [ self; elt ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let elt := M.alloc (| elt |) in
@@ -122,7 +128,7 @@ Module iter.
                                 M.get_trait_method (|
                                   "core::ops::function::FnMut",
                                   F,
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.associated ] ] ],
+                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ] ],
                                   "call_mut",
                                   []
                                 |),
@@ -142,7 +148,7 @@ Module iter.
                   |) in
                 elt
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_do_inspect :
@@ -152,17 +158,17 @@ Module iter.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_inspect_Inspect_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ I; F ].
+          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ].
         
         (*
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 f.debug_struct("Inspect").field("iter", &self.iter).finish()
             }
         *)
-        Definition fmt (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -202,7 +208,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -226,9 +232,9 @@ Module iter.
           }
       }
       *)
-      Definition inspect_fold (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T; Acc; impl_FnMut__T_; impl_FnMut_Acc__T__arrow_Acc ], [ f; fold ] =>
+      Definition inspect_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T; Acc; impl_FnMut__T_; impl_FnMut_Acc__T__arrow_Acc ], [ f; fold ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
             let fold := M.alloc (| fold |) in
@@ -256,7 +262,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               impl_FnMut__T_,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                               "call_mut",
                                               []
                                             |),
@@ -285,7 +291,7 @@ Module iter.
                     |)
                   | _ => M.impossible (||)
                   end))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_inspect_fold :
@@ -306,9 +312,9 @@ Module iter.
           }
       }
       *)
-      Definition inspect_try_fold (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T; Acc; R; impl_FnMut__T_; impl_FnMut_Acc__T__arrow_R__plus__'a ], [ f; fold ] =>
+      Definition inspect_try_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T; Acc; R; impl_FnMut__T_; impl_FnMut_Acc__T__arrow_R__plus__'a ], [ f; fold ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
             let fold := M.alloc (| fold |) in
@@ -336,7 +342,7 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               impl_FnMut__T_,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                               "call_mut",
                                               []
                                             |),
@@ -365,7 +371,7 @@ Module iter.
                     |)
                   | _ => M.impossible (||)
                   end))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_inspect_try_fold :
@@ -377,7 +383,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__associated_type__for_core_iter_adapters_inspect_Inspect_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ I; F ].
+          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ].
         
         (*     type Item = I::Item; *)
         Definition _Item (I F : Ty.t) : Ty.t := Ty.associated.
@@ -388,10 +394,10 @@ Module iter.
                 self.do_inspect(next)
             }
         *)
-        Definition next (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -417,7 +423,7 @@ Module iter.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ I; F ],
+                      Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ],
                       "do_inspect",
                       []
                     |),
@@ -425,7 +431,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -433,10 +439,15 @@ Module iter.
                 self.iter.size_hint()
             }
         *)
-        Definition size_hint (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -455,7 +466,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -468,10 +479,15 @@ Module iter.
                 self.iter.try_fold(init, inspect_try_fold(&mut self.f, fold))
             }
         *)
-        Definition try_fold (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [ Acc; Fold; R ], [ self; init; fold ] =>
+          match ε, τ, α with
+          | [], [ Acc; Fold; R ], [ self; init; fold ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -507,7 +523,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -518,10 +534,10 @@ Module iter.
                 self.iter.fold(init, inspect_fold(self.f, fold))
             }
         *)
-        Definition fold (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [ Acc; Fold ], [ self; init; fold ] =>
+          match ε, τ, α with
+          | [], [ Acc; Fold ], [ self; init; fold ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -561,7 +577,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -582,7 +598,7 @@ Module iter.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_ops_function_FnMut_F_Tuple_ref__associated_type__for_core_iter_adapters_inspect_Inspect_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ I; F ].
+          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ].
         
         (*
             fn next_back(&mut self) -> Option<I::Item> {
@@ -590,10 +606,15 @@ Module iter.
                 self.do_inspect(next)
             }
         *)
-        Definition next_back (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -619,7 +640,7 @@ Module iter.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ I; F ],
+                      Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ],
                       "do_inspect",
                       []
                     |),
@@ -627,7 +648,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -640,10 +661,15 @@ Module iter.
                 self.iter.try_rfold(init, inspect_try_fold(&mut self.f, fold))
             }
         *)
-        Definition try_rfold (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_rfold
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [ Acc; Fold; R ], [ self; init; fold ] =>
+          match ε, τ, α with
+          | [], [ Acc; Fold; R ], [ self; init; fold ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -679,7 +705,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -690,10 +716,10 @@ Module iter.
                 self.iter.rfold(init, inspect_fold(self.f, fold))
             }
         *)
-        Definition rfold (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfold (I F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [ Acc; Fold ], [ self; init; fold ] =>
+          match ε, τ, α with
+          | [], [ Acc; Fold ], [ self; init; fold ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -733,7 +759,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -752,17 +778,17 @@ Module iter.
       
       Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_ref__associated_type__for_core_iter_adapters_inspect_Inspect_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ I; F ].
+          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ].
         
         (*
             fn len(&self) -> usize {
                 self.iter.len()
             }
         *)
-        Definition len (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (I F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -781,7 +807,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -789,10 +815,15 @@ Module iter.
                 self.iter.is_empty()
             }
         *)
-        Definition is_empty (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_empty
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -811,7 +842,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -829,7 +860,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_ops_function_FnMut_F_Tuple_ref__associated_type__for_core_iter_adapters_inspect_Inspect_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ I; F ].
+          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ].
         
         Axiom Implements :
           forall (I F : Ty.t),
@@ -842,7 +873,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_TrustedFused_where_core_iter_traits_marker_TrustedFused_I_for_core_iter_adapters_inspect_Inspect_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ I; F ].
+          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ].
         
         Axiom Implements :
           forall (I F : Ty.t),
@@ -855,7 +886,7 @@ Module iter.
       
       Module Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_for_core_iter_adapters_inspect_Inspect_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ I; F ].
+          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ].
         
         (*     type Source = I::Source; *)
         Definition _Source (I F : Ty.t) : Ty.t := Ty.associated.
@@ -866,10 +897,15 @@ Module iter.
                 unsafe { SourceIter::as_inner(&mut self.iter) }
             }
         *)
-        Definition as_inner (I F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_inner
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -882,7 +918,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -900,11 +936,12 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_inspect_Inspect_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ I; F ].
+          Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ].
         
         (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
+          []
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
         Definition value_EXPAND_BY (I F : Ty.t) : Value.t :=
           let Self : Ty.t := Self I F in
@@ -915,6 +952,7 @@ Module iter.
         (*     const MERGE_BY: Option<NonZeroUsize> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
+          []
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
         Definition value_MERGE_BY (I F : Ty.t) : Value.t :=
           let Self : Ty.t := Self I F in

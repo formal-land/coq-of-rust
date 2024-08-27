@@ -21,16 +21,16 @@ fn main() {
     // available and uncommenting above line will not cause an error.
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ haystack :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -42,8 +42,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -74,7 +75,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             (let needle := M.copy (| γ |) in
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                                 "contains",
                                 []
                               |),
@@ -84,6 +85,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::ops::deref::Deref",
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                                     [],
                                     "deref",
@@ -132,9 +134,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_trait_method (|
                                         "core::ops::function::Fn",
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
+                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                          ]
                                           (Ty.path "bool"),
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ],
+                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                        ],
                                         "call",
                                         []
                                       |),
@@ -184,9 +188,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_trait_method (|
                                         "core::ops::function::Fn",
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ]
+                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                          ]
                                           (Ty.path "bool"),
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ] ],
+                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                        ],
                                         "call",
                                         []
                                       |),
@@ -205,7 +211,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_forced_capturing_with_move::main" main.

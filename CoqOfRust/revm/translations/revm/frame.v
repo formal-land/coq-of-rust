@@ -5,10 +5,12 @@ Module frame.
   (* StructRecord
     {
       name := "CallFrame";
+      const_params := [];
       ty_params := [];
       fields :=
         [
-          ("return_memory_range", Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]);
+          ("return_memory_range",
+            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]);
           ("frame_data", Ty.path "revm::frame::FrameData")
         ];
     } *)
@@ -17,9 +19,9 @@ Module frame.
     Definition Self : Ty.t := Ty.path "revm::frame::CallFrame".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -52,7 +54,7 @@ Module frame.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -66,6 +68,7 @@ Module frame.
   (* StructRecord
     {
       name := "CreateFrame";
+      const_params := [];
       ty_params := [];
       fields :=
         [
@@ -78,9 +81,9 @@ Module frame.
     Definition Self : Ty.t := Ty.path "revm::frame::CreateFrame".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -113,7 +116,7 @@ Module frame.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -127,11 +130,13 @@ Module frame.
   (* StructRecord
     {
       name := "EOFCreateFrame";
+      const_params := [];
       ty_params := [];
       fields :=
         [
           ("created_address", Ty.path "alloy_primitives::bits::address::Address");
-          ("return_memory_range", Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]);
+          ("return_memory_range",
+            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]);
           ("frame_data", Ty.path "revm::frame::FrameData")
         ];
     } *)
@@ -140,9 +145,9 @@ Module frame.
     Definition Self : Ty.t := Ty.path "revm::frame::EOFCreateFrame".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -183,7 +188,7 @@ Module frame.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -197,6 +202,7 @@ Module frame.
   (* StructRecord
     {
       name := "FrameData";
+      const_params := [];
       ty_params := [];
       fields :=
         [
@@ -209,9 +215,9 @@ Module frame.
     Definition Self : Ty.t := Ty.path "revm::frame::FrameData".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -244,7 +250,7 @@ Module frame.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -258,6 +264,7 @@ Module frame.
   (*
   Enum Frame
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -268,6 +275,7 @@ Module frame.
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "revm::frame::CallFrame"; Ty.path "alloc::alloc::Global" ]
               ];
           discriminant := None;
@@ -279,6 +287,7 @@ Module frame.
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "revm::frame::CreateFrame"; Ty.path "alloc::alloc::Global" ]
               ];
           discriminant := None;
@@ -290,6 +299,7 @@ Module frame.
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "revm::frame::EOFCreateFrame"; Ty.path "alloc::alloc::Global" ]
               ];
           discriminant := None;
@@ -302,9 +312,9 @@ Module frame.
     Definition Self : Ty.t := Ty.path "revm::frame::Frame".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -383,7 +393,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -397,6 +407,7 @@ Module frame.
   (*
   Enum FrameResult
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -438,9 +449,9 @@ Module frame.
             }
         }
     *)
-    Definition into_interpreter_result (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition into_interpreter_result (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -492,7 +503,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_interpreter_result :
@@ -511,9 +522,9 @@ Module frame.
             }
         }
     *)
-    Definition output (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition output (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -640,7 +651,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_output : M.IsAssociatedFunction Self "output" output.
@@ -654,9 +665,9 @@ Module frame.
             }
         }
     *)
-    Definition gas (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition gas (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -729,7 +740,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_gas : M.IsAssociatedFunction Self "gas" gas.
@@ -743,9 +754,9 @@ Module frame.
             }
         }
     *)
-    Definition gas_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition gas_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -818,7 +829,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_gas_mut : M.IsAssociatedFunction Self "gas_mut" gas_mut.
@@ -832,9 +843,9 @@ Module frame.
             }
         }
     *)
-    Definition interpreter_result (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition interpreter_result (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -895,7 +906,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_interpreter_result :
@@ -910,9 +921,9 @@ Module frame.
             }
         }
     *)
-    Definition interpreter_result_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition interpreter_result_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -973,7 +984,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_interpreter_result_mut :
@@ -984,9 +995,9 @@ Module frame.
             self.interpreter_result().result
         }
     *)
-    Definition instruction_result (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition instruction_result (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1003,7 +1014,7 @@ Module frame.
               "result"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_instruction_result :
@@ -1013,6 +1024,7 @@ Module frame.
   (*
   Enum FrameOrResult
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -1048,9 +1060,9 @@ Module frame.
             }))
         }
     *)
-    Definition new_create (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ created_address; checkpoint; interpreter ] =>
+    Definition new_create (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ created_address; checkpoint; interpreter ] =>
         ltac:(M.monadic
           (let created_address := M.alloc (| created_address |) in
           let checkpoint := M.alloc (| checkpoint |) in
@@ -1062,6 +1074,7 @@ Module frame.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [ Ty.path "revm::frame::CreateFrame"; Ty.path "alloc::alloc::Global" ],
                   "new",
                   []
@@ -1082,7 +1095,7 @@ Module frame.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_create : M.IsAssociatedFunction Self "new_create" new_create.
@@ -1102,9 +1115,9 @@ Module frame.
             }))
         }
     *)
-    Definition new_call (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ return_memory_range; checkpoint; interpreter ] =>
+    Definition new_call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ return_memory_range; checkpoint; interpreter ] =>
         ltac:(M.monadic
           (let return_memory_range := M.alloc (| return_memory_range |) in
           let checkpoint := M.alloc (| checkpoint |) in
@@ -1116,6 +1129,7 @@ Module frame.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [ Ty.path "revm::frame::CallFrame"; Ty.path "alloc::alloc::Global" ],
                   "new",
                   []
@@ -1136,7 +1150,7 @@ Module frame.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_call : M.IsAssociatedFunction Self "new_call" new_call.
@@ -1146,9 +1160,9 @@ Module frame.
             matches!(self, Frame::Call { .. })
         }
     *)
-    Definition is_call (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1164,7 +1178,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_call : M.IsAssociatedFunction Self "is_call" is_call.
@@ -1174,9 +1188,9 @@ Module frame.
             matches!(self, Frame::Create { .. })
         }
     *)
-    Definition is_create (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_create (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1192,7 +1206,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_create : M.IsAssociatedFunction Self "is_create" is_create.
@@ -1205,9 +1219,9 @@ Module frame.
             }
         }
     *)
-    Definition created_address (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition created_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1242,7 +1256,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_created_address :
@@ -1257,9 +1271,9 @@ Module frame.
             }
         }
     *)
-    Definition into_frame_data (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition into_frame_data (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1307,7 +1321,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_frame_data :
@@ -1322,9 +1336,9 @@ Module frame.
             }
         }
     *)
-    Definition frame_data (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition frame_data (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1381,7 +1395,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_frame_data : M.IsAssociatedFunction Self "frame_data" frame_data.
@@ -1395,9 +1409,9 @@ Module frame.
             }
         }
     *)
-    Definition frame_data_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition frame_data_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1454,7 +1468,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_frame_data_mut :
@@ -1465,9 +1479,9 @@ Module frame.
             &self.frame_data().interpreter
         }
     *)
-    Definition interpreter (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition interpreter (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -1478,7 +1492,7 @@ Module frame.
             "revm::frame::FrameData",
             "interpreter"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_interpreter : M.IsAssociatedFunction Self "interpreter" interpreter.
@@ -1488,9 +1502,9 @@ Module frame.
             &mut self.frame_data_mut().interpreter
         }
     *)
-    Definition interpreter_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition interpreter_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -1501,7 +1515,7 @@ Module frame.
             "revm::frame::FrameData",
             "interpreter"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_interpreter_mut :
@@ -1520,9 +1534,9 @@ Module frame.
             Self::Frame(Frame::new_create(created_address, checkpoint, interpreter))
         }
     *)
-    Definition new_create_frame (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ created_address; checkpoint; interpreter ] =>
+    Definition new_create_frame (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ created_address; checkpoint; interpreter ] =>
         ltac:(M.monadic
           (let created_address := M.alloc (| created_address |) in
           let checkpoint := M.alloc (| checkpoint |) in
@@ -1535,7 +1549,7 @@ Module frame.
                 [ M.read (| created_address |); M.read (| checkpoint |); M.read (| interpreter |) ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_create_frame :
@@ -1558,9 +1572,9 @@ Module frame.
             })))
         }
     *)
-    Definition new_eofcreate_frame (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ created_address; return_memory_range; checkpoint; interpreter ] =>
+    Definition new_eofcreate_frame (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ created_address; return_memory_range; checkpoint; interpreter ] =>
         ltac:(M.monadic
           (let created_address := M.alloc (| created_address |) in
           let return_memory_range := M.alloc (| return_memory_range |) in
@@ -1576,6 +1590,7 @@ Module frame.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [ Ty.path "revm::frame::EOFCreateFrame"; Ty.path "alloc::alloc::Global" ],
                       "new",
                       []
@@ -1598,7 +1613,7 @@ Module frame.
                   |)
                 ]
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_eofcreate_frame :
@@ -1617,9 +1632,9 @@ Module frame.
             ))
         }
     *)
-    Definition new_call_frame (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ return_memory_range; checkpoint; interpreter ] =>
+    Definition new_call_frame (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ return_memory_range; checkpoint; interpreter ] =>
         ltac:(M.monadic
           (let return_memory_range := M.alloc (| return_memory_range |) in
           let checkpoint := M.alloc (| checkpoint |) in
@@ -1636,7 +1651,7 @@ Module frame.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_call_frame :
@@ -1653,9 +1668,9 @@ Module frame.
             }))
         }
     *)
-    Definition new_create_result (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ interpreter_result; address ] =>
+    Definition new_create_result (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ interpreter_result; address ] =>
         ltac:(M.monadic
           (let interpreter_result := M.alloc (| interpreter_result |) in
           let address := M.alloc (| address |) in
@@ -1671,7 +1686,7 @@ Module frame.
                     ]
                 ]
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_create_result :
@@ -1690,9 +1705,9 @@ Module frame.
             }))
         }
     *)
-    Definition new_eofcreate_result (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ interpreter_result; address; return_memory_range ] =>
+    Definition new_eofcreate_result (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ interpreter_result; address; return_memory_range ] =>
         ltac:(M.monadic
           (let interpreter_result := M.alloc (| interpreter_result |) in
           let address := M.alloc (| address |) in
@@ -1712,7 +1727,7 @@ Module frame.
                     ]
                 ]
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_eofcreate_result :
@@ -1729,9 +1744,9 @@ Module frame.
             }))
         }
     *)
-    Definition new_call_result (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ interpreter_result; memory_offset ] =>
+    Definition new_call_result (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ interpreter_result; memory_offset ] =>
         ltac:(M.monadic
           (let interpreter_result := M.alloc (| interpreter_result |) in
           let memory_offset := M.alloc (| memory_offset |) in
@@ -1749,7 +1764,7 @@ Module frame.
                     ]
                 ]
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_call_result :

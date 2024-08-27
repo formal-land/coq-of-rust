@@ -4,23 +4,23 @@ Require Import CoqOfRust.CoqOfRust.
 Module slice.
   Module ascii.
     Module Impl_slice_u8.
-      Definition Self : Ty.t := Ty.apply (Ty.path "slice") [ Ty.path "u8" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ].
       
       (*
           pub const fn is_ascii(&self) -> bool {
               is_ascii(self)
           }
       *)
-      Definition is_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::slice::ascii::is_ascii", [] |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ascii : M.IsAssociatedFunction Self "is_ascii" is_ascii.
@@ -35,9 +35,9 @@ Module slice.
               }
           }
       *)
-      Definition as_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -51,7 +51,7 @@ Module slice.
                           (M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "is_ascii",
                                 []
                               |),
@@ -65,7 +65,7 @@ Module slice.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "as_ascii_unchecked",
                                 []
                               |),
@@ -79,7 +79,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
@@ -92,9 +92,9 @@ Module slice.
               unsafe { &*ascii_ptr }
           }
       *)
-      Definition as_ascii_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ascii_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -102,7 +102,7 @@ Module slice.
               let~ ascii_ptr := M.alloc (| M.rust_cast (M.read (| byte_ptr |)) |) in
               M.alloc (| M.read (| ascii_ptr |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ascii_unchecked :
@@ -113,9 +113,9 @@ Module slice.
               self.len() == other.len() && iter::zip(self, other).all(|(a, b)| a.eq_ignore_ascii_case(b))
           }
       *)
-      Definition eq_ignore_ascii_case (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq_ignore_ascii_case (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -123,7 +123,7 @@ Module slice.
               BinOp.Pure.eq
                 (M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "len",
                     []
                   |),
@@ -131,7 +131,7 @@ Module slice.
                 |))
                 (M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "len",
                     []
                   |),
@@ -143,9 +143,10 @@ Module slice.
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
                       (Ty.path "core::iter::adapters::zip::Zip")
+                      []
                       [
-                        Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ];
-                        Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ]
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ]
                       ],
                     [],
                     "all",
@@ -156,8 +157,8 @@ Module slice.
                             [
                               Ty.tuple
                                 [
-                                  Ty.apply (Ty.path "&") [ Ty.path "u8" ];
-                                  Ty.apply (Ty.path "&") [ Ty.path "u8" ]
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ];
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
                                 ]
                             ]
                         ]
@@ -170,8 +171,14 @@ Module slice.
                         M.get_function (|
                           "core::iter::adapters::zip::zip",
                           [
-                            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
-                            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                           ]
                         |),
                         [ M.read (| self |); M.read (| other |) ]
@@ -206,7 +213,7 @@ Module slice.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_eq_ignore_ascii_case :
@@ -219,9 +226,9 @@ Module slice.
               }
           }
       *)
-      Definition make_ascii_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition make_ascii_uppercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -231,7 +238,10 @@ Module slice.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
-                        Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                         [],
                         "into_iter",
                         []
@@ -253,6 +263,7 @@ Module slice.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::slice::iter::IterMut")
+                                        []
                                         [ Ty.path "u8" ],
                                       [],
                                       "next",
@@ -297,7 +308,7 @@ Module slice.
                   ]
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_make_ascii_uppercase :
@@ -310,9 +321,9 @@ Module slice.
               }
           }
       *)
-      Definition make_ascii_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition make_ascii_lowercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -322,7 +333,10 @@ Module slice.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
-                        Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                         [],
                         "into_iter",
                         []
@@ -344,6 +358,7 @@ Module slice.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::slice::iter::IterMut")
+                                        []
                                         [ Ty.path "u8" ],
                                       [],
                                       "next",
@@ -388,7 +403,7 @@ Module slice.
                   ]
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_make_ascii_lowercase :
@@ -399,9 +414,9 @@ Module slice.
               EscapeAscii { inner: self.iter().flat_map(EscapeByte) }
           }
       *)
-      Definition escape_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition escape_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -411,7 +426,7 @@ Module slice.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
                       "flat_map",
                       [
@@ -422,7 +437,7 @@ Module slice.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "iter",
                           []
                         |),
@@ -432,7 +447,7 @@ Module slice.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_escape_ascii :
@@ -453,9 +468,9 @@ Module slice.
               bytes
           }
       *)
-      Definition trim_ascii_start (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trim_ascii_start (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -519,7 +534,7 @@ Module slice.
                 |) in
               M.alloc (| M.read (| bytes |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trim_ascii_start :
@@ -540,9 +555,9 @@ Module slice.
               bytes
           }
       *)
-      Definition trim_ascii_end (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trim_ascii_end (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -606,7 +621,7 @@ Module slice.
                 |) in
               M.alloc (| M.read (| bytes |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trim_ascii_end :
@@ -617,21 +632,21 @@ Module slice.
               self.trim_ascii_start().trim_ascii_end()
           }
       *)
-      Definition trim_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trim_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 "trim_ascii_end",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "trim_ascii_start",
                     []
                   |),
@@ -639,7 +654,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trim_ascii : M.IsAssociatedFunction Self "trim_ascii" trim_ascii.
@@ -649,13 +664,13 @@ Module slice.
       Definition Self : Ty.t := Ty.path "core::slice::ascii::EscapeByte".
       
       (*     Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::slice::ascii::EscapeByte" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -669,14 +684,16 @@ Module slice.
     (* StructRecord
       {
         name := "EscapeAscii";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("inner",
               Ty.apply
                 (Ty.path "core::iter::adapters::flatten::FlatMap")
+                []
                 [
-                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ];
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
                   Ty.path "core::ascii::EscapeDefault";
                   Ty.path "core::slice::ascii::EscapeByte"
                 ])
@@ -687,9 +704,9 @@ Module slice.
       Definition Self : Ty.t := Ty.path "core::slice::ascii::EscapeAscii".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -701,8 +718,9 @@ Module slice.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "core::iter::adapters::flatten::FlatMap")
+                        []
                         [
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ];
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
                           Ty.path "core::ascii::EscapeDefault";
                           Ty.path "core::slice::ascii::EscapeByte"
                         ],
@@ -719,7 +737,7 @@ Module slice.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -741,9 +759,9 @@ Module slice.
               self.inner.next()
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -751,8 +769,9 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ];
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
                     Ty.path "core::ascii::EscapeDefault";
                     Ty.path "core::slice::ascii::EscapeByte"
                   ],
@@ -768,7 +787,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -776,9 +795,9 @@ Module slice.
               self.inner.size_hint()
           }
       *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -786,8 +805,9 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ];
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
                     Ty.path "core::ascii::EscapeDefault";
                     Ty.path "core::slice::ascii::EscapeByte"
                   ],
@@ -803,7 +823,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -815,9 +835,9 @@ Module slice.
               self.inner.try_fold(init, fold)
           }
       *)
-      Definition try_fold (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ Acc; Fold; R ], [ self; init; fold ] =>
+      Definition try_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ Acc; Fold; R ], [ self; init; fold ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let init := M.alloc (| init |) in
@@ -827,8 +847,9 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ];
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
                     Ty.path "core::ascii::EscapeDefault";
                     Ty.path "core::slice::ascii::EscapeByte"
                   ],
@@ -846,7 +867,7 @@ Module slice.
                 M.read (| fold |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -857,9 +878,9 @@ Module slice.
               self.inner.fold(init, fold)
           }
       *)
-      Definition fold (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ Acc; Fold ], [ self; init; fold ] =>
+      Definition fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ Acc; Fold ], [ self; init; fold ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let init := M.alloc (| init |) in
@@ -869,8 +890,9 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ];
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
                     Ty.path "core::ascii::EscapeDefault";
                     Ty.path "core::slice::ascii::EscapeByte"
                   ],
@@ -890,7 +912,7 @@ Module slice.
                 M.read (| fold |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -898,9 +920,9 @@ Module slice.
               self.next_back()
           }
       *)
-      Definition last (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -913,7 +935,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -940,9 +962,9 @@ Module slice.
               self.inner.next_back()
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -950,8 +972,9 @@ Module slice.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ];
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
                     Ty.path "core::ascii::EscapeDefault";
                     Ty.path "core::slice::ascii::EscapeByte"
                   ],
@@ -967,7 +990,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -997,9 +1020,9 @@ Module slice.
               self.clone().try_for_each(|b| f.write_char(b as char))
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1014,9 +1037,11 @@ Module slice.
                     [ Ty.tuple [ Ty.path "u8" ] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.tuple []; Ty.path "core::fmt::Error" ]
                 ]
               |),
@@ -1060,7 +1085,7 @@ Module slice.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1079,9 +1104,9 @@ Module slice.
               f.debug_struct("EscapeAscii").finish_non_exhaustive()
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1104,7 +1129,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1121,9 +1146,9 @@ Module slice.
         (NONASCII_MASK & v) != 0
     }
     *)
-    Definition contains_nonascii (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ v ] =>
+    Definition contains_nonascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           BinOp.Pure.ne
@@ -1133,7 +1158,7 @@ Module slice.
               |))
               (M.read (| v |)))
             (Value.Integer 0)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_contains_nonascii :
@@ -1162,9 +1187,9 @@ Module slice.
         bytes.is_empty()
     }
     *)
-    Definition is_ascii_simple (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ bytes ] =>
+    Definition is_ascii_simple (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.read (|
@@ -1229,7 +1254,7 @@ Module slice.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "is_empty",
                   []
                 |),
@@ -1237,7 +1262,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_is_ascii_simple :
@@ -1329,9 +1354,9 @@ Module slice.
         !contains_nonascii(last_word)
     }
     *)
-    Definition is_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ s ] =>
+    Definition is_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.catch_return (|
@@ -1341,7 +1366,7 @@ Module slice.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
                         []
                       |),
@@ -1352,14 +1377,14 @@ Module slice.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "align_offset",
                         []
                       |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
                             []
                           |),
@@ -1448,7 +1473,7 @@ Module slice.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
                         []
                       |),
@@ -1459,7 +1484,7 @@ Module slice.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "usize" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                         "read_unaligned",
                         []
                       |),
@@ -1541,7 +1566,7 @@ Module slice.
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                           "add",
                           []
                         |),
@@ -1570,7 +1595,7 @@ Module slice.
                                           UnOp.Pure.not
                                             (M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "*const") [ Ty.path "usize" ],
+                                                Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                                                 "is_aligned_to",
                                                 []
                                               |),
@@ -1729,6 +1754,7 @@ Module slice.
                                                                   M.get_associated_function (|
                                                                     Ty.apply
                                                                       (Ty.path "*const")
+                                                                      []
                                                                       [ Ty.path "u8" ],
                                                                     "guaranteed_eq",
                                                                     []
@@ -1738,6 +1764,7 @@ Module slice.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "*const")
+                                                                          []
                                                                           [ Ty.path "usize" ],
                                                                         "cast",
                                                                         [ Ty.path "u8" ]
@@ -1748,6 +1775,7 @@ Module slice.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "*const")
+                                                                          []
                                                                           [ Ty.path "u8" ],
                                                                         "wrapping_add",
                                                                         []
@@ -1843,7 +1871,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*const") [ Ty.path "usize" ],
+                                      Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                                       "read",
                                       []
                                     |),
@@ -1898,7 +1926,7 @@ Module slice.
                                   word_ptr,
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*const") [ Ty.path "usize" ],
+                                      Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                                       "add",
                                       []
                                     |),
@@ -1987,7 +2015,7 @@ Module slice.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "usize" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                         "read_unaligned",
                         []
                       |),
@@ -1995,7 +2023,7 @@ Module slice.
                         M.rust_cast
                           (M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                               "add",
                               []
                             |),
@@ -2021,7 +2049,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_is_ascii : M.IsFunction "core::slice::ascii::is_ascii" is_ascii.

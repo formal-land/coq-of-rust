@@ -26,9 +26,9 @@ Module instructions.
         push!(interpreter, balance);
     }
     *)
-    Definition balance (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -96,8 +96,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::From",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "from",
                             []
                           |),
@@ -367,7 +375,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_balance : M.IsFunction "revm_interpreter::instructions::host::balance" balance.
@@ -383,9 +391,9 @@ Module instructions.
         push!(interpreter, balance);
     }
     *)
-    Definition selfbalance (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition selfbalance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -584,7 +592,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_selfbalance :
@@ -608,9 +616,9 @@ Module instructions.
         push!(interpreter, U256::from(code.len()));
     }
     *)
-    Definition extcodesize (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition extcodesize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -678,8 +686,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::From",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "from",
                             []
                           |),
@@ -974,7 +990,10 @@ Module instructions.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "ruint::Uint",
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
                                       "from",
                                       [ Ty.path "usize" ]
                                     |),
@@ -1034,7 +1053,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_extcodesize :
@@ -1058,9 +1077,9 @@ Module instructions.
         push_b256!(interpreter, code_hash);
     }
     *)
-    Definition extcodehash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition extcodehash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -1176,8 +1195,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::From",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "from",
                             []
                           |),
@@ -1522,7 +1549,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_extcodehash :
@@ -1556,9 +1583,9 @@ Module instructions.
             .set_data(memory_offset, code_offset, len, &code.original_bytes());
     }
     *)
-    Definition extcodecopy (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition extcodecopy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -1626,8 +1653,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::From",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "from",
                             []
                           |),
@@ -1758,7 +1793,10 @@ Module instructions.
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.path "ruint::Uint",
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [],
                                             "as_limbs",
                                             []
                                           |),
@@ -2003,7 +2041,10 @@ Module instructions.
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.path "ruint::Uint",
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [],
                                             "as_limbs",
                                             []
                                           |),
@@ -2119,6 +2160,7 @@ Module instructions.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.path "usize";
                                                 Ty.path "core::num::error::TryFromIntError"
@@ -2141,7 +2183,10 @@ Module instructions.
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         M.get_associated_function (|
-                                                          Ty.path "ruint::Uint",
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [],
                                                           "as_limbs",
                                                           []
                                                         |),
@@ -2386,7 +2431,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_extcodecopy :
@@ -2431,9 +2476,9 @@ Module instructions.
         *number = U256::ZERO;
     }
     *)
-    Definition blockhash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition blockhash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -2578,7 +2623,14 @@ Module instructions.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "ruint::Uint", "checked_sub", [] |),
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [],
+                          "checked_sub",
+                          []
+                        |),
                         [ M.read (| block_number |); M.read (| M.read (| number |) |) ]
                       |)
                     |),
@@ -2597,7 +2649,10 @@ Module instructions.
                               UnOp.Pure.not
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "ruint::Uint",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
                                     "is_zero",
                                     []
                                   |),
@@ -2612,6 +2667,7 @@ Module instructions.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   "unwrap_or",
@@ -2632,7 +2688,10 @@ Module instructions.
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.path "ruint::Uint",
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [],
                                                 "as_limbs",
                                                 []
                                               |),
@@ -2761,7 +2820,10 @@ Module instructions.
                                                     |);
                                                     M.call_closure (|
                                                       M.get_associated_function (|
-                                                        Ty.path "ruint::Uint",
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [],
                                                         "wrapping_rem",
                                                         []
                                                       |),
@@ -2769,7 +2831,10 @@ Module instructions.
                                                         M.read (| M.read (| number |) |);
                                                         M.call_closure (|
                                                           M.get_associated_function (|
-                                                            Ty.path "ruint::Uint",
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [],
                                                             "from",
                                                             [ Ty.path "usize" ]
                                                           |),
@@ -2938,7 +3003,13 @@ Module instructions.
                                                             M.read (| number |),
                                                             M.call_closure (|
                                                               M.get_associated_function (|
-                                                                Ty.path "ruint::Uint",
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [],
                                                                 "from_be_bytes",
                                                                 []
                                                               |),
@@ -2975,7 +3046,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_blockhash :
@@ -2993,9 +3064,9 @@ Module instructions.
         *index = value;
     }
     *)
-    Definition sload (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition sload (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -3183,7 +3254,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_sload : M.IsFunction "revm_interpreter::instructions::host::sload" sload.
@@ -3213,9 +3284,9 @@ Module instructions.
         );
     }
     *)
-    Definition sstore (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition sstore (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -3564,7 +3635,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_sstore : M.IsFunction "revm_interpreter::instructions::host::sstore" sstore.
@@ -3580,9 +3651,9 @@ Module instructions.
         host.tstore(interpreter.contract.target_address, index, value);
     }
     *)
-    Definition tstore (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition tstore (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -3832,7 +3903,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_tstore : M.IsFunction "revm_interpreter::instructions::host::tstore" tstore.
@@ -3847,9 +3918,9 @@ Module instructions.
         *index = host.tload(interpreter.contract.target_address, *index);
     }
     *)
-    Definition tload (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition tload (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -4048,7 +4119,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_tload : M.IsFunction "revm_interpreter::instructions::host::tload" tload.
@@ -4087,9 +4158,9 @@ Module instructions.
         host.log(log);
     }
     *)
-    Definition log (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ interpreter; host ] =>
+    Definition log (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ N ], [ H ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -4211,7 +4282,10 @@ Module instructions.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "ruint::Uint",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [],
                                     "as_limbs",
                                     []
                                   |),
@@ -4454,7 +4528,10 @@ Module instructions.
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.path "ruint::Uint",
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [],
                                                 "as_limbs",
                                                 []
                                               |),
@@ -4757,8 +4834,12 @@ Module instructions.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
-                                    Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                      [ Value.Integer 32 ]
+                                      [];
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "with_capacity",
@@ -4782,6 +4863,7 @@ Module instructions.
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
+                                      []
                                       [ Ty.path "usize" ],
                                     [],
                                     "into_iter",
@@ -4816,6 +4898,7 @@ Module instructions.
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
                                                     (Ty.path "core::ops::range::Range")
+                                                    []
                                                     [ Ty.path "usize" ],
                                                   [],
                                                   "next",
@@ -4849,9 +4932,13 @@ Module instructions.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "alloc::vec::Vec")
+                                                            []
                                                             [
-                                                              Ty.path
-                                                                "alloy_primitives::bits::fixed::FixedBytes";
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloy_primitives::bits::fixed::FixedBytes")
+                                                                [ Value.Integer 32 ]
+                                                                [];
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           "push",
@@ -4862,9 +4949,20 @@ Module instructions.
                                                           M.call_closure (|
                                                             M.get_trait_method (|
                                                               "core::convert::From",
-                                                              Ty.path
-                                                                "alloy_primitives::bits::fixed::FixedBytes",
-                                                              [ Ty.path "ruint::Uint" ],
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloy_primitives::bits::fixed::FixedBytes")
+                                                                [ Value.Integer 32 ]
+                                                                [],
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  []
+                                                              ],
                                                               "from",
                                                               []
                                                             |),
@@ -4918,6 +5016,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [ Ty.path "alloy_primitives::log::LogData" ],
                                       "expect",
                                       []
@@ -4954,7 +5053,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_log : M.IsFunction "revm_interpreter::instructions::host::log" log.
@@ -4978,9 +5077,9 @@ Module instructions.
         interpreter.instruction_result = InstructionResult::SelfDestruct;
     }
     *)
-    Definition selfdestruct (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H; SPEC ], [ interpreter; host ] =>
+    Definition selfdestruct (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H; SPEC ], [ interpreter; host ] =>
         ltac:(M.monadic
           (let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
@@ -5084,8 +5183,16 @@ Module instructions.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::convert::From",
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                            [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [],
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                             "from",
                             []
                           |),
@@ -5292,7 +5399,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_selfdestruct :

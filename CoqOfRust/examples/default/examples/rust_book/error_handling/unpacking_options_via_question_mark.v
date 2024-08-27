@@ -4,10 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "PhoneNumber";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("area_code", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]);
+        ("area_code", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]);
         ("number", Ty.path "u32")
       ];
   } *)
@@ -16,9 +17,9 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
   Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::PhoneNumber".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -34,7 +35,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -55,12 +56,14 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 (* StructRecord
   {
     name := "Job";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("phone_number",
           Ty.apply
             (Ty.path "core::option::Option")
+            []
             [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ])
       ];
   } *)
@@ -69,9 +72,9 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Job".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -80,7 +83,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -101,12 +104,14 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 (* StructRecord
   {
     name := "Person";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("job",
           Ty.apply
             (Ty.path "core::option::Option")
+            []
             [ Ty.path "unpacking_options_via_question_mark::Job" ])
       ];
   } *)
@@ -122,9 +127,9 @@ Module Impl_unpacking_options_via_question_mark_Person.
           self.job?.phone_number?.area_code
       }
   *)
-  Definition work_phone_area_code (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition work_phone_area_code (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.catch_return (|
@@ -138,6 +143,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ],
                         [],
                         "branch",
@@ -153,6 +159,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [ Ty.path "unpacking_options_via_question_mark::Job" ],
                                     [],
                                     "branch",
@@ -188,10 +195,12 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
+                                                  []
                                                   [ Ty.path "u8" ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [ Ty.path "core::convert::Infallible" ]
                                                 ],
                                                 "from_residual",
@@ -239,10 +248,11 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
-                                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [ Ty.path "core::convert::Infallible" ]
                                     ],
                                     "from_residual",
@@ -271,7 +281,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_work_phone_area_code :
@@ -292,9 +302,9 @@ fn main() {
     assert_eq!(p.work_phone_area_code(), Some(61));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ p :=
@@ -364,8 +374,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ],
-                                      [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]
+                                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "u8" ]
                                       ],
                                       "eq",
                                       []
@@ -387,8 +401,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ];
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "u8" ];
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "u8" ]
                                       ]
                                     |),
                                     [
@@ -409,7 +429,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "unpacking_options_via_question_mark::main" main.

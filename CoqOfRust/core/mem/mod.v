@@ -7,9 +7,9 @@ Module mem.
       let _ = ManuallyDrop::new(t);
   }
   *)
-  Definition forget (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ t ] =>
+  Definition forget (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ t ] =>
       ltac:(M.monadic
         (let t := M.alloc (| t |) in
         M.read (|
@@ -17,7 +17,7 @@ Module mem.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ],
+                  Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
                   "new",
                   []
                 |),
@@ -27,7 +27,7 @@ Module mem.
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_forget : M.IsFunction "core::mem::forget" forget.
@@ -37,16 +37,16 @@ Module mem.
       intrinsics::forget(t)
   }
   *)
-  Definition forget_unsized (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ t ] =>
+  Definition forget_unsized (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ t ] =>
       ltac:(M.monadic
         (let t := M.alloc (| t |) in
         M.call_closure (|
           M.get_function (| "core::intrinsics::forget", [ T ] |),
           [ M.read (| t |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_forget_unsized : M.IsFunction "core::mem::forget_unsized" forget_unsized.
@@ -56,12 +56,12 @@ Module mem.
       intrinsics::size_of::<T>()
   }
   *)
-  Definition size_of (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [] =>
+  Definition size_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::size_of", [ T ] |), [] |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_size_of : M.IsFunction "core::mem::size_of" size_of.
@@ -72,16 +72,16 @@ Module mem.
       unsafe { intrinsics::size_of_val(val) }
   }
   *)
-  Definition size_of_val (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ val ] =>
+  Definition size_of_val (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ val ] =>
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
           M.get_function (| "core::intrinsics::size_of_val", [ T ] |),
           [ M.read (| val |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_size_of_val : M.IsFunction "core::mem::size_of_val" size_of_val.
@@ -92,16 +92,16 @@ Module mem.
       unsafe { intrinsics::size_of_val(val) }
   }
   *)
-  Definition size_of_val_raw (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ val ] =>
+  Definition size_of_val_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ val ] =>
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
           M.get_function (| "core::intrinsics::size_of_val", [ T ] |),
           [ M.read (| val |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_size_of_val_raw : M.IsFunction "core::mem::size_of_val_raw" size_of_val_raw.
@@ -111,12 +111,12 @@ Module mem.
       intrinsics::min_align_of::<T>()
   }
   *)
-  Definition min_align_of (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [] =>
+  Definition min_align_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::min_align_of", [ T ] |), [] |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_min_align_of : M.IsFunction "core::mem::min_align_of" min_align_of.
@@ -127,16 +127,16 @@ Module mem.
       unsafe { intrinsics::min_align_of_val(val) }
   }
   *)
-  Definition min_align_of_val (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ val ] =>
+  Definition min_align_of_val (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ val ] =>
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
           M.get_function (| "core::intrinsics::min_align_of_val", [ T ] |),
           [ M.read (| val |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_min_align_of_val : M.IsFunction "core::mem::min_align_of_val" min_align_of_val.
@@ -146,12 +146,12 @@ Module mem.
       intrinsics::min_align_of::<T>()
   }
   *)
-  Definition align_of (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [] =>
+  Definition align_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::min_align_of", [ T ] |), [] |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_align_of : M.IsFunction "core::mem::align_of" align_of.
@@ -162,16 +162,16 @@ Module mem.
       unsafe { intrinsics::min_align_of_val(val) }
   }
   *)
-  Definition align_of_val (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ val ] =>
+  Definition align_of_val (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ val ] =>
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
           M.get_function (| "core::intrinsics::min_align_of_val", [ T ] |),
           [ M.read (| val |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_align_of_val : M.IsFunction "core::mem::align_of_val" align_of_val.
@@ -182,16 +182,16 @@ Module mem.
       unsafe { intrinsics::min_align_of_val(val) }
   }
   *)
-  Definition align_of_val_raw (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ val ] =>
+  Definition align_of_val_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ val ] =>
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
           M.get_function (| "core::intrinsics::min_align_of_val", [ T ] |),
           [ M.read (| val |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_align_of_val_raw : M.IsFunction "core::mem::align_of_val_raw" align_of_val_raw.
@@ -201,12 +201,12 @@ Module mem.
       intrinsics::needs_drop::<T>()
   }
   *)
-  Definition needs_drop (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [] =>
+  Definition needs_drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::needs_drop", [ T ] |), [] |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_needs_drop : M.IsFunction "core::mem::needs_drop" needs_drop.
@@ -220,9 +220,9 @@ Module mem.
       }
   }
   *)
-  Definition zeroed (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [] =>
+  Definition zeroed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -235,14 +235,14 @@ Module mem.
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                 "assume_init",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "zeroed",
                     []
                   |),
@@ -252,7 +252,7 @@ Module mem.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_zeroed : M.IsFunction "core::mem::zeroed" zeroed.
@@ -274,9 +274,9 @@ Module mem.
       }
   }
   *)
-  Definition uninitialized (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [] =>
+  Definition uninitialized (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -290,7 +290,7 @@ Module mem.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                   "uninit",
                   []
                 |),
@@ -309,14 +309,14 @@ Module mem.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [ T ],
+                            Ty.apply (Ty.path "*mut") [] [ T ],
                             "write_bytes",
                             []
                           |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                                 "as_mut_ptr",
                                 []
                               |),
@@ -334,7 +334,7 @@ Module mem.
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                 "assume_init",
                 []
               |),
@@ -342,7 +342,7 @@ Module mem.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_uninitialized : M.IsFunction "core::mem::uninitialized" uninitialized.
@@ -376,9 +376,9 @@ Module mem.
       swap_simple(x, y);
   }
   *)
-  Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ x; y ] =>
+  Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ x; y ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
@@ -434,7 +434,7 @@ Module mem.
               M.alloc (| Value.Tuple [] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_swap : M.IsFunction "core::mem::swap" swap.
@@ -467,9 +467,9 @@ Module mem.
       }
   }
   *)
-  Definition swap_simple (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ x; y ] =>
+  Definition swap_simple (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ x; y ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
@@ -498,7 +498,7 @@ Module mem.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_swap_simple : M.IsFunction "core::mem::swap_simple" swap_simple.
@@ -508,9 +508,9 @@ Module mem.
       replace(dest, T::default())
   }
   *)
-  Definition take (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ dest ] =>
+  Definition take (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ dest ] =>
       ltac:(M.monadic
         (let dest := M.alloc (| dest |) in
         M.call_closure (|
@@ -523,7 +523,7 @@ Module mem.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_take : M.IsFunction "core::mem::take" take.
@@ -544,9 +544,9 @@ Module mem.
       }
   }
   *)
-  Definition replace (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ dest; src ] =>
+  Definition replace (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ dest; src ] =>
       ltac:(M.monadic
         (let dest := M.alloc (| dest |) in
         let src := M.alloc (| src |) in
@@ -567,19 +567,19 @@ Module mem.
             |) in
           result
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_replace : M.IsFunction "core::mem::replace" replace.
   
   (* pub fn drop<T>(_x: T) {} *)
-  Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ _x ] =>
+  Definition drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x ] =>
       ltac:(M.monadic
         (let _x := M.alloc (| _x |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_drop : M.IsFunction "core::mem::drop" drop.
@@ -589,13 +589,13 @@ Module mem.
       *x
   }
   *)
-  Definition copy (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ x ] =>
+  Definition copy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.read (| M.read (| x |) |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_copy : M.IsFunction "core::mem::copy" copy.
@@ -620,9 +620,9 @@ Module mem.
       }
   }
   *)
-  Definition transmute_copy (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ Src; Dst ], [ src ] =>
+  Definition transmute_copy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ Src; Dst ], [ src ] =>
       ltac:(M.monadic
         (let src := M.alloc (| src |) in
         M.read (|
@@ -715,7 +715,7 @@ Module mem.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_transmute_copy : M.IsFunction "core::mem::transmute_copy" transmute_copy.
@@ -723,12 +723,13 @@ Module mem.
   (* StructTuple
     {
       name := "Discriminant";
+      const_params := [];
       ty_params := [ "T" ];
       fields := [ Ty.associated ];
     } *)
   
   Module Impl_core_marker_Copy_for_core_mem_Discriminant_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -740,21 +741,21 @@ Module mem.
   End Impl_core_marker_Copy_for_core_mem_Discriminant_T.
   
   Module Impl_core_clone_Clone_for_core_mem_Discriminant_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [] [ T ].
     
     (*
         fn clone(&self) -> Self {
             *self
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -767,17 +768,17 @@ Module mem.
   End Impl_core_clone_Clone_for_core_mem_Discriminant_T.
   
   Module Impl_core_cmp_PartialEq_for_core_mem_Discriminant_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [] [ T ].
     
     (*
         fn eq(&self, rhs: &Self) -> bool {
             self.0 == rhs.0
         }
     *)
-    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; rhs ] =>
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -802,7 +803,7 @@ Module mem.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -815,7 +816,7 @@ Module mem.
   End Impl_core_cmp_PartialEq_for_core_mem_Discriminant_T.
   
   Module Impl_core_cmp_Eq_for_core_mem_Discriminant_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -823,17 +824,17 @@ Module mem.
   End Impl_core_cmp_Eq_for_core_mem_Discriminant_T.
   
   Module Impl_core_hash_Hash_for_core_mem_Discriminant_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [] [ T ].
     
     (*
         fn hash<H: hash::Hasher>(&self, state: &mut H) {
             self.0.hash(state);
         }
     *)
-    Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [ H ], [ self; state ] =>
+      match ε, τ, α with
+      | [], [ H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -854,7 +855,7 @@ Module mem.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -867,17 +868,17 @@ Module mem.
   End Impl_core_hash_Hash_for_core_mem_Discriminant_T.
   
   Module Impl_core_fmt_Debug_for_core_mem_Discriminant_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [] [ T ].
     
     (*
         fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt.debug_tuple("Discriminant").field(&self.0).finish()
         }
     *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; fmt ] =>
+      match ε, τ, α with
+      | [], [], [ self; fmt ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let fmt := M.alloc (| fmt |) in
@@ -912,7 +913,7 @@ Module mem.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -929,9 +930,9 @@ Module mem.
       Discriminant(intrinsics::discriminant_value(v))
   }
   *)
-  Definition discriminant (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ v ] =>
+  Definition discriminant (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ v ] =>
       ltac:(M.monadic
         (let v := M.alloc (| v |) in
         Value.StructTuple
@@ -942,7 +943,7 @@ Module mem.
               [ M.read (| v |) ]
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_discriminant : M.IsFunction "core::mem::discriminant" discriminant.
@@ -952,12 +953,12 @@ Module mem.
       intrinsics::variant_count::<T>()
   }
   *)
-  Definition variant_count (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [] =>
+  Definition variant_count (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::variant_count", [ T ] |), [] |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_variant_count : M.IsFunction "core::mem::variant_count" variant_count.
