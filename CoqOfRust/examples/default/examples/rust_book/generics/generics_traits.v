@@ -24,15 +24,15 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
   Definition Self (T U : Ty.t) : Ty.t := U.
   
   (*     fn double_drop(self, _: T) {} *)
-  Definition double_drop (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition double_drop (T U : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T U in
-    match τ, α with
-    | [], [ self; β1 ] =>
+    match ε, τ, α with
+    | [], [], [ self; β1 ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let β1 := M.alloc (| β1 |) in
         M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -57,9 +57,9 @@ fn main() {
     // ^ TODO: Try uncommenting these lines.
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ empty := M.alloc (| Value.StructTuple "generics_traits::Empty" [] |) in
@@ -79,7 +79,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_traits::main" main.

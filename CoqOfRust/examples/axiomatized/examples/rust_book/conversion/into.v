@@ -12,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_convert_From_i32_for_into_Number.
   Definition Self : Ty.t := Ty.path "into::Number".
   
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -22,6 +22,6 @@ Module Impl_core_convert_From_i32_for_into_Number.
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_i32_for_into_Number.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "into::main" main.

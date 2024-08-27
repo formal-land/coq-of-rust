@@ -17,14 +17,14 @@ Module Impl_associated_functions_and_methods_Point.
           Point { y: 0.0, x: 1.0 }
       }
   *)
-  Definition origin (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "associated_functions_and_methods::Point"
           [ ("y", M.read (| UnsupportedLiteral |)); ("x", M.read (| UnsupportedLiteral |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_origin : M.IsAssociatedFunction Self "origin" origin.
@@ -34,16 +34,16 @@ Module Impl_associated_functions_and_methods_Point.
           Point { x: x, y: y }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ x; y ] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ x; y ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
         Value.StructRecord
           "associated_functions_and_methods::Point"
           [ ("x", M.read (| x |)); ("y", M.read (| y |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -69,9 +69,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
           self.p1
       }
   *)
-  Definition get_p1 (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get_p1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -81,7 +81,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
             "p1"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_p1 : M.IsAssociatedFunction Self "get_p1" get_p1.
@@ -97,9 +97,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
           ((x1 - x2) * (y1 - y2)).abs()
       }
   *)
-  Definition area (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition area (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -165,7 +165,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_area : M.IsAssociatedFunction Self "area" area.
@@ -178,9 +178,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
           2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
       }
   *)
-  Definition perimeter (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition perimeter (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -252,7 +252,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_perimeter : M.IsAssociatedFunction Self "perimeter" perimeter.
@@ -266,9 +266,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
           self.p2.y += y;
       }
   *)
-  Definition translate (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; x; y ] =>
+  Definition translate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; x; y ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let x := M.alloc (| x |) in
@@ -324,7 +324,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
             M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| y |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_translate : M.IsAssociatedFunction Self "translate" translate.
@@ -355,9 +355,9 @@ Module Impl_associated_functions_and_methods_Pair.
           // `first` and `second` go out of scope and get freed
       }
   *)
-  Definition destroy (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition destroy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -447,7 +447,7 @@ Module Impl_associated_functions_and_methods_Pair.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_destroy : M.IsAssociatedFunction Self "destroy" destroy.
@@ -489,9 +489,9 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ rectangle :=
@@ -699,7 +699,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "associated_functions_and_methods::main" main.

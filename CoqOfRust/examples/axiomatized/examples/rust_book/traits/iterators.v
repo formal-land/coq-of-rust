@@ -14,7 +14,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   
   Definition _Item : Ty.t := Ty.path "u32".
   
-  Parameter next : (list Ty.t) -> (list Value.t) -> M.
+  Parameter next : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -24,10 +24,10 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       (* Instance *) [ ("Item", InstanceField.Ty _Item); ("next", InstanceField.Method next) ].
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
-Parameter fibonacci : (list Ty.t) -> (list Value.t) -> M.
+Parameter fibonacci : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_fibonacci : M.IsFunction "iterators::fibonacci" fibonacci.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "iterators::main" main.

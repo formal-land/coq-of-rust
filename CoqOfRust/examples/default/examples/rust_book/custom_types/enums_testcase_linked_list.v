@@ -39,10 +39,10 @@ Module Impl_enums_testcase_linked_list_List.
           Nil
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] => ltac:(M.monadic (Value.StructTuple "enums_testcase_linked_list::List::Nil" []))
-    | _, _ => M.impossible
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "enums_testcase_linked_list::List::Nil" []))
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -53,9 +53,9 @@ Module Impl_enums_testcase_linked_list_List.
           Cons(elem, Box::new(self))
       }
   *)
-  Definition prepend (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; elem ] =>
+  Definition prepend (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; elem ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let elem := M.alloc (| elem |) in
@@ -75,7 +75,7 @@ Module Impl_enums_testcase_linked_list_List.
               [ M.read (| self |) ]
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_prepend : M.IsAssociatedFunction Self "prepend" prepend.
@@ -98,9 +98,9 @@ Module Impl_enums_testcase_linked_list_List.
           }
       }
   *)
-  Definition len (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -142,7 +142,7 @@ Module Impl_enums_testcase_linked_list_List.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -161,9 +161,9 @@ Module Impl_enums_testcase_linked_list_List.
           }
       }
   *)
-  Definition stringify (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition stringify (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -271,7 +271,7 @@ Module Impl_enums_testcase_linked_list_List.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_stringify : M.IsAssociatedFunction Self "stringify" stringify.
@@ -292,9 +292,9 @@ fn main() {
     println!("{}", list.stringify());
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ list :=
@@ -441,7 +441,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "enums_testcase_linked_list::main" main.

@@ -20,16 +20,16 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_functions_order_SomeType.
   Definition Self : Ty.t := Ty.path "functions_order::SomeType".
   
-  Parameter meth1 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter meth1 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1.
   
-  Parameter meth2 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter meth2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2.
 End Impl_functions_order_SomeType.
 
-Parameter depends_on_trait_impl : (list Ty.t) -> (list Value.t) -> M.
+Parameter depends_on_trait_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_depends_on_trait_impl :
   M.IsFunction "functions_order::depends_on_trait_impl" depends_on_trait_impl.
@@ -40,9 +40,9 @@ Axiom Function_depends_on_trait_impl :
 Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   Definition Self : Ty.t := Ty.path "functions_order::SomeType".
   
-  Parameter some_trait_foo : (list Ty.t) -> (list Value.t) -> M.
+  Parameter some_trait_foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter some_trait_bar : (list Ty.t) -> (list Value.t) -> M.
+  Parameter some_trait_bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -59,9 +59,9 @@ End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   Definition Self : Ty.t := Ty.path "functions_order::OtherType".
   
-  Parameter some_trait_foo : (list Ty.t) -> (list Value.t) -> M.
+  Parameter some_trait_foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter some_trait_bar : (list Ty.t) -> (list Value.t) -> M.
+  Parameter some_trait_bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -76,29 +76,29 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 Module inner_mod.
-  Parameter bar : (list Ty.t) -> (list Value.t) -> M.
+  Parameter bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_bar : M.IsFunction "functions_order::inner_mod::bar" bar.
   
-  Parameter tar : (list Ty.t) -> (list Value.t) -> M.
+  Parameter tar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_tar : M.IsFunction "functions_order::inner_mod::tar" tar.
   
   Module nested_mod.
-    Parameter tick : (list Ty.t) -> (list Value.t) -> M.
+    Parameter tick : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_tick : M.IsFunction "functions_order::inner_mod::nested_mod::tick" tick.
     
-    Parameter tack : (list Ty.t) -> (list Value.t) -> M.
+    Parameter tack : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_tack : M.IsFunction "functions_order::inner_mod::nested_mod::tack" tack.
   End nested_mod.
 End inner_mod.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "functions_order::main" main.
 
-Parameter foo : (list Ty.t) -> (list Value.t) -> M.
+Parameter foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_foo : M.IsFunction "functions_order::foo" foo.

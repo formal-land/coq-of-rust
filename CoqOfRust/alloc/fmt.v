@@ -14,19 +14,22 @@ Module fmt.
       args.as_str().map_or_else(|| format_inner(args), crate::borrow::ToOwned::to_owned)
   }
   *)
-  Definition format (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ args ] =>
+  Definition format (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ args ] =>
       ltac:(M.monadic
         (let args := M.alloc (| args |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
             "map_or_else",
             [
               Ty.path "alloc::string::String";
               Ty.function [ Ty.tuple [] ] (Ty.path "alloc::string::String");
-              Ty.function [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] Ty.associated
+              Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] Ty.associated
             ]
           |),
           [
@@ -55,7 +58,7 @@ Module fmt.
             M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_format : M.IsFunction "alloc::fmt::format" format.
@@ -69,9 +72,9 @@ Module fmt.
             output
         }
     *)
-    Definition format_inner (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ args ] =>
+    Definition format_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ args ] =>
         ltac:(M.monadic
           (let args := M.alloc (| args |) in
           M.read (|
@@ -103,6 +106,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                     "expect",
                     []
@@ -124,7 +128,7 @@ Module fmt.
               |) in
             output
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_format_inner : M.IsFunction "alloc::fmt::format::format_inner" format_inner.

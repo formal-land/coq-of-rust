@@ -6,9 +6,9 @@ fn sum((x, y): (i32, i32)) -> i32 {
     x + y
 }
 *)
-Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ β0 ] =>
+Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       M.match_operator (|
@@ -23,7 +23,7 @@ Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
               BinOp.Wrap.add Integer.I32 (M.read (| x |)) (M.read (| y |))))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_sum : M.IsFunction "pattern_in_function_parameters::sum" sum.
@@ -44,9 +44,9 @@ fn steps_between(&start: &char, &end: &char) -> Option<usize> {
     }
 }
 *)
-Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ β0; β1 ] =>
+Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ β0; β1 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       let β1 := M.alloc (| β1 |) in
@@ -185,7 +185,7 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
               |)))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_steps_between :

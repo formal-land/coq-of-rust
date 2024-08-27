@@ -5,13 +5,14 @@ Module boxed.
   (* StructTuple
     {
       name := "Box";
+      const_params := [];
       ty_params := [ "T"; "A" ];
-      fields := [ Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ]; A ];
+      fields := [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ]; A ];
     } *)
   
   Module Impl_alloc_boxed_Box_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         pub fn new(x: T) -> Self {
@@ -19,23 +20,23 @@ Module boxed.
             Box::new(x)
         }
     *)
-    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ x ] =>
+      match ε, τ, α with
+      | [], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.read (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ],
+                Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
               |),
               [ x ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -45,20 +46,20 @@ Module boxed.
             Self::new_uninit_in(Global)
         }
     *)
-    Definition new_uninit (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_uninit (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new_uninit_in",
               []
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_uninit :
@@ -70,20 +71,20 @@ Module boxed.
             Self::new_zeroed_in(Global)
         }
     *)
-    Definition new_zeroed (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_zeroed (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new_zeroed_in",
               []
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_zeroed :
@@ -95,20 +96,22 @@ Module boxed.
             Box::new(x).into()
         }
     *)
-    Definition pin (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition pin (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ x ] =>
+      match ε, τ, α with
+      | [], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::convert::Into",
-              Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               [
                 Ty.apply
                   (Ty.path "core::pin::Pin")
-                  [ Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ] ]
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ]
               ],
               "into",
               []
@@ -116,7 +119,7 @@ Module boxed.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ],
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
                   "new",
                   []
                 |),
@@ -124,7 +127,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_pin : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "pin" (pin T).
@@ -134,21 +137,21 @@ Module boxed.
             Self::try_new_in(x, Global)
         }
     *)
-    Definition try_new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ x ] =>
+      match ε, τ, α with
+      | [], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "try_new_in",
               []
             |),
             [ M.read (| x |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new :
@@ -160,20 +163,25 @@ Module boxed.
             Box::try_new_uninit_in(Global)
         }
     *)
-    Definition try_new_uninit (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new_uninit
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "try_new_uninit_in",
               []
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new_uninit :
@@ -185,20 +193,25 @@ Module boxed.
             Box::try_new_zeroed_in(Global)
         }
     *)
-    Definition try_new_zeroed (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new_zeroed
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "try_new_zeroed_in",
               []
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new_zeroed :
@@ -209,21 +222,21 @@ Module boxed.
             unsafe { Self::from_raw_in(raw, Global) }
         }
     *)
-    Definition from_raw (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_raw (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ raw ] =>
+      match ε, τ, α with
+      | [], [], [ raw ] =>
         ltac:(M.monadic
           (let raw := M.alloc (| raw |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_raw_in",
               []
             |),
             [ M.read (| raw |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_raw :
@@ -232,7 +245,7 @@ Module boxed.
   End Impl_alloc_boxed_Box_T_alloc_alloc_Global.
   
   Module Impl_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         pub fn new_in(x: T, alloc: A) -> Self
@@ -246,10 +259,10 @@ Module boxed.
             }
         }
     *)
-    Definition new_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ x; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ x; alloc ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let alloc := M.alloc (| alloc |) in
@@ -258,7 +271,7 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "new_uninit_in",
                     []
                   |),
@@ -268,11 +281,11 @@ Module boxed.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "write", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "write", [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                         "as_mut_ptr",
                         []
                       |),
@@ -287,7 +300,8 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ],
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                   "assume_init",
                   []
                 |),
@@ -295,7 +309,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_in :
@@ -314,10 +328,10 @@ Module boxed.
             }
         }
     *)
-    Definition try_new_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ x; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ x; alloc ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let alloc := M.alloc (| alloc |) in
@@ -333,11 +347,16 @@ Module boxed.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
-                                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ];
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ];
                                     A
                                   ];
                                 Ty.path "core::alloc::AllocError"
@@ -349,7 +368,7 @@ Module boxed.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                                Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                                 "try_new_uninit_in",
                                 []
                               |),
@@ -377,13 +396,15 @@ Module boxed.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
-                                            Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ];
+                                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
                                             Ty.path "core::alloc::AllocError"
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::alloc::AllocError"
@@ -414,11 +435,15 @@ Module boxed.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "write", [] |),
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        "write",
+                        []
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                             "as_mut_ptr",
                             []
                           |),
@@ -436,7 +461,9 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
+                            ],
                           "assume_init",
                           []
                         |),
@@ -446,7 +473,7 @@ Module boxed.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new_in :
@@ -467,10 +494,15 @@ Module boxed.
             }
         }
     *)
-    Definition new_uninit_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_uninit_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ alloc ] =>
+      match ε, τ, α with
+      | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           M.read (|
@@ -480,7 +512,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "new",
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   []
                 |)
@@ -489,7 +521,7 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "try_new_uninit_in",
                     []
                   |),
@@ -518,7 +550,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_uninit_in :
@@ -539,10 +571,15 @@ Module boxed.
             unsafe { Ok(Box::from_raw_in(ptr.as_ptr(), alloc)) }
         }
     *)
-    Definition try_new_uninit_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new_uninit_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ alloc ] =>
+      match ε, τ, α with
+      | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           M.catch_return (|
@@ -565,9 +602,11 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
                                         [ T ]
                                     ],
                                   "dangling",
@@ -587,6 +626,7 @@ Module boxed.
                                     [
                                       Ty.apply
                                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
                                         [ T ]
                                     ]
                                   |),
@@ -598,9 +638,14 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
-                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "cast",
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
                                   ]
                                 |),
                                 [
@@ -612,10 +657,13 @@ Module boxed.
                                             "core::ops::try_trait::Try",
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ptr::non_null::NonNull")
-                                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
                                                 Ty.path "core::alloc::AllocError"
                                               ],
                                             [],
@@ -655,13 +703,16 @@ Module boxed.
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "alloc::boxed::Box")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::mem::maybe_uninit::MaybeUninit")
+                                                                  []
                                                                   [ T ];
                                                                 A
                                                               ];
@@ -670,6 +721,7 @@ Module boxed.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.path "core::convert::Infallible";
                                                               Ty.path "core::alloc::AllocError"
@@ -711,7 +763,9 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
+                            ],
                           "from_raw_in",
                           []
                         |),
@@ -720,7 +774,9 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
                               "as_ptr",
                               []
                             |),
@@ -733,7 +789,7 @@ Module boxed.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new_uninit_in :
@@ -754,10 +810,15 @@ Module boxed.
             }
         }
     *)
-    Definition new_zeroed_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_zeroed_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ alloc ] =>
+      match ε, τ, α with
+      | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           M.read (|
@@ -767,7 +828,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "new",
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   []
                 |)
@@ -776,7 +837,7 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "try_new_zeroed_in",
                     []
                   |),
@@ -805,7 +866,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_zeroed_in :
@@ -826,10 +887,15 @@ Module boxed.
             unsafe { Ok(Box::from_raw_in(ptr.as_ptr(), alloc)) }
         }
     *)
-    Definition try_new_zeroed_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new_zeroed_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ alloc ] =>
+      match ε, τ, α with
+      | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           M.catch_return (|
@@ -852,9 +918,11 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
                                         [ T ]
                                     ],
                                   "dangling",
@@ -874,6 +942,7 @@ Module boxed.
                                     [
                                       Ty.apply
                                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
                                         [ T ]
                                     ]
                                   |),
@@ -885,9 +954,14 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
-                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "cast",
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
                                   ]
                                 |),
                                 [
@@ -899,10 +973,13 @@ Module boxed.
                                             "core::ops::try_trait::Try",
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ptr::non_null::NonNull")
-                                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
                                                 Ty.path "core::alloc::AllocError"
                                               ],
                                             [],
@@ -942,13 +1019,16 @@ Module boxed.
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "alloc::boxed::Box")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::mem::maybe_uninit::MaybeUninit")
+                                                                  []
                                                                   [ T ];
                                                                 A
                                                               ];
@@ -957,6 +1037,7 @@ Module boxed.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.path "core::convert::Infallible";
                                                               Ty.path "core::alloc::AllocError"
@@ -998,7 +1079,9 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
+                            ],
                           "from_raw_in",
                           []
                         |),
@@ -1007,7 +1090,9 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
                               "as_ptr",
                               []
                             |),
@@ -1020,7 +1105,7 @@ Module boxed.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new_zeroed_in :
@@ -1035,23 +1120,23 @@ Module boxed.
             Self::into_pin(Self::new_in(x, alloc))
         }
     *)
-    Definition pin_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition pin_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ x; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ x; alloc ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
               "into_pin",
               []
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                   "new_in",
                   []
                 |),
@@ -1059,7 +1144,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_pin_in :
@@ -1072,10 +1157,15 @@ Module boxed.
             unsafe { Box::from_raw_in(raw as *mut [T; 1], alloc) }
         }
     *)
-    Definition into_boxed_slice (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_boxed_slice
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ boxed ] =>
+      match ε, τ, α with
+      | [], [], [ boxed ] =>
         ltac:(M.monadic
           (let boxed := M.alloc (| boxed |) in
           M.read (|
@@ -1083,7 +1173,7 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "into_raw_with_allocator",
                     []
                   |),
@@ -1102,7 +1192,8 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
-                            [ Ty.apply (Ty.path "slice") [ T ]; A ],
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                           "from_raw_in",
                           []
                         |),
@@ -1115,7 +1206,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_boxed_slice :
@@ -1127,14 +1218,14 @@ Module boxed.
             *boxed
         }
     *)
-    Definition into_inner (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_inner (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ boxed ] =>
+      match ε, τ, α with
+      | [], [], [ boxed ] =>
         ltac:(M.monadic
           (let boxed := M.alloc (| boxed |) in
           M.read (| M.read (| boxed |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_inner :
@@ -1145,10 +1236,10 @@ Module boxed.
             Box(unsafe { Unique::new_unchecked(raw) }, alloc)
         }
     *)
-    Definition from_raw_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_raw_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ raw; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ raw; alloc ] =>
         ltac:(M.monadic
           (let raw := M.alloc (| raw |) in
           let alloc := M.alloc (| alloc |) in
@@ -1157,7 +1248,7 @@ Module boxed.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+                  Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                   "new_unchecked",
                   []
                 |),
@@ -1165,7 +1256,7 @@ Module boxed.
               |);
               M.read (| alloc |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_raw_in :
@@ -1177,10 +1268,10 @@ Module boxed.
             Self::into_raw_with_allocator(b).0
         }
     *)
-    Definition into_raw (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_raw (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ b ] =>
+      match ε, τ, α with
+      | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.read (|
@@ -1188,7 +1279,7 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "into_raw_with_allocator",
                     []
                   |),
@@ -1198,7 +1289,7 @@ Module boxed.
               0
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_raw :
@@ -1211,10 +1302,15 @@ Module boxed.
             (leaked.as_ptr(), alloc)
         }
     *)
-    Definition into_raw_with_allocator (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_raw_with_allocator
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ b ] =>
+      match ε, τ, α with
+      | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.read (|
@@ -1222,7 +1318,7 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "into_unique",
                     []
                   |),
@@ -1241,7 +1337,7 @@ Module boxed.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+                              Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                               "as_ptr",
                               []
                             |),
@@ -1253,7 +1349,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_raw_with_allocator :
@@ -1271,10 +1367,10 @@ Module boxed.
             (Unique::from(Box::leak(b)), alloc)
         }
     *)
-    Definition into_unique (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_unique (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ b ] =>
+      match ε, τ, α with
+      | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.read (|
@@ -1291,15 +1387,15 @@ Module boxed.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::From",
-                      Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
-                      [ Ty.apply (Ty.path "&mut") [ T ] ],
+                      Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
+                      [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                       "from",
                       []
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                          Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                           "leak",
                           []
                         |),
@@ -1311,7 +1407,7 @@ Module boxed.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_unique :
@@ -1323,14 +1419,14 @@ Module boxed.
             &b.1
         }
     *)
-    Definition allocator (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocator (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ b ] =>
+      match ε, τ, α with
+      | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.SubPointer.get_struct_tuple_field (| M.read (| b |), "alloc::boxed::Box", 1 |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_allocator :
@@ -1345,15 +1441,15 @@ Module boxed.
             unsafe { &mut *mem::ManuallyDrop::new(b).0.as_ptr() }
         }
     *)
-    Definition leak (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition leak (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ b ] =>
+      match ε, τ, α with
+      | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+              Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
               "as_ptr",
               []
             |),
@@ -1365,7 +1461,8 @@ Module boxed.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                        [ Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ] ],
+                        []
+                        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
                       [],
                       "deref",
                       []
@@ -1376,7 +1473,8 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                              [ Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ] ],
+                              []
+                              [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
                             "new",
                             []
                           |),
@@ -1391,7 +1489,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_leak :
@@ -1409,23 +1507,24 @@ Module boxed.
             unsafe { Pin::new_unchecked(boxed) }
         }
     *)
-    Definition into_pin (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_pin (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ boxed ] =>
+      match ε, τ, α with
+      | [], [], [ boxed ] =>
         ltac:(M.monadic
           (let boxed := M.alloc (| boxed |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::pin::Pin")
-                [ Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ] ],
+                []
+                [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
               "new_unchecked",
               []
             |),
             [ M.read (| boxed |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_pin :
@@ -1437,29 +1536,38 @@ Module boxed.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         pub fn new_uninit_slice(len: usize) -> Box<[mem::MaybeUninit<T>]> {
             unsafe { RawVec::with_capacity(len).into_box(len) }
         }
     *)
-    Definition new_uninit_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_uninit_slice
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ len ] =>
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "into_box",
               []
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; Ty.path "alloc::alloc::Global" ],
+                  Ty.apply
+                    (Ty.path "alloc::raw_vec::RawVec")
+                    []
+                    [ T; Ty.path "alloc::alloc::Global" ],
                   "with_capacity",
                   []
                 |),
@@ -1468,7 +1576,7 @@ Module boxed.
               M.read (| len |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_uninit_slice :
@@ -1480,22 +1588,30 @@ Module boxed.
             unsafe { RawVec::with_capacity_zeroed(len).into_box(len) }
         }
     *)
-    Definition new_zeroed_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_zeroed_slice
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ len ] =>
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "into_box",
               []
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; Ty.path "alloc::alloc::Global" ],
+                  Ty.apply
+                    (Ty.path "alloc::raw_vec::RawVec")
+                    []
+                    [ T; Ty.path "alloc::alloc::Global" ],
                   "with_capacity_zeroed",
                   []
                 |),
@@ -1504,7 +1620,7 @@ Module boxed.
               M.read (| len |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_zeroed_slice :
@@ -1525,10 +1641,15 @@ Module boxed.
             unsafe { Ok(RawVec::from_raw_parts_in(ptr.as_ptr(), len, Global).into_box(len)) }
         }
     *)
-    Definition try_new_uninit_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new_uninit_slice
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ len ] =>
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.catch_return (|
@@ -1557,7 +1678,7 @@ Module boxed.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "dangling",
                                   []
                                 |),
@@ -1577,6 +1698,7 @@ Module boxed.
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ T ]
                                         ]
                                       |),
@@ -1621,7 +1743,8 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
-                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "cast",
                                   [ T ]
                                 |),
@@ -1634,10 +1757,13 @@ Module boxed.
                                             "core::ops::try_trait::Try",
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ptr::non_null::NonNull")
-                                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
                                                 Ty.path "core::alloc::AllocError"
                                               ],
                                             [],
@@ -1682,16 +1808,20 @@ Module boxed.
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "alloc::boxed::Box")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ];
                                                                 Ty.path "alloc::alloc::Global"
@@ -1701,6 +1831,7 @@ Module boxed.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.path "core::convert::Infallible";
                                                               Ty.path "core::alloc::AllocError"
@@ -1742,6 +1873,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::raw_vec::RawVec")
+                            []
                             [ T; Ty.path "alloc::alloc::Global" ],
                           "into_box",
                           []
@@ -1751,6 +1883,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::raw_vec::RawVec")
+                                []
                                 [ T; Ty.path "alloc::alloc::Global" ],
                               "from_raw_parts_in",
                               []
@@ -1758,7 +1891,7 @@ Module boxed.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "as_ptr",
                                   []
                                 |),
@@ -1775,7 +1908,7 @@ Module boxed.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new_uninit_slice :
@@ -1796,10 +1929,15 @@ Module boxed.
             unsafe { Ok(RawVec::from_raw_parts_in(ptr.as_ptr(), len, Global).into_box(len)) }
         }
     *)
-    Definition try_new_zeroed_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new_zeroed_slice
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ len ] =>
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.catch_return (|
@@ -1828,7 +1966,7 @@ Module boxed.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "dangling",
                                   []
                                 |),
@@ -1848,6 +1986,7 @@ Module boxed.
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ T ]
                                         ]
                                       |),
@@ -1892,7 +2031,8 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
-                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "cast",
                                   [ T ]
                                 |),
@@ -1905,10 +2045,13 @@ Module boxed.
                                             "core::ops::try_trait::Try",
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ptr::non_null::NonNull")
-                                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
                                                 Ty.path "core::alloc::AllocError"
                                               ],
                                             [],
@@ -1953,16 +2096,20 @@ Module boxed.
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "alloc::boxed::Box")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ];
                                                                 Ty.path "alloc::alloc::Global"
@@ -1972,6 +2119,7 @@ Module boxed.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.path "core::convert::Infallible";
                                                               Ty.path "core::alloc::AllocError"
@@ -2013,6 +2161,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::raw_vec::RawVec")
+                            []
                             [ T; Ty.path "alloc::alloc::Global" ],
                           "into_box",
                           []
@@ -2022,6 +2171,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::raw_vec::RawVec")
+                                []
                                 [ T; Ty.path "alloc::alloc::Global" ],
                               "from_raw_parts_in",
                               []
@@ -2029,7 +2179,7 @@ Module boxed.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "as_ptr",
                                   []
                                 |),
@@ -2046,7 +2196,7 @@ Module boxed.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new_zeroed_slice :
@@ -2056,30 +2206,35 @@ Module boxed.
   
   Module Impl_alloc_boxed_Box_slice_T_A.
     Definition Self (T A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.apply (Ty.path "slice") [ T ]; A ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ].
     
     (*
         pub fn new_uninit_slice_in(len: usize, alloc: A) -> Box<[mem::MaybeUninit<T>], A> {
             unsafe { RawVec::with_capacity_in(len, alloc).into_box(len) }
         }
     *)
-    Definition new_uninit_slice_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_uninit_slice_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ len; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ len; alloc ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "into_box",
               []
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                   "with_capacity_in",
                   []
                 |),
@@ -2088,7 +2243,7 @@ Module boxed.
               M.read (| len |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_uninit_slice_in :
@@ -2100,23 +2255,28 @@ Module boxed.
             unsafe { RawVec::with_capacity_zeroed_in(len, alloc).into_box(len) }
         }
     *)
-    Definition new_zeroed_slice_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_zeroed_slice_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ len; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ len; alloc ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "into_box",
               []
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                   "with_capacity_zeroed_in",
                   []
                 |),
@@ -2125,7 +2285,7 @@ Module boxed.
               M.read (| len |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_zeroed_slice_in :
@@ -2137,7 +2297,8 @@ Module boxed.
     Definition Self (T A : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ].
+        []
+        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ].
     
     (*
         pub unsafe fn assume_init(self) -> Box<T, A> {
@@ -2145,10 +2306,10 @@ Module boxed.
             unsafe { Box::from_raw_in(raw as *mut T, alloc) }
         }
     *)
-    Definition assume_init (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assume_init (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2158,7 +2319,8 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ],
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                     "into_raw_with_allocator",
                     []
                   |),
@@ -2175,7 +2337,7 @@ Module boxed.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                          Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                           "from_raw_in",
                           []
                         |),
@@ -2185,7 +2347,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_assume_init :
@@ -2200,10 +2362,10 @@ Module boxed.
             }
         }
     *)
-    Definition write (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ boxed; value ] =>
+      match ε, τ, α with
+      | [], [], [ boxed; value ] =>
         ltac:(M.monadic
           (let boxed := M.alloc (| boxed |) in
           let value := M.alloc (| value |) in
@@ -2212,7 +2374,7 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "write",
                     []
                   |),
@@ -2224,7 +2386,8 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ],
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                   "assume_init",
                   []
                 |),
@@ -2232,7 +2395,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_write :
@@ -2244,10 +2407,12 @@ Module boxed.
     Definition Self (T A : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [
           Ty.apply
             (Ty.path "slice")
-            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+            []
+            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
           A
         ].
     
@@ -2257,10 +2422,10 @@ Module boxed.
             unsafe { Box::from_raw_in(raw as *mut [T], alloc) }
         }
     *)
-    Definition assume_init (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assume_init (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2270,10 +2435,12 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [
                         Ty.apply
                           (Ty.path "slice")
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                         A
                       ],
                     "into_raw_with_allocator",
@@ -2294,7 +2461,8 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
-                            [ Ty.apply (Ty.path "slice") [ T ]; A ],
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                           "from_raw_in",
                           []
                         |),
@@ -2304,7 +2472,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_assume_init :
@@ -2315,7 +2483,7 @@ Module boxed.
   
   
   Module Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn drop(&mut self) {
@@ -2331,10 +2499,10 @@ Module boxed.
             }
         }
     *)
-    Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2355,7 +2523,7 @@ Module boxed.
                     M.pointer_coercion
                       (M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+                          Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                           "as_ptr",
                           []
                         |),
@@ -2403,15 +2571,19 @@ Module boxed.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::convert::From",
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
-                                [ Ty.apply (Ty.path "core::ptr::unique::Unique") [ Ty.path "u8" ] ],
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.path "u8" ],
+                                [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ]
+                                ],
                                 "from",
                                 []
                               |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+                                    Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                                     "cast",
                                     [ Ty.path "u8" ]
                                   |),
@@ -2428,7 +2600,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2442,21 +2614,21 @@ Module boxed.
   
   Module Impl_core_default_Default_where_core_default_Default_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn default() -> Self {
             Box::new(T::default())
         }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
               []
             |),
@@ -2467,7 +2639,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2483,7 +2655,8 @@ Module boxed.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn default() -> Self {
@@ -2491,10 +2664,10 @@ Module boxed.
             Box(ptr, Global)
         }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ ptr :=
@@ -2505,7 +2678,8 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::ptr::unique::Unique")
-                        [ Ty.apply (Ty.path "array") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ T ] ],
                       "dangling",
                       []
                     |),
@@ -2518,7 +2692,7 @@ Module boxed.
                 [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2532,7 +2706,7 @@ Module boxed.
   
   Module Impl_core_default_Default_for_alloc_boxed_Box_str_alloc_alloc_Global.
     Definition Self : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn default() -> Self {
@@ -2544,9 +2718,9 @@ Module boxed.
             Box(ptr, Global)
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ ptr :=
@@ -2559,7 +2733,8 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::ptr::unique::Unique")
-                            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                            []
+                            [ Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ Ty.path "u8" ] ],
                           "dangling",
                           []
                         |),
@@ -2569,7 +2744,7 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::unique::Unique") [ Ty.path "str" ],
+                      Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "str" ],
                       "new_unchecked",
                       []
                     |),
@@ -2579,7 +2754,8 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::ptr::unique::Unique")
-                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             "as_ptr",
                             []
                           |),
@@ -2595,7 +2771,7 @@ Module boxed.
                 [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2607,7 +2783,7 @@ Module boxed.
   End Impl_core_default_Default_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn clone(&self) -> Self {
@@ -2619,10 +2795,10 @@ Module boxed.
             }
         }
     *)
-    Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2630,7 +2806,7 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "new_uninit_in",
                     []
                   |),
@@ -2662,7 +2838,7 @@ Module boxed.
                     M.read (| M.read (| self |) |);
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                         "as_mut_ptr",
                         []
                       |),
@@ -2676,7 +2852,8 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ],
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                   "assume_init",
                   []
                 |),
@@ -2684,7 +2861,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -2692,10 +2869,10 @@ Module boxed.
             ( **self).clone_from(&( **source));
         }
     *)
-    Definition clone_from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_from (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; source ] =>
+      match ε, τ, α with
+      | [], [], [ self; source ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let source := M.alloc (| source |) in
@@ -2709,7 +2886,7 @@ Module boxed.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2727,7 +2904,7 @@ Module boxed.
   
   Module Impl_core_clone_Clone_for_alloc_boxed_Box_str_alloc_alloc_Global.
     Definition Self : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn clone(&self) -> Self {
@@ -2736,9 +2913,9 @@ Module boxed.
             unsafe { from_boxed_utf8_unchecked(buf) }
         }
     *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2747,12 +2924,13 @@ Module boxed.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::convert::Into",
-                    Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                     [
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ];
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                           Ty.path "alloc::alloc::Global"
                         ]
                     ],
@@ -2774,7 +2952,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2786,17 +2964,17 @@ Module boxed.
   End Impl_core_clone_Clone_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
   Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn eq(&self, other: &Self) -> bool {
             PartialEq::eq(&**self, &**other)
         }
     *)
-    Definition eq (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -2804,7 +2982,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -2812,10 +2990,10 @@ Module boxed.
             PartialEq::ne(&**self, &**other)
         }
     *)
-    Definition ne (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ne (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -2823,7 +3001,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2837,17 +3015,17 @@ Module boxed.
   End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
             PartialOrd::partial_cmp(&**self, &**other)
         }
     *)
-    Definition partial_cmp (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -2855,7 +3033,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "partial_cmp", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -2863,10 +3041,10 @@ Module boxed.
             PartialOrd::lt(&**self, &**other)
         }
     *)
-    Definition lt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition lt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -2874,7 +3052,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -2882,10 +3060,10 @@ Module boxed.
             PartialOrd::le(&**self, &**other)
         }
     *)
-    Definition le (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition le (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -2893,7 +3071,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "le", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -2901,10 +3079,10 @@ Module boxed.
             PartialOrd::ge(&**self, &**other)
         }
     *)
-    Definition ge (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ge (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -2912,7 +3090,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "ge", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -2920,10 +3098,10 @@ Module boxed.
             PartialOrd::gt(&**self, &**other)
         }
     *)
-    Definition gt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition gt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -2931,7 +3109,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "gt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2951,17 +3129,17 @@ Module boxed.
   End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_cmp_Ord_where_core_marker_Sized_T_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn cmp(&self, other: &Self) -> Ordering {
             Ord::cmp(&**self, &**other)
         }
     *)
-    Definition cmp (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -2969,7 +3147,7 @@ Module boxed.
             M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2982,7 +3160,7 @@ Module boxed.
   End Impl_core_cmp_Ord_where_core_marker_Sized_T_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_cmp_Eq_where_core_marker_Sized_T_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     Axiom Implements :
       forall (T A : Ty.t),
@@ -2994,17 +3172,17 @@ Module boxed.
   End Impl_core_cmp_Eq_where_core_marker_Sized_T_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_hash_Hash_where_core_marker_Sized_T_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn hash<H: Hasher>(&self, state: &mut H) {
             ( **self).hash(state);
         }
     *)
-    Definition hash (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ H ], [ self; state ] =>
+      match ε, τ, α with
+      | [], [ H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -3018,7 +3196,7 @@ Module boxed.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3031,24 +3209,24 @@ Module boxed.
   End Impl_core_hash_Hash_where_core_marker_Sized_T_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_hash_Hasher_where_core_marker_Sized_T_where_core_hash_Hasher_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn finish(&self) -> u64 {
             ( **self).finish()
         }
     *)
-    Definition finish (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition finish (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", T, [], "finish", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3056,10 +3234,10 @@ Module boxed.
             ( **self).write(bytes)
         }
     *)
-    Definition write (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; bytes ] =>
+      match ε, τ, α with
+      | [], [], [ self; bytes ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let bytes := M.alloc (| bytes |) in
@@ -3067,7 +3245,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write", [] |),
             [ M.read (| M.read (| self |) |); M.read (| bytes |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3075,10 +3253,10 @@ Module boxed.
             ( **self).write_u8(i)
         }
     *)
-    Definition write_u8 (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u8 (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -3086,7 +3264,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_u8", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3094,10 +3272,10 @@ Module boxed.
             ( **self).write_u16(i)
         }
     *)
-    Definition write_u16 (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u16 (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -3105,7 +3283,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_u16", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3113,10 +3291,10 @@ Module boxed.
             ( **self).write_u32(i)
         }
     *)
-    Definition write_u32 (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u32 (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -3124,7 +3302,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_u32", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3132,10 +3310,10 @@ Module boxed.
             ( **self).write_u64(i)
         }
     *)
-    Definition write_u64 (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u64 (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -3143,7 +3321,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_u64", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3151,10 +3329,10 @@ Module boxed.
             ( **self).write_u128(i)
         }
     *)
-    Definition write_u128 (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u128 (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -3162,7 +3340,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_u128", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3170,10 +3348,10 @@ Module boxed.
             ( **self).write_usize(i)
         }
     *)
-    Definition write_usize (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_usize (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -3181,7 +3359,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_usize", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3189,10 +3367,10 @@ Module boxed.
             ( **self).write_i8(i)
         }
     *)
-    Definition write_i8 (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i8 (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -3200,7 +3378,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_i8", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3208,10 +3386,10 @@ Module boxed.
             ( **self).write_i16(i)
         }
     *)
-    Definition write_i16 (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i16 (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -3219,7 +3397,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_i16", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3227,10 +3405,10 @@ Module boxed.
             ( **self).write_i32(i)
         }
     *)
-    Definition write_i32 (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i32 (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -3238,7 +3416,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_i32", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3246,10 +3424,10 @@ Module boxed.
             ( **self).write_i64(i)
         }
     *)
-    Definition write_i64 (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i64 (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -3257,7 +3435,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_i64", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3265,10 +3443,10 @@ Module boxed.
             ( **self).write_i128(i)
         }
     *)
-    Definition write_i128 (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i128 (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -3276,7 +3454,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_i128", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3284,10 +3462,10 @@ Module boxed.
             ( **self).write_isize(i)
         }
     *)
-    Definition write_isize (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_isize (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -3295,7 +3473,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_isize", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3303,10 +3481,15 @@ Module boxed.
             ( **self).write_length_prefix(len)
         }
     *)
-    Definition write_length_prefix (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_length_prefix
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; len ] =>
+      match ε, τ, α with
+      | [], [], [ self; len ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -3314,7 +3497,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_length_prefix", [] |),
             [ M.read (| M.read (| self |) |); M.read (| len |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -3322,10 +3505,10 @@ Module boxed.
             ( **self).write_str(s)
         }
     *)
-    Definition write_str (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_str (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; s ] =>
+      match ε, τ, α with
+      | [], [], [ self; s ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let s := M.alloc (| s |) in
@@ -3333,7 +3516,7 @@ Module boxed.
             M.get_trait_method (| "core::hash::Hasher", T, [], "write_str", [] |),
             [ M.read (| M.read (| self |) |); M.read (| s |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3365,28 +3548,28 @@ Module boxed.
   
   Module Impl_core_convert_From_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(t: T) -> Self {
             Box::new(t)
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ t ] =>
+      match ε, τ, α with
+      | [], [], [ t ] =>
         ltac:(M.monadic
           (let t := M.alloc (| t |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
               []
             |),
             [ M.read (| t |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3400,28 +3583,28 @@ Module boxed.
   
   Module Impl_core_convert_From_where_core_marker_Sized_T_where_core_alloc_Allocator_A_alloc_boxed_Box_T_A_for_core_pin_Pin_alloc_boxed_Box_T_A.
     Definition Self (T A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ] ].
+      Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ].
     
     (*
         fn from(boxed: Box<T, A>) -> Self {
             Box::into_pin(boxed)
         }
     *)
-    Definition from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ boxed ] =>
+      match ε, τ, α with
+      | [], [], [ boxed ] =>
         ltac:(M.monadic
           (let boxed := M.alloc (| boxed |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
               "into_pin",
               []
             |),
             [ M.read (| boxed |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3429,7 +3612,7 @@ Module boxed.
       M.IsTraitInstance
         "core::convert::From"
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
   End Impl_core_convert_From_where_core_marker_Sized_T_where_core_alloc_Allocator_A_alloc_boxed_Box_T_A_for_core_pin_Pin_alloc_boxed_Box_T_A.
   
@@ -3440,33 +3623,34 @@ Module boxed.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         default fn from_slice(slice: &[T]) -> Self {
             slice.to_vec().into_boxed_slice()
         }
     *)
-    Definition from_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_slice (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ slice ] =>
+      match ε, τ, α with
+      | [], [], [ slice ] =>
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "into_boxed_slice",
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "to_vec", [] |),
+                M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "to_vec", [] |),
                 [ M.read (| slice |) ]
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3482,7 +3666,8 @@ Module boxed.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from_slice(slice: &[T]) -> Self {
@@ -3494,17 +3679,17 @@ Module boxed.
             }
         }
     *)
-    Definition from_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_slice (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ slice ] =>
+      match ε, τ, α with
+      | [], [], [ slice ] =>
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
           M.read (|
             let~ len :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
                   [ M.read (| slice |) ]
                 |)
               |) in
@@ -3514,6 +3699,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::raw_vec::RawVec")
+                      []
                       [ T; Ty.path "alloc::alloc::Global" ],
                     "with_capacity",
                     []
@@ -3528,7 +3714,7 @@ Module boxed.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ T ],
+                        Ty.apply (Ty.path "slice") [] [ T ],
                         "as_ptr",
                         []
                       |),
@@ -3538,6 +3724,7 @@ Module boxed.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::raw_vec::RawVec")
+                          []
                           [ T; Ty.path "alloc::alloc::Global" ],
                         "ptr",
                         []
@@ -3553,10 +3740,12 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                       Ty.path "alloc::alloc::Global"
                     ],
                   "assume_init",
@@ -3567,6 +3756,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::raw_vec::RawVec")
+                        []
                         [ T; Ty.path "alloc::alloc::Global" ],
                       "into_box",
                       []
@@ -3574,7 +3764,11 @@ Module boxed.
                     [
                       M.read (| buf |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          []
+                        |),
                         [ M.read (| slice |) ]
                       |)
                     ]
@@ -3583,7 +3777,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3599,17 +3793,18 @@ Module boxed.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(slice: &[T]) -> Box<[T]> {
             <Self as BoxFromSlice<T>>::from_slice(slice)
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ slice ] =>
+      match ε, τ, α with
+      | [], [], [ slice ] =>
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
           M.call_closure (|
@@ -3617,14 +3812,15 @@ Module boxed.
               "alloc::boxed::BoxFromSlice",
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
-                [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ],
+                []
+                [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
               [ T ],
               "from_slice",
               []
             |),
             [ M.read (| slice |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3633,7 +3829,7 @@ Module boxed.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ]
+        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_ref__slice_T_for_alloc_boxed_Box_slice_T_alloc_alloc_Global.
   
@@ -3641,7 +3837,8 @@ Module boxed.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(cow: Cow<'_, [T]>) -> Box<[T]> {
@@ -3651,10 +3848,10 @@ Module boxed.
             }
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ cow ] =>
+      match ε, τ, α with
+      | [], [], [ cow ] =>
         ltac:(M.monadic
           (let cow := M.alloc (| cow |) in
           M.read (|
@@ -3676,8 +3873,9 @@ Module boxed.
                           "core::convert::From",
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
-                            [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ],
-                          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ],
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                           "from",
                           []
                         |),
@@ -3695,10 +3893,12 @@ Module boxed.
                           "core::convert::From",
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
-                            [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ],
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ T; Ty.path "alloc::alloc::Global" ]
                           ],
                           "from",
@@ -3710,7 +3910,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3719,22 +3919,23 @@ Module boxed.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.apply (Ty.path "slice") [ T ] ] ]
+        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+        ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_alloc_borrow_Cow_slice_T_for_alloc_boxed_Box_slice_T_alloc_alloc_Global.
   
   Module Impl_core_convert_From_ref__str_for_alloc_boxed_Box_str_alloc_alloc_Global.
     Definition Self : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(s: &str) -> Box<str> {
             unsafe { from_boxed_utf8_unchecked(Box::from(s.as_bytes())) }
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ s ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
@@ -3745,8 +3946,10 @@ Module boxed.
                   "core::convert::From",
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
-                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global" ],
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ],
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
+                    ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
                   "from",
                   []
                 |),
@@ -3759,20 +3962,20 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
   Module Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_str_alloc_alloc_Global.
     Definition Self : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(cow: Cow<'_, str>) -> Box<str> {
@@ -3782,9 +3985,9 @@ Module boxed.
             }
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ cow ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ cow ] =>
         ltac:(M.monadic
           (let cow := M.alloc (| cow |) in
           M.read (|
@@ -3806,8 +4009,9 @@ Module boxed.
                           "core::convert::From",
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
+                            []
                             [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           "from",
                           []
                         |),
@@ -3825,6 +4029,7 @@ Module boxed.
                           "core::convert::From",
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
+                            []
                             [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
                           [ Ty.path "alloc::string::String" ],
                           "from",
@@ -3836,7 +4041,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3844,13 +4049,16 @@ Module boxed.
         "core::convert::From"
         Self
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ]
+        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
   Module Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_boxed_Box_str_A_for_alloc_boxed_Box_slice_u8_A.
     Definition Self (A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ]; A ].
+      Ty.apply
+        (Ty.path "alloc::boxed::Box")
+        []
+        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; A ].
     
     (*
         fn from(s: Box<str, A>) -> Self {
@@ -3858,10 +4066,10 @@ Module boxed.
             unsafe { Box::from_raw_in(raw as *mut [u8], alloc) }
         }
     *)
-    Definition from (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [], [ s ] =>
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.read (|
@@ -3869,7 +4077,7 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "str"; A ],
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ],
                     "into_raw_with_allocator",
                     []
                   |),
@@ -3888,7 +4096,8 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
-                            [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ]; A ],
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; A ],
                           "from_raw_in",
                           []
                         |),
@@ -3898,7 +4107,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3907,25 +4116,32 @@ Module boxed.
         "core::convert::From"
         (Self A)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "str"; A ] ]
+        [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
         (* Instance *) [ ("from", InstanceField.Method (from A)) ].
   End Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_boxed_Box_str_A_for_alloc_boxed_Box_slice_u8_A.
   
-  Module Impl_core_convert_From_array_T_for_alloc_boxed_Box_slice_T_alloc_alloc_Global.
-    Definition Self (T : Ty.t) : Ty.t :=
+  Module Impl_core_convert_From_array_N_T_for_alloc_boxed_Box_slice_T_alloc_alloc_Global.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(array: [T; N]) -> Box<[T]> {
             Box::new(array)
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ array ] =>
+    Definition from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ array ] =>
         ltac:(M.monadic
           (let array := M.alloc (| array |) in
           (* Unsize *)
@@ -3934,23 +4150,24 @@ Module boxed.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
-                  [ Ty.apply (Ty.path "array") [ T ]; Ty.path "alloc::alloc::Global" ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
               |),
               [ M.read (| array |) ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ T ] ]
-        (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_T_for_alloc_boxed_Box_slice_T_alloc_alloc_Global.
+        (Self N T)
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ N ] [ T ] ]
+        (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
+  End Impl_core_convert_From_array_N_T_for_alloc_boxed_Box_slice_T_alloc_alloc_Global.
   
   (*
   unsafe fn boxed_slice_as_array_unchecked<T, A: Allocator, const N: usize>(
@@ -3964,9 +4181,13 @@ Module boxed.
       unsafe { Box::from_raw_in(ptr as *mut [T; N], alloc) }
   }
   *)
-  Definition boxed_slice_as_array_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; A ], [ boxed_slice ] =>
+  Definition boxed_slice_as_array_unchecked
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [ N ], [ T; A ], [ boxed_slice ] =>
       ltac:(M.monadic
         (let boxed_slice := M.alloc (| boxed_slice |) in
         M.read (|
@@ -3986,7 +4207,7 @@ Module boxed.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ T ],
+                                    Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
                                     []
                                   |),
@@ -4060,7 +4281,10 @@ Module boxed.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.apply (Ty.path "slice") [ T ]; A ],
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                   "into_raw_with_allocator",
                   []
                 |),
@@ -4079,7 +4303,8 @@ Module boxed.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
-                          [ Ty.apply (Ty.path "array") [ T ]; A ],
+                          []
+                          [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ],
                         "from_raw_in",
                         []
                       |),
@@ -4089,23 +4314,25 @@ Module boxed.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_boxed_slice_as_array_unchecked :
     M.IsFunction "alloc::boxed::boxed_slice_as_array_unchecked" boxed_slice_as_array_unchecked.
   
-  Module Impl_core_convert_TryFrom_alloc_boxed_Box_slice_T_alloc_alloc_Global_for_alloc_boxed_Box_array_T_alloc_alloc_Global.
-    Definition Self (T : Ty.t) : Ty.t :=
+  Module Impl_core_convert_TryFrom_alloc_boxed_Box_slice_T_alloc_alloc_Global_for_alloc_boxed_Box_array_N_T_alloc_alloc_Global.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.apply (Ty.path "array") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*     type Error = Box<[T]>; *)
-    Definition _Error (T : Ty.t) : Ty.t :=
+    Definition _Error (N : Value.t) (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn try_from(boxed_slice: Box<[T]>) -> Result<Self, Self::Error> {
@@ -4116,10 +4343,16 @@ Module boxed.
             }
         }
     *)
-    Definition try_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ boxed_slice ] =>
+    Definition try_from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ boxed_slice ] =>
         ltac:(M.monadic
           (let boxed_slice := M.alloc (| boxed_slice |) in
           M.read (|
@@ -4134,7 +4367,7 @@ Module boxed.
                           BinOp.Pure.eq
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ T ],
+                                Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
                                 []
                               |),
@@ -4164,34 +4397,39 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *)
         [
           (* T *)
           Ty.apply
             (Ty.path "alloc::boxed::Box")
-            [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ]
+            []
+            [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
         ]
         (* Instance *)
-        [ ("Error", InstanceField.Ty (_Error T)); ("try_from", InstanceField.Method (try_from T)) ].
-  End Impl_core_convert_TryFrom_alloc_boxed_Box_slice_T_alloc_alloc_Global_for_alloc_boxed_Box_array_T_alloc_alloc_Global.
+        [
+          ("Error", InstanceField.Ty (_Error N T));
+          ("try_from", InstanceField.Method (try_from N T))
+        ].
+  End Impl_core_convert_TryFrom_alloc_boxed_Box_slice_T_alloc_alloc_Global_for_alloc_boxed_Box_array_N_T_alloc_alloc_Global.
   
-  Module Impl_core_convert_TryFrom_alloc_vec_Vec_T_alloc_alloc_Global_for_alloc_boxed_Box_array_T_alloc_alloc_Global.
-    Definition Self (T : Ty.t) : Ty.t :=
+  Module Impl_core_convert_TryFrom_alloc_vec_Vec_T_alloc_alloc_Global_for_alloc_boxed_Box_array_N_T_alloc_alloc_Global.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.apply (Ty.path "array") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*     type Error = Vec<T>; *)
-    Definition _Error (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+    Definition _Error (N : Value.t) (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn try_from(vec: Vec<T>) -> Result<Self, Self::Error> {
@@ -4203,10 +4441,16 @@ Module boxed.
             }
         }
     *)
-    Definition try_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ vec ] =>
+    Definition try_from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ vec ] =>
         ltac:(M.monadic
           (let vec := M.alloc (| vec |) in
           M.read (|
@@ -4223,6 +4467,7 @@ Module boxed.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [ T; Ty.path "alloc::alloc::Global" ],
                                 "len",
                                 []
@@ -4238,6 +4483,7 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ T; Ty.path "alloc::alloc::Global" ],
                             "into_boxed_slice",
                             []
@@ -4266,33 +4512,36 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ] ]
+        [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] ]
         (* Instance *)
-        [ ("Error", InstanceField.Ty (_Error T)); ("try_from", InstanceField.Method (try_from T)) ].
-  End Impl_core_convert_TryFrom_alloc_vec_Vec_T_alloc_alloc_Global_for_alloc_boxed_Box_array_T_alloc_alloc_Global.
+        [
+          ("Error", InstanceField.Ty (_Error N T));
+          ("try_from", InstanceField.Method (try_from N T))
+        ].
+  End Impl_core_convert_TryFrom_alloc_vec_Vec_T_alloc_alloc_Global_for_alloc_boxed_Box_array_N_T_alloc_alloc_Global.
   
   Module Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_A.
     Definition Self (A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ].
     
     (*
         pub fn downcast<T: Any>(self) -> Result<Box<T, A>, Self> {
             if self.is::<T>() { unsafe { Ok(self.downcast_unchecked::<T>()) } } else { Err(self) }
         }
     *)
-    Definition downcast (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [ T ], [ self ] =>
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4322,6 +4571,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
                               "downcast_unchecked",
                               [ T ]
@@ -4340,7 +4590,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast :
@@ -4356,10 +4606,15 @@ Module boxed.
             }
         }
     *)
-    Definition downcast_unchecked (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_unchecked
+        (A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [ T ], [ self ] =>
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4417,6 +4672,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
                     "into_raw_with_allocator",
                     []
@@ -4434,7 +4690,7 @@ Module boxed.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                          Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                           "from_raw_in",
                           []
                         |),
@@ -4444,7 +4700,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_unchecked :
@@ -4456,6 +4712,7 @@ Module boxed.
     Definition Self (A : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [ Ty.dyn [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ]; A ].
     
     (*
@@ -4463,10 +4720,10 @@ Module boxed.
             if self.is::<T>() { unsafe { Ok(self.downcast_unchecked::<T>()) } } else { Err(self) }
         }
     *)
-    Definition downcast (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [ T ], [ self ] =>
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4500,6 +4757,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
                                   Ty.dyn
                                     [
@@ -4525,7 +4783,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast :
@@ -4541,10 +4799,15 @@ Module boxed.
             }
         }
     *)
-    Definition downcast_unchecked (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_unchecked
+        (A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [ T ], [ self ] =>
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4606,6 +4869,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [
                         Ty.dyn
                           [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ];
@@ -4627,7 +4891,7 @@ Module boxed.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                          Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                           "from_raw_in",
                           []
                         |),
@@ -4637,7 +4901,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_unchecked :
@@ -4649,6 +4913,7 @@ Module boxed.
     Definition Self (A : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [
           Ty.dyn
             [
@@ -4664,10 +4929,10 @@ Module boxed.
             if self.is::<T>() { unsafe { Ok(self.downcast_unchecked::<T>()) } } else { Err(self) }
         }
     *)
-    Definition downcast (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [ T ], [ self ] =>
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4702,6 +4967,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
                                   Ty.dyn
                                     [
@@ -4728,7 +4994,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast :
@@ -4745,10 +5011,15 @@ Module boxed.
             }
         }
     *)
-    Definition downcast_unchecked (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_unchecked
+        (A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [ T ], [ self ] =>
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4811,6 +5082,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [
                         Ty.dyn
                           [
@@ -4836,7 +5108,7 @@ Module boxed.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                          Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                           "from_raw_in",
                           []
                         |),
@@ -4846,7 +5118,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_unchecked :
@@ -4855,17 +5127,17 @@ Module boxed.
   End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_A.
   
   Module Impl_core_fmt_Display_where_core_fmt_Display_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Display::fmt(&**self, f)
         }
     *)
-    Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -4873,7 +5145,7 @@ Module boxed.
             M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4886,17 +5158,17 @@ Module boxed.
   End Impl_core_fmt_Display_where_core_fmt_Display_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Debug::fmt(&**self, f)
         }
     *)
-    Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -4904,7 +5176,7 @@ Module boxed.
             M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4917,7 +5189,7 @@ Module boxed.
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_fmt_Pointer_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -4927,10 +5199,10 @@ Module boxed.
             fmt::Pointer::fmt(&ptr, f)
         }
     *)
-    Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -4940,7 +5212,7 @@ Module boxed.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::fmt::Pointer",
-                  Ty.apply (Ty.path "*const") [ T ],
+                  Ty.apply (Ty.path "*const") [] [ T ],
                   [],
                   "fmt",
                   []
@@ -4949,7 +5221,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4962,7 +5234,7 @@ Module boxed.
   End Impl_core_fmt_Pointer_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_ops_deref_Deref_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*     type Target = T; *)
     Definition _Target (T A : Ty.t) : Ty.t := T.
@@ -4972,14 +5244,14 @@ Module boxed.
             &**self
         }
     *)
-    Definition deref (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4993,21 +5265,21 @@ Module boxed.
   End Impl_core_ops_deref_Deref_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn deref_mut(&mut self) -> &mut T {
             &mut **self
         }
     *)
-    Definition deref_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5020,7 +5292,7 @@ Module boxed.
   End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     Axiom Implements :
       forall (T A : Ty.t),
@@ -5032,7 +5304,7 @@ Module boxed.
   End Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Sized_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
-    Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ I; A ].
+    Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ].
     
     (*     type Item = I::Item; *)
     Definition _Item (I A : Ty.t) : Ty.t := Ty.associated.
@@ -5042,17 +5314,17 @@ Module boxed.
             ( **self).next()
         }
     *)
-    Definition next (I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "next", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5060,10 +5332,10 @@ Module boxed.
             ( **self).size_hint()
         }
     *)
-    Definition size_hint (I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition size_hint (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -5076,7 +5348,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5084,10 +5356,10 @@ Module boxed.
             ( **self).nth(n)
         }
     *)
-    Definition nth (I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition nth (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I A in
-      match τ, α with
-      | [], [ self; n ] =>
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
@@ -5095,7 +5367,7 @@ Module boxed.
             M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "nth", [] |),
             [ M.read (| M.read (| self |) |); M.read (| n |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5103,23 +5375,23 @@ Module boxed.
             BoxIter::last(self)
         }
     *)
-    Definition last (I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition last (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "alloc::boxed::BoxIter",
-              Ty.apply (Ty.path "alloc::boxed::Box") [ I; A ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ],
               [],
               "last",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5142,7 +5414,7 @@ Module boxed.
   (* Empty module 'BoxIter' *)
   
   Module Impl_alloc_boxed_BoxIter_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Sized_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
-    Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ I; A ].
+    Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ].
     
     (*     type Item = I::Item; *)
     Definition _Item (I A : Ty.t) : Ty.t := Ty.associated.
@@ -5157,23 +5429,23 @@ Module boxed.
             self.fold(None, some)
         }
     *)
-    Definition last (I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition last (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
-              Ty.apply (Ty.path "alloc::boxed::Box") [ I; A ],
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ],
               [],
               "fold",
               [
-                Ty.apply (Ty.path "core::option::Option") [ Ty.associated ];
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ];
                 Ty.function
-                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ]; Ty.associated ]
-                  (Ty.apply (Ty.path "core::option::Option") [ Ty.associated ])
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ]; Ty.associated ]
+                  (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
               ]
             |),
             [
@@ -5182,7 +5454,7 @@ Module boxed.
               M.get_associated_function (| Self, "some.last", [] |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5196,24 +5468,24 @@ Module boxed.
   End Impl_alloc_boxed_BoxIter_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Sized_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
   
   Module Impl_alloc_boxed_BoxIter_where_core_iter_traits_iterator_Iterator_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
-    Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ I; A ].
+    Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ].
     
     (*
         fn last(self) -> Option<I::Item> {
             ( *self).last()
         }
     *)
-    Definition last (I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition last (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "last", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5226,17 +5498,17 @@ Module boxed.
   End Impl_alloc_boxed_BoxIter_where_core_iter_traits_iterator_Iterator_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
   
   Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_marker_Sized_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
-    Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ I; A ].
+    Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ].
     
     (*
         fn next_back(&mut self) -> Option<I::Item> {
             ( **self).next_back()
         }
     *)
-    Definition next_back (I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next_back (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -5249,7 +5521,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5257,10 +5529,10 @@ Module boxed.
             ( **self).nth_back(n)
         }
     *)
-    Definition nth_back (I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition nth_back (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I A in
-      match τ, α with
-      | [], [ self; n ] =>
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
@@ -5274,7 +5546,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |); M.read (| n |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5291,17 +5563,17 @@ Module boxed.
   End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_marker_Sized_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
   
   Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_marker_Sized_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
-    Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ I; A ].
+    Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ].
     
     (*
         fn len(&self) -> usize {
             ( **self).len()
         }
     *)
-    Definition len (I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition len (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -5314,7 +5586,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5322,10 +5594,10 @@ Module boxed.
             ( **self).is_empty()
         }
     *)
-    Definition is_empty (I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_empty (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -5338,7 +5610,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5353,7 +5625,7 @@ Module boxed.
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_marker_Sized_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
   
   Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_marker_Sized_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
-    Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ I; A ].
+    Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ].
     
     Axiom Implements :
       forall (I A : Ty.t),
@@ -5365,7 +5637,7 @@ Module boxed.
   End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_marker_Sized_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
   
   Module Impl_core_ops_function_FnOnce_where_core_marker_Tuple_Args_where_core_ops_function_FnOnce_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
-    Definition Self (Args F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ F; A ].
+    Definition Self (Args F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ].
     
     (*     type Output = <F as FnOnce<Args>>::Output; *)
     Definition _Output (Args F A : Ty.t) : Ty.t := Ty.associated.
@@ -5375,10 +5647,15 @@ Module boxed.
             <F as FnOnce<Args>>::call_once( *self, args)
         }
     *)
-    Definition call_once (Args F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition call_once
+        (Args F A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self Args F A in
-      match τ, α with
-      | [], [ self; args ] =>
+      match ε, τ, α with
+      | [], [], [ self; args ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
@@ -5386,7 +5663,7 @@ Module boxed.
             M.get_trait_method (| "core::ops::function::FnOnce", F, [ Args ], "call_once", [] |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5403,17 +5680,22 @@ Module boxed.
   End Impl_core_ops_function_FnOnce_where_core_marker_Tuple_Args_where_core_ops_function_FnOnce_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
   
   Module Impl_core_ops_function_FnMut_where_core_marker_Tuple_Args_where_core_ops_function_FnMut_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
-    Definition Self (Args F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ F; A ].
+    Definition Self (Args F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ].
     
     (*
         extern "rust-call" fn call_mut(&mut self, args: Args) -> Self::Output {
             <F as FnMut<Args>>::call_mut(self, args)
         }
     *)
-    Definition call_mut (Args F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition call_mut
+        (Args F A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self Args F A in
-      match τ, α with
-      | [], [ self; args ] =>
+      match ε, τ, α with
+      | [], [], [ self; args ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
@@ -5421,7 +5703,7 @@ Module boxed.
             M.get_trait_method (| "core::ops::function::FnMut", F, [ Args ], "call_mut", [] |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5434,17 +5716,17 @@ Module boxed.
   End Impl_core_ops_function_FnMut_where_core_marker_Tuple_Args_where_core_ops_function_FnMut_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
   
   Module Impl_core_ops_function_Fn_where_core_marker_Tuple_Args_where_core_ops_function_Fn_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
-    Definition Self (Args F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ F; A ].
+    Definition Self (Args F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ].
     
     (*
         extern "rust-call" fn call(&self, args: Args) -> Self::Output {
             <F as Fn<Args>>::call(self, args)
         }
     *)
-    Definition call (Args F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition call (Args F A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self Args F A in
-      match τ, α with
-      | [], [ self; args ] =>
+      match ε, τ, α with
+      | [], [], [ self; args ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
@@ -5452,7 +5734,7 @@ Module boxed.
             M.get_trait_method (| "core::ops::function::Fn", F, [ Args ], "call", [] |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5465,20 +5747,20 @@ Module boxed.
   End Impl_core_ops_function_Fn_where_core_marker_Tuple_Args_where_core_ops_function_Fn_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
   
   Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_where_core_alloc_Allocator_A_alloc_boxed_Box_U_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     Axiom Implements :
       forall (T U A : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
         (Self T U A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [ U; A ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ U; A ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_where_core_alloc_Allocator_A_alloc_boxed_Box_U_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_alloc_boxed_Box_U_alloc_alloc_Global_for_alloc_boxed_Box_T_alloc_alloc_Global.
     Definition Self (T U : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     Axiom Implements :
       forall (T U : Ty.t),
@@ -5486,7 +5768,7 @@ Module boxed.
         "core::ops::unsize::DispatchFromDyn"
         (Self T U)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [ U; Ty.path "alloc::alloc::Global" ] ]
+        [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ U; Ty.path "alloc::alloc::Global" ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_alloc_boxed_Box_U_alloc_alloc_Global_for_alloc_boxed_Box_T_alloc_alloc_Global.
   
@@ -5494,22 +5776,23 @@ Module boxed.
     Definition Self (I : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.apply (Ty.path "slice") [ I ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ I ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from_iter<T: IntoIterator<Item = I>>(iter: T) -> Self {
             iter.into_iter().collect::<Vec<_>>().into_boxed_slice()
         }
     *)
-    Definition from_iter (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_iter (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I in
-      match τ, α with
-      | [ T ], [ iter ] =>
+      match ε, τ, α with
+      | [], [ T ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::vec::Vec") [ I; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ I; Ty.path "alloc::alloc::Global" ],
               "into_boxed_slice",
               []
             |),
@@ -5520,7 +5803,7 @@ Module boxed.
                   Ty.associated,
                   [],
                   "collect",
-                  [ Ty.apply (Ty.path "alloc::vec::Vec") [ I; Ty.path "alloc::alloc::Global" ] ]
+                  [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ I; Ty.path "alloc::alloc::Global" ] ]
                 |),
                 [
                   M.call_closure (|
@@ -5537,7 +5820,7 @@ Module boxed.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5551,7 +5834,7 @@ Module boxed.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_boxed_Box_slice_T_A.
     Definition Self (T A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.apply (Ty.path "slice") [ T ]; A ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ].
     
     (*
         fn clone(&self) -> Self {
@@ -5559,10 +5842,10 @@ Module boxed.
             self.to_vec_in(alloc).into_boxed_slice()
         }
     *)
-    Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5575,7 +5858,8 @@ Module boxed.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
-                          [ Ty.apply (Ty.path "slice") [ T ]; A ],
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                         "allocator",
                         []
                       |),
@@ -5587,14 +5871,14 @@ Module boxed.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   "into_boxed_slice",
                   []
                 |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ T ],
+                      Ty.apply (Ty.path "slice") [] [ T ],
                       "to_vec_in",
                       [ A ]
                     |),
@@ -5604,7 +5888,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5616,10 +5900,10 @@ Module boxed.
             }
         }
     *)
-    Definition clone_from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_from (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -5635,7 +5919,7 @@ Module boxed.
                           BinOp.Pure.eq
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ T ],
+                                Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
                                 []
                               |),
@@ -5643,7 +5927,7 @@ Module boxed.
                             |))
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ T ],
+                                Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
                                 []
                               |),
@@ -5655,7 +5939,7 @@ Module boxed.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ T ],
+                            Ty.apply (Ty.path "slice") [] [ T ],
                             "clone_from_slice",
                             []
                           |),
@@ -5673,7 +5957,8 @@ Module boxed.
                             "core::clone::Clone",
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
-                              [ Ty.apply (Ty.path "slice") [ T ]; A ],
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                             [],
                             "clone",
                             []
@@ -5685,7 +5970,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5702,21 +5987,21 @@ Module boxed.
   End Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_boxed_Box_slice_T_A.
   
   Module Impl_core_borrow_Borrow_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn borrow(&self) -> &T {
             &**self
         }
     *)
-    Definition borrow (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5729,21 +6014,21 @@ Module boxed.
   End Impl_core_borrow_Borrow_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_borrow_BorrowMut_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn borrow_mut(&mut self) -> &mut T {
             &mut **self
         }
     *)
-    Definition borrow_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5756,21 +6041,21 @@ Module boxed.
   End Impl_core_borrow_BorrowMut_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_convert_AsRef_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn as_ref(&self) -> &T {
             &**self
         }
     *)
-    Definition as_ref (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5783,21 +6068,21 @@ Module boxed.
   End Impl_core_convert_AsRef_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_convert_AsMut_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     (*
         fn as_mut(&mut self) -> &mut T {
             &mut **self
         }
     *)
-    Definition as_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5810,7 +6095,7 @@ Module boxed.
   End Impl_core_convert_AsMut_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_marker_Unpin_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
     Axiom Implements :
       forall (T A : Ty.t),
@@ -5822,7 +6107,7 @@ Module boxed.
   End Impl_core_marker_Unpin_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_ops_coroutine_Coroutine_where_core_marker_Sized_G_where_core_ops_coroutine_Coroutine_G_R_where_core_marker_Unpin_G_where_core_alloc_Allocator_A_R_for_alloc_boxed_Box_G_A.
-    Definition Self (G R A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ G; A ].
+    Definition Self (G R A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ].
     
     (*     type Yield = G::Yield; *)
     Definition _Yield (G R A : Ty.t) : Ty.t := Ty.associated.
@@ -5835,10 +6120,10 @@ Module boxed.
             G::resume(Pin::new(&mut *self), arg)
         }
     *)
-    Definition resume (G R A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition resume (G R A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self G R A in
-      match τ, α with
-      | [], [ self; arg ] =>
+      match ε, τ, α with
+      | [], [], [ self; arg ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let arg := M.alloc (| arg |) in
@@ -5847,7 +6132,7 @@ Module boxed.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ G ] ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                   "new",
                   []
                 |),
@@ -5858,10 +6143,12 @@ Module boxed.
                         "core::ops::deref::DerefMut",
                         Ty.apply
                           (Ty.path "core::pin::Pin")
+                          []
                           [
                             Ty.apply
                               (Ty.path "&mut")
-                              [ Ty.apply (Ty.path "alloc::boxed::Box") [ G; A ] ]
+                              []
+                              [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ] ]
                           ],
                         [],
                         "deref_mut",
@@ -5875,7 +6162,7 @@ Module boxed.
               M.read (| arg |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5894,7 +6181,7 @@ Module boxed.
   
   Module Impl_core_ops_coroutine_Coroutine_where_core_marker_Sized_G_where_core_ops_coroutine_Coroutine_G_R_where_core_alloc_Allocator_A_R_for_core_pin_Pin_alloc_boxed_Box_G_A.
     Definition Self (G R A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "alloc::boxed::Box") [ G; A ] ].
+      Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ] ].
     
     (*     type Yield = G::Yield; *)
     Definition _Yield (G R A : Ty.t) : Ty.t := Ty.associated.
@@ -5907,10 +6194,10 @@ Module boxed.
             G::resume(( *self).as_mut(), arg)
         }
     *)
-    Definition resume (G R A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition resume (G R A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self G R A in
-      match τ, α with
-      | [], [ self; arg ] =>
+      match ε, τ, α with
+      | [], [], [ self; arg ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let arg := M.alloc (| arg |) in
@@ -5921,7 +6208,8 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::pin::Pin")
-                    [ Ty.apply (Ty.path "alloc::boxed::Box") [ G; A ] ],
+                    []
+                    [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ] ],
                   "as_mut",
                   []
                 |),
@@ -5931,13 +6219,16 @@ Module boxed.
                       "core::ops::deref::DerefMut",
                       Ty.apply
                         (Ty.path "core::pin::Pin")
+                        []
                         [
                           Ty.apply
                             (Ty.path "&mut")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "core::pin::Pin")
-                                [ Ty.apply (Ty.path "alloc::boxed::Box") [ G; A ] ]
+                                []
+                                [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ] ]
                             ]
                         ],
                       [],
@@ -5951,7 +6242,7 @@ Module boxed.
               M.read (| arg |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5969,7 +6260,7 @@ Module boxed.
   End Impl_core_ops_coroutine_Coroutine_where_core_marker_Sized_G_where_core_ops_coroutine_Coroutine_G_R_where_core_alloc_Allocator_A_R_for_core_pin_Pin_alloc_boxed_Box_G_A.
   
   Module Impl_core_future_future_Future_where_core_marker_Sized_F_where_core_future_future_Future_F_where_core_marker_Unpin_F_where_core_alloc_Allocator_A_for_alloc_boxed_Box_F_A.
-    Definition Self (F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ F; A ].
+    Definition Self (F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ].
     
     (*     type Output = F::Output; *)
     Definition _Output (F A : Ty.t) : Ty.t := Ty.associated.
@@ -5979,10 +6270,10 @@ Module boxed.
             F::poll(Pin::new(&mut *self), cx)
         }
     *)
-    Definition poll (F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition poll (F A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self F A in
-      match τ, α with
-      | [], [ self; cx ] =>
+      match ε, τ, α with
+      | [], [], [ self; cx ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let cx := M.alloc (| cx |) in
@@ -5991,7 +6282,7 @@ Module boxed.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ F ] ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ],
                   "new",
                   []
                 |),
@@ -6002,10 +6293,12 @@ Module boxed.
                         "core::ops::deref::DerefMut",
                         Ty.apply
                           (Ty.path "core::pin::Pin")
+                          []
                           [
                             Ty.apply
                               (Ty.path "&mut")
-                              [ Ty.apply (Ty.path "alloc::boxed::Box") [ F; A ] ]
+                              []
+                              [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ] ]
                           ],
                         [],
                         "deref_mut",
@@ -6019,7 +6312,7 @@ Module boxed.
               M.read (| cx |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6034,7 +6327,7 @@ Module boxed.
   
   Module Impl_core_async_iter_async_iter_AsyncIterator_where_core_marker_Sized_S_where_core_async_iter_async_iter_AsyncIterator_S_where_core_marker_Unpin_S_for_alloc_boxed_Box_S_alloc_alloc_Global.
     Definition Self (S : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ S; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ S; Ty.path "alloc::alloc::Global" ].
     
     (*     type Item = S::Item; *)
     Definition _Item (S : Ty.t) : Ty.t := Ty.associated.
@@ -6044,10 +6337,10 @@ Module boxed.
             Pin::new(&mut **self).poll_next(cx)
         }
     *)
-    Definition poll_next (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition poll_next (S : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self S in
-      match τ, α with
-      | [], [ self; cx ] =>
+      match ε, τ, α with
+      | [], [], [ self; cx ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let cx := M.alloc (| cx |) in
@@ -6062,7 +6355,7 @@ Module boxed.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ S ] ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ S ] ],
                   "new",
                   []
                 |),
@@ -6073,12 +6366,15 @@ Module boxed.
                         "core::ops::deref::DerefMut",
                         Ty.apply
                           (Ty.path "core::pin::Pin")
+                          []
                           [
                             Ty.apply
                               (Ty.path "&mut")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [ S; Ty.path "alloc::alloc::Global" ]
                               ]
                           ],
@@ -6094,7 +6390,7 @@ Module boxed.
               M.read (| cx |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -6102,10 +6398,10 @@ Module boxed.
             ( **self).size_hint()
         }
     *)
-    Definition size_hint (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition size_hint (S : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self S in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -6118,7 +6414,7 @@ Module boxed.
             |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6150,9 +6446,9 @@ Module boxed.
             }
         }
     *)
-    Definition downcast (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6182,6 +6478,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
                                   Ty.dyn [ ("core::error::Error::Trait", []) ];
                                   Ty.path "alloc::alloc::Global"
@@ -6200,6 +6497,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [ T; Ty.path "alloc::alloc::Global" ],
                               "from_raw",
                               []
@@ -6218,7 +6516,7 @@ Module boxed.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
@@ -6237,9 +6535,9 @@ Module boxed.
             })
         }
     *)
-    Definition downcast (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6249,10 +6547,15 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
-                      Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ];
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
+                        [ T; Ty.path "alloc::alloc::Global" ];
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
                         [
                           Ty.dyn [ ("core::error::Error::Trait", []) ];
                           Ty.path "alloc::alloc::Global"
@@ -6262,6 +6565,7 @@ Module boxed.
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [
                         Ty.dyn
                           [ ("core::error::Error::Trait", []); ("core::marker::Send::AutoTrait", [])
@@ -6274,6 +6578,7 @@ Module boxed.
                           [
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
+                              []
                               [
                                 Ty.dyn [ ("core::error::Error::Trait", []) ];
                                 Ty.path "alloc::alloc::Global"
@@ -6282,6 +6587,7 @@ Module boxed.
                       ]
                       (Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [
                           Ty.dyn
                             [
@@ -6318,6 +6624,7 @@ Module boxed.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
+                                          []
                                           [
                                             Ty.dyn
                                               [
@@ -6335,6 +6642,7 @@ Module boxed.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
+                                                []
                                                 [
                                                   Ty.dyn [ ("core::error::Error::Trait", []) ];
                                                   Ty.path "alloc::alloc::Global"
@@ -6354,7 +6662,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
@@ -6378,9 +6686,9 @@ Module boxed.
             })
         }
     *)
-    Definition downcast (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6390,10 +6698,15 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
-                      Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ];
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
+                        [ T; Ty.path "alloc::alloc::Global" ];
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
                         [
                           Ty.dyn [ ("core::error::Error::Trait", []) ];
                           Ty.path "alloc::alloc::Global"
@@ -6403,6 +6716,7 @@ Module boxed.
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [
                         Ty.dyn
                           [
@@ -6418,6 +6732,7 @@ Module boxed.
                           [
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
+                              []
                               [
                                 Ty.dyn [ ("core::error::Error::Trait", []) ];
                                 Ty.path "alloc::alloc::Global"
@@ -6426,6 +6741,7 @@ Module boxed.
                       ]
                       (Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [
                           Ty.dyn
                             [
@@ -6463,6 +6779,7 @@ Module boxed.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
+                                          []
                                           [
                                             Ty.dyn
                                               [
@@ -6481,6 +6798,7 @@ Module boxed.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
+                                                []
                                                 [
                                                   Ty.dyn [ ("core::error::Error::Trait", []) ];
                                                   Ty.path "alloc::alloc::Global"
@@ -6500,7 +6818,7 @@ Module boxed.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
@@ -6510,6 +6828,7 @@ Module boxed.
     Definition Self (E : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
     
     (*
@@ -6517,10 +6836,10 @@ Module boxed.
             Box::new(err)
         }
     *)
-    Definition from (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self E in
-      match τ, α with
-      | [], [ err ] =>
+      match ε, τ, α with
+      | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
           (* Unsize *)
@@ -6529,13 +6848,13 @@ Module boxed.
             (M.pointer_coercion
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::boxed::Box") [ E; Ty.path "alloc::alloc::Global" ],
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ E; Ty.path "alloc::alloc::Global" ],
                   "new",
                   []
                 |),
                 [ M.read (| err |) ]
               |)))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6551,6 +6870,7 @@ Module boxed.
     Definition Self (E : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [
           Ty.dyn
             [
@@ -6566,10 +6886,10 @@ Module boxed.
             Box::new(err)
         }
     *)
-    Definition from (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self E in
-      match τ, α with
-      | [], [ err ] =>
+      match ε, τ, α with
+      | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
           (* Unsize *)
@@ -6578,13 +6898,13 @@ Module boxed.
             (M.pointer_coercion
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::boxed::Box") [ E; Ty.path "alloc::alloc::Global" ],
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ E; Ty.path "alloc::alloc::Global" ],
                   "new",
                   []
                 |),
                 [ M.read (| err |) ]
               |)))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6600,6 +6920,7 @@ Module boxed.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [
           Ty.dyn
             [
@@ -6637,9 +6958,9 @@ Module boxed.
             Box::new(StringError(err))
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ err ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
           (* Unsize *)
@@ -6650,13 +6971,14 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [ Ty.path "alloc::boxed::from::StringError"; Ty.path "alloc::alloc::Global" ],
                   "new",
                   []
                 |),
                 [ Value.StructTuple "alloc::boxed::from::StringError" [ M.read (| err |) ] ]
               |)))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6671,6 +6993,7 @@ Module boxed.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
     
     (*
@@ -6680,9 +7003,9 @@ Module boxed.
             err2
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ str_err ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ str_err ] =>
         ltac:(M.monadic
           (let str_err := M.alloc (| str_err |) in
           (* Unsize *)
@@ -6695,6 +7018,7 @@ Module boxed.
                       "core::convert::From",
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [
                           Ty.dyn
                             [
@@ -6714,7 +7038,7 @@ Module boxed.
               let~ err2 := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| err1 |)) |) in
               M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| err2 |)) |)
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6729,6 +7053,7 @@ Module boxed.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [
           Ty.dyn
             [
@@ -6744,9 +7069,9 @@ Module boxed.
             From::from(String::from(err))
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ err ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
           (* Unsize *)
@@ -6756,6 +7081,7 @@ Module boxed.
                 "core::convert::From",
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [
                     Ty.dyn
                       [
@@ -6774,7 +7100,7 @@ Module boxed.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "alloc::string::String",
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                     "from",
                     []
                   |),
@@ -6782,14 +7108,14 @@ Module boxed.
                 |)
               ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
   
@@ -6797,6 +7123,7 @@ Module boxed.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
     
     (*
@@ -6804,9 +7131,9 @@ Module boxed.
             From::from(String::from(err))
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ err ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
           (* Unsize *)
@@ -6816,6 +7143,7 @@ Module boxed.
                 "core::convert::From",
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ],
                 [ Ty.path "alloc::string::String" ],
                 "from",
@@ -6826,7 +7154,7 @@ Module boxed.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "alloc::string::String",
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                     "from",
                     []
                   |),
@@ -6834,14 +7162,14 @@ Module boxed.
                 |)
               ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
   
@@ -6849,6 +7177,7 @@ Module boxed.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [
           Ty.dyn
             [
@@ -6864,9 +7193,9 @@ Module boxed.
             From::from(String::from(err))
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ err ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
           (* Unsize *)
@@ -6876,6 +7205,7 @@ Module boxed.
                 "core::convert::From",
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [
                     Ty.dyn
                       [
@@ -6894,7 +7224,7 @@ Module boxed.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "alloc::string::String",
-                    [ Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ],
+                    [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
                     "from",
                     []
                   |),
@@ -6902,7 +7232,7 @@ Module boxed.
                 |)
               ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6910,7 +7240,7 @@ Module boxed.
         "core::convert::From"
         Self
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ]
+        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
   
@@ -6918,6 +7248,7 @@ Module boxed.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
+        []
         [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
     
     (*
@@ -6925,9 +7256,9 @@ Module boxed.
             From::from(String::from(err))
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ err ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
           (* Unsize *)
@@ -6937,6 +7268,7 @@ Module boxed.
                 "core::convert::From",
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ],
                 [ Ty.path "alloc::string::String" ],
                 "from",
@@ -6947,7 +7279,7 @@ Module boxed.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "alloc::string::String",
-                    [ Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ],
+                    [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
                     "from",
                     []
                   |),
@@ -6955,7 +7287,7 @@ Module boxed.
                 |)
               ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6963,30 +7295,30 @@ Module boxed.
         "core::convert::From"
         Self
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ]
+        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
   
   Module Impl_core_error_Error_where_core_error_Error_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn description(&self) -> &str {
             core::error::Error::description(&**self)
         }
     *)
-    Definition description (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition description (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::error::Error", T, [], "description", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -6994,17 +7326,17 @@ Module boxed.
             core::error::Error::cause(&**self)
         }
     *)
-    Definition cause (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cause (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::error::Error", T, [], "cause", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -7012,17 +7344,17 @@ Module boxed.
             core::error::Error::source(&**self)
         }
     *)
-    Definition source (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition source (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::error::Error", T, [], "source", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -7030,10 +7362,10 @@ Module boxed.
             core::error::Error::provide(&**self, request);
         }
     *)
-    Definition provide (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition provide (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; request ] =>
+      match ε, τ, α with
+      | [], [], [ self; request ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let request := M.alloc (| request |) in
@@ -7047,7 +7379,7 @@ Module boxed.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

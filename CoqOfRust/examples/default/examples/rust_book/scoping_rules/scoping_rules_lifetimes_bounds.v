@@ -14,10 +14,10 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bo
     Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [] [ T ].
   
   (* Debug *)
-  Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self; f ] =>
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -41,7 +41,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bo
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -61,9 +61,9 @@ where
     println!("`print`: t is {:?}", t);
 }
 *)
-Definition print (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ T ], [ t ] =>
+Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ T ], [ t ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
@@ -109,7 +109,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_print : M.IsFunction "scoping_rules_lifetimes_bounds::print" print.
@@ -122,9 +122,9 @@ where
     println!("`print_ref`: t is {:?}", t);
 }
 *)
-Definition print_ref (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ T ], [ t ] =>
+Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ T ], [ t ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
@@ -170,7 +170,7 @@ Definition print_ref (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_print_ref : M.IsFunction "scoping_rules_lifetimes_bounds::print_ref" print_ref.
@@ -184,9 +184,9 @@ fn main() {
     print(ref_x);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ x := M.alloc (| Value.Integer 7 |) in
@@ -213,7 +213,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_bounds::main" main.

@@ -6,8 +6,11 @@ fn some_fn() {
     ()
 }
 *)
-Definition some_fn (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition some_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] => ltac:(M.monadic (Value.Tuple []))
+  | _, _, _ => M.impossible
+  end.
 
 Axiom Function_some_fn : M.IsFunction "diverging_functions_no_info_in_return_type::some_fn" some_fn.
 
@@ -17,9 +20,9 @@ fn main() {
     println!("This function returns and you can see this line.")
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ a :=
@@ -55,7 +58,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "diverging_functions_no_info_in_return_type::main" main.

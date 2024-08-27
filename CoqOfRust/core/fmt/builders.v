@@ -6,17 +6,20 @@ Module fmt.
     (* StructRecord
       {
         name := "PadAdapter";
+        const_params := [];
         ty_params := [];
         fields :=
           [
-            ("buf", Ty.apply (Ty.path "&mut") [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]);
-            ("state", Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::builders::PadAdapterState" ])
+            ("buf", Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]);
+            ("state",
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::PadAdapterState" ])
           ];
       } *)
     
     (* StructRecord
       {
         name := "PadAdapterState";
+        const_params := [];
         ty_params := [];
         fields := [ ("on_newline", Ty.path "bool") ];
       } *)
@@ -29,14 +32,14 @@ Module fmt.
               PadAdapterState { on_newline: true }
           }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::fmt::builders::PadAdapterState"
               [ ("on_newline", Value.Bool true) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -59,9 +62,9 @@ Module fmt.
               fmt.wrap_buf(move |buf| slot.insert(PadAdapter { buf, state }))
           }
       *)
-      Definition wrap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ fmt; slot; state ] =>
+      Definition wrap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ fmt; slot; state ] =>
           ltac:(M.monadic
             (let fmt := M.alloc (| fmt |) in
             let slot := M.alloc (| slot |) in
@@ -74,9 +77,14 @@ Module fmt.
                   Ty.function
                     [
                       Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ] ]
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]
+                        ]
                     ]
-                    (Ty.apply (Ty.path "&mut") [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ])
+                    (Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ])
                 ]
               |),
               [
@@ -98,6 +106,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [ Ty.path "core::fmt::builders::PadAdapter" ],
                                       "insert",
                                       []
@@ -119,7 +128,7 @@ Module fmt.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrap : M.IsAssociatedFunction Self "wrap" wrap.
@@ -142,9 +151,9 @@ Module fmt.
               Ok(())
           }
       *)
-      Definition write_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; s ] =>
+      Definition write_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; s ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let s := M.alloc (| s |) in
@@ -160,6 +169,7 @@ Module fmt.
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
                                 (Ty.path "core::str::iter::SplitInclusive")
+                                []
                                 [ Ty.path "char" ],
                               [],
                               "into_iter",
@@ -191,6 +201,7 @@ Module fmt.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
                                               (Ty.path "core::str::iter::SplitInclusive")
+                                              []
                                               [ Ty.path "char" ],
                                             [],
                                             "next",
@@ -251,6 +262,7 @@ Module fmt.
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.tuple [];
                                                                     Ty.path "core::fmt::Error"
@@ -306,6 +318,7 @@ Module fmt.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.tuple [];
                                                                                 Ty.path
@@ -315,6 +328,7 @@ Module fmt.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
@@ -378,6 +392,7 @@ Module fmt.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                       [],
                                                       "branch",
@@ -426,6 +441,7 @@ Module fmt.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.tuple [];
                                                                       Ty.path "core::fmt::Error"
@@ -434,6 +450,7 @@ Module fmt.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
@@ -471,7 +488,7 @@ Module fmt.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -483,9 +500,9 @@ Module fmt.
               self.buf.write_char(c)
           }
       *)
-      Definition write_char (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; c ] =>
+      Definition write_char (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; c ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let c := M.alloc (| c |) in
@@ -521,6 +538,7 @@ Module fmt.
                                       "core::ops::try_trait::Try",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       [],
                                       "branch",
@@ -568,10 +586,12 @@ Module fmt.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.path "core::convert::Infallible";
                                                         Ty.path "core::fmt::Error"
@@ -640,7 +660,7 @@ Module fmt.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -658,13 +678,15 @@ Module fmt.
     (* StructRecord
       {
         name := "DebugStruct";
+        const_params := [];
         ty_params := [];
         fields :=
           [
-            ("fmt", Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ]);
+            ("fmt", Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]);
             ("result",
               Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
             ("has_fields", Ty.path "bool")
           ];
@@ -679,9 +701,9 @@ Module fmt.
         DebugStruct { fmt, result, has_fields: false }
     }
     *)
-    Definition debug_struct_new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ fmt; name ] =>
+    Definition debug_struct_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ fmt; name ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           let name := M.alloc (| name |) in
@@ -703,7 +725,7 @@ Module fmt.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_debug_struct_new :
@@ -717,9 +739,9 @@ Module fmt.
               self.field_with(name, |f| value.fmt(f))
           }
       *)
-      Definition field (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; name; value ] =>
+      Definition field (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; name; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let name := M.alloc (| name |) in
@@ -730,9 +752,10 @@ Module fmt.
                 "field_with",
                 [
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                 ]
               |),
@@ -766,7 +789,7 @@ Module fmt.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_field : M.IsAssociatedFunction Self "field" field.
@@ -801,9 +824,9 @@ Module fmt.
               self
           }
       *)
-      Definition field_with (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; name; value_fmt ] =>
+      Definition field_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; name; value_fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let name := M.alloc (| name |) in
@@ -820,6 +843,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       "and_then",
                       [
@@ -828,6 +852,7 @@ Module fmt.
                           [ Ty.tuple [ Ty.tuple [] ] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                       ]
                     |),
@@ -905,6 +930,7 @@ Module fmt.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.tuple [];
                                                                         Ty.path "core::fmt::Error"
@@ -959,6 +985,7 @@ Module fmt.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::result::Result")
+                                                                                  []
                                                                                   [
                                                                                     Ty.tuple [];
                                                                                     Ty.path
@@ -968,6 +995,7 @@ Module fmt.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "core::convert::Infallible";
@@ -1055,6 +1083,7 @@ Module fmt.
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.path "core::fmt::Error"
@@ -1095,6 +1124,7 @@ Module fmt.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
@@ -1103,6 +1133,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "core::convert::Infallible";
@@ -1139,6 +1170,7 @@ Module fmt.
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.path "core::fmt::Error"
@@ -1180,6 +1212,7 @@ Module fmt.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
@@ -1188,6 +1221,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "core::convert::Infallible";
@@ -1224,6 +1258,7 @@ Module fmt.
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.path "core::fmt::Error"
@@ -1242,6 +1277,7 @@ Module fmt.
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "&mut")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::fmt::Formatter"
@@ -1279,6 +1315,7 @@ Module fmt.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
@@ -1287,6 +1324,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "core::convert::Infallible";
@@ -1364,6 +1402,7 @@ Module fmt.
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.path "core::fmt::Error"
@@ -1413,6 +1452,7 @@ Module fmt.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
@@ -1421,6 +1461,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "core::convert::Infallible";
@@ -1457,6 +1498,7 @@ Module fmt.
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.path "core::fmt::Error"
@@ -1506,6 +1548,7 @@ Module fmt.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
@@ -1514,6 +1557,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "core::convert::Infallible";
@@ -1550,6 +1594,7 @@ Module fmt.
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.path "core::fmt::Error"
@@ -1599,6 +1644,7 @@ Module fmt.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
@@ -1607,6 +1653,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "core::convert::Infallible";
@@ -1645,6 +1692,7 @@ Module fmt.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&mut")
+                                                              []
                                                               [ Ty.path "core::fmt::Formatter" ]
                                                           ]
                                                       ],
@@ -1687,7 +1735,7 @@ Module fmt.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_field_with : M.IsAssociatedFunction Self "field_with" field_with.
@@ -1712,9 +1760,9 @@ Module fmt.
               self.result
           }
       *)
-      Definition finish_non_exhaustive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition finish_non_exhaustive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1729,6 +1777,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       "and_then",
                       [
@@ -1737,6 +1786,7 @@ Module fmt.
                           [ Ty.tuple [ Ty.tuple [] ] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                       ]
                     |),
@@ -1849,6 +1899,7 @@ Module fmt.
                                                                   "core::ops::try_trait::Try",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.tuple [];
                                                                       Ty.path "core::fmt::Error"
@@ -1897,6 +1948,7 @@ Module fmt.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.tuple [];
                                                                                   Ty.path
@@ -1906,6 +1958,7 @@ Module fmt.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::result::Result")
+                                                                                  []
                                                                                   [
                                                                                     Ty.path
                                                                                       "core::convert::Infallible";
@@ -2014,7 +2067,7 @@ Module fmt.
                 "result"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_finish_non_exhaustive :
@@ -2030,9 +2083,9 @@ Module fmt.
               self.result
           }
       *)
-      Definition finish (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2062,6 +2115,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 "and_then",
                                 [
@@ -2070,6 +2124,7 @@ Module fmt.
                                     [ Ty.tuple [ Ty.tuple [] ] ]
                                     (Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                                 ]
                               |),
@@ -2175,7 +2230,7 @@ Module fmt.
                 "result"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -2185,9 +2240,9 @@ Module fmt.
               self.fmt.alternate()
           }
       *)
-      Definition is_pretty (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_pretty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2202,7 +2257,7 @@ Module fmt.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
@@ -2211,13 +2266,15 @@ Module fmt.
     (* StructRecord
       {
         name := "DebugTuple";
+        const_params := [];
         ty_params := [];
         fields :=
           [
-            ("fmt", Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ]);
+            ("fmt", Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]);
             ("result",
               Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
             ("fields", Ty.path "usize");
             ("empty_name", Ty.path "bool")
@@ -2233,9 +2290,9 @@ Module fmt.
         DebugTuple { fmt, result, fields: 0, empty_name: name.is_empty() }
     }
     *)
-    Definition debug_tuple_new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ fmt; name ] =>
+    Definition debug_tuple_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ fmt; name ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           let name := M.alloc (| name |) in
@@ -2262,7 +2319,7 @@ Module fmt.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_debug_tuple_new :
@@ -2276,9 +2333,9 @@ Module fmt.
               self.field_with(|f| value.fmt(f))
           }
       *)
-      Definition field (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; value ] =>
+      Definition field (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let value := M.alloc (| value |) in
@@ -2288,9 +2345,10 @@ Module fmt.
                 "field_with",
                 [
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                 ]
               |),
@@ -2323,7 +2381,7 @@ Module fmt.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_field : M.IsAssociatedFunction Self "field" field.
@@ -2354,9 +2412,9 @@ Module fmt.
               self
           }
       *)
-      Definition field_with (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; value_fmt ] =>
+      Definition field_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; value_fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let value_fmt := M.alloc (| value_fmt |) in
@@ -2372,6 +2430,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       "and_then",
                       [
@@ -2380,6 +2439,7 @@ Module fmt.
                           [ Ty.tuple [ Ty.tuple [] ] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                       ]
                     |),
@@ -2457,6 +2517,7 @@ Module fmt.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.tuple [];
                                                                         Ty.path "core::fmt::Error"
@@ -2511,6 +2572,7 @@ Module fmt.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::result::Result")
+                                                                                  []
                                                                                   [
                                                                                     Ty.tuple [];
                                                                                     Ty.path
@@ -2520,6 +2582,7 @@ Module fmt.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "core::convert::Infallible";
@@ -2607,6 +2670,7 @@ Module fmt.
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.path "core::fmt::Error"
@@ -2625,6 +2689,7 @@ Module fmt.
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "&mut")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::fmt::Formatter"
@@ -2662,6 +2727,7 @@ Module fmt.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
@@ -2670,6 +2736,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "core::convert::Infallible";
@@ -2753,6 +2820,7 @@ Module fmt.
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.path "core::fmt::Error"
@@ -2802,6 +2870,7 @@ Module fmt.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
@@ -2810,6 +2879,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "core::convert::Infallible";
@@ -2848,6 +2918,7 @@ Module fmt.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&mut")
+                                                              []
                                                               [ Ty.path "core::fmt::Formatter" ]
                                                           ]
                                                       ],
@@ -2889,7 +2960,7 @@ Module fmt.
                 M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_field_with : M.IsAssociatedFunction Self "field_with" field_with.
@@ -2907,9 +2978,9 @@ Module fmt.
               self.result
           }
       *)
-      Definition finish (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2945,6 +3016,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 "and_then",
                                 [
@@ -2953,6 +3025,7 @@ Module fmt.
                                     [ Ty.tuple [ Ty.tuple [] ] ]
                                     (Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                                 ]
                               |),
@@ -3031,6 +3104,7 @@ Module fmt.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
@@ -3084,6 +3158,7 @@ Module fmt.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
+                                                                                    []
                                                                                     [
                                                                                       Ty.tuple [];
                                                                                       Ty.path
@@ -3093,6 +3168,7 @@ Module fmt.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::result::Result")
+                                                                                      []
                                                                                       [
                                                                                         Ty.path
                                                                                           "core::convert::Infallible";
@@ -3169,7 +3245,7 @@ Module fmt.
                 "result"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -3179,9 +3255,9 @@ Module fmt.
               self.fmt.alternate()
           }
       *)
-      Definition is_pretty (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_pretty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -3196,7 +3272,7 @@ Module fmt.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
@@ -3205,13 +3281,15 @@ Module fmt.
     (* StructRecord
       {
         name := "DebugInner";
+        const_params := [];
         ty_params := [];
         fields :=
           [
-            ("fmt", Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ]);
+            ("fmt", Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]);
             ("result",
               Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
             ("has_fields", Ty.path "bool")
           ];
@@ -3246,9 +3324,9 @@ Module fmt.
               self.has_fields = true;
           }
       *)
-      Definition entry_with (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; entry_fmt ] =>
+      Definition entry_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; entry_fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let entry_fmt := M.alloc (| entry_fmt |) in
@@ -3264,6 +3342,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       "and_then",
                       [
@@ -3272,6 +3351,7 @@ Module fmt.
                           [ Ty.tuple [ Ty.tuple [] ] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                       ]
                     |),
@@ -3348,6 +3428,7 @@ Module fmt.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.tuple [];
                                                                         Ty.path "core::fmt::Error"
@@ -3402,6 +3483,7 @@ Module fmt.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::result::Result")
+                                                                                  []
                                                                                   [
                                                                                     Ty.tuple [];
                                                                                     Ty.path
@@ -3411,6 +3493,7 @@ Module fmt.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "core::convert::Infallible";
@@ -3498,6 +3581,7 @@ Module fmt.
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.path "core::fmt::Error"
@@ -3516,6 +3600,7 @@ Module fmt.
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "&mut")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::fmt::Formatter"
@@ -3553,6 +3638,7 @@ Module fmt.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
@@ -3561,6 +3647,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "core::convert::Infallible";
@@ -3627,6 +3714,7 @@ Module fmt.
                                                                   "core::ops::try_trait::Try",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.tuple [];
                                                                       Ty.path "core::fmt::Error"
@@ -3678,6 +3766,7 @@ Module fmt.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.tuple [];
                                                                                   Ty.path
@@ -3687,6 +3776,7 @@ Module fmt.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::result::Result")
+                                                                                  []
                                                                                   [
                                                                                     Ty.path
                                                                                       "core::convert::Infallible";
@@ -3731,6 +3821,7 @@ Module fmt.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&mut")
+                                                              []
                                                               [ Ty.path "core::fmt::Formatter" ]
                                                           ]
                                                       ],
@@ -3773,7 +3864,7 @@ Module fmt.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
@@ -3783,9 +3874,9 @@ Module fmt.
               self.fmt.alternate()
           }
       *)
-      Definition is_pretty (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_pretty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -3800,7 +3891,7 @@ Module fmt.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
@@ -3809,6 +3900,7 @@ Module fmt.
     (* StructRecord
       {
         name := "DebugSet";
+        const_params := [];
         ty_params := [];
         fields := [ ("inner", Ty.path "core::fmt::builders::DebugInner") ];
       } *)
@@ -3819,9 +3911,9 @@ Module fmt.
         DebugSet { inner: DebugInner { fmt, result, has_fields: false } }
     }
     *)
-    Definition debug_set_new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ fmt ] =>
+    Definition debug_set_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ fmt ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           M.read (|
@@ -3847,7 +3939,7 @@ Module fmt.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_debug_set_new : M.IsFunction "core::fmt::builders::debug_set_new" debug_set_new.
@@ -3861,9 +3953,9 @@ Module fmt.
               self
           }
       *)
-      Definition entry (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; entry ] =>
+      Definition entry (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; entry ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let entry := M.alloc (| entry |) in
@@ -3878,10 +3970,11 @@ Module fmt.
                         Ty.function
                           [
                             Ty.tuple
-                              [ Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ] ]
+                              [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                           ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                       ]
                     |),
@@ -3921,7 +4014,7 @@ Module fmt.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
@@ -3935,9 +4028,9 @@ Module fmt.
               self
           }
       *)
-      Definition entry_with (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; entry_fmt ] =>
+      Definition entry_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; entry_fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let entry_fmt := M.alloc (| entry_fmt |) in
@@ -3962,7 +4055,7 @@ Module fmt.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
@@ -3979,9 +4072,9 @@ Module fmt.
               self
           }
       *)
-      Definition entries (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ D; _ as I ], [ self; entries ] =>
+      Definition entries (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ D; _ as I ], [ self; entries ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let entries := M.alloc (| entries |) in
@@ -4061,7 +4154,7 @@ Module fmt.
                   |)) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
@@ -4071,15 +4164,16 @@ Module fmt.
               self.inner.result.and_then(|_| self.inner.fmt.write_str("}"))
           }
       *)
-      Definition finish (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 "and_then",
                 [
@@ -4088,6 +4182,7 @@ Module fmt.
                     [ Ty.tuple [ Ty.tuple [] ] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                 ]
               |),
@@ -4140,7 +4235,7 @@ Module fmt.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -4149,6 +4244,7 @@ Module fmt.
     (* StructRecord
       {
         name := "DebugList";
+        const_params := [];
         ty_params := [];
         fields := [ ("inner", Ty.path "core::fmt::builders::DebugInner") ];
       } *)
@@ -4159,9 +4255,9 @@ Module fmt.
         DebugList { inner: DebugInner { fmt, result, has_fields: false } }
     }
     *)
-    Definition debug_list_new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ fmt ] =>
+    Definition debug_list_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ fmt ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           M.read (|
@@ -4187,7 +4283,7 @@ Module fmt.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_debug_list_new :
@@ -4202,9 +4298,9 @@ Module fmt.
               self
           }
       *)
-      Definition entry (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; entry ] =>
+      Definition entry (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; entry ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let entry := M.alloc (| entry |) in
@@ -4219,10 +4315,11 @@ Module fmt.
                         Ty.function
                           [
                             Ty.tuple
-                              [ Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ] ]
+                              [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                           ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                       ]
                     |),
@@ -4262,7 +4359,7 @@ Module fmt.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
@@ -4276,9 +4373,9 @@ Module fmt.
               self
           }
       *)
-      Definition entry_with (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; entry_fmt ] =>
+      Definition entry_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; entry_fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let entry_fmt := M.alloc (| entry_fmt |) in
@@ -4303,7 +4400,7 @@ Module fmt.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
@@ -4320,9 +4417,9 @@ Module fmt.
               self
           }
       *)
-      Definition entries (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ D; _ as I ], [ self; entries ] =>
+      Definition entries (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ D; _ as I ], [ self; entries ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let entries := M.alloc (| entries |) in
@@ -4402,7 +4499,7 @@ Module fmt.
                   |)) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
@@ -4412,15 +4509,16 @@ Module fmt.
               self.inner.result.and_then(|_| self.inner.fmt.write_str("]"))
           }
       *)
-      Definition finish (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 "and_then",
                 [
@@ -4429,6 +4527,7 @@ Module fmt.
                     [ Ty.tuple [ Ty.tuple [] ] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                 ]
               |),
@@ -4481,7 +4580,7 @@ Module fmt.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -4490,13 +4589,15 @@ Module fmt.
     (* StructRecord
       {
         name := "DebugMap";
+        const_params := [];
         ty_params := [];
         fields :=
           [
-            ("fmt", Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ]);
+            ("fmt", Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]);
             ("result",
               Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
             ("has_fields", Ty.path "bool");
             ("has_key", Ty.path "bool");
@@ -4510,9 +4611,9 @@ Module fmt.
         DebugMap { fmt, result, has_fields: false, has_key: false, state: Default::default() }
     }
     *)
-    Definition debug_map_new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ fmt ] =>
+    Definition debug_map_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ fmt ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           M.read (|
@@ -4545,7 +4646,7 @@ Module fmt.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_debug_map_new : M.IsFunction "core::fmt::builders::debug_map_new" debug_map_new.
@@ -4558,9 +4659,9 @@ Module fmt.
               self.key(key).value(value)
           }
       *)
-      Definition entry (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; key; value ] =>
+      Definition entry (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; key; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let key := M.alloc (| key |) in
@@ -4579,7 +4680,7 @@ Module fmt.
                 (* Unsize *) M.pointer_coercion (M.read (| value |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
@@ -4589,9 +4690,9 @@ Module fmt.
               self.key_with(|f| key.fmt(f))
           }
       *)
-      Definition key (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; key ] =>
+      Definition key (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; key ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let key := M.alloc (| key |) in
@@ -4601,9 +4702,10 @@ Module fmt.
                 "key_with",
                 [
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                 ]
               |),
@@ -4636,7 +4738,7 @@ Module fmt.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_key : M.IsAssociatedFunction Self "key" key.
@@ -4677,9 +4779,9 @@ Module fmt.
               self
           }
       *)
-      Definition key_with (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; key_fmt ] =>
+      Definition key_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; key_fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let key_fmt := M.alloc (| key_fmt |) in
@@ -4695,6 +4797,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       "and_then",
                       [
@@ -4703,6 +4806,7 @@ Module fmt.
                           [ Ty.tuple [ Ty.tuple [] ] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                       ]
                     |),
@@ -4840,6 +4944,7 @@ Module fmt.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
@@ -4894,6 +4999,7 @@ Module fmt.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
+                                                                                    []
                                                                                     [
                                                                                       Ty.tuple [];
                                                                                       Ty.path
@@ -4903,6 +5009,7 @@ Module fmt.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::result::Result")
+                                                                                      []
                                                                                       [
                                                                                         Ty.path
                                                                                           "core::convert::Infallible";
@@ -5000,6 +5107,7 @@ Module fmt.
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.tuple [];
                                                                 Ty.path "core::fmt::Error"
@@ -5018,6 +5126,7 @@ Module fmt.
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "&mut")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "core::fmt::Formatter"
@@ -5055,6 +5164,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.tuple [];
                                                                             Ty.path
@@ -5064,6 +5174,7 @@ Module fmt.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "core::convert::Infallible";
@@ -5100,6 +5211,7 @@ Module fmt.
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.tuple [];
                                                                 Ty.path "core::fmt::Error"
@@ -5143,6 +5255,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.tuple [];
                                                                             Ty.path
@@ -5152,6 +5265,7 @@ Module fmt.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "core::convert::Infallible";
@@ -5209,6 +5323,7 @@ Module fmt.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.tuple [];
                                                                         Ty.path "core::fmt::Error"
@@ -5262,6 +5377,7 @@ Module fmt.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::result::Result")
+                                                                                  []
                                                                                   [
                                                                                     Ty.tuple [];
                                                                                     Ty.path
@@ -5271,6 +5387,7 @@ Module fmt.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "core::convert::Infallible";
@@ -5316,6 +5433,7 @@ Module fmt.
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.tuple [];
                                                                 Ty.path "core::fmt::Error"
@@ -5334,6 +5452,7 @@ Module fmt.
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "&mut")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "core::fmt::Formatter"
@@ -5380,6 +5499,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.tuple [];
                                                                             Ty.path
@@ -5389,6 +5509,7 @@ Module fmt.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "core::convert::Infallible";
@@ -5425,6 +5546,7 @@ Module fmt.
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.tuple [];
                                                                 Ty.path "core::fmt::Error"
@@ -5474,6 +5596,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.tuple [];
                                                                             Ty.path
@@ -5483,6 +5606,7 @@ Module fmt.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "core::convert::Infallible";
@@ -5538,7 +5662,7 @@ Module fmt.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_key_with : M.IsAssociatedFunction Self "key_with" key_with.
@@ -5548,9 +5672,9 @@ Module fmt.
               self.value_with(|f| value.fmt(f))
           }
       *)
-      Definition value (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; value ] =>
+      Definition value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let value := M.alloc (| value |) in
@@ -5560,9 +5684,10 @@ Module fmt.
                 "value_with",
                 [
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                 ]
               |),
@@ -5595,7 +5720,7 @@ Module fmt.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_value : M.IsAssociatedFunction Self "value" value.
@@ -5625,9 +5750,9 @@ Module fmt.
               self
           }
       *)
-      Definition value_with (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; value_fmt ] =>
+      Definition value_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; value_fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let value_fmt := M.alloc (| value_fmt |) in
@@ -5643,6 +5768,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       "and_then",
                       [
@@ -5651,6 +5777,7 @@ Module fmt.
                           [ Ty.tuple [ Ty.tuple [] ] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                       ]
                     |),
@@ -5794,6 +5921,7 @@ Module fmt.
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.tuple [];
                                                                 Ty.path "core::fmt::Error"
@@ -5812,6 +5940,7 @@ Module fmt.
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "&mut")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "core::fmt::Formatter"
@@ -5849,6 +5978,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.tuple [];
                                                                             Ty.path
@@ -5858,6 +5988,7 @@ Module fmt.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "core::convert::Infallible";
@@ -5894,6 +6025,7 @@ Module fmt.
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.tuple [];
                                                                 Ty.path "core::fmt::Error"
@@ -5938,6 +6070,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.tuple [];
                                                                             Ty.path
@@ -5947,6 +6080,7 @@ Module fmt.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "core::convert::Infallible";
@@ -5986,6 +6120,7 @@ Module fmt.
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.tuple [];
                                                                 Ty.path "core::fmt::Error"
@@ -6004,6 +6139,7 @@ Module fmt.
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "&mut")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "core::fmt::Formatter"
@@ -6050,6 +6186,7 @@ Module fmt.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.tuple [];
                                                                             Ty.path
@@ -6059,6 +6196,7 @@ Module fmt.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "core::convert::Infallible";
@@ -6123,7 +6261,7 @@ Module fmt.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_value_with : M.IsAssociatedFunction Self "value_with" value_with.
@@ -6141,9 +6279,9 @@ Module fmt.
               self
           }
       *)
-      Definition entries (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ K; V; _ as I ], [ self; entries ] =>
+      Definition entries (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ K; V; _ as I ], [ self; entries ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let entries := M.alloc (| entries |) in
@@ -6227,7 +6365,7 @@ Module fmt.
                   |)) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
@@ -6241,15 +6379,16 @@ Module fmt.
               })
           }
       *)
-      Definition finish (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 "and_then",
                 [
@@ -6258,6 +6397,7 @@ Module fmt.
                     [ Ty.tuple [ Ty.tuple [] ] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                 ]
               |),
@@ -6365,7 +6505,7 @@ Module fmt.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -6375,9 +6515,9 @@ Module fmt.
               self.fmt.alternate()
           }
       *)
-      Definition is_pretty (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_pretty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -6392,7 +6532,7 @@ Module fmt.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
@@ -6401,23 +6541,24 @@ Module fmt.
     (* StructTuple
       {
         name := "FormatterFn";
+        const_params := [];
         ty_params := [ "F" ];
         fields := [ F ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_ops_function_Fn_F_Tuple_ref_mut_core_fmt_Formatter__for_core_fmt_builders_FormatterFn_F.
       Definition Self (F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::fmt::builders::FormatterFn") [ F ].
+        Ty.apply (Ty.path "core::fmt::builders::FormatterFn") [] [ F ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               (self.0)(f)
           }
       *)
-      Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6425,7 +6566,7 @@ Module fmt.
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 F,
-                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ] ] ],
+                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ] ],
                 "call",
                 []
               |),
@@ -6438,7 +6579,7 @@ Module fmt.
                 Value.Tuple [ M.read (| f |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6452,17 +6593,17 @@ Module fmt.
     
     Module Impl_core_fmt_Display_where_core_ops_function_Fn_F_Tuple_ref_mut_core_fmt_Formatter__for_core_fmt_builders_FormatterFn_F.
       Definition Self (F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::fmt::builders::FormatterFn") [ F ].
+        Ty.apply (Ty.path "core::fmt::builders::FormatterFn") [] [ F ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               (self.0)(f)
           }
       *)
-      Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6470,7 +6611,7 @@ Module fmt.
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 F,
-                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ] ] ],
+                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ] ],
                 "call",
                 []
               |),
@@ -6483,7 +6624,7 @@ Module fmt.
                 Value.Tuple [ M.read (| f |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

@@ -12,10 +12,10 @@ Module Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_optio
           println!("{:?}", Some(self));
       }
   *)
-  Definition print_in_option (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition print_in_option (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self ] =>
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -64,7 +64,7 @@ Module Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_optio
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -83,9 +83,9 @@ fn main() {
     vec.print_in_option();
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ vec :=
@@ -140,7 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_where_clauses::main" main.

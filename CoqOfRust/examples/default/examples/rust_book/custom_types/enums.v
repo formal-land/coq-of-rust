@@ -52,9 +52,9 @@ fn inspect(event: WebEvent) {
     }
 }
 *)
-Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ event ] =>
+Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ event ] =>
     ltac:(M.monadic
       (let event := M.alloc (| event |) in
       M.read (|
@@ -284,7 +284,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_inspect : M.IsFunction "enums::inspect" inspect.
@@ -305,9 +305,9 @@ fn main() {
     inspect(unload);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ pressed :=
@@ -359,7 +359,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "enums::main" main.

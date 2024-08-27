@@ -6,6 +6,7 @@ Module net.
     (*
     Enum IpAddr
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -38,9 +39,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -56,7 +57,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -82,9 +83,13 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -100,7 +105,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -127,9 +132,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -242,7 +247,7 @@ Module net.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -257,9 +262,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -337,7 +342,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -352,9 +357,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -463,7 +468,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -478,9 +483,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -602,7 +607,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -616,8 +621,9 @@ Module net.
     (* StructRecord
       {
         name := "Ipv4Addr";
+        const_params := [];
         ty_params := [];
-        fields := [ ("octets", Ty.apply (Ty.path "array") [ Ty.path "u8" ]) ];
+        fields := [ ("octets", Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ]) ];
       } *)
     
     Module Impl_core_marker_Copy_for_core_net_ip_addr_Ipv4Addr.
@@ -635,9 +641,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -646,7 +652,7 @@ Module net.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -672,17 +678,17 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ],
+                [ Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ] ],
                 "eq",
                 []
               |),
@@ -699,7 +705,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -725,9 +731,13 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -736,7 +746,7 @@ Module net.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -752,16 +762,16 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::hash::Hash",
-                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ],
                 [],
                 "hash",
                 [ __H ]
@@ -775,7 +785,7 @@ Module net.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -789,8 +799,9 @@ Module net.
     (* StructRecord
       {
         name := "Ipv6Addr";
+        const_params := [];
         ty_params := [];
-        fields := [ ("octets", Ty.apply (Ty.path "array") [ Ty.path "u8" ]) ];
+        fields := [ ("octets", Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ]) ];
       } *)
     
     Module Impl_core_marker_Copy_for_core_net_ip_addr_Ipv6Addr.
@@ -808,9 +819,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -819,7 +830,7 @@ Module net.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -845,17 +856,17 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ],
+                [ Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ] ],
                 "eq",
                 []
               |),
@@ -872,7 +883,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -898,9 +909,13 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -909,7 +924,7 @@ Module net.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -925,16 +940,16 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::hash::Hash",
-                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ],
                 [],
                 "hash",
                 [ __H ]
@@ -948,7 +963,7 @@ Module net.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -962,6 +977,7 @@ Module net.
     (*
     Enum Ipv6MulticastScope
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -1030,9 +1046,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1059,7 +1075,7 @@ Module net.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1085,13 +1101,17 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1107,13 +1127,13 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1128,9 +1148,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1152,7 +1172,7 @@ Module net.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1167,9 +1187,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1249,7 +1269,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1271,9 +1291,9 @@ Module net.
               }
           }
       *)
-      Definition is_unspecified (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_unspecified (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1323,7 +1343,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_unspecified :
@@ -1337,9 +1357,9 @@ Module net.
               }
           }
       *)
-      Definition is_loopback (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_loopback (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1389,7 +1409,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_loopback : M.IsAssociatedFunction Self "is_loopback" is_loopback.
@@ -1402,9 +1422,9 @@ Module net.
               }
           }
       *)
-      Definition is_global (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_global (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1454,7 +1474,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_global : M.IsAssociatedFunction Self "is_global" is_global.
@@ -1467,9 +1487,9 @@ Module net.
               }
           }
       *)
-      Definition is_multicast (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_multicast (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1519,7 +1539,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_multicast :
@@ -1533,9 +1553,9 @@ Module net.
               }
           }
       *)
-      Definition is_documentation (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_documentation (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1585,7 +1605,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_documentation :
@@ -1599,9 +1619,9 @@ Module net.
               }
           }
       *)
-      Definition is_benchmarking (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_benchmarking (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1651,7 +1671,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_benchmarking :
@@ -1662,9 +1682,9 @@ Module net.
               matches!(self, IpAddr::V4(_))
           }
       *)
-      Definition is_ipv4 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ipv4 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1685,7 +1705,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ipv4 : M.IsAssociatedFunction Self "is_ipv4" is_ipv4.
@@ -1695,9 +1715,9 @@ Module net.
               matches!(self, IpAddr::V6(_))
           }
       *)
-      Definition is_ipv6 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ipv6 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1718,7 +1738,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ipv6 : M.IsAssociatedFunction Self "is_ipv6" is_ipv6.
@@ -1731,9 +1751,9 @@ Module net.
               }
           }
       *)
-      Definition to_canonical (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_canonical (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1773,7 +1793,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_canonical :
@@ -1788,9 +1808,9 @@ Module net.
               Ipv4Addr { octets: [a, b, c, d] }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ a; b; c; d ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ a; b; c; d ] =>
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
@@ -1802,7 +1822,7 @@ Module net.
                 ("octets",
                   Value.Array [ M.read (| a |); M.read (| b |); M.read (| c |); M.read (| d |) ])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1818,9 +1838,9 @@ Module net.
               u32::from_be_bytes(self.octets)
           }
       *)
-      Definition to_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1835,7 +1855,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_bits : M.IsAssociatedFunction Self "to_bits" to_bits.
@@ -1845,9 +1865,9 @@ Module net.
               Ipv4Addr { octets: bits.to_be_bytes() }
           }
       *)
-      Definition from_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ bits ] =>
+      Definition from_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ bits ] =>
           ltac:(M.monadic
             (let bits := M.alloc (| bits |) in
             Value.StructRecord
@@ -1859,7 +1879,7 @@ Module net.
                     [ M.read (| bits |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_bits : M.IsAssociatedFunction Self "from_bits" from_bits.
@@ -1914,9 +1934,9 @@ Module net.
               self.octets
           }
       *)
-      Definition octets (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition octets (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1926,7 +1946,7 @@ Module net.
                 "octets"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_octets : M.IsAssociatedFunction Self "octets" octets.
@@ -1936,9 +1956,9 @@ Module net.
               u32::from_be_bytes(self.octets) == 0
           }
       *)
-      Definition is_unspecified (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_unspecified (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
@@ -1955,7 +1975,7 @@ Module net.
                 ]
               |))
               (Value.Integer 0)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_unspecified :
@@ -1966,9 +1986,9 @@ Module net.
               self.octets()[0] == 127
           }
       *)
-      Definition is_loopback (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_loopback (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
@@ -1988,7 +2008,7 @@ Module net.
                 |)
               |))
               (Value.Integer 127)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_loopback : M.IsAssociatedFunction Self "is_loopback" is_loopback.
@@ -2003,9 +2023,9 @@ Module net.
               }
           }
       *)
-      Definition is_private (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_private (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2055,7 +2075,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_private : M.IsAssociatedFunction Self "is_private" is_private.
@@ -2065,9 +2085,9 @@ Module net.
               matches!(self.octets(), [169, 254, ..])
           }
       *)
-      Definition is_link_local (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_link_local (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2097,7 +2117,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_link_local :
@@ -2118,9 +2138,9 @@ Module net.
                   || self.is_broadcast())
           }
       *)
-      Definition is_global (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_global (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Pure.not
@@ -2289,7 +2309,7 @@ Module net.
                     [ M.read (| self |) ]
                   |)))
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_global : M.IsAssociatedFunction Self "is_global" is_global.
@@ -2299,9 +2319,9 @@ Module net.
               self.octets()[0] == 100 && (self.octets()[1] & 0b1100_0000 == 0b0100_0000)
           }
       *)
-      Definition is_shared (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_shared (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
@@ -2343,7 +2363,7 @@ Module net.
                     (Value.Integer 192))
                   (Value.Integer 64)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_shared : M.IsAssociatedFunction Self "is_shared" is_shared.
@@ -2353,9 +2373,9 @@ Module net.
               self.octets()[0] == 198 && (self.octets()[1] & 0xfe) == 18
           }
       *)
-      Definition is_benchmarking (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_benchmarking (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
@@ -2397,7 +2417,7 @@ Module net.
                     (Value.Integer 254))
                   (Value.Integer 18)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_benchmarking :
@@ -2408,9 +2428,9 @@ Module net.
               self.octets()[0] & 240 == 240 && !self.is_broadcast()
           }
       *)
-      Definition is_reserved (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_reserved (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
@@ -2444,7 +2464,7 @@ Module net.
                     [ M.read (| self |) ]
                   |))))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_reserved : M.IsAssociatedFunction Self "is_reserved" is_reserved.
@@ -2454,9 +2474,9 @@ Module net.
               self.octets()[0] >= 224 && self.octets()[0] <= 239
           }
       *)
-      Definition is_multicast (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_multicast (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
@@ -2496,7 +2516,7 @@ Module net.
                   |))
                   (Value.Integer 239)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_multicast :
@@ -2507,9 +2527,9 @@ Module net.
               u32::from_be_bytes(self.octets()) == u32::from_be_bytes(Self::BROADCAST.octets())
           }
       *)
-      Definition is_broadcast (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_broadcast (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
@@ -2539,7 +2559,7 @@ Module net.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_broadcast :
@@ -2550,9 +2570,9 @@ Module net.
               matches!(self.octets(), [192, 0, 2, _] | [198, 51, 100, _] | [203, 0, 113, _])
           }
       *)
-      Definition is_documentation (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_documentation (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2652,7 +2672,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_documentation :
@@ -2664,9 +2684,9 @@ Module net.
               Ipv6Addr { octets: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, a, b, c, d] }
           }
       *)
-      Definition to_ipv6_compatible (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_ipv6_compatible (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2721,7 +2741,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_ipv6_compatible :
@@ -2733,9 +2753,9 @@ Module net.
               Ipv6Addr { octets: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF, 0xFF, a, b, c, d] }
           }
       *)
-      Definition to_ipv6_mapped (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_ipv6_mapped (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2790,7 +2810,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_ipv6_mapped :
@@ -2808,9 +2828,9 @@ Module net.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -2865,7 +2885,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2884,9 +2904,9 @@ Module net.
               fmt::Display::fmt(self, fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -2900,7 +2920,7 @@ Module net.
               |),
               [ M.read (| self |); M.read (| fmt |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2919,13 +2939,13 @@ Module net.
               IpAddr::V4(ipv4)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ipv4 ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ ipv4 ] =>
           ltac:(M.monadic
             (let ipv4 := M.alloc (| ipv4 |) in
             Value.StructTuple "core::net::ip_addr::IpAddr::V4" [ M.read (| ipv4 |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2944,13 +2964,13 @@ Module net.
               IpAddr::V6(ipv6)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ipv6 ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ ipv6 ] =>
           ltac:(M.monadic
             (let ipv6 := M.alloc (| ipv6 |) in
             Value.StructTuple "core::net::ip_addr::IpAddr::V6" [ M.read (| ipv6 |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2983,9 +3003,9 @@ Module net.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -3012,7 +3032,7 @@ Module net.
                             LogicalOp.and (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "is_none",
                                   []
                                 |),
@@ -3032,7 +3052,10 @@ Module net.
                               ltac:(M.monadic
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     "is_none",
                                     []
                                   |),
@@ -3149,7 +3172,10 @@ Module net.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.path "core::net::display_buffer::DisplayBuffer",
+                              Ty.apply
+                                (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                [ Value.Integer 15 ]
+                                [],
                               "new",
                               []
                             |),
@@ -3162,6 +3188,7 @@ Module net.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               "unwrap",
                               []
@@ -3170,7 +3197,10 @@ Module net.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::fmt::Write",
-                                  Ty.path "core::net::display_buffer::DisplayBuffer",
+                                  Ty.apply
+                                    (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                    [ Value.Integer 15 ]
+                                    [],
                                   [],
                                   "write_fmt",
                                   []
@@ -3268,7 +3298,10 @@ Module net.
                             M.read (| fmt |);
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "core::net::display_buffer::DisplayBuffer",
+                                Ty.apply
+                                  (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                  [ Value.Integer 15 ]
+                                  [],
                                 "as_str",
                                 []
                               |),
@@ -3280,7 +3313,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3299,9 +3332,9 @@ Module net.
               fmt::Display::fmt(self, fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -3315,7 +3348,7 @@ Module net.
               |),
               [ M.read (| self |); M.read (| fmt |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3337,9 +3370,9 @@ Module net.
               }
           }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3361,8 +3394,9 @@ Module net.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
-                            [ Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ],
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                            ],
                             "eq",
                             []
                           |),
@@ -3382,7 +3416,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3404,9 +3438,9 @@ Module net.
               }
           }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3428,8 +3462,9 @@ Module net.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
-                            [ Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ],
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                            ],
                             "eq",
                             []
                           |),
@@ -3449,7 +3484,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3468,9 +3503,9 @@ Module net.
               Some(self.cmp(other))
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3488,7 +3523,7 @@ Module net.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3510,9 +3545,9 @@ Module net.
               }
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3559,7 +3594,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3581,9 +3616,9 @@ Module net.
               }
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3630,7 +3665,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3649,16 +3684,16 @@ Module net.
               self.octets.cmp(&other.octets)
           }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::Ord",
-                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ],
                 [],
                 "cmp",
                 []
@@ -3676,7 +3711,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3695,16 +3730,16 @@ Module net.
               ip.to_bits()
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ip ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ ip ] =>
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "to_bits", [] |),
               [ M.read (| ip |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3723,9 +3758,9 @@ Module net.
               Ipv4Addr::from_bits(ip)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ip ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ ip ] =>
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             M.call_closure (|
@@ -3736,7 +3771,7 @@ Module net.
               |),
               [ M.read (| ip |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3747,7 +3782,7 @@ Module net.
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u32_for_core_net_ip_addr_Ipv4Addr.
     
-    Module Impl_core_convert_From_array_u8_for_core_net_ip_addr_Ipv4Addr.
+    Module Impl_core_convert_From_array_4_u8_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (*
@@ -3755,24 +3790,25 @@ Module net.
               Ipv4Addr { octets }
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ octets ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ octets ] =>
           ltac:(M.monadic
             (let octets := M.alloc (| octets |) in
             Value.StructRecord "core::net::ip_addr::Ipv4Addr" [ ("octets", M.read (| octets |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+          (* Trait polymorphic types *)
+          [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ] ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
-    End Impl_core_convert_From_array_u8_for_core_net_ip_addr_Ipv4Addr.
+    End Impl_core_convert_From_array_4_u8_for_core_net_ip_addr_Ipv4Addr.
     
-    Module Impl_core_convert_From_array_u8_for_core_net_ip_addr_IpAddr.
+    Module Impl_core_convert_From_array_4_u8_for_core_net_ip_addr_IpAddr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (*
@@ -3780,9 +3816,9 @@ Module net.
               IpAddr::V4(Ipv4Addr::from(octets))
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ octets ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ octets ] =>
           ltac:(M.monadic
             (let octets := M.alloc (| octets |) in
             Value.StructTuple
@@ -3792,56 +3828,24 @@ Module net.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "core::net::ip_addr::Ipv4Addr",
-                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                    [ Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ] ],
                     "from",
                     []
                   |),
                   [ M.read (| octets |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+          (* Trait polymorphic types *)
+          [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ] ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
-      (*
-          fn from(octets: [u8; 16]) -> IpAddr {
-              IpAddr::V6(Ipv6Addr::from(octets))
-          }
-      *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ octets ] =>
-          ltac:(M.monadic
-            (let octets := M.alloc (| octets |) in
-            Value.StructTuple
-              "core::net::ip_addr::IpAddr::V6"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::From",
-                    Ty.path "core::net::ip_addr::Ipv6Addr",
-                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
-                    "from",
-                    []
-                  |),
-                  [ M.read (| octets |) ]
-                |)
-              ]))
-        | _, _ => M.impossible
-        end.
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::convert::From"
-          Self
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-          (* Instance *) [ ("from", InstanceField.Method from) ].
-    End Impl_core_convert_From_array_u8_for_core_net_ip_addr_IpAddr.
+    End Impl_core_convert_From_array_4_u8_for_core_net_ip_addr_IpAddr.
     
     Module Impl_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
@@ -3865,9 +3869,9 @@ Module net.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ a; b; c; d; e; f; g; h ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ a; b; c; d; e; f; g; h ] =>
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
@@ -3925,8 +3929,8 @@ Module net.
                         M.get_function (|
                           "core::intrinsics::transmute",
                           [
-                            Ty.apply (Ty.path "array") [ Ty.path "u16" ];
-                            Ty.apply (Ty.path "array") [ Ty.path "u8" ]
+                            Ty.apply (Ty.path "array") [ Value.Integer 8 ] [ Ty.path "u16" ];
+                            Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ]
                           ]
                         |),
                         [ M.read (| addr16 |) ]
@@ -3934,7 +3938,7 @@ Module net.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -3950,9 +3954,9 @@ Module net.
               u128::from_be_bytes(self.octets)
           }
       *)
-      Definition to_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -3967,7 +3971,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_bits : M.IsAssociatedFunction Self "to_bits" to_bits.
@@ -3977,9 +3981,9 @@ Module net.
               Ipv6Addr { octets: bits.to_be_bytes() }
           }
       *)
-      Definition from_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ bits ] =>
+      Definition from_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ bits ] =>
           ltac:(M.monadic
             (let bits := M.alloc (| bits |) in
             Value.StructRecord
@@ -3991,7 +3995,7 @@ Module net.
                     [ M.read (| bits |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_bits : M.IsAssociatedFunction Self "from_bits" from_bits.
@@ -4062,9 +4066,9 @@ Module net.
               ]
           }
       *)
-      Definition segments (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition segments (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -4074,8 +4078,8 @@ Module net.
                     M.get_function (|
                       "core::intrinsics::transmute",
                       [
-                        Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-                        Ty.apply (Ty.path "array") [ Ty.path "u16" ]
+                        Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ];
+                        Ty.apply (Ty.path "array") [ Value.Integer 8 ] [ Ty.path "u16" ]
                       ]
                     |),
                     [
@@ -4148,7 +4152,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_segments : M.IsAssociatedFunction Self "segments" segments.
@@ -4158,9 +4162,9 @@ Module net.
               u128::from_be_bytes(self.octets()) == u128::from_be_bytes(Ipv6Addr::UNSPECIFIED.octets())
           }
       *)
-      Definition is_unspecified (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_unspecified (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
@@ -4190,7 +4194,7 @@ Module net.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_unspecified :
@@ -4201,9 +4205,9 @@ Module net.
               u128::from_be_bytes(self.octets()) == u128::from_be_bytes(Ipv6Addr::LOCALHOST.octets())
           }
       *)
-      Definition is_loopback (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_loopback (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
@@ -4233,7 +4237,7 @@ Module net.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_loopback : M.IsAssociatedFunction Self "is_loopback" is_loopback.
@@ -4267,9 +4271,9 @@ Module net.
                   || self.is_unicast_link_local())
           }
       *)
-      Definition is_global (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_global (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Pure.not
@@ -4726,7 +4730,7 @@ Module net.
                     [ M.read (| self |) ]
                   |)))
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_global : M.IsAssociatedFunction Self "is_global" is_global.
@@ -4736,9 +4740,9 @@ Module net.
               (self.segments()[0] & 0xfe00) == 0xfc00
           }
       *)
-      Definition is_unique_local (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_unique_local (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
@@ -4760,7 +4764,7 @@ Module net.
                 |))
                 (Value.Integer 65024))
               (Value.Integer 64512)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_unique_local :
@@ -4771,9 +4775,9 @@ Module net.
               !self.is_multicast()
           }
       *)
-      Definition is_unicast (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_unicast (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Pure.not
@@ -4785,7 +4789,7 @@ Module net.
                 |),
                 [ M.read (| self |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_unicast : M.IsAssociatedFunction Self "is_unicast" is_unicast.
@@ -4795,9 +4799,9 @@ Module net.
               (self.segments()[0] & 0xffc0) == 0xfe80
           }
       *)
-      Definition is_unicast_link_local (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_unicast_link_local (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
@@ -4819,7 +4823,7 @@ Module net.
                 |))
                 (Value.Integer 65472))
               (Value.Integer 65152)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_unicast_link_local :
@@ -4830,9 +4834,9 @@ Module net.
               (self.segments()[0] == 0x2001) && (self.segments()[1] == 0xdb8)
           }
       *)
-      Definition is_documentation (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_documentation (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
@@ -4872,7 +4876,7 @@ Module net.
                   |))
                   (Value.Integer 3512)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_documentation :
@@ -4883,9 +4887,9 @@ Module net.
               (self.segments()[0] == 0x2001) && (self.segments()[1] == 0x2) && (self.segments()[2] == 0)
           }
       *)
-      Definition is_benchmarking (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_benchmarking (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
@@ -4945,7 +4949,7 @@ Module net.
                   |))
                   (Value.Integer 0)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_benchmarking :
@@ -4962,9 +4966,9 @@ Module net.
                   && !self.is_benchmarking()
           }
       *)
-      Definition is_unicast_global (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_unicast_global (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
@@ -5047,7 +5051,7 @@ Module net.
                     [ M.read (| self |) ]
                   |))))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_unicast_global :
@@ -5071,9 +5075,9 @@ Module net.
               }
           }
       *)
-      Definition multicast_scope (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition multicast_scope (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5239,7 +5243,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_multicast_scope :
@@ -5250,9 +5254,9 @@ Module net.
               (self.segments()[0] & 0xff00) == 0xff00
           }
       *)
-      Definition is_multicast (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_multicast (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
@@ -5274,7 +5278,7 @@ Module net.
                 |))
                 (Value.Integer 65280))
               (Value.Integer 65280)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_multicast :
@@ -5290,9 +5294,9 @@ Module net.
               }
           }
       *)
-      Definition to_ipv4_mapped (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_ipv4_mapped (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5374,7 +5378,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_ipv4_mapped :
@@ -5391,9 +5395,9 @@ Module net.
               }
           }
       *)
-      Definition to_ipv4 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_ipv4 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5528,7 +5532,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_ipv4 : M.IsAssociatedFunction Self "to_ipv4" to_ipv4.
@@ -5541,9 +5545,9 @@ Module net.
               IpAddr::V6( *self)
           }
       *)
-      Definition to_canonical (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_canonical (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -5594,7 +5598,7 @@ Module net.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_canonical :
@@ -5605,9 +5609,9 @@ Module net.
               self.octets
           }
       *)
-      Definition octets (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition octets (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5617,7 +5621,7 @@ Module net.
                 "octets"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_octets : M.IsAssociatedFunction Self "octets" octets.
@@ -5698,9 +5702,9 @@ Module net.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5718,7 +5722,10 @@ Module net.
                                 LogicalOp.and (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
                                       "is_none",
                                       []
                                     |),
@@ -5740,6 +5747,7 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "usize" ],
                                         "is_none",
                                         []
@@ -5876,9 +5884,11 @@ Module net.
                                                   Ty.apply
                                                     (Ty.path
                                                       "core::iter::adapters::enumerate::Enumerate")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::slice::iter::Iter")
+                                                        []
                                                         [ Ty.path "u16" ]
                                                     ],
                                                   [],
@@ -5891,6 +5901,7 @@ Module net.
                                                       "core::iter::traits::iterator::Iterator",
                                                       Ty.apply
                                                         (Ty.path "core::slice::iter::Iter")
+                                                        []
                                                         [ Ty.path "u16" ],
                                                       [],
                                                       "enumerate",
@@ -5901,6 +5912,7 @@ Module net.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "slice")
+                                                            []
                                                             [ Ty.path "u16" ],
                                                           "iter",
                                                           []
@@ -5927,10 +5939,12 @@ Module net.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::iter::adapters::enumerate::Enumerate")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::slice::iter::Iter")
+                                                                      []
                                                                       [ Ty.path "u16" ]
                                                                   ],
                                                                 [],
@@ -6165,6 +6179,7 @@ Module net.
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                     [],
                                                     "branch",
@@ -6184,11 +6199,13 @@ Module net.
                                                             "core::ops::index::Index",
                                                             Ty.apply
                                                               (Ty.path "array")
+                                                              [ Value.Integer 8 ]
                                                               [ Ty.path "u16" ],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "core::ops::range::RangeTo")
+                                                                []
                                                                 [ Ty.path "usize" ]
                                                             ],
                                                             "index",
@@ -6234,6 +6251,7 @@ Module net.
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.tuple [];
                                                                     Ty.path "core::fmt::Error"
@@ -6241,6 +6259,7 @@ Module net.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "core::convert::Infallible";
@@ -6276,6 +6295,7 @@ Module net.
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                     [],
                                                     "branch",
@@ -6315,6 +6335,7 @@ Module net.
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.tuple [];
                                                                     Ty.path "core::fmt::Error"
@@ -6322,6 +6343,7 @@ Module net.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "core::convert::Infallible";
@@ -6361,10 +6383,14 @@ Module net.
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::ops::index::Index",
-                                                    Ty.apply (Ty.path "array") [ Ty.path "u16" ],
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer 8 ]
+                                                      [ Ty.path "u16" ],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::RangeFrom")
+                                                        []
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index",
@@ -6423,7 +6449,10 @@ Module net.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::net::display_buffer::DisplayBuffer",
+                                  Ty.apply
+                                    (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                    [ Value.Integer 39 ]
+                                    [],
                                   "new",
                                   []
                                 |),
@@ -6436,6 +6465,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   "unwrap",
                                   []
@@ -6444,7 +6474,10 @@ Module net.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::fmt::Write",
-                                      Ty.path "core::net::display_buffer::DisplayBuffer",
+                                      Ty.apply
+                                        (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                        [ Value.Integer 39 ]
+                                        [],
                                       [],
                                       "write_fmt",
                                       []
@@ -6475,6 +6508,7 @@ Module net.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&")
+                                                          []
                                                           [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
                                                       ]
                                                     |),
@@ -6500,7 +6534,10 @@ Module net.
                                 M.read (| f |);
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "core::net::display_buffer::DisplayBuffer",
+                                    Ty.apply
+                                      (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                      [ Value.Integer 39 ]
+                                      [],
                                     "as_str",
                                     []
                                   |),
@@ -6513,7 +6550,7 @@ Module net.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6532,9 +6569,9 @@ Module net.
               fmt::Display::fmt(self, fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -6548,7 +6585,7 @@ Module net.
               |),
               [ M.read (| self |); M.read (| fmt |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6570,9 +6607,9 @@ Module net.
               }
           }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6604,8 +6641,9 @@ Module net.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
-                            [ Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ],
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
+                            ],
                             "eq",
                             []
                           |),
@@ -6615,7 +6653,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6637,9 +6675,9 @@ Module net.
               }
           }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6671,8 +6709,9 @@ Module net.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
-                            [ Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ],
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
+                            ],
                             "eq",
                             []
                           |),
@@ -6682,7 +6721,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6701,9 +6740,9 @@ Module net.
               Some(self.cmp(other))
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6721,7 +6760,7 @@ Module net.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6743,9 +6782,9 @@ Module net.
               }
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6792,7 +6831,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6814,9 +6853,9 @@ Module net.
               }
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6863,7 +6902,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6882,16 +6921,16 @@ Module net.
               self.segments().cmp(&other.segments())
           }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::Ord",
-                Ty.apply (Ty.path "array") [ Ty.path "u16" ],
+                Ty.apply (Ty.path "array") [ Value.Integer 8 ] [ Ty.path "u16" ],
                 [],
                 "cmp",
                 []
@@ -6919,7 +6958,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6938,16 +6977,16 @@ Module net.
               ip.to_bits()
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ip ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ ip ] =>
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv6Addr", "to_bits", [] |),
               [ M.read (| ip |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6966,9 +7005,9 @@ Module net.
               Ipv6Addr::from_bits(ip)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ip ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ ip ] =>
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             M.call_closure (|
@@ -6979,7 +7018,7 @@ Module net.
               |),
               [ M.read (| ip |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6990,7 +7029,7 @@ Module net.
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u128_for_core_net_ip_addr_Ipv6Addr.
     
-    Module Impl_core_convert_From_array_u8_for_core_net_ip_addr_Ipv6Addr.
+    Module Impl_core_convert_From_array_16_u8_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (*
@@ -6998,24 +7037,25 @@ Module net.
               Ipv6Addr { octets }
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ octets ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ octets ] =>
           ltac:(M.monadic
             (let octets := M.alloc (| octets |) in
             Value.StructRecord "core::net::ip_addr::Ipv6Addr" [ ("octets", M.read (| octets |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+          (* Trait polymorphic types *)
+          [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ] ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
-    End Impl_core_convert_From_array_u8_for_core_net_ip_addr_Ipv6Addr.
+    End Impl_core_convert_From_array_16_u8_for_core_net_ip_addr_Ipv6Addr.
     
-    Module Impl_core_convert_From_array_u16_for_core_net_ip_addr_Ipv6Addr.
+    Module Impl_core_convert_From_array_8_u16_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (*
@@ -7024,9 +7064,9 @@ Module net.
               Ipv6Addr::new(a, b, c, d, e, f, g, h)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ segments ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ segments ] =>
           ltac:(M.monadic
             (let segments := M.alloc (| segments |) in
             M.read (|
@@ -7073,19 +7113,58 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u16" ] ]
+          (* Trait polymorphic types *)
+          [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 8 ] [ Ty.path "u16" ] ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
-    End Impl_core_convert_From_array_u16_for_core_net_ip_addr_Ipv6Addr.
+    End Impl_core_convert_From_array_8_u16_for_core_net_ip_addr_Ipv6Addr.
     
+    Module Impl_core_convert_From_array_16_u8_for_core_net_ip_addr_IpAddr.
+      Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
+      
+      (*
+          fn from(octets: [u8; 16]) -> IpAddr {
+              IpAddr::V6(Ipv6Addr::from(octets))
+          }
+      *)
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ octets ] =>
+          ltac:(M.monadic
+            (let octets := M.alloc (| octets |) in
+            Value.StructTuple
+              "core::net::ip_addr::IpAddr::V6"
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.path "core::net::ip_addr::Ipv6Addr",
+                    [ Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| octets |) ]
+                |)
+              ]))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::convert::From"
+          Self
+          (* Trait polymorphic types *)
+          [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ] ]
+          (* Instance *) [ ("from", InstanceField.Method from) ].
+    End Impl_core_convert_From_array_16_u8_for_core_net_ip_addr_IpAddr.
     
-    Module Impl_core_convert_From_array_u16_for_core_net_ip_addr_IpAddr.
+    Module Impl_core_convert_From_array_8_u16_for_core_net_ip_addr_IpAddr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (*
@@ -7093,9 +7172,9 @@ Module net.
               IpAddr::V6(Ipv6Addr::from(segments))
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ segments ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ segments ] =>
           ltac:(M.monadic
             (let segments := M.alloc (| segments |) in
             Value.StructTuple
@@ -7105,23 +7184,24 @@ Module net.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "core::net::ip_addr::Ipv6Addr",
-                    [ Ty.apply (Ty.path "array") [ Ty.path "u16" ] ],
+                    [ Ty.apply (Ty.path "array") [ Value.Integer 8 ] [ Ty.path "u16" ] ],
                     "from",
                     []
                   |),
                   [ M.read (| segments |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u16" ] ]
+          (* Trait polymorphic types *)
+          [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 8 ] [ Ty.path "u16" ] ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
-    End Impl_core_convert_From_array_u16_for_core_net_ip_addr_IpAddr.
+    End Impl_core_convert_From_array_8_u16_for_core_net_ip_addr_IpAddr.
     
     Module Impl_core_ops_bit_Not_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
@@ -7137,9 +7217,9 @@ Module net.
               self
           }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -7150,7 +7230,10 @@ Module net.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
-                          Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ] ],
                           [],
                           "into_iter",
                           []
@@ -7178,6 +7261,7 @@ Module net.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::slice::iter::IterMut")
+                                          []
                                           [ Ty.path "u8" ],
                                         [],
                                         "next",
@@ -7217,7 +7301,7 @@ Module net.
                   |)) in
               self
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7230,7 +7314,8 @@ Module net.
     End Impl_core_ops_bit_Not_for_core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_ops_bit_Not_for_ref__core_net_ip_addr_Ipv4Addr.
-      Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ].
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ].
       
       (*     type Output = Ipv4Addr; *)
       Definition _Output : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
@@ -7240,9 +7325,9 @@ Module net.
               !*self
           }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -7255,7 +7340,7 @@ Module net.
               |),
               [ M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7281,9 +7366,9 @@ Module net.
               self
           }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -7294,7 +7379,10 @@ Module net.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
-                          Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ] ],
                           [],
                           "into_iter",
                           []
@@ -7322,6 +7410,7 @@ Module net.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::slice::iter::IterMut")
+                                          []
                                           [ Ty.path "u8" ],
                                         [],
                                         "next",
@@ -7361,7 +7450,7 @@ Module net.
                   |)) in
               self
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7374,7 +7463,8 @@ Module net.
     End Impl_core_ops_bit_Not_for_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_ops_bit_Not_for_ref__core_net_ip_addr_Ipv6Addr.
-      Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ].
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ].
       
       (*     type Output = Ipv6Addr; *)
       Definition _Output : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
@@ -7384,9 +7474,9 @@ Module net.
               !*self
           }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -7399,7 +7489,7 @@ Module net.
               |),
               [ M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7421,9 +7511,9 @@ Module net.
                           }
                       }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -7436,9 +7526,13 @@ Module net.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::zip::Zip")
+                          []
                           [
-                            Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "u8" ];
-                            Ty.apply (Ty.path "core::array::iter::IntoIter") [ Ty.path "u8" ]
+                            Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u8" ];
+                            Ty.apply
+                              (Ty.path "core::array::iter::IntoIter")
+                              [ Value.Integer 4 ]
+                              [ Ty.path "u8" ]
                           ],
                         [],
                         "into_iter",
@@ -7451,8 +7545,9 @@ Module net.
                             [
                               Ty.apply
                                 (Ty.path "&mut")
-                                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ];
-                              Ty.apply (Ty.path "array") [ Ty.path "u8" ]
+                                []
+                                [ Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ] ];
+                              Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ]
                             ]
                           |),
                           [
@@ -7487,12 +7582,15 @@ Module net.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::zip::Zip")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::slice::iter::IterMut")
+                                            []
                                             [ Ty.path "u8" ];
                                           Ty.apply
                                             (Ty.path "core::array::iter::IntoIter")
+                                            [ Value.Integer 4 ]
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
@@ -7543,7 +7641,7 @@ Module net.
                   ]
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7562,9 +7660,9 @@ Module net.
                           self.$bitop_assign( *rhs);
                       }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -7584,7 +7682,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7592,7 +7690,7 @@ Module net.
           "core::ops::bit::BitAndAssign"
           Self
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
@@ -7608,9 +7706,9 @@ Module net.
                           self
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -7630,7 +7728,7 @@ Module net.
                 |) in
               self
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7654,9 +7752,9 @@ Module net.
                           self
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -7676,7 +7774,7 @@ Module net.
                 |) in
               self
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7684,13 +7782,14 @@ Module net.
           "core::ops::bit::BitAnd"
           Self
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_ops_bit_BitAnd_core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
-      Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ].
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ].
       
       (*                 type Output = $ty; *)
       Definition _Output : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
@@ -7702,9 +7801,9 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -7725,7 +7824,7 @@ Module net.
                 |) in
               lhs
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7738,7 +7837,8 @@ Module net.
     End Impl_core_ops_bit_BitAnd_core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
-      Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ].
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ].
       
       (*                 type Output = $ty; *)
       Definition _Output : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
@@ -7750,9 +7850,9 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -7773,7 +7873,7 @@ Module net.
                 |) in
               lhs
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7781,7 +7881,7 @@ Module net.
           "core::ops::bit::BitAnd"
           Self
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
@@ -7796,9 +7896,9 @@ Module net.
                           }
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -7811,9 +7911,13 @@ Module net.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::zip::Zip")
+                          []
                           [
-                            Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "u8" ];
-                            Ty.apply (Ty.path "core::array::iter::IntoIter") [ Ty.path "u8" ]
+                            Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u8" ];
+                            Ty.apply
+                              (Ty.path "core::array::iter::IntoIter")
+                              [ Value.Integer 4 ]
+                              [ Ty.path "u8" ]
                           ],
                         [],
                         "into_iter",
@@ -7826,8 +7930,9 @@ Module net.
                             [
                               Ty.apply
                                 (Ty.path "&mut")
-                                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ];
-                              Ty.apply (Ty.path "array") [ Ty.path "u8" ]
+                                []
+                                [ Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ] ];
+                              Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ]
                             ]
                           |),
                           [
@@ -7862,12 +7967,15 @@ Module net.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::zip::Zip")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::slice::iter::IterMut")
+                                            []
                                             [ Ty.path "u8" ];
                                           Ty.apply
                                             (Ty.path "core::array::iter::IntoIter")
+                                            [ Value.Integer 4 ]
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
@@ -7918,7 +8026,7 @@ Module net.
                   ]
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7937,9 +8045,9 @@ Module net.
                           self.$bitop_assign( *rhs);
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -7959,7 +8067,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7967,7 +8075,7 @@ Module net.
           "core::ops::bit::BitOrAssign"
           Self
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
@@ -7983,9 +8091,9 @@ Module net.
                           self
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8005,7 +8113,7 @@ Module net.
                 |) in
               self
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8029,9 +8137,9 @@ Module net.
                           self
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8051,7 +8159,7 @@ Module net.
                 |) in
               self
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8059,13 +8167,14 @@ Module net.
           "core::ops::bit::BitOr"
           Self
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_ops_bit_BitOr_core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
-      Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ].
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ].
       
       (*                 type Output = $ty; *)
       Definition _Output : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
@@ -8077,9 +8186,9 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8100,7 +8209,7 @@ Module net.
                 |) in
               lhs
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8113,7 +8222,8 @@ Module net.
     End Impl_core_ops_bit_BitOr_core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
-      Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ].
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ].
       
       (*                 type Output = $ty; *)
       Definition _Output : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
@@ -8125,9 +8235,9 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8148,7 +8258,7 @@ Module net.
                 |) in
               lhs
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8156,7 +8266,7 @@ Module net.
           "core::ops::bit::BitOr"
           Self
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
@@ -8171,9 +8281,9 @@ Module net.
                           }
                       }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8186,9 +8296,13 @@ Module net.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::zip::Zip")
+                          []
                           [
-                            Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "u8" ];
-                            Ty.apply (Ty.path "core::array::iter::IntoIter") [ Ty.path "u8" ]
+                            Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u8" ];
+                            Ty.apply
+                              (Ty.path "core::array::iter::IntoIter")
+                              [ Value.Integer 16 ]
+                              [ Ty.path "u8" ]
                           ],
                         [],
                         "into_iter",
@@ -8201,8 +8315,10 @@ Module net.
                             [
                               Ty.apply
                                 (Ty.path "&mut")
-                                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ];
-                              Ty.apply (Ty.path "array") [ Ty.path "u8" ]
+                                []
+                                [ Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ]
+                                ];
+                              Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ]
                             ]
                           |),
                           [
@@ -8237,12 +8353,15 @@ Module net.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::zip::Zip")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::slice::iter::IterMut")
+                                            []
                                             [ Ty.path "u8" ];
                                           Ty.apply
                                             (Ty.path "core::array::iter::IntoIter")
+                                            [ Value.Integer 16 ]
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
@@ -8293,7 +8412,7 @@ Module net.
                   ]
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8312,9 +8431,9 @@ Module net.
                           self.$bitop_assign( *rhs);
                       }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8334,7 +8453,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8342,7 +8461,7 @@ Module net.
           "core::ops::bit::BitAndAssign"
           Self
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
@@ -8358,9 +8477,9 @@ Module net.
                           self
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8380,7 +8499,7 @@ Module net.
                 |) in
               self
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8404,9 +8523,9 @@ Module net.
                           self
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8426,7 +8545,7 @@ Module net.
                 |) in
               self
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8434,13 +8553,14 @@ Module net.
           "core::ops::bit::BitAnd"
           Self
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_ops_bit_BitAnd_core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.
-      Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ].
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ].
       
       (*                 type Output = $ty; *)
       Definition _Output : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
@@ -8452,9 +8572,9 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8475,7 +8595,7 @@ Module net.
                 |) in
               lhs
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8488,7 +8608,8 @@ Module net.
     End Impl_core_ops_bit_BitAnd_core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.
-      Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ].
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ].
       
       (*                 type Output = $ty; *)
       Definition _Output : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
@@ -8500,9 +8621,9 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8523,7 +8644,7 @@ Module net.
                 |) in
               lhs
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8531,7 +8652,7 @@ Module net.
           "core::ops::bit::BitAnd"
           Self
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.
@@ -8546,9 +8667,9 @@ Module net.
                           }
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8561,9 +8682,13 @@ Module net.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::zip::Zip")
+                          []
                           [
-                            Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "u8" ];
-                            Ty.apply (Ty.path "core::array::iter::IntoIter") [ Ty.path "u8" ]
+                            Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "u8" ];
+                            Ty.apply
+                              (Ty.path "core::array::iter::IntoIter")
+                              [ Value.Integer 16 ]
+                              [ Ty.path "u8" ]
                           ],
                         [],
                         "into_iter",
@@ -8576,8 +8701,10 @@ Module net.
                             [
                               Ty.apply
                                 (Ty.path "&mut")
-                                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ];
-                              Ty.apply (Ty.path "array") [ Ty.path "u8" ]
+                                []
+                                [ Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ]
+                                ];
+                              Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ]
                             ]
                           |),
                           [
@@ -8612,12 +8739,15 @@ Module net.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::zip::Zip")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::slice::iter::IterMut")
+                                            []
                                             [ Ty.path "u8" ];
                                           Ty.apply
                                             (Ty.path "core::array::iter::IntoIter")
+                                            [ Value.Integer 16 ]
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
@@ -8668,7 +8798,7 @@ Module net.
                   ]
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8687,9 +8817,9 @@ Module net.
                           self.$bitop_assign( *rhs);
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8709,7 +8839,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8717,7 +8847,7 @@ Module net.
           "core::ops::bit::BitOrAssign"
           Self
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
@@ -8733,9 +8863,9 @@ Module net.
                           self
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8755,7 +8885,7 @@ Module net.
                 |) in
               self
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8779,9 +8909,9 @@ Module net.
                           self
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8801,7 +8931,7 @@ Module net.
                 |) in
               self
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8809,13 +8939,14 @@ Module net.
           "core::ops::bit::BitOr"
           Self
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_ops_bit_BitOr_core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.
-      Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ].
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ].
       
       (*                 type Output = $ty; *)
       Definition _Output : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
@@ -8827,9 +8958,9 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8850,7 +8981,7 @@ Module net.
                 |) in
               lhs
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8863,7 +8994,8 @@ Module net.
     End Impl_core_ops_bit_BitOr_core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.
-      Definition Self : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ].
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ].
       
       (*                 type Output = $ty; *)
       Definition _Output : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
@@ -8875,9 +9007,9 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8898,7 +9030,7 @@ Module net.
                 |) in
               lhs
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8906,7 +9038,7 @@ Module net.
           "core::ops::bit::BitOr"
           Self
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.

@@ -10,7 +10,8 @@ Require Import CoqOfRust.CoqOfRust.
   } *)
 
 Module Impl_polymorphic_constants_Foo_N_A.
-  Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "polymorphic_constants::Foo") [ N ] [ A ].
+  Definition Self (N : Value.t) (A : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "polymorphic_constants::Foo") [ N ] [ A ].
   
   (*
     fn convert<B: From<A>>(self) -> Foo<0, B> {
@@ -20,10 +21,16 @@ Module Impl_polymorphic_constants_Foo_N_A.
         }
     }
   *)
-  Definition convert (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    let Self : Ty.t := Self A in
-    match τ, α with
-    | [ B ], [ self ] =>
+  Definition convert
+      (N : Value.t)
+      (A : Ty.t)
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    let Self : Ty.t := Self N A in
+    match ε, τ, α with
+    | [], [ B ], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructRecord
@@ -44,12 +51,12 @@ Module Impl_polymorphic_constants_Foo_N_A.
               |));
             ("array", Value.Array [])
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_convert :
-    forall (A : Ty.t),
-    M.IsAssociatedFunction (Self A) "convert" (convert A).
+    forall (N : Value.t) (A : Ty.t),
+    M.IsAssociatedFunction (Self N A) "convert" (convert N A).
 End Impl_polymorphic_constants_Foo_N_A.
 
 (*
@@ -61,9 +68,9 @@ fn main() {
   assert_eq!(bar.array, []);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ foo :=
@@ -240,7 +247,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "polymorphic_constants::main" main.

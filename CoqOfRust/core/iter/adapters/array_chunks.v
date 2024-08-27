@@ -7,6 +7,7 @@ Module iter.
       (* StructRecord
         {
           name := "ArrayChunks";
+          const_params := [ "N" ];
           ty_params := [ "I" ];
           fields :=
             [
@@ -14,19 +15,26 @@ Module iter.
               ("remainder",
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [ Ty.apply (Ty.path "core::array::iter::IntoIter") [ Ty.associated ] ])
+                  []
+                  [ Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ Ty.associated ] ])
             ];
         } *)
       
-      Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_associated_type_for_core_iter_adapters_array_chunks_ArrayChunks_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
+      Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_associated_type_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
         (* Debug *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -59,27 +67,33 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (I : Ty.t),
+          forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self I)
+            (Self N I)
             (* Trait polymorphic types *) []
-            (* Instance *) [ ("fmt", InstanceField.Method (fmt I)) ].
-      End Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_associated_type_for_core_iter_adapters_array_chunks_ArrayChunks_I.
+            (* Instance *) [ ("fmt", InstanceField.Method (fmt N I)) ].
+      End Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_associated_type_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
-      Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_array_chunks_ArrayChunks_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
+      Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
         (* Clone *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -102,7 +116,9 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "core::array::iter::IntoIter") [ Ty.associated ] ],
+                          []
+                          [ Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ Ty.associated ]
+                          ],
                         [],
                         "clone",
                         []
@@ -116,21 +132,21 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (I : Ty.t),
+          forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self I)
+            (Self N I)
             (* Trait polymorphic types *) []
-            (* Instance *) [ ("clone", InstanceField.Method (clone I)) ].
-      End Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_array_chunks_ArrayChunks_I.
+            (* Instance *) [ ("clone", InstanceField.Method (clone N I)) ].
+      End Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
-      Module Impl_core_iter_adapters_array_chunks_ArrayChunks_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
+      Module Impl_core_iter_adapters_array_chunks_ArrayChunks_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
         (*
             pub(in crate::iter) fn new(iter: I) -> Self {
@@ -138,10 +154,16 @@ Module iter.
                 Self { iter, remainder: None }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ iter ] =>
+        Definition new
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.read (|
@@ -203,22 +225,28 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
-          forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "new" (new I).
+          forall (N : Value.t) (I : Ty.t),
+          M.IsAssociatedFunction (Self N I) "new" (new N I).
         
         (*
             pub fn into_remainder(self) -> Option<array::IntoIter<I::Item, N>> {
                 self.remainder
             }
         *)
-        Definition into_remainder (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition into_remainder
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -228,12 +256,12 @@ Module iter.
                   "remainder"
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_remainder :
-          forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "into_remainder" (into_remainder I).
+          forall (N : Value.t) (I : Ty.t),
+          M.IsAssociatedFunction (Self N I) "into_remainder" (into_remainder N I).
         (*
             fn next_back_remainder(&mut self) {
                 // Make sure to not override `self.remainder` with an empty array
@@ -256,10 +284,16 @@ Module iter.
                 self.remainder = Some(remainder);
             }
         *)
-        Definition next_back_remainder (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition next_back_remainder
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -278,9 +312,11 @@ Module iter.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::array::iter::IntoIter")
+                                              [ N ]
                                               [ Ty.associated ]
                                           ],
                                         "is_some",
@@ -336,9 +372,13 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
-                                Ty.apply (Ty.path "array") [ Ty.associated ];
-                                Ty.apply (Ty.path "core::array::iter::IntoIter") [ Ty.associated ]
+                                Ty.apply (Ty.path "array") [ N ] [ Ty.associated ];
+                                Ty.apply
+                                  (Ty.path "core::array::iter::IntoIter")
+                                  [ N ]
+                                  [ Ty.associated ]
                               ],
                             "unwrap_err_unchecked",
                             []
@@ -349,10 +389,12 @@ Module iter.
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::take::Take")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::rev::Rev")
-                                      [ Ty.apply (Ty.path "&mut") [ I ] ]
+                                      []
+                                      [ Ty.apply (Ty.path "&mut") [] [ I ] ]
                                   ],
                                 [],
                                 "next_chunk",
@@ -365,7 +407,8 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::rev::Rev")
-                                        [ Ty.apply (Ty.path "&mut") [ I ] ],
+                                        []
+                                        [ Ty.apply (Ty.path "&mut") [] [ I ] ],
                                       [],
                                       "take",
                                       []
@@ -374,7 +417,7 @@ Module iter.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
-                                          Ty.apply (Ty.path "&mut") [ I ],
+                                          Ty.apply (Ty.path "&mut") [] [ I ],
                                           [],
                                           "rev",
                                           []
@@ -411,14 +454,17 @@ Module iter.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.associated ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.associated ],
                             "reverse",
                             []
                           |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::array::iter::IntoIter") [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "core::array::iter::IntoIter")
+                                  [ N ]
+                                  [ Ty.associated ],
                                 "as_mut_slice",
                                 []
                               |),
@@ -439,37 +485,45 @@ Module iter.
                     M.alloc (| Value.Tuple [] |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_next_back_remainder :
-          forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "next_back_remainder" (next_back_remainder I).
-      End Impl_core_iter_adapters_array_chunks_ArrayChunks_I.
+          forall (N : Value.t) (I : Ty.t),
+          M.IsAssociatedFunction (Self N I) "next_back_remainder" (next_back_remainder N I).
+      End Impl_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
-      Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
+      Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
         (*     type Item = [I::Item; N]; *)
-        Definition _Item (I : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Ty.associated ].
+        Definition _Item (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "array") [ N ] [ Ty.associated ].
         
         (*
             fn next(&mut self) -> Option<Self::Item> {
                 self.try_for_each(ControlFlow::Break).break_value()
             }
         *)
-        Definition next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition next
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::ops::control_flow::ControlFlow")
-                    [ Ty.apply (Ty.path "array") [ Ty.associated ]; Ty.tuple [] ],
+                    []
+                    [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ]; Ty.tuple [] ],
                   "break_value",
                   []
                 |),
@@ -477,18 +531,23 @@ Module iter.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
-                      Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ],
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::array_chunks::ArrayChunks")
+                        [ N ]
+                        [ I ],
                       [],
                       "try_for_each",
                       [
                         Ty.function
-                          [ Ty.apply (Ty.path "array") [ Ty.associated ] ]
+                          [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ]
                           (Ty.apply
                             (Ty.path "core::ops::control_flow::ControlFlow")
-                            [ Ty.apply (Ty.path "array") [ Ty.associated ]; Ty.tuple [] ]);
+                            []
+                            [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ]; Ty.tuple [] ]);
                         Ty.apply
                           (Ty.path "core::ops::control_flow::ControlFlow")
-                          [ Ty.apply (Ty.path "array") [ Ty.associated ]; Ty.tuple [] ]
+                          []
+                          [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ]; Ty.tuple [] ]
                       ]
                     |),
                     [
@@ -498,7 +557,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -508,10 +567,16 @@ Module iter.
                 (lower / N, upper.map(|n| n / N))
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition size_hint
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -552,7 +617,7 @@ Module iter.
                                 |));
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "map",
                                   [
                                     Ty.path "usize";
@@ -591,7 +656,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -599,10 +664,16 @@ Module iter.
                 self.iter.count() / N
             }
         *)
-        Definition count (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition count
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Wrap.div
@@ -626,7 +697,7 @@ Module iter.
                   ]
                 |))
                 (M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -651,10 +722,16 @@ Module iter.
                 }
             }
         *)
-        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+        Definition try_fold
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -716,7 +793,10 @@ Module iter.
                                                   Ty.tuple
                                                     [
                                                       B;
-                                                      Ty.apply (Ty.path "array") [ Ty.associated ]
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ N ]
+                                                        [ Ty.associated ]
                                                     ]
                                                 ],
                                                 "call_mut",
@@ -790,9 +870,11 @@ Module iter.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::array::iter::IntoIter")
+                                                    [ N ]
                                                     [ Ty.associated ]
                                                 ],
                                               "get_or_insert",
@@ -817,7 +899,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -829,10 +911,16 @@ Module iter.
                 <Self as SpecFold>::fold(self, init, f)
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F ], [ self; init; f ] =>
+        Definition fold
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [ B; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -840,53 +928,60 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::adapters::array_chunks::SpecFold",
-                  Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ],
                   [],
                   "fold",
                   [ B; F ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (I : Ty.t),
+          forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self I)
+            (Self N I)
             (* Trait polymorphic types *) []
             (* Instance *)
             [
-              ("Item", InstanceField.Ty (_Item I));
-              ("next", InstanceField.Method (next I));
-              ("size_hint", InstanceField.Method (size_hint I));
-              ("count", InstanceField.Method (count I));
-              ("try_fold", InstanceField.Method (try_fold I));
-              ("fold", InstanceField.Method (fold I))
+              ("Item", InstanceField.Ty (_Item N I));
+              ("next", InstanceField.Method (next N I));
+              ("size_hint", InstanceField.Method (size_hint N I));
+              ("count", InstanceField.Method (count N I));
+              ("try_fold", InstanceField.Method (try_fold N I));
+              ("fold", InstanceField.Method (fold N I))
             ].
-      End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
+      End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
-      Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_iter_traits_exact_size_ExactSizeIterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
+      Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_iter_traits_exact_size_ExactSizeIterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
         (*
             fn next_back(&mut self) -> Option<Self::Item> {
                 self.try_rfold((), |(), x| ControlFlow::Break(x)).break_value()
             }
         *)
-        Definition next_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition next_back
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::ops::control_flow::ControlFlow")
-                    [ Ty.apply (Ty.path "array") [ Ty.associated ]; Ty.tuple [] ],
+                    []
+                    [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ]; Ty.tuple [] ],
                   "break_value",
                   []
                 |),
@@ -894,19 +989,27 @@ Module iter.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::double_ended::DoubleEndedIterator",
-                      Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ],
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::array_chunks::ArrayChunks")
+                        [ N ]
+                        [ I ],
                       [],
                       "try_rfold",
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple []; Ty.apply (Ty.path "array") [ Ty.associated ] ] ]
+                          [
+                            Ty.tuple
+                              [ Ty.tuple []; Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ]
+                          ]
                           (Ty.apply
                             (Ty.path "core::ops::control_flow::ControlFlow")
-                            [ Ty.apply (Ty.path "array") [ Ty.associated ]; Ty.tuple [] ]);
+                            []
+                            [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ]; Ty.tuple [] ]);
                         Ty.apply
                           (Ty.path "core::ops::control_flow::ControlFlow")
-                          [ Ty.apply (Ty.path "array") [ Ty.associated ]; Ty.tuple [] ]
+                          []
+                          [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ]; Ty.tuple [] ]
                       ]
                     |),
                     [
@@ -941,7 +1044,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -970,10 +1073,16 @@ Module iter.
                 try { acc }
             }
         *)
-        Definition try_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+        Definition try_rfold
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -987,6 +1096,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::iter::adapters::array_chunks::ArrayChunks")
+                              [ N ]
                               [ I ],
                             "next_back_remainder",
                             []
@@ -1002,6 +1112,7 @@ Module iter.
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
                               (Ty.path "core::iter::adapters::by_ref_sized::ByRefSized")
+                              []
                               [ I ],
                             [],
                             "rev",
@@ -1035,10 +1146,12 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::rev::Rev")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path
                                                   "core::iter::adapters::by_ref_sized::ByRefSized")
+                                                []
                                                 [ I ]
                                             ],
                                           [],
@@ -1059,7 +1172,7 @@ Module iter.
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.associated ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.associated ],
                                           "reverse",
                                           []
                                         |),
@@ -1088,7 +1201,10 @@ Module iter.
                                                     Ty.tuple
                                                       [
                                                         B;
-                                                        Ty.apply (Ty.path "array") [ Ty.associated ]
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ N ]
+                                                          [ Ty.associated ]
                                                       ]
                                                   ],
                                                   "call_mut",
@@ -1175,7 +1291,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1188,10 +1304,16 @@ Module iter.
                     self.$try_fold(init, NeverShortCircuit::wrap_mut_2(fold)).0
                 }
         *)
-        Definition rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [ AAA; FFF ], [ self; init; fold ] =>
+        Definition rfold
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [ AAA; FFF ], [ self; init; fold ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -1202,13 +1324,16 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::double_ended::DoubleEndedIterator",
-                        Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ],
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::array_chunks::ArrayChunks")
+                          [ N ]
+                          [ I ],
                         [],
                         "try_rfold",
                         [
                           AAA;
                           Ty.associated;
-                          Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ AAA ]
+                          Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ]
                         ]
                       |),
                       [
@@ -1216,9 +1341,9 @@ Module iter.
                         M.read (| init |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ AAA ],
+                            Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ],
                             "wrap_mut_2",
-                            [ AAA; Ty.apply (Ty.path "array") [ Ty.associated ]; FFF ]
+                            [ AAA; Ty.apply (Ty.path "array") [ N ] [ Ty.associated ]; FFF ]
                           |),
                           [ M.read (| fold |) ]
                         |)
@@ -1229,63 +1354,69 @@ Module iter.
                   0
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (I : Ty.t),
+          forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::double_ended::DoubleEndedIterator"
-            (Self I)
+            (Self N I)
             (* Trait polymorphic types *) []
             (* Instance *)
             [
-              ("next_back", InstanceField.Method (next_back I));
-              ("try_rfold", InstanceField.Method (try_rfold I));
-              ("rfold", InstanceField.Method (rfold I))
+              ("next_back", InstanceField.Method (next_back N I));
+              ("try_rfold", InstanceField.Method (try_rfold N I));
+              ("rfold", InstanceField.Method (rfold N I))
             ].
-      End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_iter_traits_exact_size_ExactSizeIterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
+      End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_iter_traits_exact_size_ExactSizeIterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
       
-      Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
+      Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
         Axiom Implements :
-          forall (I : Ty.t),
+          forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self I)
+            (Self N I)
             (* Trait polymorphic types *) []
             (* Instance *) [].
-      End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
+      End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
-      Module Impl_core_iter_traits_marker_TrustedFused_where_core_iter_traits_marker_TrustedFused_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
+      Module Impl_core_iter_traits_marker_TrustedFused_where_core_iter_traits_marker_TrustedFused_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
         Axiom Implements :
-          forall (I : Ty.t),
+          forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedFused"
-            (Self I)
+            (Self N I)
             (* Trait polymorphic types *) []
             (* Instance *) [].
-      End Impl_core_iter_traits_marker_TrustedFused_where_core_iter_traits_marker_TrustedFused_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
+      End Impl_core_iter_traits_marker_TrustedFused_where_core_iter_traits_marker_TrustedFused_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
-      Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
+      Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
         (*
             fn len(&self) -> usize {
                 self.iter.len() / N
             }
         *)
-        Definition len (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition len
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Wrap.div
@@ -1307,7 +1438,7 @@ Module iter.
                   ]
                 |))
                 (M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1315,10 +1446,16 @@ Module iter.
                 self.iter.len() < N
             }
         *)
-        Definition is_empty (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition is_empty
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Pure.lt
@@ -1339,26 +1476,28 @@ Module iter.
                   ]
                 |))
                 (M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (I : Ty.t),
+          forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::exact_size::ExactSizeIterator"
-            (Self I)
+            (Self N I)
             (* Trait polymorphic types *) []
             (* Instance *)
-            [ ("len", InstanceField.Method (len I)); ("is_empty", InstanceField.Method (is_empty I))
+            [
+              ("len", InstanceField.Method (len N I));
+              ("is_empty", InstanceField.Method (is_empty N I))
             ].
-      End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
+      End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
       (* Trait *)
       (* Empty module 'SpecFold' *)
       
-      Module Impl_core_iter_adapters_array_chunks_SpecFold_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
+      Module Impl_core_iter_adapters_array_chunks_SpecFold_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
         (*
             default fn fold<B, F>(mut self, init: B, f: F) -> B
@@ -1369,10 +1508,16 @@ Module iter.
                 self.try_fold(init, NeverShortCircuit::wrap_mut_2(f)).0
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F ], [ self; init; f ] =>
+        Definition fold
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [ B; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -1383,13 +1528,16 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
-                        Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ],
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::array_chunks::ArrayChunks")
+                          [ N ]
+                          [ I ],
                         [],
                         "try_fold",
                         [
                           B;
                           Ty.associated;
-                          Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ B ]
+                          Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ]
                         ]
                       |),
                       [
@@ -1397,9 +1545,9 @@ Module iter.
                         M.read (| init |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ B ],
+                            Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                             "wrap_mut_2",
-                            [ B; Ty.apply (Ty.path "array") [ Ty.associated ]; F ]
+                            [ B; Ty.apply (Ty.path "array") [ N ] [ Ty.associated ]; F ]
                           |),
                           [ M.read (| f |) ]
                         |)
@@ -1410,21 +1558,21 @@ Module iter.
                   0
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (I : Ty.t),
+          forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::array_chunks::SpecFold"
-            (Self I)
+            (Self N I)
             (* Trait polymorphic types *) []
-            (* Instance *) [ ("fold", InstanceField.Method (fold I)) ].
-      End Impl_core_iter_adapters_array_chunks_SpecFold_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
+            (* Instance *) [ ("fold", InstanceField.Method (fold N I)) ].
+      End Impl_core_iter_adapters_array_chunks_SpecFold_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
-      Module Impl_core_iter_adapters_array_chunks_SpecFold_where_core_iter_traits_iterator_Iterator_I_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
+      Module Impl_core_iter_adapters_array_chunks_SpecFold_where_core_iter_traits_iterator_Iterator_I_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
         (*
             fn fold<B, F>(mut self, init: B, mut f: F) -> B
@@ -1455,10 +1603,16 @@ Module iter.
                 accum
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F ], [ self; init; f ] =>
+        Definition fold
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [ B; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -1574,7 +1728,9 @@ Module iter.
                                     M.get_trait_method (|
                                       "core::ops::function::FnMut",
                                       F,
-                                      [ Ty.tuple [ B; Ty.apply (Ty.path "array") [ Ty.associated ] ]
+                                      [
+                                        Ty.tuple
+                                          [ B; Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ]
                                       ],
                                       "call_mut",
                                       []
@@ -1612,24 +1768,24 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (I : Ty.t),
+          forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::array_chunks::SpecFold"
-            (Self I)
+            (Self N I)
             (* Trait polymorphic types *) []
-            (* Instance *) [ ("fold", InstanceField.Method (fold I)) ].
-      End Impl_core_iter_adapters_array_chunks_SpecFold_where_core_iter_traits_iterator_Iterator_I_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
+            (* Instance *) [ ("fold", InstanceField.Method (fold N I)) ].
+      End Impl_core_iter_adapters_array_chunks_SpecFold_where_core_iter_traits_iterator_Iterator_I_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
-      Module Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
+      Module Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
         (*     type Source = I::Source; *)
-        Definition _Source (I : Ty.t) : Ty.t := Ty.associated.
+        Definition _Source (N : Value.t) (I : Ty.t) : Ty.t := Ty.associated.
         
         (*
             unsafe fn as_inner(&mut self) -> &mut I::Source {
@@ -1637,10 +1793,16 @@ Module iter.
                 unsafe { SourceIter::as_inner(&mut self.iter) }
             }
         *)
-        Definition as_inner (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+        Definition as_inner
+            (N : Value.t)
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self N I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -1653,32 +1815,33 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
-          forall (I : Ty.t),
+          forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::SourceIter"
-            (Self I)
+            (Self N I)
             (* Trait polymorphic types *) []
             (* Instance *)
             [
-              ("Source", InstanceField.Ty (_Source I));
-              ("as_inner", InstanceField.Method (as_inner I))
+              ("Source", InstanceField.Ty (_Source N I));
+              ("as_inner", InstanceField.Method (as_inner N I))
             ].
-      End Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
+      End Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
-      Module Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
-        Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
+      Module Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
+        Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
         (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
+          []
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-        Definition value_EXPAND_BY (I : Ty.t) : Value.t :=
-          let Self : Ty.t := Self I in
+        Definition value_EXPAND_BY (N : Value.t) (I : Ty.t) : Value.t :=
+          let Self : Ty.t := Self N I in
           M.run
             ltac:(M.monadic
               (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
@@ -1693,25 +1856,26 @@ Module iter.
         *)
         (* Ty.apply
           (Ty.path "core::option::Option")
+          []
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-        Definition value_MERGE_BY (I : Ty.t) : Value.t :=
-          let Self : Ty.t := Self I in
+        Definition value_MERGE_BY (N : Value.t) (I : Ty.t) : Value.t :=
+          let Self : Ty.t := Self N I in
           M.run
             ltac:(M.monadic
               (M.get_constant (| "core::iter::adapters::array_chunks::MERGE_BY_discriminant" |))).
         
         Axiom Implements :
-          forall (I : Ty.t),
+          forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::InPlaceIterable"
-            (Self I)
+            (Self N I)
             (* Trait polymorphic types *) []
             (* Instance *)
             [
-              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I));
-              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I))
+              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY N I));
+              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY N I))
             ].
-      End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_I.
+      End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
     End array_chunks.
   End adapters.
 End iter.

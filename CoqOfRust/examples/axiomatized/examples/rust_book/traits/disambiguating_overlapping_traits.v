@@ -18,7 +18,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self : Ty.t := Ty.path "disambiguating_overlapping_traits::Form".
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -31,7 +31,7 @@ End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_ove
 Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self : Ty.t := Ty.path "disambiguating_overlapping_traits::Form".
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -41,6 +41,6 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
       (* Instance *) [ ("get", InstanceField.Method get) ].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "disambiguating_overlapping_traits::main" main.

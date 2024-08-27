@@ -12,7 +12,7 @@ Module underscore.
   Module Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
     Definition Self : Ty.t := Ty.path "const_underscore_expression::Bar".
     
-    Parameter show : (list Ty.t) -> (list Value.t) -> M.
+    Parameter show : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Implements :
       M.IsTraitInstance

@@ -11,9 +11,9 @@ fn drink(beverage: &str) {
     println!("Some refreshing {} is all I need.", beverage);
 }
 *)
-Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ beverage ] =>
+Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ beverage ] =>
     ltac:(M.monadic
       (let beverage := M.alloc (| beverage |) in
       M.read (|
@@ -94,7 +94,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_drink : M.IsFunction "panic::drink" drink.
@@ -105,9 +105,9 @@ fn main() {
     drink("lemonade");
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -126,7 +126,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "panic::main" main.

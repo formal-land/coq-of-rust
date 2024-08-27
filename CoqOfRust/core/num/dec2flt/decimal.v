@@ -7,13 +7,23 @@ Module num.
       (* StructRecord
         {
           name := "Decimal";
+          const_params := [];
           ty_params := [];
           fields :=
             [
               ("num_digits", Ty.path "usize");
               ("decimal_point", Ty.path "i32");
               ("truncated", Ty.path "bool");
-              ("digits", Ty.apply (Ty.path "array") [ Ty.path "u8" ])
+              ("digits",
+                Ty.apply
+                  (Ty.path "array")
+                  [
+                    M.unevaluated_const
+                      (M.get_constant (|
+                        "core::num::dec2flt::decimal::Decimal::digits_discriminant"
+                      |))
+                  ]
+                  [ Ty.path "u8" ])
             ];
         } *)
       
@@ -21,9 +31,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::decimal::Decimal".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -78,7 +88,7 @@ Module num.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::clone::Clone",
-                        Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "array") [ Value.Integer 768 ] [ Ty.path "u8" ],
                         [],
                         "clone",
                         []
@@ -92,7 +102,7 @@ Module num.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -111,9 +121,9 @@ Module num.
                 Self { num_digits: 0, decimal_point: 0, truncated: false, digits: [0; Self::MAX_DIGITS] }
             }
         *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "core::num::dec2flt::decimal::Decimal"
@@ -123,7 +133,7 @@ Module num.
                   ("truncated", Value.Bool false);
                   ("digits", repeat (Value.Integer 0) 768)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -172,9 +182,9 @@ Module num.
                 self.num_digits += 1;
             }
         *)
-        Definition try_add_digit (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; digit ] =>
+        Definition try_add_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; digit ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let digit := M.alloc (| digit |) in
@@ -235,7 +245,7 @@ Module num.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_try_add_digit :
@@ -256,9 +266,9 @@ Module num.
                 }
             }
         *)
-        Definition trim (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition trim (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -395,7 +405,7 @@ Module num.
                     |)))
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_trim : M.IsAssociatedFunction Self "trim" trim.
@@ -428,9 +438,9 @@ Module num.
                 n
             }
         *)
-        Definition round (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition round (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -531,7 +541,7 @@ Module num.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [],
                                 "into_iter",
                                 []
@@ -557,6 +567,7 @@ Module num.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "usize" ],
                                               [],
                                               "next",
@@ -796,7 +807,7 @@ Module num.
                     n
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_round : M.IsAssociatedFunction Self "round" round.
@@ -842,9 +853,9 @@ Module num.
                 self.trim();
             }
         *)
-        Definition left_shift (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; shift ] =>
+        Definition left_shift (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; shift ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let shift := M.alloc (| shift |) in
@@ -1283,7 +1294,7 @@ Module num.
                     M.alloc (| Value.Tuple [] |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_left_shift : M.IsAssociatedFunction Self "left_shift" left_shift.
@@ -1337,9 +1348,9 @@ Module num.
                 self.trim();
             }
         *)
-        Definition right_shift (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; shift ] =>
+        Definition right_shift (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; shift ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let shift := M.alloc (| shift |) in
@@ -1882,7 +1893,7 @@ Module num.
                     M.alloc (| Value.Tuple [] |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_right_shift :
@@ -1966,9 +1977,9 @@ Module num.
           d
       }
       *)
-      Definition parse_decimal (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s ] =>
+      Definition parse_decimal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.read (|
@@ -1998,7 +2009,7 @@ Module num.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "split_first",
                                     []
                                   |),
@@ -2042,7 +2053,7 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::num::dec2flt::common::ByteSlice",
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       [],
                       "parse_digits",
                       [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
@@ -2085,7 +2096,7 @@ Module num.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "split_first",
                                 []
                               |),
@@ -2141,7 +2152,10 @@ Module num.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "split_first",
                                                       []
                                                     |),
@@ -2203,7 +2217,7 @@ Module num.
                                               BinOp.Pure.ge
                                                 (M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "len",
                                                     []
                                                   |),
@@ -2239,7 +2253,7 @@ Module num.
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::num::dec2flt::common::ByteSlice",
-                                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               [],
                                               "read_u64",
                                               []
@@ -2281,7 +2295,7 @@ Module num.
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::num::dec2flt::common::ByteSlice",
-                                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               [],
                                               "write_u64",
                                               []
@@ -2290,10 +2304,14 @@ Module num.
                                               M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::ops::index::IndexMut",
-                                                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer 768 ]
+                                                    [ Ty.path "u8" ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::RangeFrom")
+                                                      []
                                                       [ Ty.path "usize" ]
                                                   ],
                                                   "index_mut",
@@ -2346,10 +2364,11 @@ Module num.
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::index::Index",
-                                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeFrom")
+                                                  []
                                                   [ Ty.path "usize" ]
                                               ],
                                               "index",
@@ -2386,7 +2405,7 @@ Module num.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::num::dec2flt::common::ByteSlice",
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 [],
                                 "parse_digits",
                                 [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
@@ -2431,7 +2450,7 @@ Module num.
                               (M.rust_cast
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
                                     []
                                   |),
@@ -2440,7 +2459,7 @@ Module num.
                               (M.rust_cast
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
                                     []
                                   |),
@@ -2482,9 +2501,11 @@ Module num.
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::rev::Rev")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::slice::iter::Iter")
+                                          []
                                           [ Ty.path "u8" ]
                                       ],
                                     [],
@@ -2497,6 +2518,7 @@ Module num.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::slice::iter::Iter")
+                                          []
                                           [ Ty.path "u8" ],
                                         [],
                                         "rev",
@@ -2505,7 +2527,7 @@ Module num.
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "iter",
                                             []
                                           |),
@@ -2513,10 +2535,11 @@ Module num.
                                             M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::ops::index::Index",
-                                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::ops::range::RangeTo")
+                                                    []
                                                     [ Ty.path "usize" ]
                                                 ],
                                                 "index",
@@ -2534,6 +2557,7 @@ Module num.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "slice")
+                                                              []
                                                               [ Ty.path "u8" ],
                                                             "len",
                                                             []
@@ -2544,6 +2568,7 @@ Module num.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "slice")
+                                                              []
                                                               [ Ty.path "u8" ],
                                                             "len",
                                                             []
@@ -2574,9 +2599,11 @@ Module num.
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
                                                     (Ty.path "core::iter::adapters::rev::Rev")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::slice::iter::Iter")
+                                                        []
                                                         [ Ty.path "u8" ]
                                                     ],
                                                   [],
@@ -2786,7 +2813,7 @@ Module num.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "split_first",
                                 []
                               |),
@@ -2839,7 +2866,7 @@ Module num.
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "split_first",
                                                   []
                                                 |),
@@ -2902,7 +2929,7 @@ Module num.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::num::dec2flt::common::ByteSlice",
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         [],
                                         "parse_digits",
                                         [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
@@ -3013,7 +3040,7 @@ Module num.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
-                          Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
                           "into_iter",
                           []
@@ -3054,6 +3081,7 @@ Module num.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ],
                                         [],
                                         "next",
@@ -3100,7 +3128,7 @@ Module num.
                   |)) in
               d
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_parse_decimal :
@@ -3186,9 +3214,13 @@ Module num.
           num_new_digits
       }
       *)
-      Definition number_of_digits_decimal_left_shift (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ d; shift ] =>
+      Definition number_of_digits_decimal_left_shift
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ d; shift ] =>
           ltac:(M.monadic
             (let d := M.alloc (| d |) in
             let shift := M.alloc (| shift |) in
@@ -3235,8 +3267,9 @@ Module num.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::Index",
-                          Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ] ],
+                          Ty.apply (Ty.path "array") [ Value.Integer 1308 ] [ Ty.path "u8" ],
+                          [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ]
+                          ],
                           "index",
                           []
                         |),
@@ -3259,10 +3292,16 @@ Module num.
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
                                 (Ty.path "core::iter::adapters::take::Take")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                                    [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ]
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "u8" ]
                                     ]
                                 ],
                               [],
@@ -3275,7 +3314,12 @@ Module num.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                                    [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ]
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "u8" ]
                                     ],
                                   [],
                                   "take",
@@ -3285,7 +3329,10 @@ Module num.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
-                                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "u8" ],
                                       [],
                                       "enumerate",
                                       []
@@ -3293,7 +3340,7 @@ Module num.
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "iter",
                                           []
                                         |),
@@ -3324,13 +3371,16 @@ Module num.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
                                               (Ty.path "core::iter::adapters::take::Take")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path
                                                     "core::iter::adapters::enumerate::Enumerate")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::slice::iter::Iter")
+                                                      []
                                                       [ Ty.path "u8" ]
                                                   ]
                                               ],
@@ -3505,7 +3555,7 @@ Module num.
                   num_new_digits
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_number_of_digits_decimal_left_shift :

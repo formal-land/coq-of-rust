@@ -30,7 +30,7 @@ Enum Food
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Definition Self : Ty.t := Ty.path "combinators_and_then::Food".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -69,7 +69,7 @@ Enum Day
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Definition Self : Ty.t := Ty.path "combinators_and_then::Day".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -79,27 +79,27 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
-Parameter have_ingredients : (list Ty.t) -> (list Value.t) -> M.
+Parameter have_ingredients : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_have_ingredients :
   M.IsFunction "combinators_and_then::have_ingredients" have_ingredients.
 
-Parameter have_recipe : (list Ty.t) -> (list Value.t) -> M.
+Parameter have_recipe : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_have_recipe : M.IsFunction "combinators_and_then::have_recipe" have_recipe.
 
-Parameter cookable_v1 : (list Ty.t) -> (list Value.t) -> M.
+Parameter cookable_v1 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_cookable_v1 : M.IsFunction "combinators_and_then::cookable_v1" cookable_v1.
 
-Parameter cookable_v2 : (list Ty.t) -> (list Value.t) -> M.
+Parameter cookable_v2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_cookable_v2 : M.IsFunction "combinators_and_then::cookable_v2" cookable_v2.
 
-Parameter eat : (list Ty.t) -> (list Value.t) -> M.
+Parameter eat : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_eat : M.IsFunction "combinators_and_then::eat" eat.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "combinators_and_then::main" main.

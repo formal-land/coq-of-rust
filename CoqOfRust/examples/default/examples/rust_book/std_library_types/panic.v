@@ -11,9 +11,9 @@ fn division(dividend: i32, divisor: i32) -> i32 {
     }
 }
 *)
-Definition division (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ dividend; divisor ] =>
+Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ dividend; divisor ] =>
     ltac:(M.monadic
       (let dividend := M.alloc (| dividend |) in
       let divisor := M.alloc (| divisor |) in
@@ -45,7 +45,7 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_division : M.IsFunction "panic::division" division.
@@ -63,9 +63,9 @@ fn main() {
     // `_x` should get destroyed at this point
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _x :=
@@ -112,7 +112,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "panic::main" main.

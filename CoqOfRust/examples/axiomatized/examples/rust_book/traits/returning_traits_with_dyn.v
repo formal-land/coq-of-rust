@@ -23,7 +23,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Definition Self : Ty.t := Ty.path "returning_traits_with_dyn::Sheep".
   
-  Parameter noise : (list Ty.t) -> (list Value.t) -> M.
+  Parameter noise : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -36,7 +36,7 @@ End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Definition Self : Ty.t := Ty.path "returning_traits_with_dyn::Cow".
   
-  Parameter noise : (list Ty.t) -> (list Value.t) -> M.
+  Parameter noise : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -46,11 +46,11 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
       (* Instance *) [ ("noise", InstanceField.Method noise) ].
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
-Parameter random_animal : (list Ty.t) -> (list Value.t) -> M.
+Parameter random_animal : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_random_animal :
   M.IsFunction "returning_traits_with_dyn::random_animal" random_animal.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "returning_traits_with_dyn::main" main.

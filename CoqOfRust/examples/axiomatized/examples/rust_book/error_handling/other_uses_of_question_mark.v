@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom Result :
-  forall ( : Ty.t) (T : Ty.t),
+  forall (T : Ty.t),
   (Ty.apply (Ty.path "other_uses_of_question_mark::Result") [] [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
@@ -26,7 +26,7 @@ Axiom Result :
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -39,7 +39,7 @@ End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -56,14 +56,14 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
     M.IsTraitInstance "core::error::Error" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
-Parameter double_first : (list Ty.t) -> (list Value.t) -> M.
+Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_double_first : M.IsFunction "other_uses_of_question_mark::double_first" double_first.
 
-Parameter print : (list Ty.t) -> (list Value.t) -> M.
+Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_print : M.IsFunction "other_uses_of_question_mark::print" print.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "other_uses_of_question_mark::main" main.

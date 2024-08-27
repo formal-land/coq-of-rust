@@ -27,16 +27,16 @@ Module my.
                 ClosedBox { contents: contents }
             }
     *)
-    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ contents ] =>
+      match ε, τ, α with
+      | [], [], [ contents ] =>
         ltac:(M.monadic
           (let contents := M.alloc (| contents |) in
           Value.StructRecord
             "struct_visibility::my::ClosedBox"
             [ ("contents", M.read (| contents |)) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -68,9 +68,9 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ open_box :=
@@ -141,7 +141,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "struct_visibility::main" main.

@@ -26,9 +26,9 @@ Module str.
         }
     }
     *)
-    Definition count_chars (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ s ] =>
+    Definition count_chars (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.read (|
@@ -73,7 +73,7 @@ Module str.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_count_chars : M.IsFunction "core::str::count::count_chars" count_chars.
@@ -150,9 +150,9 @@ Module str.
         total
     }
     *)
-    Definition do_count_chars (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ s ] =>
+    Definition do_count_chars (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.catch_return (|
@@ -162,7 +162,7 @@ Module str.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "align_to",
                         [ Ty.path "usize" ]
                       |),
@@ -199,7 +199,10 @@ Module str.
                                               LogicalOp.or (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ Ty.path "usize" ],
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [ Ty.path "usize" ],
                                                     "is_empty",
                                                     []
                                                   |),
@@ -209,7 +212,10 @@ Module str.
                                                   (BinOp.Pure.gt
                                                     (M.call_closure (|
                                                       M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ],
                                                         "len",
                                                         []
                                                       |),
@@ -225,7 +231,10 @@ Module str.
                                                 (BinOp.Pure.gt
                                                   (M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
@@ -300,6 +309,7 @@ Module str.
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
                                       (Ty.path "core::slice::iter::Chunks")
+                                      []
                                       [ Ty.path "usize" ],
                                     [],
                                     "into_iter",
@@ -308,7 +318,7 @@ Module str.
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "usize" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
                                         "chunks",
                                         []
                                       |),
@@ -338,6 +348,7 @@ Module str.
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
                                                     (Ty.path "core::slice::iter::Chunks")
+                                                    []
                                                     [ Ty.path "usize" ],
                                                   [],
                                                   "next",
@@ -373,6 +384,7 @@ Module str.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "slice")
+                                                            []
                                                             [ Ty.path "usize" ],
                                                           "as_chunks",
                                                           []
@@ -405,12 +417,15 @@ Module str.
                                                                       "core::iter::traits::collect::IntoIterator",
                                                                       Ty.apply
                                                                         (Ty.path "&")
+                                                                        []
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "array")
+                                                                                [ Value.Integer 4 ]
                                                                                 [ Ty.path "usize" ]
                                                                             ]
                                                                         ],
@@ -436,10 +451,15 @@ Module str.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::slice::iter::Iter")
+                                                                                      []
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "array")
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              4
+                                                                                          ]
                                                                                           [
                                                                                             Ty.path
                                                                                               "usize"
@@ -488,10 +508,15 @@ Module str.
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "&")
+                                                                                                []
                                                                                                 [
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "array")
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        4
+                                                                                                    ]
                                                                                                     [
                                                                                                       Ty.path
                                                                                                         "usize"
@@ -528,6 +553,7 @@ Module str.
                                                                                                             Ty.apply
                                                                                                               (Ty.path
                                                                                                                 "core::slice::iter::Iter")
+                                                                                                              []
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -651,6 +677,7 @@ Module str.
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [ Ty.path "usize" ],
                                                                               "is_empty",
                                                                               []
@@ -680,10 +707,12 @@ Module str.
                                                                                     "core::iter::traits::collect::IntoIterator",
                                                                                     Ty.apply
                                                                                       (Ty.path "&")
+                                                                                      []
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "slice")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "usize"
@@ -718,6 +747,7 @@ Module str.
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "core::slice::iter::Iter")
+                                                                                                    []
                                                                                                     [
                                                                                                       Ty.path
                                                                                                         "usize"
@@ -846,7 +876,7 @@ Module str.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_do_count_chars : M.IsFunction "core::str::count::do_count_chars" do_count_chars.
@@ -862,9 +892,13 @@ Module str.
         ((!w >> 7) | (w >> 6)) & LSB
     }
     *)
-    Definition contains_non_continuation_byte (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ w ] =>
+    Definition contains_non_continuation_byte
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ w ] =>
         ltac:(M.monadic
           (let w := M.alloc (| w |) in
           BinOp.Pure.bit_and
@@ -874,7 +908,7 @@ Module str.
             (M.read (|
               M.get_constant (| "core::str::count::contains_non_continuation_byte::LSB" |)
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_contains_non_continuation_byte :
@@ -903,9 +937,9 @@ Module str.
         pair_sum.wrapping_mul(LSB_SHORTS) >> ((USIZE_SIZE - 2) * 8)
     }
     *)
-    Definition sum_bytes_in_usize (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ values ] =>
+    Definition sum_bytes_in_usize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ values ] =>
         ltac:(M.monadic
           (let values := M.alloc (| values |) in
           M.read (|
@@ -944,7 +978,7 @@ Module str.
                   (Value.Integer 8))
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_sum_bytes_in_usize :
@@ -977,9 +1011,9 @@ Module str.
         s.iter().filter(|&&byte| !super::validations::utf8_is_cont_byte(byte)).count()
     }
     *)
-    Definition char_count_general_case (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ s ] =>
+    Definition char_count_general_case (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
@@ -987,12 +1021,13 @@ Module str.
               "core::iter::traits::iterator::Iterator",
               Ty.apply
                 (Ty.path "core::iter::adapters::filter::Filter")
+                []
                 [
-                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ];
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
                   Ty.function
                     [
                       Ty.tuple
-                        [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
                     ]
                     (Ty.path "bool")
                 ],
@@ -1004,14 +1039,15 @@ Module str.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                   [],
                   "filter",
                   [
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                          ]
                       ]
                       (Ty.path "bool")
                   ]
@@ -1019,7 +1055,7 @@ Module str.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "iter",
                       []
                     |),
@@ -1054,7 +1090,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_char_count_general_case :

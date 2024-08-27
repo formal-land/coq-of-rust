@@ -32,9 +32,9 @@ Module checked.
     Definition Self : Ty.t := Ty.path "result::checked::MathError".
     
     (*     Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -75,7 +75,7 @@ Module checked.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -105,9 +105,9 @@ Module checked.
           }
       }
   *)
-  Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ x; y ] =>
+  Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ x; y ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
@@ -138,7 +138,7 @@ Module checked.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_div : M.IsFunction "result::checked::div" div.
@@ -152,9 +152,9 @@ Module checked.
           }
       }
   *)
-  Definition sqrt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ x ] =>
+  Definition sqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.read (|
@@ -189,7 +189,7 @@ Module checked.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_sqrt : M.IsFunction "result::checked::sqrt" sqrt.
@@ -203,9 +203,9 @@ Module checked.
           }
       }
   *)
-  Definition ln (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ x ] =>
+  Definition ln (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.read (|
@@ -240,7 +240,7 @@ Module checked.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_ln : M.IsFunction "result::checked::ln" ln.
@@ -261,9 +261,9 @@ fn op(x: f64, y: f64) -> f64 {
     }
 }
 *)
-Definition op (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ x; y ] =>
+Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ x; y ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       let y := M.alloc (| y |) in
@@ -456,7 +456,7 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_op : M.IsFunction "result::op" op.
@@ -467,9 +467,9 @@ fn main() {
     println!("{}", op(1.0, 10.0));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -521,7 +521,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "result::main" main.

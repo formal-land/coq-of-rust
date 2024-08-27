@@ -32,6 +32,7 @@ Module num.
       (* StructRecord
         {
           name := "Number";
+          const_params := [];
           ty_params := [];
           fields :=
             [
@@ -46,9 +47,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -71,7 +72,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -97,9 +98,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -148,7 +149,7 @@ Module num.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -163,9 +164,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "core::num::dec2flt::number::Number"
@@ -215,7 +216,7 @@ Module num.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -241,9 +242,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -316,7 +317,7 @@ Module num.
                       |)
                     |))))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -342,9 +343,13 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -367,7 +372,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -390,9 +395,9 @@ Module num.
                     && !self.many_digits
             }
         *)
-        Definition is_fast_path (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F ], [ self ] =>
+        Definition is_fast_path (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ F ], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               LogicalOp.and (|
@@ -451,7 +456,7 @@ Module num.
                       |)
                     |))))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_is_fast_path :
@@ -494,9 +499,9 @@ Module num.
                 }
             }
         *)
-        Definition try_fast_path (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F ], [ self ] =>
+        Definition try_fast_path (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ F ], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -705,6 +710,7 @@ Module num.
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [ Ty.path "u64" ],
                                                     [],
                                                     "branch",
@@ -759,10 +765,12 @@ Module num.
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
+                                                                  []
                                                                   [ F ],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "core::convert::Infallible"
@@ -916,7 +924,7 @@ Module num.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_try_fast_path :

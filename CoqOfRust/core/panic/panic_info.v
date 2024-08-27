@@ -6,19 +6,22 @@ Module panic.
     (* StructRecord
       {
         name := "PanicInfo";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("payload",
               Ty.apply
                 (Ty.path "&")
+                []
                 [ Ty.dyn [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ]
                 ]);
             ("message",
               Ty.apply
                 (Ty.path "core::option::Option")
-                [ Ty.apply (Ty.path "&") [ Ty.path "core::fmt::Arguments" ] ]);
-            ("location", Ty.apply (Ty.path "&") [ Ty.path "core::panic::location::Location" ]);
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::Arguments" ] ]);
+            ("location", Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ]);
             ("can_unwind", Ty.path "bool");
             ("force_no_backtrace", Ty.path "bool")
           ];
@@ -28,9 +31,9 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::panic_info::PanicInfo".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -87,7 +90,7 @@ Module panic.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -112,9 +115,9 @@ Module panic.
               PanicInfo { location, message, payload: &NoPayload, can_unwind, force_no_backtrace }
           }
       *)
-      Definition internal_constructor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ message; location; can_unwind; force_no_backtrace ] =>
+      Definition internal_constructor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ message; location; can_unwind; force_no_backtrace ] =>
           ltac:(M.monadic
             (let message := M.alloc (| message |) in
             let location := M.alloc (| location |) in
@@ -136,7 +139,7 @@ Module panic.
                 ("can_unwind", M.read (| can_unwind |));
                 ("force_no_backtrace", M.read (| force_no_backtrace |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_internal_constructor :
@@ -147,9 +150,9 @@ Module panic.
               self.payload = info;
           }
       *)
-      Definition set_payload (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; info ] =>
+      Definition set_payload (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; info ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let info := M.alloc (| info |) in
@@ -165,7 +168,7 @@ Module panic.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_payload : M.IsAssociatedFunction Self "set_payload" set_payload.
@@ -175,9 +178,9 @@ Module panic.
               self.payload
           }
       *)
-      Definition payload (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition payload (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             (* Unsize *)
@@ -191,7 +194,7 @@ Module panic.
                     "payload"
                   |)
                 |)))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_payload : M.IsAssociatedFunction Self "payload" payload.
@@ -201,9 +204,9 @@ Module panic.
               self.message
           }
       *)
-      Definition message (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition message (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -213,7 +216,7 @@ Module panic.
                 "message"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_message : M.IsAssociatedFunction Self "message" message.
@@ -225,9 +228,9 @@ Module panic.
               Some(&self.location)
           }
       *)
-      Definition location (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition location (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -241,7 +244,7 @@ Module panic.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_location : M.IsAssociatedFunction Self "location" location.
@@ -251,9 +254,9 @@ Module panic.
               self.can_unwind
           }
       *)
-      Definition can_unwind (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition can_unwind (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -263,7 +266,7 @@ Module panic.
                 "can_unwind"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_can_unwind : M.IsAssociatedFunction Self "can_unwind" can_unwind.
@@ -273,9 +276,9 @@ Module panic.
               self.force_no_backtrace
           }
       *)
-      Definition force_no_backtrace (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition force_no_backtrace (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -285,7 +288,7 @@ Module panic.
                 "force_no_backtrace"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_force_no_backtrace :
@@ -313,9 +316,9 @@ Module panic.
               Ok(())
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; formatter ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; formatter ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let formatter := M.alloc (| formatter |) in
@@ -330,6 +333,7 @@ Module panic.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -366,10 +370,12 @@ Module panic.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -404,6 +410,7 @@ Module panic.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -451,10 +458,12 @@ Module panic.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -508,6 +517,7 @@ Module panic.
                                       "core::ops::try_trait::Try",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       [],
                                       "branch",
@@ -545,10 +555,12 @@ Module panic.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.path "core::convert::Infallible";
                                                         Ty.path "core::fmt::Error"
@@ -583,6 +595,7 @@ Module panic.
                                       "core::ops::try_trait::Try",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       [],
                                       "branch",
@@ -620,10 +633,12 @@ Module panic.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.path "core::convert::Infallible";
                                                         Ty.path "core::fmt::Error"
@@ -668,7 +683,7 @@ Module panic.
                                                 ("core::marker::Send::AutoTrait", [])
                                               ],
                                             "downcast_ref",
-                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                           |),
                                           [
                                             M.read (|
@@ -696,6 +711,7 @@ Module panic.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                               [],
                                               "branch",
@@ -736,6 +752,7 @@ Module panic.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.path "core::fmt::Error"
@@ -743,6 +760,7 @@ Module panic.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.path "core::convert::Infallible";
                                                                 Ty.path "core::fmt::Error"
@@ -777,6 +795,7 @@ Module panic.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                               [],
                                               "branch",
@@ -816,6 +835,7 @@ Module panic.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.path "core::fmt::Error"
@@ -823,6 +843,7 @@ Module panic.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.path "core::convert::Infallible";
                                                                 Ty.path "core::fmt::Error"
@@ -858,7 +879,7 @@ Module panic.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

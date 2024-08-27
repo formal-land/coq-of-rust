@@ -27,9 +27,9 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
           Some(current)
       }
   *)
-  Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -76,7 +76,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
             |) in
           M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| current |) ] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -92,14 +92,14 @@ fn fibonacci() -> Fibonacci {
     Fibonacci { curr: 0, next: 1 }
 }
 *)
-Definition fibonacci (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition fibonacci (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (Value.StructRecord
         "iterators::Fibonacci"
         [ ("curr", Value.Integer 0); ("next", Value.Integer 1) ]))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_fibonacci : M.IsFunction "iterators::fibonacci" fibonacci.
@@ -143,9 +143,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ sequence :=
@@ -1005,7 +1005,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "iterators::main" main.

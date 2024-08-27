@@ -13,9 +13,9 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -39,7 +39,7 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -65,9 +65,9 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -86,7 +86,7 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
               0
             |)
           |))))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -112,9 +112,9 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
           }
       }
   *)
-  Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ value ] =>
+  Definition try_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         M.read (|
@@ -143,7 +143,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -170,9 +170,9 @@ fn main() {
     assert_eq!(result, Err(()));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -585,7 +585,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "try_from_and_try_into::main" main.

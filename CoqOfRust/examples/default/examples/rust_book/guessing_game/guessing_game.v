@@ -6,9 +6,9 @@ fn gen_range() -> u32 {
     todo!()
 }
 *)
-Definition gen_range (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition gen_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.never_to_any (|
         M.call_closure (|
@@ -16,7 +16,7 @@ Definition gen_range (τ : list Ty.t) (α : list Value.t) : M :=
           [ M.read (| Value.String "not yet implemented" |) ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_gen_range : M.IsFunction "guessing_game::gen_range" gen_range.
@@ -55,9 +55,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -341,7 +341,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |)))
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "guessing_game::main" main.

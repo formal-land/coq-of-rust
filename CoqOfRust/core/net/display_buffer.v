@@ -6,28 +6,32 @@ Module net.
     (* StructRecord
       {
         name := "DisplayBuffer";
+        const_params := [ "SIZE" ];
         ty_params := [];
         fields :=
           [
             ("buf",
               Ty.apply
                 (Ty.path "array")
-                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ] ]);
+                [ SIZE ]
+                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ] ]);
             ("len", Ty.path "usize")
           ];
       } *)
     
-    Module Impl_core_net_display_buffer_DisplayBuffer.
-      Definition Self : Ty.t := Ty.path "core::net::display_buffer::DisplayBuffer".
+    Module Impl_core_net_display_buffer_DisplayBuffer_SIZE.
+      Definition Self (SIZE : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::net::display_buffer::DisplayBuffer") [ SIZE ] [].
       
       (*
           pub const fn new() -> Self {
               Self { buf: MaybeUninit::uninit_array(), len: 0 }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition new (SIZE : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self SIZE in
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::net::display_buffer::DisplayBuffer"
@@ -35,7 +39,7 @@ Module net.
                 ("buf",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit_array",
                       []
                     |),
@@ -43,10 +47,12 @@ Module net.
                   |));
                 ("len", Value.Integer 0)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Axiom AssociatedFunction_new :
+        forall (SIZE : Value.t),
+        M.IsAssociatedFunction (Self SIZE) "new" (new SIZE).
       
       (*
           pub fn as_str(&self) -> &str {
@@ -58,9 +64,15 @@ Module net.
               }
           }
       *)
-      Definition as_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_str
+          (SIZE : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self SIZE in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -68,7 +80,7 @@ Module net.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "slice_assume_init_ref",
                       []
                     |),
@@ -78,12 +90,14 @@ Module net.
                           "core::ops::index::Index",
                           Ty.apply
                             (Ty.path "array")
+                            [ SIZE ]
                             [
                               Ty.apply
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                []
                                 [ Ty.path "u8" ]
                             ],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                           "index",
                           []
                         |),
@@ -117,14 +131,17 @@ Module net.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
-      Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
-    End Impl_core_net_display_buffer_DisplayBuffer.
+      Axiom AssociatedFunction_as_str :
+        forall (SIZE : Value.t),
+        M.IsAssociatedFunction (Self SIZE) "as_str" (as_str SIZE).
+    End Impl_core_net_display_buffer_DisplayBuffer_SIZE.
     
-    Module Impl_core_fmt_Write_for_core_net_display_buffer_DisplayBuffer.
-      Definition Self : Ty.t := Ty.path "core::net::display_buffer::DisplayBuffer".
+    Module Impl_core_fmt_Write_for_core_net_display_buffer_DisplayBuffer_SIZE.
+      Definition Self (SIZE : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "core::net::display_buffer::DisplayBuffer") [ SIZE ] [].
       
       (*
           fn write_str(&mut self, s: &str) -> fmt::Result {
@@ -139,9 +156,15 @@ Module net.
               }
           }
       *)
-      Definition write_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; s ] =>
+      Definition write_str
+          (SIZE : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self SIZE in
+        match ε, τ, α with
+        | [], [], [ self; s ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let s := M.alloc (| s |) in
@@ -164,13 +187,16 @@ Module net.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "slice")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
                                     [ Ty.path "u8" ]
                                 ],
                               "get_mut",
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
+                              ]
                             |),
                             [
                               (* Unsize *)
@@ -203,7 +229,7 @@ Module net.
                                       |))
                                       (M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
@@ -226,6 +252,7 @@ Module net.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                []
                                 [ Ty.path "u8" ],
                               "write_slice",
                               []
@@ -247,7 +274,7 @@ Module net.
                             (M.read (| β |))
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
                                 []
                               |),
@@ -267,15 +294,16 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (SIZE : Value.t),
         M.IsTraitInstance
           "core::fmt::Write"
-          Self
+          (Self SIZE)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("write_str", InstanceField.Method write_str) ].
-    End Impl_core_fmt_Write_for_core_net_display_buffer_DisplayBuffer.
+          (* Instance *) [ ("write_str", InstanceField.Method (write_str SIZE)) ].
+    End Impl_core_fmt_Write_for_core_net_display_buffer_DisplayBuffer_SIZE.
   End display_buffer.
 End net.

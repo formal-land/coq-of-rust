@@ -7,6 +7,7 @@ Module collections.
       (*
       Enum SearchBound
       {
+        const_params := [];
         ty_params := [ "T" ];
         variants :=
           [
@@ -36,7 +37,7 @@ Module collections.
       
       Module Impl_alloc_collections_btree_search_SearchBound_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::search::SearchBound") [ T ].
+          Ty.apply (Ty.path "alloc::collections::btree::search::SearchBound") [] [ T ].
         
         (*
             pub fn from_range(range_bound: Bound<T>) -> Self {
@@ -47,10 +48,15 @@ Module collections.
                 }
             }
         *)
-        Definition from_range (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition from_range
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ range_bound ] =>
+          match ε, τ, α with
+          | [], [], [ range_bound ] =>
             ltac:(M.monadic
               (let range_bound := M.alloc (| range_bound |) in
               M.read (|
@@ -96,7 +102,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_from_range :
@@ -107,6 +113,7 @@ Module collections.
       (*
       Enum SearchResult
       {
+        const_params := [];
         ty_params := [ "BorrowType"; "K"; "V"; "FoundType"; "GoDownType" ];
         variants :=
           [
@@ -117,9 +124,11 @@ Module collections.
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::node::Handle")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ BorrowType; K; V; FoundType ];
                         Ty.path "alloc::collections::btree::node::marker::KV"
                       ]
@@ -133,9 +142,11 @@ Module collections.
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::node::Handle")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ BorrowType; K; V; GoDownType ];
                         Ty.path "alloc::collections::btree::node::marker::Edge"
                       ]
@@ -149,6 +160,7 @@ Module collections.
       (*
       Enum IndexResult
       {
+        const_params := [];
         ty_params := [];
         variants :=
           [
@@ -170,6 +182,7 @@ Module collections.
         Definition Self (BorrowType K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::LeafOrInternal" ].
         
         (*
@@ -192,10 +205,15 @@ Module collections.
                 }
             }
         *)
-        Definition search_tree (BorrowType K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition search_tree
+            (BorrowType K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [ Q ], [ self; key ] =>
+          match ε, τ, α with
+          | [], [ Q ], [ self; key ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let key := M.alloc (| key |) in
@@ -214,6 +232,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           BorrowType;
                                           K;
@@ -263,10 +282,12 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::node::Handle")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [
                                                       BorrowType;
                                                       K;
@@ -319,10 +340,12 @@ Module collections.
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloc::collections::btree::node::Handle")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloc::collections::btree::node::NodeRef")
+                                                          []
                                                           [
                                                             BorrowType;
                                                             K;
@@ -349,7 +372,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_search_tree :
@@ -430,12 +453,13 @@ Module collections.
         *)
         Definition search_tree_for_bifurcation
             (BorrowType K V : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [ Q; R ], [ self; range ] =>
+          match ε, τ, α with
+          | [], [ Q; R ], [ self; range ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let range := M.alloc (| range |) in
@@ -515,8 +539,8 @@ Module collections.
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
-                                              Ty.apply (Ty.path "&") [ Q ],
-                                              [ Ty.apply (Ty.path "&") [ Q ] ],
+                                              Ty.apply (Ty.path "&") [] [ Q ],
+                                              [ Ty.apply (Ty.path "&") [] [ Q ] ],
                                               "eq",
                                               []
                                             |),
@@ -674,8 +698,9 @@ Module collections.
                                                               M.call_closure (|
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialOrd",
-                                                                  Ty.apply (Ty.path "&") [ Q ],
-                                                                  [ Ty.apply (Ty.path "&") [ Q ] ],
+                                                                  Ty.apply (Ty.path "&") [] [ Q ],
+                                                                  [ Ty.apply (Ty.path "&") [] [ Q ]
+                                                                  ],
                                                                   "gt",
                                                                   []
                                                                 |),
@@ -783,7 +808,8 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::search::SearchBound")
-                                      [ Ty.apply (Ty.path "&") [ Q ] ],
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Q ] ],
                                     "from_range",
                                     []
                                   |),
@@ -796,7 +822,8 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::search::SearchBound")
-                                      [ Ty.apply (Ty.path "&") [ Q ] ],
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Q ] ],
                                     "from_range",
                                     []
                                   |),
@@ -814,6 +841,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                                []
                                                 [
                                                   BorrowType;
                                                   K;
@@ -842,6 +870,7 @@ Module collections.
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::btree::node::NodeRef")
+                                                        []
                                                         [
                                                           BorrowType;
                                                           K;
@@ -1057,10 +1086,12 @@ Module collections.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "alloc::collections::btree::node::Handle")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "alloc::collections::btree::node::NodeRef")
+                                                                    []
                                                                     [
                                                                       BorrowType;
                                                                       K;
@@ -1087,10 +1118,12 @@ Module collections.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "alloc::collections::btree::node::Handle")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "alloc::collections::btree::node::NodeRef")
+                                                                    []
                                                                     [
                                                                       BorrowType;
                                                                       K;
@@ -1147,10 +1180,12 @@ Module collections.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "alloc::collections::btree::node::Handle")
+                                                                        []
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::collections::btree::node::NodeRef")
+                                                                            []
                                                                             [
                                                                               BorrowType;
                                                                               K;
@@ -1192,7 +1227,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_search_tree_for_bifurcation :
@@ -1218,12 +1253,13 @@ Module collections.
         *)
         Definition find_lower_bound_edge
             (BorrowType K V : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [ Q ], [ self; bound ] =>
+          match ε, τ, α with
+          | [], [ Q ], [ self; bound ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let bound := M.alloc (| bound |) in
@@ -1234,6 +1270,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             BorrowType;
                             K;
@@ -1259,9 +1296,11 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::Handle")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         BorrowType;
                                         K;
@@ -1281,7 +1320,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_find_lower_bound_edge :
@@ -1307,12 +1346,13 @@ Module collections.
         *)
         Definition find_upper_bound_edge
             (BorrowType K V : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [ Q ], [ self; bound ] =>
+          match ε, τ, α with
+          | [], [ Q ], [ self; bound ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let bound := M.alloc (| bound |) in
@@ -1323,6 +1363,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             BorrowType;
                             K;
@@ -1348,9 +1389,11 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::Handle")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         BorrowType;
                                         K;
@@ -1370,7 +1413,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_find_upper_bound_edge :
@@ -1383,7 +1426,10 @@ Module collections.
       
       Module Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_Type_.
         Definition Self (BorrowType K V Type_ : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::node::NodeRef") [ BorrowType; K; V; Type_ ].
+          Ty.apply
+            (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
+            [ BorrowType; K; V; Type_ ].
         
         (*
             pub fn search_node<Q: ?Sized>(self, key: &Q) -> SearchResult<BorrowType, K, V, Type, Type>
@@ -1399,12 +1445,13 @@ Module collections.
         *)
         Definition search_node
             (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [ Q ], [ self; key ] =>
+          match ε, τ, α with
+          | [], [ Q ], [ self; key ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let key := M.alloc (| key |) in
@@ -1415,6 +1462,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ BorrowType; K; V; Type_ ],
                         "find_key_index",
                         [ Q ]
@@ -1440,9 +1488,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::Handle")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [ BorrowType; K; V; Type_ ];
                                       Ty.path "alloc::collections::btree::node::marker::KV"
                                     ],
@@ -1470,9 +1520,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::Handle")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [ BorrowType; K; V; Type_ ];
                                       Ty.path "alloc::collections::btree::node::marker::Edge"
                                     ],
@@ -1486,7 +1538,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_search_node :
@@ -1517,12 +1569,13 @@ Module collections.
         *)
         Definition find_key_index
             (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [ Q ], [ self; key; start_index ] =>
+          match ε, τ, α with
+          | [], [ Q ], [ self; key; start_index ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let key := M.alloc (| key |) in
@@ -1536,6 +1589,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [ BorrowType; K; V; Type_ ],
                             "reborrow",
                             []
@@ -1549,6 +1603,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Immut";
                                 K;
@@ -1587,7 +1642,7 @@ Module collections.
                                                   (M.read (| start_index |))
                                                   (M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ K ],
+                                                      Ty.apply (Ty.path "slice") [] [ K ],
                                                       "len",
                                                       []
                                                     |),
@@ -1628,7 +1683,8 @@ Module collections.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ K ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ K ] ],
                                 [],
                                 "into_iter",
                                 []
@@ -1637,7 +1693,7 @@ Module collections.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ K ],
+                                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ K ],
                                     [],
                                     "enumerate",
                                     []
@@ -1645,18 +1701,19 @@ Module collections.
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ K ],
+                                        Ty.apply (Ty.path "slice") [] [ K ],
                                         "iter",
                                         []
                                       |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [ K ],
+                                            Ty.apply (Ty.path "slice") [] [ K ],
                                             "get_unchecked",
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeFrom")
+                                                []
                                                 [ Ty.path "usize" ]
                                             ]
                                           |),
@@ -1689,7 +1746,12 @@ Module collections.
                                               Ty.apply
                                                 (Ty.path
                                                   "core::iter::adapters::enumerate::Enumerate")
-                                                [ Ty.apply (Ty.path "core::slice::iter::Iter") [ K ]
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::Iter")
+                                                    []
+                                                    [ K ]
                                                 ],
                                               [],
                                               "next",
@@ -1817,7 +1879,7 @@ Module collections.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ K ],
+                              Ty.apply (Ty.path "slice") [] [ K ],
                               "len",
                               []
                             |),
@@ -1827,7 +1889,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_find_key_index :
@@ -1862,12 +1924,13 @@ Module collections.
         *)
         Definition find_lower_bound_index
             (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [ Q ], [ self; bound ] =>
+          match ε, τ, α with
+          | [], [ Q ], [ self; bound ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let bound := M.alloc (| bound |) in
@@ -1890,6 +1953,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [ BorrowType; K; V; Type_ ],
                                 "find_key_index",
                                 [ Q ]
@@ -1943,6 +2007,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [ BorrowType; K; V; Type_ ],
                                 "find_key_index",
                                 [ Q ]
@@ -2014,6 +2079,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
                                     [ BorrowType; K; V; Type_ ],
                                   "len",
                                   []
@@ -2028,7 +2094,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_find_lower_bound_index :
@@ -2064,12 +2130,13 @@ Module collections.
         *)
         Definition find_upper_bound_index
             (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [ Q ], [ self; bound; start_index ] =>
+          match ε, τ, α with
+          | [], [ Q ], [ self; bound; start_index ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let bound := M.alloc (| bound |) in
@@ -2093,6 +2160,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [ BorrowType; K; V; Type_ ],
                                 "find_key_index",
                                 [ Q ]
@@ -2149,6 +2217,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [ BorrowType; K; V; Type_ ],
                                 "find_key_index",
                                 [ Q ]
@@ -2201,6 +2270,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
                                     [ BorrowType; K; V; Type_ ],
                                   "len",
                                   []
@@ -2231,7 +2301,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_find_upper_bound_index :

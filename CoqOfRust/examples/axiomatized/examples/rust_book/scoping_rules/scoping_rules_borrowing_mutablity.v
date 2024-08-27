@@ -17,7 +17,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self : Ty.t := Ty.path "scoping_rules_borrowing_mutablity::Book".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -34,16 +34,16 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
     M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
-Parameter borrow_book : (list Ty.t) -> (list Value.t) -> M.
+Parameter borrow_book : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_borrow_book :
   M.IsFunction "scoping_rules_borrowing_mutablity::borrow_book" borrow_book.
 
-Parameter new_edition : (list Ty.t) -> (list Value.t) -> M.
+Parameter new_edition : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_new_edition :
   M.IsFunction "scoping_rules_borrowing_mutablity::new_edition" new_edition.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "scoping_rules_borrowing_mutablity::main" main.

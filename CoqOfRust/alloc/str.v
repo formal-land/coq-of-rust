@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module str.
   Module Impl_alloc_slice_Concat_where_core_borrow_Borrow_S_str_str_for_slice_S.
-    Definition Self (S : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ S ].
+    Definition Self (S : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ S ].
     
     (*     type Output = String; *)
     Definition _Output (S : Ty.t) : Ty.t := Ty.path "alloc::string::String".
@@ -13,23 +13,23 @@ Module str.
             Join::join(slice, "")
         }
     *)
-    Definition concat (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition concat (S : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self S in
-      match τ, α with
-      | [], [ slice ] =>
+      match ε, τ, α with
+      | [], [], [ slice ] =>
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
           M.call_closure (|
             M.get_trait_method (|
               "alloc::slice::Join",
-              Ty.apply (Ty.path "slice") [ S ],
-              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+              Ty.apply (Ty.path "slice") [] [ S ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "join",
               []
             |),
             [ M.read (| slice |); M.read (| Value.String "" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -43,7 +43,7 @@ Module str.
   End Impl_alloc_slice_Concat_where_core_borrow_Borrow_S_str_str_for_slice_S.
   
   Module Impl_alloc_slice_Join_where_core_borrow_Borrow_S_str_ref__str_for_slice_S.
-    Definition Self (S : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ S ].
+    Definition Self (S : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ S ].
     
     (*     type Output = String; *)
     Definition _Output (S : Ty.t) : Ty.t := Ty.path "alloc::string::String".
@@ -53,10 +53,10 @@ Module str.
             unsafe { String::from_utf8_unchecked(join_generic_copy(slice, sep.as_bytes())) }
         }
     *)
-    Definition join (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition join (S : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self S in
-      match τ, α with
-      | [], [ slice; sep ] =>
+      match ε, τ, α with
+      | [], [], [ slice; sep ] =>
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
           let sep := M.alloc (| sep |) in
@@ -82,7 +82,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -90,7 +90,8 @@ Module str.
       M.IsTraitInstance
         "alloc::slice::Join"
         (Self S)
-        (* Trait polymorphic types *) [ (* Separator *) Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+        (* Trait polymorphic types *)
+        [ (* Separator *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *)
         [ ("Output", InstanceField.Ty (_Output S)); ("join", InstanceField.Method (join S)) ].
   End Impl_alloc_slice_Join_where_core_borrow_Borrow_S_str_ref__str_for_slice_S.
@@ -154,9 +155,9 @@ Module str.
       result
   }
   *)
-  Definition join_generic_copy (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ B; T; _ as S ], [ slice; sep ] =>
+  Definition join_generic_copy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ B; T; _ as S ], [ slice; sep ] =>
       ltac:(M.monadic
         (let slice := M.alloc (| slice |) in
         let sep := M.alloc (| sep |) in
@@ -166,14 +167,14 @@ Module str.
               let~ sep_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
+                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
                     [ M.read (| sep |) ]
                   |)
                 |) in
               let~ iter :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [ S ], "iter", [] |),
+                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ S ], "iter", [] |),
                     [ M.read (| slice |) ]
                   |)
                 |) in
@@ -184,7 +185,7 @@ Module str.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ S ],
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ],
                           [],
                           "next",
                           []
@@ -214,6 +215,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ T; Ty.path "alloc::alloc::Global" ],
                                       "new",
                                       []
@@ -231,20 +233,20 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                       "expect",
                       []
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                           "and_then",
                           [
                             Ty.path "usize";
                             Ty.function
                               [ Ty.tuple [ Ty.path "usize" ] ]
-                              (Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ])
+                              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ])
                           ]
                         |),
                         [
@@ -255,7 +257,7 @@ Module str.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [ S ],
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ],
                                   [],
                                   "len",
                                   []
@@ -280,12 +282,14 @@ Module str.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::iter::adapters::map::Map")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::slice::iter::Iter")
+                                                    []
                                                     [ S ];
                                                   Ty.function
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ S ] ] ]
+                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
                                                     (Ty.path "usize")
                                                 ],
                                               [],
@@ -296,9 +300,11 @@ Module str.
                                                   [ Ty.path "usize"; Ty.path "usize" ]
                                                   (Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [ Ty.path "usize" ]);
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
+                                                  []
                                                   [ Ty.path "usize" ]
                                               ]
                                             |),
@@ -309,13 +315,16 @@ Module str.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
                                                       (Ty.path "core::slice::iter::Iter")
+                                                      []
                                                       [ S ],
                                                     [],
                                                     "map",
                                                     [
                                                       Ty.path "usize";
                                                       Ty.function
-                                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ S ] ]
+                                                        [
+                                                          Ty.tuple
+                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                         ]
                                                         (Ty.path "usize")
                                                     ]
@@ -323,7 +332,7 @@ Module str.
                                                   [
                                                     M.call_closure (|
                                                       M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [ S ],
+                                                        Ty.apply (Ty.path "slice") [] [ S ],
                                                         "iter",
                                                         []
                                                       |),
@@ -344,6 +353,7 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [ T ],
                                                                         "len",
                                                                         []
@@ -356,6 +366,7 @@ Module str.
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [ T ]
                                                                             ],
                                                                             "as_ref",
@@ -407,7 +418,7 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "with_capacity",
                       []
                     |),
@@ -438,6 +449,7 @@ Module str.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [ T; Ty.path "alloc::alloc::Global" ],
                                                 "capacity",
                                                 []
@@ -475,7 +487,7 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "extend_from_slice",
                       []
                     |),
@@ -485,7 +497,7 @@ Module str.
                         M.get_trait_method (|
                           "core::convert::AsRef",
                           B,
-                          [ Ty.apply (Ty.path "slice") [ T ] ],
+                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
                           "as_ref",
                           []
                         |),
@@ -504,7 +516,10 @@ Module str.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ],
                         "len",
                         []
                       |),
@@ -517,15 +532,17 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "slice")
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                         "get_unchecked_mut",
-                        [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ]
+                        [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                       |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ T; Ty.path "alloc::alloc::Global" ],
                             "spare_capacity_mut",
                             []
@@ -549,19 +566,19 @@ Module str.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::raw::from_raw_parts",
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                       |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "*const") [ T ],
+                            Ty.apply (Ty.path "*const") [] [ T ],
                             "cast",
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                           |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ T ],
+                                Ty.apply (Ty.path "slice") [] [ T ],
                                 "as_ptr",
                                 []
                               |),
@@ -571,7 +588,7 @@ Module str.
                         |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ T ],
+                            Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
                             []
                           |),
@@ -585,25 +602,34 @@ Module str.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
-                        Ty.apply (Ty.path "core::slice::iter::Iter") [ S ],
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ],
                         [],
                         "map",
                         [
                           Ty.apply
                             (Ty.path "&")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
                             ];
                           Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [ S ] ] ]
+                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
                             (Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "slice")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
                                   ]
                               ])
                         ]
@@ -628,7 +654,7 @@ Module str.
                                                 M.get_trait_method (|
                                                   "core::convert::AsRef",
                                                   B,
-                                                  [ Ty.apply (Ty.path "slice") [ T ] ],
+                                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                                   "as_ref",
                                                   []
                                                 |),
@@ -653,25 +679,27 @@ Module str.
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
                                                     [ T ]
                                                 ]
                                               |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [ T ],
+                                                    Ty.apply (Ty.path "*const") [] [ T ],
                                                     "cast",
                                                     [
                                                       Ty.apply
                                                         (Ty.path
                                                           "core::mem::maybe_uninit::MaybeUninit")
+                                                        []
                                                         [ T ]
                                                     ]
                                                   |),
                                                   [
                                                     M.call_closure (|
                                                       M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [ T ],
+                                                        Ty.apply (Ty.path "slice") [] [ T ],
                                                         "as_ptr",
                                                         []
                                                       |),
@@ -681,7 +709,7 @@ Module str.
                                                 |);
                                                 M.call_closure (|
                                                   M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ T ],
+                                                    Ty.apply (Ty.path "slice") [] [ T ],
                                                     "len",
                                                     []
                                                   |),
@@ -711,7 +739,12 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
                                   ],
                                 "len",
                                 []
@@ -735,19 +768,23 @@ Module str.
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::map::Map")
+                                            []
                                             [
-                                              Ty.apply (Ty.path "core::slice::iter::Iter") [ S ];
+                                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ];
                                               Ty.function
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ S ] ] ]
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
                                                 (Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "slice")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
                                                           [ T ]
                                                       ]
                                                   ])
@@ -773,24 +810,30 @@ Module str.
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
                                                           (Ty.path "core::iter::adapters::map::Map")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::slice::iter::Iter")
+                                                              []
                                                               [ S ];
                                                             Ty.function
                                                               [
                                                                 Ty.tuple
-                                                                  [ Ty.apply (Ty.path "&") [ S ] ]
+                                                                  [ Ty.apply (Ty.path "&") [] [ S ]
+                                                                  ]
                                                               ]
                                                               (Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::mem::maybe_uninit::MaybeUninit")
+                                                                        []
                                                                         [ T ]
                                                                     ]
                                                                 ])
@@ -830,10 +873,12 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "len",
@@ -848,10 +893,12 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "split_at_mut",
@@ -884,10 +931,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "copy_from_slice",
@@ -911,19 +960,23 @@ Module str.
                                                                         "core::convert::AsRef",
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::mem::maybe_uninit::MaybeUninit")
+                                                                                []
                                                                                 [ T ]
                                                                             ]
                                                                         ],
@@ -936,19 +989,23 @@ Module str.
                                                                             "core::borrow::Borrow",
                                                                             Ty.apply
                                                                               (Ty.path "slice")
+                                                                              []
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::mem::maybe_uninit::MaybeUninit")
+                                                                                  []
                                                                                   [ T ]
                                                                               ],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::mem::maybe_uninit::MaybeUninit")
+                                                                                    []
                                                                                     [ T ]
                                                                                 ]
                                                                             ],
@@ -966,10 +1023,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "len",
@@ -984,10 +1043,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "split_at_mut",
@@ -1022,10 +1083,12 @@ Module str.
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path "slice")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                                      []
                                                                                       [ T ]
                                                                                   ],
                                                                                 "copy_from_slice",
@@ -1072,19 +1135,23 @@ Module str.
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::map::Map")
+                                            []
                                             [
-                                              Ty.apply (Ty.path "core::slice::iter::Iter") [ S ];
+                                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ];
                                               Ty.function
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ S ] ] ]
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
                                                 (Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "slice")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
                                                           [ T ]
                                                       ]
                                                   ])
@@ -1110,24 +1177,30 @@ Module str.
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
                                                           (Ty.path "core::iter::adapters::map::Map")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::slice::iter::Iter")
+                                                              []
                                                               [ S ];
                                                             Ty.function
                                                               [
                                                                 Ty.tuple
-                                                                  [ Ty.apply (Ty.path "&") [ S ] ]
+                                                                  [ Ty.apply (Ty.path "&") [] [ S ]
+                                                                  ]
                                                               ]
                                                               (Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::mem::maybe_uninit::MaybeUninit")
+                                                                        []
                                                                         [ T ]
                                                                     ]
                                                                 ])
@@ -1167,10 +1240,12 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "len",
@@ -1185,10 +1260,12 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "split_at_mut",
@@ -1221,10 +1298,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "copy_from_slice",
@@ -1248,19 +1327,23 @@ Module str.
                                                                         "core::convert::AsRef",
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::mem::maybe_uninit::MaybeUninit")
+                                                                                []
                                                                                 [ T ]
                                                                             ]
                                                                         ],
@@ -1273,19 +1356,23 @@ Module str.
                                                                             "core::borrow::Borrow",
                                                                             Ty.apply
                                                                               (Ty.path "slice")
+                                                                              []
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::mem::maybe_uninit::MaybeUninit")
+                                                                                  []
                                                                                   [ T ]
                                                                               ],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::mem::maybe_uninit::MaybeUninit")
+                                                                                    []
                                                                                     [ T ]
                                                                                 ]
                                                                             ],
@@ -1303,10 +1390,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "len",
@@ -1321,10 +1410,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "split_at_mut",
@@ -1359,10 +1450,12 @@ Module str.
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path "slice")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                                      []
                                                                                       [ T ]
                                                                                   ],
                                                                                 "copy_from_slice",
@@ -1409,19 +1502,23 @@ Module str.
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::map::Map")
+                                            []
                                             [
-                                              Ty.apply (Ty.path "core::slice::iter::Iter") [ S ];
+                                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ];
                                               Ty.function
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ S ] ] ]
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
                                                 (Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "slice")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
                                                           [ T ]
                                                       ]
                                                   ])
@@ -1447,24 +1544,30 @@ Module str.
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
                                                           (Ty.path "core::iter::adapters::map::Map")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::slice::iter::Iter")
+                                                              []
                                                               [ S ];
                                                             Ty.function
                                                               [
                                                                 Ty.tuple
-                                                                  [ Ty.apply (Ty.path "&") [ S ] ]
+                                                                  [ Ty.apply (Ty.path "&") [] [ S ]
+                                                                  ]
                                                               ]
                                                               (Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::mem::maybe_uninit::MaybeUninit")
+                                                                        []
                                                                         [ T ]
                                                                     ]
                                                                 ])
@@ -1504,10 +1607,12 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "len",
@@ -1522,10 +1627,12 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "split_at_mut",
@@ -1558,10 +1665,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "copy_from_slice",
@@ -1585,19 +1694,23 @@ Module str.
                                                                         "core::convert::AsRef",
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::mem::maybe_uninit::MaybeUninit")
+                                                                                []
                                                                                 [ T ]
                                                                             ]
                                                                         ],
@@ -1610,19 +1723,23 @@ Module str.
                                                                             "core::borrow::Borrow",
                                                                             Ty.apply
                                                                               (Ty.path "slice")
+                                                                              []
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::mem::maybe_uninit::MaybeUninit")
+                                                                                  []
                                                                                   [ T ]
                                                                               ],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::mem::maybe_uninit::MaybeUninit")
+                                                                                    []
                                                                                     [ T ]
                                                                                 ]
                                                                             ],
@@ -1640,10 +1757,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "len",
@@ -1658,10 +1777,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "split_at_mut",
@@ -1696,10 +1817,12 @@ Module str.
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path "slice")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                                      []
                                                                                       [ T ]
                                                                                   ],
                                                                                 "copy_from_slice",
@@ -1746,19 +1869,23 @@ Module str.
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::map::Map")
+                                            []
                                             [
-                                              Ty.apply (Ty.path "core::slice::iter::Iter") [ S ];
+                                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ];
                                               Ty.function
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ S ] ] ]
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
                                                 (Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "slice")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
                                                           [ T ]
                                                       ]
                                                   ])
@@ -1784,24 +1911,30 @@ Module str.
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
                                                           (Ty.path "core::iter::adapters::map::Map")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::slice::iter::Iter")
+                                                              []
                                                               [ S ];
                                                             Ty.function
                                                               [
                                                                 Ty.tuple
-                                                                  [ Ty.apply (Ty.path "&") [ S ] ]
+                                                                  [ Ty.apply (Ty.path "&") [] [ S ]
+                                                                  ]
                                                               ]
                                                               (Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::mem::maybe_uninit::MaybeUninit")
+                                                                        []
                                                                         [ T ]
                                                                     ]
                                                                 ])
@@ -1841,10 +1974,12 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "len",
@@ -1859,10 +1994,12 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "split_at_mut",
@@ -1895,10 +2032,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "copy_from_slice",
@@ -1922,19 +2061,23 @@ Module str.
                                                                         "core::convert::AsRef",
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::mem::maybe_uninit::MaybeUninit")
+                                                                                []
                                                                                 [ T ]
                                                                             ]
                                                                         ],
@@ -1947,19 +2090,23 @@ Module str.
                                                                             "core::borrow::Borrow",
                                                                             Ty.apply
                                                                               (Ty.path "slice")
+                                                                              []
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::mem::maybe_uninit::MaybeUninit")
+                                                                                  []
                                                                                   [ T ]
                                                                               ],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::mem::maybe_uninit::MaybeUninit")
+                                                                                    []
                                                                                     [ T ]
                                                                                 ]
                                                                             ],
@@ -1977,10 +2124,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "len",
@@ -1995,10 +2144,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "split_at_mut",
@@ -2033,10 +2184,12 @@ Module str.
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path "slice")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                                      []
                                                                                       [ T ]
                                                                                   ],
                                                                                 "copy_from_slice",
@@ -2083,19 +2236,23 @@ Module str.
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::map::Map")
+                                            []
                                             [
-                                              Ty.apply (Ty.path "core::slice::iter::Iter") [ S ];
+                                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ];
                                               Ty.function
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ S ] ] ]
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
                                                 (Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "slice")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
                                                           [ T ]
                                                       ]
                                                   ])
@@ -2121,24 +2278,30 @@ Module str.
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
                                                           (Ty.path "core::iter::adapters::map::Map")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::slice::iter::Iter")
+                                                              []
                                                               [ S ];
                                                             Ty.function
                                                               [
                                                                 Ty.tuple
-                                                                  [ Ty.apply (Ty.path "&") [ S ] ]
+                                                                  [ Ty.apply (Ty.path "&") [] [ S ]
+                                                                  ]
                                                               ]
                                                               (Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::mem::maybe_uninit::MaybeUninit")
+                                                                        []
                                                                         [ T ]
                                                                     ]
                                                                 ])
@@ -2178,10 +2341,12 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "len",
@@ -2196,10 +2361,12 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "split_at_mut",
@@ -2232,10 +2399,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "copy_from_slice",
@@ -2259,19 +2428,23 @@ Module str.
                                                                         "core::convert::AsRef",
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::mem::maybe_uninit::MaybeUninit")
+                                                                                []
                                                                                 [ T ]
                                                                             ]
                                                                         ],
@@ -2284,19 +2457,23 @@ Module str.
                                                                             "core::borrow::Borrow",
                                                                             Ty.apply
                                                                               (Ty.path "slice")
+                                                                              []
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::mem::maybe_uninit::MaybeUninit")
+                                                                                  []
                                                                                   [ T ]
                                                                               ],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::mem::maybe_uninit::MaybeUninit")
+                                                                                    []
                                                                                     [ T ]
                                                                                 ]
                                                                             ],
@@ -2314,10 +2491,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "len",
@@ -2332,10 +2511,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "split_at_mut",
@@ -2370,10 +2551,12 @@ Module str.
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path "slice")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                                      []
                                                                                       [ T ]
                                                                                   ],
                                                                                 "copy_from_slice",
@@ -2415,19 +2598,23 @@ Module str.
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::map::Map")
+                                            []
                                             [
-                                              Ty.apply (Ty.path "core::slice::iter::Iter") [ S ];
+                                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ];
                                               Ty.function
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ S ] ] ]
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
                                                 (Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "slice")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
                                                           [ T ]
                                                       ]
                                                   ])
@@ -2453,24 +2640,30 @@ Module str.
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
                                                           (Ty.path "core::iter::adapters::map::Map")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::slice::iter::Iter")
+                                                              []
                                                               [ S ];
                                                             Ty.function
                                                               [
                                                                 Ty.tuple
-                                                                  [ Ty.apply (Ty.path "&") [ S ] ]
+                                                                  [ Ty.apply (Ty.path "&") [] [ S ]
+                                                                  ]
                                                               ]
                                                               (Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::mem::maybe_uninit::MaybeUninit")
+                                                                        []
                                                                         [ T ]
                                                                     ]
                                                                 ])
@@ -2510,10 +2703,12 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "len",
@@ -2528,10 +2723,12 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "split_at_mut",
@@ -2564,10 +2761,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "copy_from_slice",
@@ -2591,19 +2790,23 @@ Module str.
                                                                         "core::convert::AsRef",
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::mem::maybe_uninit::MaybeUninit")
+                                                                                []
                                                                                 [ T ]
                                                                             ]
                                                                         ],
@@ -2616,19 +2819,23 @@ Module str.
                                                                             "core::borrow::Borrow",
                                                                             Ty.apply
                                                                               (Ty.path "slice")
+                                                                              []
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::mem::maybe_uninit::MaybeUninit")
+                                                                                  []
                                                                                   [ T ]
                                                                               ],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::mem::maybe_uninit::MaybeUninit")
+                                                                                    []
                                                                                     [ T ]
                                                                                 ]
                                                                             ],
@@ -2646,10 +2853,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "len",
@@ -2664,10 +2873,12 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ T ]
                                                                           ],
                                                                         "split_at_mut",
@@ -2702,10 +2913,12 @@ Module str.
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path "slice")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                                      []
                                                                                       [ T ]
                                                                                   ],
                                                                                 "copy_from_slice",
@@ -2751,7 +2964,8 @@ Module str.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "slice")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "len",
                           []
                         |),
@@ -2762,7 +2976,10 @@ Module str.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ],
                         "set_len",
                         []
                       |),
@@ -2773,7 +2990,7 @@ Module str.
               result
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_join_generic_copy : M.IsFunction "alloc::str::join_generic_copy" join_generic_copy.
@@ -2786,9 +3003,9 @@ Module str.
             &self[..]
         }
     *)
-    Definition borrow (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition borrow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -2801,7 +3018,7 @@ Module str.
             |),
             [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2820,9 +3037,9 @@ Module str.
             &mut self[..]
         }
     *)
-    Definition borrow_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition borrow_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -2835,7 +3052,7 @@ Module str.
             |),
             [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2857,9 +3074,9 @@ Module str.
             unsafe { String::from_utf8_unchecked(self.as_bytes().to_owned()) }
         }
     *)
-    Definition to_owned (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition to_owned (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -2872,7 +3089,7 @@ Module str.
               M.call_closure (|
                 M.get_trait_method (|
                   "alloc::borrow::ToOwned",
-                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   [],
                   "to_owned",
                   []
@@ -2886,7 +3103,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -2896,9 +3113,9 @@ Module str.
             *target = unsafe { String::from_utf8_unchecked(b) }
         }
     *)
-    Definition clone_into (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; target ] =>
+    Definition clone_into (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; target ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let target := M.alloc (| target |) in
@@ -2920,7 +3137,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "alloc::borrow::ToOwned",
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     [],
                     "clone_into",
                     []
@@ -2946,7 +3163,7 @@ Module str.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2970,9 +3187,9 @@ Module str.
             self.into()
         }
     *)
-    Definition into_boxed_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition into_boxed_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -2980,18 +3197,20 @@ Module str.
               "core::convert::Into",
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
+                []
                 [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
-                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global" ]
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global" ]
               ],
               "into",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_boxed_bytes :
@@ -3010,9 +3229,9 @@ Module str.
             result
         }
     *)
-    Definition replace (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ P ], [ self; from; to ] =>
+    Definition replace (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ P ], [ self; from; to ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let from := M.alloc (| from |) in
@@ -3033,7 +3252,7 @@ Module str.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
-                        Ty.apply (Ty.path "core::str::iter::MatchIndices") [ P ],
+                        Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
                         [],
                         "into_iter",
                         []
@@ -3058,7 +3277,7 @@ Module str.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
-                                      Ty.apply (Ty.path "core::str::iter::MatchIndices") [ P ],
+                                      Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
                                       [],
                                       "next",
                                       []
@@ -3103,6 +3322,7 @@ Module str.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::Range")
+                                                      []
                                                       [ Ty.path "usize" ]
                                                   ]
                                                 |),
@@ -3162,7 +3382,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.path "str",
                         "get_unchecked",
-                        [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                        [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                       |),
                       [
                         M.read (| self |);
@@ -3183,7 +3403,7 @@ Module str.
               |) in
             result
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_replace : M.IsAssociatedFunction Self "replace" replace.
@@ -3202,9 +3422,9 @@ Module str.
             result
         }
     *)
-    Definition replacen (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ P ], [ self; pat; to; count ] =>
+    Definition replacen (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ P ], [ self; pat; to; count ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
@@ -3232,7 +3452,8 @@ Module str.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::take::Take")
-                          [ Ty.apply (Ty.path "core::str::iter::MatchIndices") [ P ] ],
+                          []
+                          [ Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ] ],
                         [],
                         "into_iter",
                         []
@@ -3241,7 +3462,7 @@ Module str.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
-                            Ty.apply (Ty.path "core::str::iter::MatchIndices") [ P ],
+                            Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
                             [],
                             "take",
                             []
@@ -3271,7 +3492,12 @@ Module str.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::take::Take")
-                                        [ Ty.apply (Ty.path "core::str::iter::MatchIndices") [ P ]
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::str::iter::MatchIndices")
+                                            []
+                                            [ P ]
                                         ],
                                       [],
                                       "next",
@@ -3317,6 +3543,7 @@ Module str.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::Range")
+                                                      []
                                                       [ Ty.path "usize" ]
                                                   ]
                                                 |),
@@ -3376,7 +3603,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.path "str",
                         "get_unchecked",
-                        [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                        [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                       |),
                       [
                         M.read (| self |);
@@ -3397,7 +3624,7 @@ Module str.
               |) in
             result
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_replacen : M.IsAssociatedFunction Self "replacen" replacen.
@@ -3456,9 +3683,9 @@ Module str.
             }
         }
     *)
-    Definition to_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition to_lowercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -3486,7 +3713,8 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "str",
                           "get_unchecked",
-                          [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ] ]
+                          [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ]
+                          ]
                         |),
                         [
                           M.read (| self |);
@@ -3498,6 +3726,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                     "len",
                                     []
@@ -3786,7 +4015,7 @@ Module str.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_to_lowercase : M.IsAssociatedFunction Self "to_lowercase" to_lowercase.
@@ -3819,9 +4048,9 @@ Module str.
             s
         }
     *)
-    Definition to_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition to_uppercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -3846,7 +4075,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "str",
                     "get_unchecked",
-                    [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ] ]
+                    [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
                   |),
                   [
                     M.read (| self |);
@@ -3858,6 +4087,7 @@ Module str.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                               "len",
                               []
@@ -4058,7 +4288,7 @@ Module str.
                 |)) in
             s
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_to_uppercase : M.IsAssociatedFunction Self "to_uppercase" to_uppercase.
@@ -4069,9 +4299,9 @@ Module str.
             unsafe { String::from_utf8_unchecked(slice.into_vec()) }
         }
     *)
-    Definition into_string (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition into_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4082,11 +4312,15 @@ Module str.
                     "core::convert::From",
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
+                      []
+                      [
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
+                        Ty.path "alloc::alloc::Global"
                       ],
                     [
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
                     ],
                     "from",
@@ -4105,7 +4339,7 @@ Module str.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "into_vec",
                       [ Ty.path "alloc::alloc::Global" ]
                     |),
@@ -4115,7 +4349,7 @@ Module str.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_string : M.IsAssociatedFunction Self "into_string" into_string.
@@ -4125,9 +4359,9 @@ Module str.
             unsafe { String::from_utf8_unchecked(self.as_bytes().repeat(n)) }
         }
     *)
-    Definition repeat (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; n ] =>
+    Definition repeat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
@@ -4140,7 +4374,7 @@ Module str.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "repeat",
                   []
                 |),
@@ -4154,7 +4388,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_repeat : M.IsAssociatedFunction Self "repeat" repeat.
@@ -4166,9 +4400,9 @@ Module str.
             s
         }
     *)
-    Definition to_ascii_uppercase (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition to_ascii_uppercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4205,7 +4439,7 @@ Module str.
               |) in
             s
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_to_ascii_uppercase :
@@ -4218,9 +4452,9 @@ Module str.
             s
         }
     *)
-    Definition to_ascii_lowercase (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition to_ascii_lowercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4257,7 +4491,7 @@ Module str.
               |) in
             s
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_to_ascii_lowercase :
@@ -4269,15 +4503,16 @@ Module str.
       unsafe { Box::from_raw(Box::into_raw(v) as *mut str) }
   }
   *)
-  Definition from_boxed_utf8_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ v ] =>
+  Definition from_boxed_utf8_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ v ] =>
       ltac:(M.monadic
         (let v := M.alloc (| v |) in
         M.call_closure (|
           M.get_associated_function (|
             Ty.apply
               (Ty.path "alloc::boxed::Box")
+              []
               [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
             "from_raw",
             []
@@ -4288,7 +4523,9 @@ Module str.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
-                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global" ],
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
+                    ],
                   "into_raw",
                   []
                 |),
@@ -4296,7 +4533,7 @@ Module str.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_from_boxed_utf8_unchecked :
@@ -4345,9 +4582,9 @@ Module str.
       out
   }
   *)
-  Definition convert_while_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ b; convert ] =>
+  Definition convert_while_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ b; convert ] =>
       ltac:(M.monadic
         (let b := M.alloc (| b |) in
         let convert := M.alloc (| convert |) in
@@ -4358,6 +4595,7 @@ Module str.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   "with_capacity",
                   []
@@ -4365,7 +4603,7 @@ Module str.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "len",
                       []
                     |),
@@ -4396,7 +4634,7 @@ Module str.
                                     |)))
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
@@ -4409,9 +4647,13 @@ Module str.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "get_unchecked",
-                                  [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
                                   ]
                                 |),
                                 [
@@ -4439,13 +4681,19 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
                                         [ Ty.path "u8" ]
                                     ],
                                   "get_unchecked_mut",
-                                  [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
                                   ]
                                 |),
                                 [
@@ -4453,6 +4701,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                       "spare_capacity_mut",
                                       []
@@ -4486,6 +4735,7 @@ Module str.
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ],
                                       [],
                                       "into_iter",
@@ -4520,6 +4770,7 @@ Module str.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::Range")
+                                                      []
                                                       [ Ty.path "usize" ],
                                                     [],
                                                     "next",
@@ -4558,6 +4809,7 @@ Module str.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "*const")
+                                                                []
                                                                 [ Ty.path "usize" ],
                                                               "read_unaligned",
                                                               []
@@ -4567,6 +4819,7 @@ Module str.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "*const")
+                                                                    []
                                                                     [ Ty.path "usize" ],
                                                                   "add",
                                                                   []
@@ -4576,6 +4829,7 @@ Module str.
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "*const")
+                                                                        []
                                                                         [ Ty.path "u8" ],
                                                                       "cast",
                                                                       [ Ty.path "usize" ]
@@ -4585,6 +4839,7 @@ Module str.
                                                                         M.get_associated_function (|
                                                                           Ty.apply
                                                                             (Ty.path "slice")
+                                                                            []
                                                                             [ Ty.path "u8" ],
                                                                           "as_ptr",
                                                                           []
@@ -4643,6 +4898,7 @@ Module str.
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ],
                                       [],
                                       "into_iter",
@@ -4677,6 +4933,7 @@ Module str.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::Range")
+                                                      []
                                                       [ Ty.path "usize" ],
                                                     [],
                                                     "next",
@@ -4711,10 +4968,12 @@ Module str.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "slice")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::mem::maybe_uninit::MaybeUninit")
+                                                                  []
                                                                   [ Ty.path "u8" ]
                                                               ],
                                                             "get_unchecked_mut",
@@ -4730,6 +4989,7 @@ Module str.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                              []
                                                               [ Ty.path "u8" ],
                                                             "write",
                                                             []
@@ -4743,6 +5003,7 @@ Module str.
                                                                   M.get_associated_function (|
                                                                     Ty.apply
                                                                       (Ty.path "slice")
+                                                                      []
                                                                       [ Ty.path "u8" ],
                                                                     "get_unchecked",
                                                                     [ Ty.path "usize" ]
@@ -4796,6 +5057,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "set_len",
                     []
@@ -4806,7 +5068,7 @@ Module str.
             M.alloc (| Value.Tuple [] |) in
           out
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_convert_while_ascii :

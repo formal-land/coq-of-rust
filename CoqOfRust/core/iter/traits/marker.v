@@ -11,7 +11,7 @@ Module iter.
       (* Empty module 'FusedIterator' *)
       
       Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_marker_Sized_I_for_ref_mut_I.
-        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ I ].
+        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ I ].
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -26,7 +26,7 @@ Module iter.
       (* Empty module 'TrustedLen' *)
       
       Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_where_core_marker_Sized_I_for_ref_mut_I.
-        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ I ].
+        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ I ].
         
         Axiom Implements :
           forall (I : Ty.t),

@@ -11,13 +11,13 @@ Module future.
         PollFn { f }
     }
     *)
-    Definition poll_fn (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T; F ], [ f ] =>
+    Definition poll_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T; F ], [ f ] =>
         ltac:(M.monadic
           (let f := M.alloc (| f |) in
           Value.StructRecord "core::future::poll_fn::PollFn" [ ("f", M.read (| f |)) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_poll_fn : M.IsFunction "core::future::poll_fn::poll_fn" poll_fn.
@@ -25,12 +25,14 @@ Module future.
     (* StructRecord
       {
         name := "PollFn";
+        const_params := [];
         ty_params := [ "F" ];
         fields := [ ("f", F) ];
       } *)
     
     Module Impl_core_marker_Unpin_where_core_marker_Unpin_F_for_core_future_poll_fn_PollFn_F.
-      Definition Self (F : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::poll_fn::PollFn") [ F ].
+      Definition Self (F : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::future::poll_fn::PollFn") [] [ F ].
       
       Axiom Implements :
         forall (F : Ty.t),
@@ -42,17 +44,18 @@ Module future.
     End Impl_core_marker_Unpin_where_core_marker_Unpin_F_for_core_future_poll_fn_PollFn_F.
     
     Module Impl_core_fmt_Debug_for_core_future_poll_fn_PollFn_F.
-      Definition Self (F : Ty.t) : Ty.t := Ty.apply (Ty.path "core::future::poll_fn::PollFn") [ F ].
+      Definition Self (F : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::future::poll_fn::PollFn") [] [ F ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_struct("PollFn").finish()
           }
       *)
-      Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -75,7 +78,7 @@ Module future.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -89,7 +92,7 @@ Module future.
     
     Module Impl_core_future_future_Future_where_core_ops_function_FnMut_F_Tuple_ref_mut_core_task_wake_Context__for_core_future_poll_fn_PollFn_F.
       Definition Self (T F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::future::poll_fn::PollFn") [ F ].
+        Ty.apply (Ty.path "core::future::poll_fn::PollFn") [] [ F ].
       
       (*     type Output = T; *)
       Definition _Output (T F : Ty.t) : Ty.t := T.
@@ -100,10 +103,10 @@ Module future.
               (unsafe { &mut self.get_unchecked_mut().f })(cx)
           }
       *)
-      Definition poll (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F in
-        match τ, α with
-        | [], [ self; cx ] =>
+        match ε, τ, α with
+        | [], [], [ self; cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
@@ -111,7 +114,8 @@ Module future.
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 F,
-                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::task::wake::Context" ] ] ],
+                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ] ]
+                ],
                 "call_mut",
                 []
               |),
@@ -121,10 +125,12 @@ Module future.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::pin::Pin")
+                        []
                         [
                           Ty.apply
                             (Ty.path "&mut")
-                            [ Ty.apply (Ty.path "core::future::poll_fn::PollFn") [ F ] ]
+                            []
+                            [ Ty.apply (Ty.path "core::future::poll_fn::PollFn") [] [ F ] ]
                         ],
                       "get_unchecked_mut",
                       []
@@ -137,7 +143,7 @@ Module future.
                 Value.Tuple [ M.read (| cx |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

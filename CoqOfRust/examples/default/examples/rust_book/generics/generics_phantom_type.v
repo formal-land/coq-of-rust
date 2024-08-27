@@ -27,10 +27,10 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
     Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [] [ A; B ].
   
   (* PartialEq *)
-  Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self A B in
-    match τ, α with
-    | [], [ self; other ] =>
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -73,7 +73,7 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
               ]
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -112,10 +112,10 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
     Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [] [ A; B ].
   
   (* PartialEq *)
-  Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self A B in
-    match τ, α with
-    | [], [ self; other ] =>
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -158,7 +158,7 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
               ]
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -198,9 +198,9 @@ fn main() {
     //           _struct1 == _struct2);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _tuple1 :=
@@ -235,7 +235,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_phantom_type::main" main.

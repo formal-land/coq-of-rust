@@ -6,6 +6,7 @@ Module ops.
     (*
     Enum ControlFlow
     {
+      const_params := [];
       ty_params := [ "B"; "C" ];
       variants :=
         [
@@ -25,13 +26,13 @@ Module ops.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_B_where_core_fmt_Debug_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
       (* Debug *)
-      Definition fmt (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (B C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -90,7 +91,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -104,13 +105,13 @@ Module ops.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_B_where_core_clone_Clone_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
       (* Clone *)
-      Definition clone (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (B C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -160,7 +161,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -174,7 +175,7 @@ Module ops.
     
     Module Impl_core_marker_Copy_where_core_marker_Copy_B_where_core_marker_Copy_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
       Axiom Implements :
         forall (B C : Ty.t),
@@ -187,7 +188,7 @@ Module ops.
     
     Module Impl_core_marker_StructuralPartialEq_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
       Axiom Implements :
         forall (B C : Ty.t),
@@ -200,13 +201,13 @@ Module ops.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
       (* PartialEq *)
-      Definition eq (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (B C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -216,7 +217,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ] ]
+                      [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ]
                     |),
                     [ M.read (| self |) ]
                   |)
@@ -226,7 +227,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ] ]
+                      [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ]
                     |),
                     [ M.read (| other |) ]
                   |)
@@ -319,7 +320,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -333,7 +334,7 @@ Module ops.
     
     Module Impl_core_marker_StructuralEq_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
       Axiom Implements :
         forall (B C : Ty.t),
@@ -346,13 +347,18 @@ Module ops.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_B_where_core_cmp_Eq_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq
+          (B C : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -368,7 +374,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -384,13 +390,13 @@ Module ops.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_B_where_core_hash_Hash_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
       (* Hash *)
-      Definition hash (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (B C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -400,7 +406,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ] ]
+                      [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ]
                     |),
                     [ M.read (| self |) ]
                   |)
@@ -456,7 +462,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -470,7 +476,7 @@ Module ops.
     
     Module Impl_core_ops_try_trait_Try_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
       (*     type Output = C; *)
       Definition _Output (B C : Ty.t) : Ty.t := C.
@@ -479,6 +485,7 @@ Module ops.
       Definition _Residual (B C : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::ops::control_flow::ControlFlow")
+          []
           [ B; Ty.path "core::convert::Infallible" ].
       
       (*
@@ -486,16 +493,21 @@ Module ops.
               ControlFlow::Continue(output)
           }
       *)
-      Definition from_output (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_output
+          (B C : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [], [ output ] =>
+        match ε, τ, α with
+        | [], [], [ output ] =>
           ltac:(M.monadic
             (let output := M.alloc (| output |) in
             Value.StructTuple
               "core::ops::control_flow::ControlFlow::Continue"
               [ M.read (| output |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -506,10 +518,10 @@ Module ops.
               }
           }
       *)
-      Definition branch (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition branch (B C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -551,7 +563,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -571,7 +583,7 @@ Module ops.
     
     Module Impl_core_ops_try_trait_FromResidual_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
       (*
           fn from_residual(residual: ControlFlow<B, convert::Infallible>) -> Self {
@@ -580,10 +592,15 @@ Module ops.
               }
           }
       *)
-      Definition from_residual (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_residual
+          (B C : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [], [ residual ] =>
+        match ε, τ, α with
+        | [], [], [ residual ] =>
           ltac:(M.monadic
             (let residual := M.alloc (| residual |) in
             M.read (|
@@ -607,7 +624,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -623,11 +640,12 @@ Module ops.
       Definition Self (B C : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::ops::control_flow::ControlFlow")
+          []
           [ B; Ty.path "core::convert::Infallible" ].
       
       (*     type TryType = ControlFlow<B, C>; *)
       Definition _TryType (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
       Axiom Implements :
         forall (B C : Ty.t),
@@ -640,17 +658,17 @@ Module ops.
     
     Module Impl_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; C ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
       (*
           pub fn is_break(&self) -> bool {
               matches!( *self, ControlFlow::Break(_))
           }
       *)
-      Definition is_break (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_break (B C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -670,7 +688,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_break :
@@ -682,10 +700,15 @@ Module ops.
               matches!( *self, ControlFlow::Continue(_))
           }
       *)
-      Definition is_continue (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_continue
+          (B C : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -705,7 +728,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_continue :
@@ -720,10 +743,15 @@ Module ops.
               }
           }
       *)
-      Definition break_value (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition break_value
+          (B C : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -753,7 +781,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_break_value :
@@ -771,10 +799,10 @@ Module ops.
               }
           }
       *)
-      Definition map_break (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_break (B C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [ T; F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ T; F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -824,7 +852,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_map_break :
@@ -839,10 +867,15 @@ Module ops.
               }
           }
       *)
-      Definition continue_value (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition continue_value
+          (B C : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -869,7 +902,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_continue_value :
@@ -887,10 +920,15 @@ Module ops.
               }
           }
       *)
-      Definition map_continue (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_continue
+          (B C : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self B C in
-        match τ, α with
-        | [ T; F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ T; F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -940,7 +978,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_map_continue :
@@ -950,7 +988,7 @@ Module ops.
     
     Module Impl_core_ops_control_flow_ControlFlow_R_associated_type.
       Definition Self (R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ R; Ty.associated ].
+        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ R; Ty.associated ].
       
       (*
           pub(crate) fn from_try(r: R) -> Self {
@@ -960,10 +998,10 @@ Module ops.
               }
           }
       *)
-      Definition from_try (R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_try (R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self R in
-        match τ, α with
-        | [], [ r ] =>
+        match ε, τ, α with
+        | [], [], [ r ] =>
           ltac:(M.monadic
             (let r := M.alloc (| r |) in
             M.read (|
@@ -1017,7 +1055,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_try :
@@ -1032,10 +1070,10 @@ Module ops.
               }
           }
       *)
-      Definition into_try (R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_try (R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self R in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1076,7 +1114,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_try :

@@ -12,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_contract_terminate_AccountId.
   Definition Self : Ty.t := Ty.path "contract_terminate::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -25,7 +25,7 @@ End Impl_core_default_Default_for_contract_terminate_AccountId.
 Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
   Definition Self : Ty.t := Ty.path "contract_terminate::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -53,11 +53,11 @@ End Impl_core_marker_Copy_for_contract_terminate_AccountId.
 Module Impl_contract_terminate_Env.
   Definition Self : Ty.t := Ty.path "contract_terminate::Env".
   
-  Parameter caller : (list Ty.t) -> (list Value.t) -> M.
+  Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
-  Parameter terminate_contract : (list Ty.t) -> (list Value.t) -> M.
+  Parameter terminate_contract : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_terminate_contract :
     M.IsAssociatedFunction Self "terminate_contract" terminate_contract.
@@ -74,19 +74,19 @@ End Impl_contract_terminate_Env.
 Module Impl_contract_terminate_JustTerminate.
   Definition Self : Ty.t := Ty.path "contract_terminate::JustTerminate".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter terminate_me : (list Ty.t) -> (list Value.t) -> M.
+  Parameter terminate_me : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_terminate_me : M.IsAssociatedFunction Self "terminate_me" terminate_me.
 End Impl_contract_terminate_JustTerminate.

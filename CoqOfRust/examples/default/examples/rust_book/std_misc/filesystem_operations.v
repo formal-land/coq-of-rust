@@ -11,9 +11,9 @@ fn cat(path: &Path) -> io::Result<String> {
     }
 }
 *)
-Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ path ] =>
+Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ path ] =>
     ltac:(M.monadic
       (let path := M.alloc (| path |) in
       M.catch_return (|
@@ -137,7 +137,7 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_cat : M.IsFunction "filesystem_operations::cat" cat.
@@ -149,9 +149,9 @@ fn echo(s: &str, path: &Path) -> io::Result<()> {
     f.write_all(s.as_bytes())
 }
 *)
-Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ s; path ] =>
+Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ s; path ] =>
     ltac:(M.monadic
       (let s := M.alloc (| s |) in
       let path := M.alloc (| path |) in
@@ -257,7 +257,7 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_echo : M.IsFunction "filesystem_operations::echo" echo.
@@ -270,9 +270,9 @@ fn touch(path: &Path) -> io::Result<()> {
     }
 }
 *)
-Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ path ] =>
+Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ path ] =>
     ltac:(M.monadic
       (let path := M.alloc (| path |) in
       M.read (|
@@ -326,7 +326,7 @@ Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_touch : M.IsFunction "filesystem_operations::touch" touch.
@@ -395,9 +395,9 @@ fn main() {
     });
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -1607,7 +1607,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "filesystem_operations::main" main.

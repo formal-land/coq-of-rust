@@ -8,7 +8,7 @@ Module vec.
     
     Module Impl_alloc_vec_spec_from_iter_nested_SpecFromIterNested_where_core_iter_traits_iterator_Iterator_I_T_I_for_alloc_vec_Vec_T_alloc_alloc_Global.
       Definition Self (T I : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
           default fn from_iter(mut iterator: I) -> Self {
@@ -38,10 +38,10 @@ Module vec.
               vector
           }
       *)
-      Definition from_iter (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T I in
-        match τ, α with
-        | [], [ iterator ] =>
+        match ε, τ, α with
+        | [], [], [ iterator ] =>
           ltac:(M.monadic
             (let iterator := M.alloc (| iterator |) in
             M.catch_return (|
@@ -74,6 +74,7 @@ Module vec.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [ T; Ty.path "alloc::alloc::Global" ],
                                           "new",
                                           []
@@ -142,6 +143,7 @@ Module vec.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [ T; Ty.path "alloc::alloc::Global" ],
                                               "with_capacity",
                                               []
@@ -159,6 +161,7 @@ Module vec.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
+                                                      []
                                                       [ T; Ty.path "alloc::alloc::Global" ],
                                                     "as_mut_ptr",
                                                     []
@@ -175,6 +178,7 @@ Module vec.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [ T; Ty.path "alloc::alloc::Global" ],
                                                 "set_len",
                                                 []
@@ -196,6 +200,7 @@ Module vec.
                           "alloc::vec::spec_extend::SpecExtend",
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [ T; Ty.path "alloc::alloc::Global" ],
                           [ T; I ],
                           "spec_extend",
@@ -207,7 +212,7 @@ Module vec.
                   vector
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -221,7 +226,7 @@ Module vec.
     
     Module Impl_alloc_vec_spec_from_iter_nested_SpecFromIterNested_where_core_iter_traits_marker_TrustedLen_I_T_I_for_alloc_vec_Vec_T_alloc_alloc_Global.
       Definition Self (T I : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
           fn from_iter(iterator: I) -> Self {
@@ -238,10 +243,10 @@ Module vec.
               vector
           }
       *)
-      Definition from_iter (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T I in
-        match τ, α with
-        | [], [ iterator ] =>
+        match ε, τ, α with
+        | [], [], [ iterator ] =>
           ltac:(M.monadic
             (let iterator := M.alloc (| iterator |) in
             M.read (|
@@ -277,6 +282,7 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [ T; Ty.path "alloc::alloc::Global" ],
                                 "with_capacity",
                                 []
@@ -318,7 +324,7 @@ Module vec.
                   M.call_closure (|
                     M.get_trait_method (|
                       "alloc::vec::spec_extend::SpecExtend",
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                       [ T; I ],
                       "spec_extend",
                       []
@@ -328,7 +334,7 @@ Module vec.
                 |) in
               vector
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

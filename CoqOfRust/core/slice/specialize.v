@@ -7,7 +7,7 @@ Module slice.
     (* Empty module 'SpecFill' *)
     
     Module Impl_core_slice_specialize_SpecFill_where_core_clone_Clone_T_T_for_slice_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
       
       (*
           default fn spec_fill(&mut self, value: T) {
@@ -20,10 +20,10 @@ Module slice.
               }
           }
       *)
-      Definition spec_fill (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_fill (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; value ] =>
+        match ε, τ, α with
+        | [], [], [ self; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let value := M.alloc (| value |) in
@@ -37,7 +37,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ T ],
+                              Ty.apply (Ty.path "slice") [] [ T ],
                               "split_last_mut",
                               []
                             |),
@@ -61,7 +61,10 @@ Module slice.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::collect::IntoIterator",
-                                  Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ],
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                   [],
                                   "into_iter",
                                   []
@@ -83,6 +86,7 @@ Module slice.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::IterMut")
+                                                  []
                                                   [ T ],
                                                 [],
                                                 "next",
@@ -136,7 +140,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -149,7 +153,7 @@ Module slice.
     End Impl_core_slice_specialize_SpecFill_where_core_clone_Clone_T_T_for_slice_T.
     
     Module Impl_core_slice_specialize_SpecFill_where_core_marker_Copy_T_T_for_slice_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
       
       (*
           fn spec_fill(&mut self, value: T) {
@@ -158,10 +162,10 @@ Module slice.
               }
           }
       *)
-      Definition spec_fill (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_fill (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; value ] =>
+        match ε, τ, α with
+        | [], [], [ self; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let value := M.alloc (| value |) in
@@ -172,7 +176,7 @@ Module slice.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
-                        Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
                         "into_iter",
                         []
@@ -180,7 +184,7 @@ Module slice.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ T ],
+                            Ty.apply (Ty.path "slice") [] [ T ],
                             "iter_mut",
                             []
                           |),
@@ -201,7 +205,7 @@ Module slice.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
-                                      Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                       [],
                                       "next",
                                       []
@@ -236,7 +240,7 @@ Module slice.
                   ]
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

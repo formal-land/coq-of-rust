@@ -12,9 +12,9 @@ Module char.
         }
     }
     *)
-    Definition from_u32 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ i ] =>
+    Definition from_u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ i ] =>
         ltac:(M.monadic
           (let i := M.alloc (| i |) in
           M.read (|
@@ -42,7 +42,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_u32 : M.IsFunction "core::char::convert::from_u32" from_u32.
@@ -53,9 +53,9 @@ Module char.
         if cfg!(debug_assertions) { char::from_u32(i).unwrap() } else { unsafe { transmute(i) } }
     }
     *)
-    Definition from_u32_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ i ] =>
+    Definition from_u32_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ i ] =>
         ltac:(M.monadic
           (let i := M.alloc (| i |) in
           M.read (|
@@ -69,7 +69,7 @@ Module char.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::option::Option") [ Ty.path "char" ],
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                           "unwrap",
                           []
                         |),
@@ -95,7 +95,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_u32_unchecked :
@@ -109,13 +109,13 @@ Module char.
               c as u32
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.rust_cast (M.read (| c |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -136,13 +136,13 @@ Module char.
               c as u64
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.rust_cast (M.read (| c |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -163,13 +163,13 @@ Module char.
               c as u128
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.rust_cast (M.read (| c |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -191,15 +191,16 @@ Module char.
               u8::try_from(u32::from(c)).map_err(|_| TryFromCharError(()))
           }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition try_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                 "map_err",
                 [
@@ -250,7 +251,7 @@ Module char.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -273,15 +274,16 @@ Module char.
               u16::try_from(u32::from(c)).map_err(|_| TryFromCharError(()))
           }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition try_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                 "map_err",
                 [
@@ -332,7 +334,7 @@ Module char.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -352,13 +354,13 @@ Module char.
               i as char
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ i ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ i ] =>
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
             M.rust_cast (M.read (| i |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -372,6 +374,7 @@ Module char.
     (* StructRecord
       {
         name := "ParseCharError";
+        const_params := [];
         ty_params := [];
         fields := [ ("kind", Ty.path "core::char::convert::CharErrorKind") ];
       } *)
@@ -380,9 +383,9 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -406,7 +409,7 @@ Module char.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -421,9 +424,9 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -448,7 +451,7 @@ Module char.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -474,9 +477,9 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -501,7 +504,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -527,9 +530,13 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -538,7 +545,7 @@ Module char.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -553,6 +560,7 @@ Module char.
     (*
     Enum CharErrorKind
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -585,13 +593,13 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -606,9 +614,9 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -643,7 +651,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -669,9 +677,9 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -698,7 +706,7 @@ Module char.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -724,13 +732,17 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -753,9 +765,9 @@ Module char.
               }
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -787,7 +799,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -807,9 +819,9 @@ Module char.
               self.description().fmt(f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -829,7 +841,7 @@ Module char.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -856,9 +868,9 @@ Module char.
               }
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.read (|
@@ -949,7 +961,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -984,9 +996,9 @@ Module char.
         }
     }
     *)
-    Definition char_try_from_u32 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ i ] =>
+    Definition char_try_from_u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ i ] =>
         ltac:(M.monadic
           (let i := M.alloc (| i |) in
           M.read (|
@@ -1039,7 +1051,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_char_try_from_u32 :
@@ -1056,16 +1068,16 @@ Module char.
               char_try_from_u32(i)
           }
       *)
-      Definition try_from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ i ] =>
+      Definition try_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ i ] =>
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
             M.call_closure (|
               M.get_function (| "core::char::convert::char_try_from_u32", [] |),
               [ M.read (| i |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1080,6 +1092,7 @@ Module char.
     (* StructTuple
       {
         name := "CharTryFromError";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.tuple [] ];
       } *)
@@ -1099,9 +1112,9 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1110,7 +1123,7 @@ Module char.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1125,9 +1138,9 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1151,7 +1164,7 @@ Module char.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1177,9 +1190,9 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1204,7 +1217,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1230,9 +1243,13 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1241,7 +1258,7 @@ Module char.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1261,9 +1278,9 @@ Module char.
               "converted integer out of range for `char`".fmt(f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1274,7 +1291,7 @@ Module char.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1298,9 +1315,9 @@ Module char.
         }
     }
     *)
-    Definition from_digit (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ num; radix ] =>
+    Definition from_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ num; radix ] =>
         ltac:(M.monadic
           (let num := M.alloc (| num |) in
           let radix := M.alloc (| radix |) in
@@ -1402,7 +1419,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_digit : M.IsFunction "core::char::convert::from_digit" from_digit.

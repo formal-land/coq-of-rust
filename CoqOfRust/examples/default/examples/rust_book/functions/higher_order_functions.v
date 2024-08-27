@@ -6,15 +6,15 @@ fn is_odd(n: u32) -> bool {
     n % 2 == 1
 }
 *)
-Definition is_odd (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ n ] =>
+Definition is_odd (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ n ] =>
     ltac:(M.monadic
       (let n := M.alloc (| n |) in
       BinOp.Pure.eq
         (BinOp.Wrap.rem Integer.U32 (M.read (| n |)) (Value.Integer 2))
         (Value.Integer 1)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_is_odd : M.IsFunction "higher_order_functions::is_odd" is_odd.
@@ -51,9 +51,9 @@ fn main() {
     println!("functional style: {}", sum_of_squared_odd_numbers);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -451,7 +451,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "higher_order_functions::main" main.

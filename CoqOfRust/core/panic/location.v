@@ -6,10 +6,11 @@ Module panic.
     (* StructRecord
       {
         name := "Location";
+        const_params := [];
         ty_params := [];
         fields :=
           [
-            ("file", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
+            ("file", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]);
             ("line", Ty.path "u32");
             ("col", Ty.path "u32")
           ];
@@ -30,9 +31,9 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -48,7 +49,7 @@ Module panic.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -63,9 +64,9 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -106,7 +107,7 @@ Module panic.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -132,9 +133,13 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -150,7 +155,7 @@ Module panic.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -166,9 +171,9 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -178,7 +183,7 @@ Module panic.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::hash::Hash",
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
                       "hash",
                       [ __H ]
@@ -221,7 +226,7 @@ Module panic.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -236,9 +241,9 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -248,7 +253,7 @@ Module panic.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::cmp::Ord",
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
                       "cmp",
                       []
@@ -329,7 +334,7 @@ Module panic.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -355,9 +360,9 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -366,8 +371,8 @@ Module panic.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
-                    Ty.apply (Ty.path "&") [ Ty.path "str" ],
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                     "eq",
                     []
                   |),
@@ -418,7 +423,7 @@ Module panic.
                     |)
                   |))))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -433,9 +438,9 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -445,8 +450,8 @@ Module panic.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::cmp::PartialOrd",
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ],
-                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       "partial_cmp",
                       []
                     |),
@@ -544,7 +549,7 @@ Module panic.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -563,12 +568,12 @@ Module panic.
               crate::intrinsics::caller_location()
           }
       *)
-      Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition caller (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::intrinsics::caller_location", [] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -578,9 +583,9 @@ Module panic.
               self.file
           }
       *)
-      Definition file (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition file (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -590,7 +595,7 @@ Module panic.
                 "file"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_file : M.IsAssociatedFunction Self "file" file.
@@ -600,9 +605,9 @@ Module panic.
               self.line
           }
       *)
-      Definition line (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition line (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -612,7 +617,7 @@ Module panic.
                 "line"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_line : M.IsAssociatedFunction Self "line" line.
@@ -622,9 +627,9 @@ Module panic.
               self.col
           }
       *)
-      Definition column (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition column (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -634,7 +639,7 @@ Module panic.
                 "col"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_column : M.IsAssociatedFunction Self "column" column.
@@ -643,9 +648,9 @@ Module panic.
               Location { file, line, col }
           }
       *)
-      Definition internal_constructor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ file; line; col ] =>
+      Definition internal_constructor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ file; line; col ] =>
           ltac:(M.monadic
             (let file := M.alloc (| file |) in
             let line := M.alloc (| line |) in
@@ -654,7 +659,7 @@ Module panic.
               "core::panic::location::Location"
               [ ("file", M.read (| file |)); ("line", M.read (| line |)); ("col", M.read (| col |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_internal_constructor :
@@ -670,9 +675,9 @@ Module panic.
               write!(formatter, "{}:{}:{}", self.file, self.line, self.col)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; formatter ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; formatter ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let formatter := M.alloc (| formatter |) in
@@ -702,7 +707,7 @@ Module panic.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
-                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               |),
                               [
                                 M.SubPointer.get_struct_record_field (|
@@ -746,7 +751,7 @@ Module panic.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

@@ -12,11 +12,11 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_mutual_loop_LoopA.
   Definition Self : Ty.t := Ty.path "mutual_loop::LoopA".
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter start_loop : (list Ty.t) -> (list Value.t) -> M.
+  Parameter start_loop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_start_loop : M.IsAssociatedFunction Self "start_loop" start_loop.
 End Impl_mutual_loop_LoopA.
@@ -40,11 +40,11 @@ Enum LoopB
 Module Impl_mutual_loop_LoopB.
   Definition Self : Ty.t := Ty.path "mutual_loop::LoopB".
   
-  Parameter start_loop : (list Ty.t) -> (list Value.t) -> M.
+  Parameter start_loop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_start_loop : M.IsAssociatedFunction Self "start_loop" start_loop.
 End Impl_mutual_loop_LoopB.
 
-Parameter start_loop : (list Ty.t) -> (list Value.t) -> M.
+Parameter start_loop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_start_loop : M.IsFunction "mutual_loop::start_loop" start_loop.

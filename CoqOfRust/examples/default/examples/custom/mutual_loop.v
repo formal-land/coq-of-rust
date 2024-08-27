@@ -17,10 +17,10 @@ Module Impl_mutual_loop_LoopA.
           LoopA {}
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] => ltac:(M.monadic (Value.StructTuple "mutual_loop::LoopA" []))
-    | _, _ => M.impossible
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "mutual_loop::LoopA" []))
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -30,16 +30,16 @@ Module Impl_mutual_loop_LoopA.
           LoopB::start_loop()
       }
   *)
-  Definition start_loop (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "mutual_loop::LoopB", "start_loop", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_start_loop : M.IsAssociatedFunction Self "start_loop" start_loop.
@@ -71,9 +71,9 @@ Module Impl_mutual_loop_LoopB.
           }
       }
   *)
-  Definition start_loop (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "mutual_loop::LoopB::Item"
@@ -84,7 +84,7 @@ Module Impl_mutual_loop_LoopB.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_start_loop : M.IsAssociatedFunction Self "start_loop" start_loop.
@@ -97,9 +97,9 @@ pub fn start_loop() {
     let lb = la.start_loop();
 }
 *)
-Definition start_loop (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ la :=
@@ -118,7 +118,7 @@ Definition start_loop (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_start_loop : M.IsFunction "mutual_loop::start_loop" start_loop.

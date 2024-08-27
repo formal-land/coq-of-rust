@@ -90,9 +90,9 @@ Module num.
           BiasedFp { f: mantissa, e: power2 }
       }
       *)
-      Definition parse_long_mantissa (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ s ] =>
+      Definition parse_long_mantissa (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.catch_return (|
@@ -954,7 +954,7 @@ Module num.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_parse_long_mantissa :

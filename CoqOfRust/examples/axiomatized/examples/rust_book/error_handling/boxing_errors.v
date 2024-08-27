@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom Result :
-  forall ( : Ty.t) (T : Ty.t),
+  forall (T : Ty.t),
   (Ty.apply (Ty.path "boxing_errors::Result") [] [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
@@ -26,7 +26,7 @@ Axiom Result :
 Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -39,7 +39,7 @@ End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
   Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -52,7 +52,7 @@ End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
   Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -69,14 +69,14 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
     M.IsTraitInstance "core::error::Error" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
-Parameter double_first : (list Ty.t) -> (list Value.t) -> M.
+Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_double_first : M.IsFunction "boxing_errors::double_first" double_first.
 
-Parameter print : (list Ty.t) -> (list Value.t) -> M.
+Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_print : M.IsFunction "boxing_errors::print" print.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "boxing_errors::main" main.

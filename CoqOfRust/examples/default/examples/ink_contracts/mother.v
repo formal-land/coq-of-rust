@@ -17,10 +17,10 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [] [ K; V ].
   
   (* Default *)
-  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match τ, α with
-    | [], [] =>
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "mother::Mapping"
@@ -48,7 +48,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -68,7 +68,7 @@ Module Impl_mother_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -79,7 +79,7 @@ Module Impl_mother_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -98,9 +98,9 @@ Module Impl_core_default_Default_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "mother::AccountId"
@@ -110,7 +110,7 @@ Module Impl_core_default_Default_for_mother_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -125,9 +125,9 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -136,7 +136,7 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -169,9 +169,9 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -182,7 +182,7 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
           (M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "mother::AccountId", 0 |)
           |))))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -208,9 +208,13 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -219,7 +223,7 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -276,9 +280,9 @@ Module Impl_core_default_Default_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "mother::Bids"
@@ -309,7 +313,7 @@ Module Impl_core_default_Default_for_mother_Bids.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -335,9 +339,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -386,7 +390,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "mother::Bids", 0 |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -412,9 +416,13 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -423,7 +431,7 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -439,9 +447,9 @@ Module Impl_core_clone_Clone_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructTuple
@@ -473,7 +481,7 @@ Module Impl_core_clone_Clone_for_mother_Bids.
               [ M.SubPointer.get_struct_tuple_field (| M.read (| self |), "mother::Bids", 0 |) ]
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -525,9 +533,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -554,7 +562,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
             |) in
           M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -580,13 +588,17 @@ Module Impl_core_cmp_Eq_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -602,9 +614,9 @@ Module Impl_core_clone_Clone_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -629,7 +641,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -691,9 +703,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -815,7 +827,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -841,9 +853,13 @@ Module Impl_core_cmp_Eq_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -859,7 +875,7 @@ Module Impl_core_cmp_Eq_for_mother_Status.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -875,9 +891,9 @@ Module Impl_core_clone_Clone_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -967,7 +983,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1011,9 +1027,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1184,7 +1200,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
               ]
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1210,9 +1226,13 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -1267,7 +1287,7 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1283,9 +1303,9 @@ Module Impl_core_clone_Clone_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructRecord
@@ -1408,7 +1428,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                 ]
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1435,9 +1455,9 @@ Module Impl_core_default_Default_for_mother_Auction.
           }
       }
   *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "mother::Auction"
@@ -1503,7 +1523,7 @@ Module Impl_core_default_Default_for_mother_Auction.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1550,9 +1570,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
   Definition Self : Ty.t := Ty.path "mother::Failure".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -1624,7 +1644,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1650,9 +1670,13 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
   Definition Self : Ty.t := Ty.path "mother::Failure".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -1661,7 +1685,7 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1705,15 +1729,15 @@ Module Impl_mother_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition caller (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "mother::Env", "caller" |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -1723,7 +1747,7 @@ Module Impl_mother_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_mother_Env.
@@ -1745,9 +1769,9 @@ Module Impl_core_default_Default_for_mother_Mother.
   Definition Self : Ty.t := Ty.path "mother::Mother".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "mother::Mother"
@@ -1778,7 +1802,7 @@ Module Impl_core_default_Default_for_mother_Mother.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1797,7 +1821,7 @@ Module Impl_mother_Mother.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -1806,16 +1830,16 @@ Module Impl_mother_Mother.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "mother::Mother", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -1828,9 +1852,9 @@ Module Impl_mother_Mother.
           }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ auction ] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ auction ] =>
       ltac:(M.monadic
         (let auction := M.alloc (| auction |) in
         Value.StructRecord
@@ -1852,7 +1876,7 @@ Module Impl_mother_Mother.
               |));
             ("auction", M.read (| auction |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1862,9 +1886,9 @@ Module Impl_mother_Mother.
           Default::default()
       }
   *)
-  Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition new_default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_trait_method (|
@@ -1876,7 +1900,7 @@ Module Impl_mother_Mother.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
@@ -1890,9 +1914,9 @@ Module Impl_mother_Mother.
           }
       }
   *)
-  Definition failed_new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ fail ] =>
+  Definition failed_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ fail ] =>
       ltac:(M.monadic
         (let fail := M.alloc (| fail |) in
         M.read (|
@@ -1944,7 +1968,7 @@ Module Impl_mother_Mother.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_failed_new : M.IsAssociatedFunction Self "failed_new" failed_new.
@@ -1957,9 +1981,9 @@ Module Impl_mother_Mother.
           auction
       }
   *)
-  Definition echo_auction (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; auction ] =>
+  Definition echo_auction (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; auction ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let auction := M.alloc (| auction |) in
@@ -1999,7 +2023,7 @@ Module Impl_mother_Mother.
             |) in
           auction
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_echo_auction : M.IsAssociatedFunction Self "echo_auction" echo_auction.
@@ -2017,9 +2041,9 @@ Module Impl_mother_Mother.
           }
       }
   *)
-  Definition revert_or_trap (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; fail ] =>
+  Definition revert_or_trap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; fail ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let fail := M.alloc (| fail |) in
@@ -2076,7 +2100,7 @@ Module Impl_mother_Mother.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_revert_or_trap :
@@ -2087,9 +2111,9 @@ Module Impl_mother_Mother.
           println!("debug_log: {}", _message);
       }
   *)
-  Definition debug_log (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; _message ] =>
+  Definition debug_log (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _message ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let _message := M.alloc (| _message |) in
@@ -2136,7 +2160,7 @@ Module Impl_mother_Mother.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_debug_log : M.IsAssociatedFunction Self "debug_log" debug_log.

@@ -7,19 +7,20 @@ Module iter.
       (* StructRecord
         {
           name := "Rev";
+          const_params := [];
           ty_params := [ "T" ];
           fields := [ ("iter", T) ];
         } *)
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_iter_adapters_rev_Rev_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ T ].
+          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ T ].
         
         (* Clone *)
-        Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -37,7 +38,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -51,13 +52,13 @@ Module iter.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_iter_adapters_rev_Rev_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ T ].
+          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ T ].
         
         (* Debug *)
-        Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -82,7 +83,7 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -96,21 +97,21 @@ Module iter.
       
       Module Impl_core_iter_adapters_rev_Rev_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ T ].
+          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ T ].
         
         (*
             pub(in crate::iter) fn new(iter: T) -> Rev<T> {
                 Rev { iter }
             }
         *)
-        Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ iter ] =>
+          match ε, τ, α with
+          | [], [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               Value.StructRecord "core::iter::adapters::rev::Rev" [ ("iter", M.read (| iter |)) ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -120,7 +121,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_for_core_iter_adapters_rev_Rev_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ I ].
         
         (*     type Item = <I as Iterator>::Item; *)
         Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
@@ -130,10 +131,10 @@ Module iter.
                 self.iter.next_back()
             }
         *)
-        Definition next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -152,7 +153,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -160,10 +161,10 @@ Module iter.
                 self.iter.size_hint()
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -182,7 +183,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -190,10 +191,15 @@ Module iter.
                 self.iter.advance_back_by(n)
             }
         *)
-        Definition advance_by (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_by
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -214,7 +220,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -222,10 +228,10 @@ Module iter.
                 self.iter.nth_back(n)
             }
         *)
-        Definition nth (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -246,7 +252,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -259,10 +265,10 @@ Module iter.
                 self.iter.try_rfold(init, f)
             }
         *)
-        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -285,7 +291,7 @@ Module iter.
                   M.read (| f |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -296,10 +302,10 @@ Module iter.
                 self.iter.rfold(init, f)
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -324,7 +330,7 @@ Module iter.
                   M.read (| f |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -335,10 +341,10 @@ Module iter.
                 self.iter.rfind(predicate)
             }
         *)
-        Definition find (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition find (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ P ], [ self; predicate ] =>
+          match ε, τ, α with
+          | [], [ P ], [ self; predicate ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
@@ -359,7 +365,7 @@ Module iter.
                   M.read (| predicate |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -383,17 +389,17 @@ Module iter.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_for_core_iter_adapters_rev_Rev_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ I ].
         
         (*
             fn next_back(&mut self) -> Option<<I as Iterator>::Item> {
                 self.iter.next()
             }
         *)
-        Definition next_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -412,7 +418,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -420,10 +426,15 @@ Module iter.
                 self.iter.advance_by(n)
             }
         *)
-        Definition advance_back_by (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_back_by
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -444,7 +455,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -452,10 +463,10 @@ Module iter.
                 self.iter.nth(n)
             }
         *)
-        Definition nth_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth_back (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -470,7 +481,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -483,10 +494,10 @@ Module iter.
                 self.iter.try_fold(init, f)
             }
         *)
-        Definition try_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_rfold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -509,7 +520,7 @@ Module iter.
                   M.read (| f |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -520,10 +531,10 @@ Module iter.
                 self.iter.fold(init, f)
             }
         *)
-        Definition rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -548,7 +559,7 @@ Module iter.
                   M.read (| f |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -559,10 +570,10 @@ Module iter.
                 self.iter.find(predicate)
             }
         *)
-        Definition rfind (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfind (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ P ], [ self; predicate ] =>
+          match ε, τ, α with
+          | [], [ P ], [ self; predicate ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
@@ -583,7 +594,7 @@ Module iter.
                   M.read (| predicate |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -605,17 +616,17 @@ Module iter.
       
       Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_iter_traits_double_ended_DoubleEndedIterator_I_for_core_iter_adapters_rev_Rev_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ I ].
         
         (*
             fn len(&self) -> usize {
                 self.iter.len()
             }
         *)
-        Definition len (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -634,7 +645,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -642,10 +653,10 @@ Module iter.
                 self.iter.is_empty()
             }
         *)
-        Definition is_empty (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_empty (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -664,7 +675,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -680,7 +691,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_iter_traits_double_ended_DoubleEndedIterator_I_for_core_iter_adapters_rev_Rev_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ I ].
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -693,7 +704,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_where_core_iter_traits_double_ended_DoubleEndedIterator_I_for_core_iter_adapters_rev_Rev_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ I ].
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -706,21 +717,21 @@ Module iter.
       
       Module Impl_core_default_Default_where_core_default_Default_I_for_core_iter_adapters_rev_Rev_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ I ].
         
         (*
             fn default() -> Self {
                 Rev::new(Default::default())
             }
         *)
-        Definition default (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition default (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [] =>
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ I ],
                   "new",
                   []
                 |),
@@ -731,7 +742,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

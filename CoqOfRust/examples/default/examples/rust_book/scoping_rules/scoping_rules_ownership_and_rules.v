@@ -8,9 +8,9 @@ fn destroy_box(c: Box<i32>) {
     // `c` is destroyed and the memory freed
 }
 *)
-Definition destroy_box (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ c ] =>
+Definition destroy_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ c ] =>
     ltac:(M.monadic
       (let c := M.alloc (| c |) in
       M.read (|
@@ -61,7 +61,7 @@ Definition destroy_box (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_destroy_box :
@@ -104,9 +104,9 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ x := M.alloc (| Value.Integer 5 |) in
@@ -229,7 +229,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules::main" main.

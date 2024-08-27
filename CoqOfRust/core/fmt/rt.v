@@ -6,6 +6,7 @@ Module fmt.
     (* StructRecord
       {
         name := "Placeholder";
+        const_params := [];
         ty_params := [];
         fields :=
           [
@@ -33,9 +34,9 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Placeholder".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -72,7 +73,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -98,9 +99,9 @@ Module fmt.
               Self { position, fill, align, flags, precision, width }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ position; fill; align; flags; precision; width ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ position; fill; align; flags; precision; width ] =>
           ltac:(M.monadic
             (let position := M.alloc (| position |) in
             let fill := M.alloc (| fill |) in
@@ -118,7 +119,7 @@ Module fmt.
                 ("precision", M.read (| precision |));
                 ("width", M.read (| width |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -127,6 +128,7 @@ Module fmt.
     (*
     Enum Alignment
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -169,13 +171,13 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Alignment".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -201,9 +203,9 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Alignment".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -230,7 +232,7 @@ Module fmt.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -256,13 +258,17 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Alignment".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -277,6 +283,7 @@ Module fmt.
     (*
     Enum Count
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -314,9 +321,9 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Count".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -325,7 +332,7 @@ Module fmt.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -339,6 +346,7 @@ Module fmt.
     (*
     Enum Flag
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -391,13 +399,13 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Flag".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -411,18 +419,20 @@ Module fmt.
     (* StructRecord
       {
         name := "Argument";
+        const_params := [];
         ty_params := [];
         fields :=
           [
-            ("value", Ty.apply (Ty.path "&") [ Ty.path "core::fmt::rt::Opaque" ]);
+            ("value", Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Opaque" ]);
             ("formatter",
               Ty.function
                 [
-                  Ty.apply (Ty.path "&") [ Ty.path "core::fmt::rt::Opaque" ];
-                  Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ]
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Opaque" ];
+                  Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
                 ]
                 (Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.tuple []; Ty.path "core::fmt::Error" ]))
           ];
       } *)
@@ -442,9 +452,9 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Argument".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -460,7 +470,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -487,9 +497,9 @@ Module fmt.
               unsafe { Argument { formatter: mem::transmute(f), value: mem::transmute(x) } }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ x; f ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ x; f ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             let f := M.alloc (| f |) in
@@ -503,19 +513,21 @@ Module fmt.
                       [
                         Ty.function
                           [
-                            Ty.apply (Ty.path "&") [ T ];
-                            Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
                           ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
                         Ty.function
                           [
-                            Ty.apply (Ty.path "&") [ Ty.path "core::fmt::rt::Opaque" ];
-                            Ty.apply (Ty.path "&mut") [ Ty.path "core::fmt::Formatter" ]
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Opaque" ];
+                            Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
                           ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ])
                       ]
                     |),
@@ -526,14 +538,14 @@ Module fmt.
                     M.get_function (|
                       "core::intrinsics::transmute",
                       [
-                        Ty.apply (Ty.path "&") [ T ];
-                        Ty.apply (Ty.path "&") [ Ty.path "core::fmt::rt::Opaque" ]
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Opaque" ]
                       ]
                     |),
                     [ M.read (| x |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -543,9 +555,9 @@ Module fmt.
               Self::new(x, Display::fmt)
           }
       *)
-      Definition new_display (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ x ] =>
+      Definition new_display (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
@@ -556,7 +568,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_display : M.IsAssociatedFunction Self "new_display" new_display.
@@ -566,9 +578,9 @@ Module fmt.
               Self::new(x, Debug::fmt)
           }
       *)
-      Definition new_debug (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ x ] =>
+      Definition new_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
@@ -579,7 +591,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_debug : M.IsAssociatedFunction Self "new_debug" new_debug.
@@ -589,9 +601,9 @@ Module fmt.
               Self::new(x, Octal::fmt)
           }
       *)
-      Definition new_octal (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ x ] =>
+      Definition new_octal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
@@ -602,7 +614,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_octal : M.IsAssociatedFunction Self "new_octal" new_octal.
@@ -612,9 +624,9 @@ Module fmt.
               Self::new(x, LowerHex::fmt)
           }
       *)
-      Definition new_lower_hex (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ x ] =>
+      Definition new_lower_hex (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
@@ -626,7 +638,7 @@ Module fmt.
                   (M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_lower_hex :
@@ -637,9 +649,9 @@ Module fmt.
               Self::new(x, UpperHex::fmt)
           }
       *)
-      Definition new_upper_hex (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ x ] =>
+      Definition new_upper_hex (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
@@ -651,7 +663,7 @@ Module fmt.
                   (M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_upper_hex :
@@ -662,9 +674,9 @@ Module fmt.
               Self::new(x, Pointer::fmt)
           }
       *)
-      Definition new_pointer (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ x ] =>
+      Definition new_pointer (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
@@ -675,7 +687,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Pointer", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_pointer : M.IsAssociatedFunction Self "new_pointer" new_pointer.
@@ -685,9 +697,9 @@ Module fmt.
               Self::new(x, Binary::fmt)
           }
       *)
-      Definition new_binary (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ x ] =>
+      Definition new_binary (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
@@ -698,7 +710,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_binary : M.IsAssociatedFunction Self "new_binary" new_binary.
@@ -708,9 +720,9 @@ Module fmt.
               Self::new(x, LowerExp::fmt)
           }
       *)
-      Definition new_lower_exp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ x ] =>
+      Definition new_lower_exp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
@@ -722,7 +734,7 @@ Module fmt.
                   (M.get_trait_method (| "core::fmt::LowerExp", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_lower_exp :
@@ -733,9 +745,9 @@ Module fmt.
               Self::new(x, UpperExp::fmt)
           }
       *)
-      Definition new_upper_exp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ x ] =>
+      Definition new_upper_exp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
@@ -747,7 +759,7 @@ Module fmt.
                   (M.get_trait_method (| "core::fmt::UpperExp", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_upper_exp :
@@ -758,9 +770,9 @@ Module fmt.
               Self::new(x, USIZE_MARKER)
           }
       *)
-      Definition from_usize (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_usize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
@@ -774,7 +786,7 @@ Module fmt.
                 M.read (| M.read (| M.get_constant (| "core::fmt::rt::USIZE_MARKER" |) |) |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_usize : M.IsAssociatedFunction Self "from_usize" from_usize.
@@ -784,9 +796,9 @@ Module fmt.
               (self.formatter)(self.value, f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -809,7 +821,7 @@ Module fmt.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_fmt : M.IsAssociatedFunction Self "fmt" fmt.
@@ -829,9 +841,9 @@ Module fmt.
               }
           }
       *)
-      Definition as_usize (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_usize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -885,7 +897,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_usize : M.IsAssociatedFunction Self "as_usize" as_usize.
@@ -895,8 +907,11 @@ Module fmt.
               []
           }
       *)
-      Definition none (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with | [], [] => ltac:(M.monadic (Value.Array [])) | _, _ => M.impossible end.
+      Definition none (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] => ltac:(M.monadic (Value.Array []))
+        | _, _, _ => M.impossible
+        end.
       
       Axiom AssociatedFunction_none : M.IsAssociatedFunction Self "none" none.
     End Impl_core_fmt_rt_Argument.
@@ -904,6 +919,7 @@ Module fmt.
     (* StructRecord
       {
         name := "UnsafeArg";
+        const_params := [];
         ty_params := [];
         fields := [ ("_private", Ty.tuple []) ];
       } *)
@@ -916,12 +932,12 @@ Module fmt.
               Self { _private: () }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord "core::fmt::rt::UnsafeArg" [ ("_private", Value.Tuple []) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.

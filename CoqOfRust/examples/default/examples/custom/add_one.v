@@ -6,13 +6,13 @@ fn add_one(x: u32) -> u32 {
     x + 1
 }
 *)
-Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ x ] =>
+Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ x ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       BinOp.Wrap.add Integer.U32 (M.read (| x |)) (Value.Integer 1)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_add_one : M.IsFunction "add_one::add_one" add_one.

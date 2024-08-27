@@ -6,34 +6,41 @@ Module collections.
     (* StructRecord
       {
         name := "LinkedList";
+        const_params := [];
         ty_params := [ "T"; "A" ];
         fields :=
           [
             ("head",
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ]);
             ("tail",
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ]);
             ("len", Ty.path "usize");
             ("alloc", A);
             ("marker",
               Ty.apply
                 (Ty.path "core::marker::PhantomData")
+                []
                 [
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]; A ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ]; A ]
                 ])
           ];
       } *)
@@ -41,24 +48,29 @@ Module collections.
     (* StructRecord
       {
         name := "Node";
+        const_params := [];
         ty_params := [ "T" ];
         fields :=
           [
             ("next",
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ]);
             ("prev",
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ]);
             ("element", T)
           ];
@@ -67,40 +79,47 @@ Module collections.
     (* StructRecord
       {
         name := "Iter";
+        const_params := [];
         ty_params := [ "T" ];
         fields :=
           [
             ("head",
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ]);
             ("tail",
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ]);
             ("len", Ty.path "usize");
             ("marker",
               Ty.apply
                 (Ty.path "core::marker::PhantomData")
+                []
                 [
                   Ty.apply
                     (Ty.path "&")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ])
           ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_linked_list_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -116,10 +135,10 @@ Module collections.
                   .finish()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -161,9 +180,11 @@ Module collections.
                               "core::ops::deref::Deref",
                               Ty.apply
                                 (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::linked_list::LinkedList")
+                                    []
                                     [ T; Ty.path "alloc::alloc::Global" ]
                                 ],
                               [],
@@ -176,9 +197,11 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::collections::linked_list::LinkedList")
+                                          []
                                           [ T; Ty.path "alloc::alloc::Global" ]
                                       ],
                                     "new",
@@ -233,7 +256,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -247,21 +270,21 @@ Module collections.
     
     Module Impl_core_clone_Clone_for_alloc_collections_linked_list_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ].
       
       (*
           fn clone(&self) -> Self {
               Iter { ..*self }
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "alloc::collections::linked_list::Iter" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -276,40 +299,47 @@ Module collections.
     (* StructRecord
       {
         name := "IterMut";
+        const_params := [];
         ty_params := [ "T" ];
         fields :=
           [
             ("head",
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ]);
             ("tail",
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ]);
             ("len", Ty.path "usize");
             ("marker",
               Ty.apply
                 (Ty.path "core::marker::PhantomData")
+                []
                 [
                   Ty.apply
                     (Ty.path "&mut")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ])
           ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_linked_list_IterMut_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -325,10 +355,10 @@ Module collections.
                   .finish()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -370,9 +400,11 @@ Module collections.
                               "core::ops::deref::Deref",
                               Ty.apply
                                 (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::linked_list::LinkedList")
+                                    []
                                     [ T; Ty.path "alloc::alloc::Global" ]
                                 ],
                               [],
@@ -385,9 +417,11 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::collections::linked_list::LinkedList")
+                                          []
                                           [ T; Ty.path "alloc::alloc::Global" ]
                                       ],
                                     "new",
@@ -442,7 +476,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -457,20 +491,22 @@ Module collections.
     (* StructRecord
       {
         name := "IntoIter";
+        const_params := [];
         ty_params := [ "T"; "A" ];
         fields :=
-          [ ("list", Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ]) ];
+          [ ("list", Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ])
+          ];
       } *)
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_A_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [] [ T; A ].
       
       (* Clone *)
-      Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -480,7 +516,7 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       [],
                       "clone",
                       []
@@ -494,7 +530,7 @@ Module collections.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -508,17 +544,17 @@ Module collections.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [] [ T; A ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_tuple("IntoIter").field(&self.list).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -557,7 +593,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -571,17 +607,17 @@ Module collections.
     
     Module Impl_alloc_collections_linked_list_Node_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ].
       
       (*
           fn new(element: T) -> Self {
               Node { next: None, prev: None, element }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ element ] =>
+        match ε, τ, α with
+        | [], [], [ element ] =>
           ltac:(M.monadic
             (let element := M.alloc (| element |) in
             Value.StructRecord
@@ -591,7 +627,7 @@ Module collections.
                 ("prev", Value.StructTuple "core::option::Option::None" []);
                 ("element", M.read (| element |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -603,10 +639,15 @@ Module collections.
               self.element
           }
       *)
-      Definition into_element (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_element
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ A ], [ self ] =>
+        match ε, τ, α with
+        | [], [ A ], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -616,7 +657,7 @@ Module collections.
                 "element"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_element :
@@ -626,7 +667,7 @@ Module collections.
     
     Module Impl_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       (*
           unsafe fn push_front_node(&mut self, node: NonNull<Node<T>>) {
@@ -648,10 +689,15 @@ Module collections.
               }
           }
       *)
-      Definition push_front_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push_front_node
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; node ] =>
+        match ε, τ, α with
+        | [], [], [ self; node ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let node := M.alloc (| node |) in
@@ -663,7 +709,8 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                         "as_ptr",
                         []
                       |),
@@ -687,7 +734,8 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                         "as_ptr",
                         []
                       |),
@@ -736,7 +784,12 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ],
                                 "as_ptr",
                                 []
@@ -769,7 +822,7 @@ Module collections.
                 M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_push_front_node :
@@ -795,28 +848,36 @@ Module collections.
               })
           }
       *)
-      Definition pop_front_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop_front_node
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                      []
+                      [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                   ],
                 "map",
                 [
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [
-                      Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                      Ty.apply (Ty.path "&") [ A ]
+                      Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                      Ty.apply (Ty.path "&") [] [ A ]
                     ];
                   Ty.function
                     [
@@ -824,14 +885,16 @@ Module collections.
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ]
                     ]
                     (Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [
-                        Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                        Ty.apply (Ty.path "&") [ A ]
+                        Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                        Ty.apply (Ty.path "&") [] [ A ]
                       ])
                 ]
               |),
@@ -861,11 +924,13 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::linked_list::Node")
+                                                []
                                                 [ T ];
-                                              Ty.apply (Ty.path "&") [ A ]
+                                              Ty.apply (Ty.path "&") [] [ A ]
                                             ],
                                           "from_raw_in",
                                           []
@@ -875,10 +940,12 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::linked_list::Node")
+                                                    []
                                                     [ T ]
                                                 ],
                                               "as_ptr",
@@ -947,10 +1014,12 @@ Module collections.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::ptr::non_null::NonNull")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloc::collections::linked_list::Node")
+                                                          []
                                                           [ T ]
                                                       ],
                                                     "as_ptr",
@@ -987,7 +1056,7 @@ Module collections.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop_front_node :
@@ -1014,10 +1083,15 @@ Module collections.
               }
           }
       *)
-      Definition push_back_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push_back_node
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; node ] =>
+        match ε, τ, α with
+        | [], [], [ self; node ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let node := M.alloc (| node |) in
@@ -1029,7 +1103,8 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                         "as_ptr",
                         []
                       |),
@@ -1047,7 +1122,8 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                         "as_ptr",
                         []
                       |),
@@ -1102,7 +1178,12 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ],
                                 "as_ptr",
                                 []
@@ -1135,7 +1216,7 @@ Module collections.
                 M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_push_back_node :
@@ -1161,28 +1242,36 @@ Module collections.
               })
           }
       *)
-      Definition pop_back_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop_back_node
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                      []
+                      [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                   ],
                 "map",
                 [
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [
-                      Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                      Ty.apply (Ty.path "&") [ A ]
+                      Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                      Ty.apply (Ty.path "&") [] [ A ]
                     ];
                   Ty.function
                     [
@@ -1190,14 +1279,16 @@ Module collections.
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ]
                     ]
                     (Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [
-                        Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                        Ty.apply (Ty.path "&") [ A ]
+                        Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                        Ty.apply (Ty.path "&") [] [ A ]
                       ])
                 ]
               |),
@@ -1227,11 +1318,13 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::linked_list::Node")
+                                                []
                                                 [ T ];
-                                              Ty.apply (Ty.path "&") [ A ]
+                                              Ty.apply (Ty.path "&") [] [ A ]
                                             ],
                                           "from_raw_in",
                                           []
@@ -1241,10 +1334,12 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::linked_list::Node")
+                                                    []
                                                     [ T ]
                                                 ],
                                               "as_ptr",
@@ -1313,10 +1408,12 @@ Module collections.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::ptr::non_null::NonNull")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloc::collections::linked_list::Node")
+                                                          []
                                                           [ T ]
                                                       ],
                                                     "as_ptr",
@@ -1353,7 +1450,7 @@ Module collections.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop_back_node :
@@ -1380,10 +1477,15 @@ Module collections.
               self.len -= 1;
           }
       *)
-      Definition unlink_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition unlink_node
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; node ] =>
+        match ε, τ, α with
+        | [], [], [ self; node ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let node := M.alloc (| node |) in
@@ -1394,7 +1496,8 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
-                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                       "as_mut",
                       []
                     |),
@@ -1424,7 +1527,12 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ],
                                 "as_ptr",
                                 []
@@ -1484,7 +1592,12 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ],
                                 "as_ptr",
                                 []
@@ -1531,7 +1644,7 @@ Module collections.
                 M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unlink_node :
@@ -1571,10 +1684,15 @@ Module collections.
               self.len += splice_length;
           }
       *)
-      Definition splice_nodes (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition splice_nodes
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; existing_prev; existing_next; splice_start; splice_end; splice_length ] =>
+        match ε, τ, α with
+        | [], [], [ self; existing_prev; existing_next; splice_start; splice_end; splice_length ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let existing_prev := M.alloc (| existing_prev |) in
@@ -1604,9 +1722,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::Node")
+                                        []
                                         [ T ]
                                     ],
                                   "as_mut",
@@ -1659,9 +1779,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::Node")
+                                        []
                                         [ T ]
                                     ],
                                   "as_mut",
@@ -1701,7 +1823,8 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                           "as_mut",
                           []
                         |),
@@ -1719,7 +1842,8 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                           "as_mut",
                           []
                         |),
@@ -1744,7 +1868,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_splice_nodes :
@@ -1767,10 +1891,15 @@ Module collections.
               }
           }
       *)
-      Definition detach_all_nodes (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition detach_all_nodes
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1780,10 +1909,12 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::option::Option")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       "take",
                       []
@@ -1803,10 +1934,12 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::option::Option")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       "take",
                       []
@@ -1853,12 +1986,15 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::Node")
+                                        []
                                         [ T ]
                                     ]
                                 ],
@@ -1879,7 +2015,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_detach_all_nodes :
@@ -1929,10 +2065,15 @@ Module collections.
               }
           }
       *)
-      Definition split_off_before_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition split_off_before_node
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; split_node; at_ ] =>
+        match ε, τ, α with
+        | [], [], [ self; split_node; at_ ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let split_node := M.alloc (| split_node |) in
@@ -1961,12 +2102,15 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::collections::linked_list::Node")
+                                          []
                                           [ T ]
                                       ]
                                   ],
@@ -1979,9 +2123,11 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::Node")
+                                            []
                                             [ T ]
                                         ],
                                       "as_mut",
@@ -2018,9 +2164,11 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
                                                   [ T ]
                                               ],
                                             "as_mut",
@@ -2115,6 +2263,7 @@ Module collections.
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
+                                []
                                 [ T; A ]
                             ]
                           |),
@@ -2124,6 +2273,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::linked_list::LinkedList")
+                                  []
                                   [ T; A ],
                                 "new_in",
                                 []
@@ -2147,7 +2297,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_split_off_before_node :
@@ -2198,10 +2348,15 @@ Module collections.
               }
           }
       *)
-      Definition split_off_after_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition split_off_after_node
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; split_node; at_ ] =>
+        match ε, τ, α with
+        | [], [], [ self; split_node; at_ ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let split_node := M.alloc (| split_node |) in
@@ -2230,12 +2385,15 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::collections::linked_list::Node")
+                                          []
                                           [ T ]
                                       ]
                                   ],
@@ -2248,9 +2406,11 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::Node")
+                                            []
                                             [ T ]
                                         ],
                                       "as_mut",
@@ -2287,9 +2447,11 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
                                                   [ T ]
                                               ],
                                             "as_mut",
@@ -2385,6 +2547,7 @@ Module collections.
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
+                                []
                                 [ T; A ]
                             ]
                           |),
@@ -2394,6 +2557,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::linked_list::LinkedList")
+                                  []
                                   [ T; A ],
                                 "new_in",
                                 []
@@ -2417,7 +2581,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_split_off_after_node :
@@ -2428,10 +2592,10 @@ Module collections.
               LinkedList { head: None, tail: None, len: 0, alloc, marker: PhantomData }
           }
       *)
-      Definition new_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ alloc ] =>
+        match ε, τ, α with
+        | [], [], [ alloc ] =>
           ltac:(M.monadic
             (let alloc := M.alloc (| alloc |) in
             Value.StructRecord
@@ -2443,7 +2607,7 @@ Module collections.
                 ("alloc", M.read (| alloc |));
                 ("marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_in :
@@ -2455,10 +2619,10 @@ Module collections.
               Iter { head: self.head, tail: self.tail, len: self.len, marker: PhantomData }
           }
       *)
-      Definition iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition iter (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -2490,7 +2654,7 @@ Module collections.
                   |));
                 ("marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_iter :
@@ -2502,10 +2666,10 @@ Module collections.
               IterMut { head: self.head, tail: self.tail, len: self.len, marker: PhantomData }
           }
       *)
-      Definition iter_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition iter_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -2537,7 +2701,7 @@ Module collections.
                   |));
                 ("marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_iter_mut :
@@ -2549,10 +2713,15 @@ Module collections.
               Cursor { index: 0, current: self.head, list: self }
           }
       *)
-      Definition cursor_front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cursor_front
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -2569,7 +2738,7 @@ Module collections.
                   |));
                 ("list", M.read (| self |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_cursor_front :
@@ -2581,10 +2750,15 @@ Module collections.
               CursorMut { index: 0, current: self.head, list: self }
           }
       *)
-      Definition cursor_front_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cursor_front_mut
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -2601,7 +2775,7 @@ Module collections.
                   |));
                 ("list", M.read (| self |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_cursor_front_mut :
@@ -2613,10 +2787,15 @@ Module collections.
               Cursor { index: self.len.checked_sub(1).unwrap_or(0), current: self.tail, list: self }
           }
       *)
-      Definition cursor_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cursor_back
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -2625,7 +2804,7 @@ Module collections.
                 ("index",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                       "unwrap_or",
                       []
                     |),
@@ -2656,7 +2835,7 @@ Module collections.
                   |));
                 ("list", M.read (| self |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_cursor_back :
@@ -2668,10 +2847,15 @@ Module collections.
               CursorMut { index: self.len.checked_sub(1).unwrap_or(0), current: self.tail, list: self }
           }
       *)
-      Definition cursor_back_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cursor_back_mut
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -2680,7 +2864,7 @@ Module collections.
                 ("index",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                       "unwrap_or",
                       []
                     |),
@@ -2711,7 +2895,7 @@ Module collections.
                   |));
                 ("list", M.read (| self |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_cursor_back_mut :
@@ -2723,20 +2907,22 @@ Module collections.
               self.head.is_none()
           }
       *)
-      Definition is_empty (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                      []
+                      [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                   ],
                 "is_none",
                 []
@@ -2749,7 +2935,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_empty :
@@ -2761,10 +2947,10 @@ Module collections.
               self.len
           }
       *)
-      Definition len (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2774,7 +2960,7 @@ Module collections.
                 "len"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_len :
@@ -2794,10 +2980,10 @@ Module collections.
               });
           }
       *)
-      Definition clear (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clear (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2809,7 +2995,8 @@ Module collections.
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::linked_list::LinkedList")
-                          [ T; Ty.apply (Ty.path "&") [ A ] ]
+                          []
+                          [ T; Ty.apply (Ty.path "&") [] [ A ] ]
                       ]
                     |),
                     [
@@ -2821,12 +3008,15 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::collections::linked_list::Node")
+                                          []
                                           [ T ]
                                       ]
                                   ],
@@ -2846,12 +3036,15 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::collections::linked_list::Node")
+                                          []
                                           [ T ]
                                       ]
                                   ],
@@ -2890,7 +3083,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_clear :
@@ -2905,26 +3098,26 @@ Module collections.
               self.iter().any(|e| e == x)
           }
       *)
-      Definition contains (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; x ] =>
+        match ε, τ, α with
+        | [], [], [ self; x ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let x := M.alloc (| x |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                 [],
                 "any",
-                [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ] (Ty.path "bool") ]
+                [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] (Ty.path "bool") ]
               |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "iter",
                       []
                     |),
@@ -2945,8 +3138,8 @@ Module collections.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [ T ],
-                                    [ Ty.apply (Ty.path "&") [ T ] ],
+                                    Ty.apply (Ty.path "&") [] [ T ],
+                                    [ Ty.apply (Ty.path "&") [] [ T ] ],
                                     "eq",
                                     []
                                   |),
@@ -2958,7 +3151,7 @@ Module collections.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_contains :
@@ -2970,42 +3163,52 @@ Module collections.
               unsafe { self.head.as_ref().map(|node| &node.as_ref().element) }
           }
       *)
-      Definition front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition front (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "&")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ]
                   ],
                 "map",
                 [
-                  Ty.apply (Ty.path "&") [ T ];
+                  Ty.apply (Ty.path "&") [] [ T ];
                   Ty.function
                     [
                       Ty.tuple
                         [
                           Ty.apply
                             (Ty.path "&")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ]
+                                ]
                             ]
                         ]
                     ]
-                    (Ty.apply (Ty.path "&") [ T ])
+                    (Ty.apply (Ty.path "&") [] [ T ])
                 ]
               |),
               [
@@ -3013,10 +3216,12 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "as_ref",
                     []
@@ -3045,9 +3250,11 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::Node")
+                                            []
                                             [ T ]
                                         ],
                                       "as_ref",
@@ -3064,7 +3271,7 @@ Module collections.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_front :
@@ -3076,42 +3283,52 @@ Module collections.
               unsafe { self.head.as_mut().map(|node| &mut node.as_mut().element) }
           }
       *)
-      Definition front_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition front_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "&mut")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ]
                   ],
                 "map",
                 [
-                  Ty.apply (Ty.path "&mut") [ T ];
+                  Ty.apply (Ty.path "&mut") [] [ T ];
                   Ty.function
                     [
                       Ty.tuple
                         [
                           Ty.apply
                             (Ty.path "&mut")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ]
+                                ]
                             ]
                         ]
                     ]
-                    (Ty.apply (Ty.path "&mut") [ T ])
+                    (Ty.apply (Ty.path "&mut") [] [ T ])
                 ]
               |),
               [
@@ -3119,10 +3336,12 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "as_mut",
                     []
@@ -3151,9 +3370,11 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::Node")
+                                            []
                                             [ T ]
                                         ],
                                       "as_mut",
@@ -3170,7 +3391,7 @@ Module collections.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_front_mut :
@@ -3182,42 +3403,52 @@ Module collections.
               unsafe { self.tail.as_ref().map(|node| &node.as_ref().element) }
           }
       *)
-      Definition back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition back (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "&")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ]
                   ],
                 "map",
                 [
-                  Ty.apply (Ty.path "&") [ T ];
+                  Ty.apply (Ty.path "&") [] [ T ];
                   Ty.function
                     [
                       Ty.tuple
                         [
                           Ty.apply
                             (Ty.path "&")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ]
+                                ]
                             ]
                         ]
                     ]
-                    (Ty.apply (Ty.path "&") [ T ])
+                    (Ty.apply (Ty.path "&") [] [ T ])
                 ]
               |),
               [
@@ -3225,10 +3456,12 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "as_ref",
                     []
@@ -3257,9 +3490,11 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::Node")
+                                            []
                                             [ T ]
                                         ],
                                       "as_ref",
@@ -3276,7 +3511,7 @@ Module collections.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_back :
@@ -3288,42 +3523,52 @@ Module collections.
               unsafe { self.tail.as_mut().map(|node| &mut node.as_mut().element) }
           }
       *)
-      Definition back_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition back_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "&mut")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ]
                   ],
                 "map",
                 [
-                  Ty.apply (Ty.path "&mut") [ T ];
+                  Ty.apply (Ty.path "&mut") [] [ T ];
                   Ty.function
                     [
                       Ty.tuple
                         [
                           Ty.apply
                             (Ty.path "&mut")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ]
+                                ]
                             ]
                         ]
                     ]
-                    (Ty.apply (Ty.path "&mut") [ T ])
+                    (Ty.apply (Ty.path "&mut") [] [ T ])
                 ]
               |),
               [
@@ -3331,10 +3576,12 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "as_mut",
                     []
@@ -3363,9 +3610,11 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::Node")
+                                            []
                                             [ T ]
                                         ],
                                       "as_mut",
@@ -3382,7 +3631,7 @@ Module collections.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_back_mut :
@@ -3399,10 +3648,15 @@ Module collections.
               }
           }
       *)
-      Definition push_front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push_front
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; elt ] =>
+        match ε, τ, α with
+        | [], [], [ self; elt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let elt := M.alloc (| elt |) in
@@ -3413,9 +3667,10 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [
-                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                          Ty.apply (Ty.path "&") [ A ]
+                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                          Ty.apply (Ty.path "&") [] [ A ]
                         ],
                       "new_in",
                       []
@@ -3423,7 +3678,7 @@ Module collections.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ],
+                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ],
                           "new",
                           []
                         |),
@@ -3444,11 +3699,13 @@ Module collections.
                       "core::convert::From",
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
-                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                       "from",
                       []
@@ -3458,9 +3715,10 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
+                            []
                             [
-                              Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                              Ty.apply (Ty.path "&") [ A ]
+                              Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                              Ty.apply (Ty.path "&") [] [ A ]
                             ],
                           "leak",
                           []
@@ -3474,7 +3732,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "push_front_node",
                       []
                     |),
@@ -3483,7 +3741,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_push_front :
@@ -3495,22 +3753,24 @@ Module collections.
               self.pop_front_node().map(Node::into_element)
           }
       *)
-      Definition pop_front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop_front (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [
-                        Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                        Ty.apply (Ty.path "&") [ A ]
+                        Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                        Ty.apply (Ty.path "&") [] [ A ]
                       ]
                   ],
                 "map",
@@ -3520,9 +3780,10 @@ Module collections.
                     [
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [
-                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                          Ty.apply (Ty.path "&") [ A ]
+                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                          Ty.apply (Ty.path "&") [] [ A ]
                         ]
                     ]
                     T
@@ -3531,20 +3792,20 @@ Module collections.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "pop_front_node",
                     []
                   |),
                   [ M.read (| self |) ]
                 |);
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ],
+                  Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ],
                   "into_element",
-                  [ Ty.apply (Ty.path "&") [ A ] ]
+                  [ Ty.apply (Ty.path "&") [] [ A ] ]
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop_front :
@@ -3561,10 +3822,10 @@ Module collections.
               }
           }
       *)
-      Definition push_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push_back (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; elt ] =>
+        match ε, τ, α with
+        | [], [], [ self; elt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let elt := M.alloc (| elt |) in
@@ -3575,9 +3836,10 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [
-                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                          Ty.apply (Ty.path "&") [ A ]
+                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                          Ty.apply (Ty.path "&") [] [ A ]
                         ],
                       "new_in",
                       []
@@ -3585,7 +3847,7 @@ Module collections.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ],
+                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ],
                           "new",
                           []
                         |),
@@ -3606,11 +3868,13 @@ Module collections.
                       "core::convert::From",
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
-                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                       "from",
                       []
@@ -3620,9 +3884,10 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
+                            []
                             [
-                              Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                              Ty.apply (Ty.path "&") [ A ]
+                              Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                              Ty.apply (Ty.path "&") [] [ A ]
                             ],
                           "leak",
                           []
@@ -3636,7 +3901,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "push_back_node",
                       []
                     |),
@@ -3645,7 +3910,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_push_back :
@@ -3657,22 +3922,24 @@ Module collections.
               self.pop_back_node().map(Node::into_element)
           }
       *)
-      Definition pop_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop_back (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [
-                        Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                        Ty.apply (Ty.path "&") [ A ]
+                        Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                        Ty.apply (Ty.path "&") [] [ A ]
                       ]
                   ],
                 "map",
@@ -3682,9 +3949,10 @@ Module collections.
                     [
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [
-                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                          Ty.apply (Ty.path "&") [ A ]
+                          Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                          Ty.apply (Ty.path "&") [] [ A ]
                         ]
                     ]
                     T
@@ -3693,20 +3961,20 @@ Module collections.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "pop_back_node",
                     []
                   |),
                   [ M.read (| self |) ]
                 |);
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ],
+                  Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ],
                   "into_element",
-                  [ Ty.apply (Ty.path "&") [ A ] ]
+                  [ Ty.apply (Ty.path "&") [] [ A ] ]
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop_back :
@@ -3748,10 +4016,10 @@ Module collections.
               unsafe { self.split_off_after_node(split_node, at) }
           }
       *)
-      Definition split_off (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition split_off (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; at_ ] =>
+        match ε, τ, α with
+        | [], [], [ self; at_ ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let at_ := M.alloc (| at_ |) in
@@ -3762,7 +4030,10 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                          Ty.apply
+                            (Ty.path "alloc::collections::linked_list::LinkedList")
+                            []
+                            [ T; A ],
                           "len",
                           []
                         |),
@@ -3838,6 +4109,7 @@ Module collections.
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::LinkedList")
+                                            []
                                             [ T; A ]
                                         ]
                                       |),
@@ -3848,6 +4120,7 @@ Module collections.
                                             Ty.apply
                                               (Ty.path
                                                 "alloc::collections::linked_list::LinkedList")
+                                              []
                                               [ T; A ],
                                             "new_in",
                                             []
@@ -3903,6 +4176,7 @@ Module collections.
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloc::collections::linked_list::LinkedList")
+                                                  []
                                                   [ T; A ],
                                                 "new_in",
                                                 []
@@ -3972,6 +4246,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::LinkedList")
+                                        []
                                         [ T; A ],
                                       "iter_mut",
                                       []
@@ -3988,6 +4263,7 @@ Module collections.
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ],
                                           [],
                                           "into_iter",
@@ -4021,6 +4297,7 @@ Module collections.
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
                                                           (Ty.path "core::ops::range::Range")
+                                                          []
                                                           [ Ty.path "usize" ],
                                                         [],
                                                         "next",
@@ -4058,6 +4335,7 @@ Module collections.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::collections::linked_list::IterMut")
+                                                                  []
                                                                   [ T ],
                                                                 [],
                                                                 "next",
@@ -4086,6 +4364,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::LinkedList")
+                                        []
                                         [ T; A ],
                                       "iter_mut",
                                       []
@@ -4102,6 +4381,7 @@ Module collections.
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ],
                                           [],
                                           "into_iter",
@@ -4141,6 +4421,7 @@ Module collections.
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
                                                           (Ty.path "core::ops::range::Range")
+                                                          []
                                                           [ Ty.path "usize" ],
                                                         [],
                                                         "next",
@@ -4178,6 +4459,7 @@ Module collections.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::collections::linked_list::IterMut")
+                                                                  []
                                                                   [ T ],
                                                                 [],
                                                                 "next_back",
@@ -4204,7 +4486,10 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                        Ty.apply
+                          (Ty.path "alloc::collections::linked_list::LinkedList")
+                          []
+                          [ T; A ],
                         "split_off_after_node",
                         []
                       |),
@@ -4213,7 +4498,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_split_off :
@@ -4243,10 +4528,10 @@ Module collections.
               }
           }
       *)
-      Definition remove (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remove (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; at_ ] =>
+        match ε, τ, α with
+        | [], [], [ self; at_ ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let at_ := M.alloc (| at_ |) in
@@ -4255,7 +4540,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "len",
                       []
                     |),
@@ -4331,6 +4616,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
+                                []
                                 [ T; A ],
                               "cursor_front_mut",
                               []
@@ -4345,7 +4631,10 @@ Module collections.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::collect::IntoIterator",
-                                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ],
                                   [],
                                   "into_iter",
                                   []
@@ -4371,6 +4660,7 @@ Module collections.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::Range")
+                                                  []
                                                   [ Ty.path "usize" ],
                                                 [],
                                                 "next",
@@ -4405,6 +4695,7 @@ Module collections.
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloc::collections::linked_list::CursorMut")
+                                                          []
                                                           [ T; A ],
                                                         "move_next",
                                                         []
@@ -4422,7 +4713,7 @@ Module collections.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::option::Option") [ T ],
+                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
                             "unwrap",
                             []
                           |),
@@ -4431,6 +4722,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::linked_list::CursorMut")
+                                  []
                                   [ T; A ],
                                 "remove_current",
                                 []
@@ -4448,6 +4740,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
+                                []
                                 [ T; A ],
                               "cursor_back_mut",
                               []
@@ -4462,7 +4755,10 @@ Module collections.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::collect::IntoIterator",
-                                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ],
                                   [],
                                   "into_iter",
                                   []
@@ -4491,6 +4787,7 @@ Module collections.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::Range")
+                                                  []
                                                   [ Ty.path "usize" ],
                                                 [],
                                                 "next",
@@ -4525,6 +4822,7 @@ Module collections.
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloc::collections::linked_list::CursorMut")
+                                                          []
                                                           [ T; A ],
                                                         "move_prev",
                                                         []
@@ -4542,7 +4840,7 @@ Module collections.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::option::Option") [ T ],
+                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
                             "unwrap",
                             []
                           |),
@@ -4551,6 +4849,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::linked_list::CursorMut")
+                                  []
                                   [ T; A ],
                                 "remove_current",
                                 []
@@ -4563,7 +4862,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remove :
@@ -4578,10 +4877,10 @@ Module collections.
               self.retain_mut(|elem| f(elem));
           }
       *)
-      Definition retain (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition retain (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [ F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4590,11 +4889,11 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "retain_mut",
                       [
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ]
+                          [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
                           (Ty.path "bool")
                       ]
                     |),
@@ -4615,7 +4914,7 @@ Module collections.
                                         M.get_trait_method (|
                                           "core::ops::function::FnMut",
                                           F,
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                           "call_mut",
                                           []
                                         |),
@@ -4630,7 +4929,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_retain :
@@ -4652,10 +4951,15 @@ Module collections.
               }
           }
       *)
-      Definition retain_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition retain_mut
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [ F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4664,7 +4968,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "cursor_front_mut",
                       []
                     |),
@@ -4684,6 +4988,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::linked_list::CursorMut")
+                                    []
                                     [ T; A ],
                                   "current",
                                   []
@@ -4711,7 +5016,7 @@ Module collections.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                              [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                                               "call_mut",
                                               []
                                             |),
@@ -4727,7 +5032,7 @@ Module collections.
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "core::option::Option") [ T ],
+                                          Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                           "unwrap",
                                           []
                                         |),
@@ -4737,6 +5042,7 @@ Module collections.
                                               Ty.apply
                                                 (Ty.path
                                                   "alloc::collections::linked_list::CursorMut")
+                                                []
                                                 [ T; A ],
                                               "remove_current",
                                               []
@@ -4755,6 +5061,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::CursorMut")
+                                            []
                                             [ T; A ],
                                           "move_next",
                                           []
@@ -4780,7 +5087,7 @@ Module collections.
                   |)))
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_retain_mut :
@@ -4799,10 +5106,15 @@ Module collections.
               ExtractIf { list: self, it, pred: filter, idx: 0, old_len }
           }
       *)
-      Definition extract_if (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extract_if
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [ F ], [ self; filter ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; filter ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let filter := M.alloc (| filter |) in
@@ -4835,7 +5147,7 @@ Module collections.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_extract_if :
@@ -4847,6 +5159,7 @@ Module collections.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::linked_list::LinkedList")
+          []
           [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -4854,22 +5167,23 @@ Module collections.
               Self::new()
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::collections::linked_list::LinkedList")
+                  []
                   [ T; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
               |),
               []
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4885,6 +5199,7 @@ Module collections.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::linked_list::LinkedList")
+          []
           [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -4892,10 +5207,10 @@ Module collections.
               LinkedList { head: None, tail: None, len: 0, alloc: Global, marker: PhantomData }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "alloc::collections::linked_list::LinkedList"
@@ -4906,7 +5221,7 @@ Module collections.
                 ("alloc", Value.StructTuple "alloc::alloc::Global" []);
                 ("marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -4933,10 +5248,10 @@ Module collections.
               }
           }
       *)
-      Definition append (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition append (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4958,6 +5273,7 @@ Module collections.
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
+                                []
                                 [ T; Ty.path "alloc::alloc::Global" ]
                             ]
                           |),
@@ -4984,12 +5300,15 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::linked_list::Node")
+                                                []
                                                 [ T ]
                                             ]
                                         ],
@@ -5020,9 +5339,11 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::linked_list::Node")
+                                                []
                                                 [ T ]
                                             ],
                                           "as_mut",
@@ -5044,9 +5365,11 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::linked_list::Node")
+                                                []
                                                 [ T ]
                                             ],
                                           "as_mut",
@@ -5073,12 +5396,15 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::linked_list::Node")
+                                                []
                                                 [ T ]
                                             ]
                                         ],
@@ -5128,7 +5454,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_append :
@@ -5139,7 +5465,7 @@ Module collections.
     
     Module Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       (*
           fn drop(&mut self) {
@@ -5159,10 +5485,10 @@ Module collections.
               mem::forget(guard);
           }
       *)
-      Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5187,14 +5513,17 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::linked_list::Node")
+                                                []
                                                 [ T ];
-                                              Ty.apply (Ty.path "&") [ A ]
+                                              Ty.apply (Ty.path "&") [] [ A ]
                                             ]
                                         ],
                                       "is_some",
@@ -5207,6 +5536,7 @@ Module collections.
                                             Ty.apply
                                               (Ty.path
                                                 "alloc::collections::linked_list::LinkedList")
+                                              []
                                               [ T; A ],
                                             "pop_front_node",
                                             []
@@ -5250,6 +5580,7 @@ Module collections.
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::linked_list::drop::DropGuard")
+                          []
                           [ T; A ]
                       ]
                     |),
@@ -5258,7 +5589,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5272,10 +5603,10 @@ Module collections.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_alloc_collections_linked_list_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ].
       
       (*     type Item = &'a T; *)
-      Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (*
           fn next(&mut self) -> Option<&'a T> {
@@ -5292,10 +5623,10 @@ Module collections.
               }
           }
       *)
-      Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5326,29 +5657,37 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ]
                               ],
                             "map",
                             [
-                              Ty.apply (Ty.path "&") [ T ];
+                              Ty.apply (Ty.path "&") [] [ T ];
                               Ty.function
                                 [
                                   Ty.tuple
                                     [
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::Node")
+                                            []
                                             [ T ]
                                         ]
                                     ]
                                 ]
-                                (Ty.apply (Ty.path "&") [ T ])
+                                (Ty.apply (Ty.path "&") [] [ T ])
                             ]
                           |),
                           [
@@ -5377,10 +5716,12 @@ Module collections.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloc::collections::linked_list::Node")
+                                                            []
                                                             [ T ]
                                                         ],
                                                       "as_ptr",
@@ -5436,7 +5777,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5444,10 +5785,10 @@ Module collections.
               (self.len, Some(self.len))
           }
       *)
-      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple
@@ -5471,7 +5812,7 @@ Module collections.
                     |)
                   ]
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5479,23 +5820,23 @@ Module collections.
               self.next_back()
           }
       *)
-      Definition last (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition last (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
-                Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                 [],
                 "next_back",
                 []
               |),
               [ self ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5515,7 +5856,7 @@ Module collections.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_alloc_collections_linked_list_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ].
       
       (*
           fn next_back(&mut self) -> Option<&'a T> {
@@ -5532,10 +5873,10 @@ Module collections.
               }
           }
       *)
-      Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5566,29 +5907,37 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ]
                               ],
                             "map",
                             [
-                              Ty.apply (Ty.path "&") [ T ];
+                              Ty.apply (Ty.path "&") [] [ T ];
                               Ty.function
                                 [
                                   Ty.tuple
                                     [
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::Node")
+                                            []
                                             [ T ]
                                         ]
                                     ]
                                 ]
-                                (Ty.apply (Ty.path "&") [ T ])
+                                (Ty.apply (Ty.path "&") [] [ T ])
                             ]
                           |),
                           [
@@ -5617,10 +5966,12 @@ Module collections.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloc::collections::linked_list::Node")
+                                                            []
                                                             [ T ]
                                                         ],
                                                       "as_ptr",
@@ -5676,7 +6027,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5690,7 +6041,7 @@ Module collections.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_alloc_collections_linked_list_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -5703,7 +6054,7 @@ Module collections.
     
     Module Impl_core_iter_traits_marker_FusedIterator_for_alloc_collections_linked_list_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -5716,17 +6067,17 @@ Module collections.
     
     Module Impl_core_default_Default_for_alloc_collections_linked_list_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ].
       
       (*
           fn default() -> Self {
               Iter { head: None, tail: None, len: 0, marker: Default::default() }
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "alloc::collections::linked_list::Iter"
@@ -5740,10 +6091,12 @@ Module collections.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "core::marker::PhantomData")
+                        []
                         [
                           Ty.apply
                             (Ty.path "&")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       [],
                       "default",
@@ -5752,7 +6105,7 @@ Module collections.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5766,10 +6119,10 @@ Module collections.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_alloc_collections_linked_list_IterMut_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [] [ T ].
       
       (*     type Item = &'a mut T; *)
-      Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (*
           fn next(&mut self) -> Option<&'a mut T> {
@@ -5786,10 +6139,10 @@ Module collections.
               }
           }
       *)
-      Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5820,29 +6173,37 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ]
                               ],
                             "map",
                             [
-                              Ty.apply (Ty.path "&mut") [ T ];
+                              Ty.apply (Ty.path "&mut") [] [ T ];
                               Ty.function
                                 [
                                   Ty.tuple
                                     [
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::Node")
+                                            []
                                             [ T ]
                                         ]
                                     ]
                                 ]
-                                (Ty.apply (Ty.path "&mut") [ T ])
+                                (Ty.apply (Ty.path "&mut") [] [ T ])
                             ]
                           |),
                           [
@@ -5871,10 +6232,12 @@ Module collections.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloc::collections::linked_list::Node")
+                                                            []
                                                             [ T ]
                                                         ],
                                                       "as_ptr",
@@ -5930,7 +6293,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5938,10 +6301,10 @@ Module collections.
               (self.len, Some(self.len))
           }
       *)
-      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple
@@ -5965,7 +6328,7 @@ Module collections.
                     |)
                   ]
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5973,23 +6336,23 @@ Module collections.
               self.next_back()
           }
       *)
-      Definition last (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition last (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
-                Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [ T ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [] [ T ],
                 [],
                 "next_back",
                 []
               |),
               [ self ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6009,7 +6372,7 @@ Module collections.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_alloc_collections_linked_list_IterMut_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [] [ T ].
       
       (*
           fn next_back(&mut self) -> Option<&'a mut T> {
@@ -6026,10 +6389,10 @@ Module collections.
               }
           }
       *)
-      Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -6060,29 +6423,37 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ]
                               ],
                             "map",
                             [
-                              Ty.apply (Ty.path "&mut") [ T ];
+                              Ty.apply (Ty.path "&mut") [] [ T ];
                               Ty.function
                                 [
                                   Ty.tuple
                                     [
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::Node")
+                                            []
                                             [ T ]
                                         ]
                                     ]
                                 ]
-                                (Ty.apply (Ty.path "&mut") [ T ])
+                                (Ty.apply (Ty.path "&mut") [] [ T ])
                             ]
                           |),
                           [
@@ -6111,10 +6482,12 @@ Module collections.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloc::collections::linked_list::Node")
+                                                            []
                                                             [ T ]
                                                         ],
                                                       "as_ptr",
@@ -6170,7 +6543,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6184,7 +6557,7 @@ Module collections.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_alloc_collections_linked_list_IterMut_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -6197,7 +6570,7 @@ Module collections.
     
     Module Impl_core_iter_traits_marker_FusedIterator_for_alloc_collections_linked_list_IterMut_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -6210,17 +6583,17 @@ Module collections.
     
     Module Impl_core_default_Default_for_alloc_collections_linked_list_IterMut_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [] [ T ].
       
       (*
           fn default() -> Self {
               IterMut { head: None, tail: None, len: 0, marker: Default::default() }
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "alloc::collections::linked_list::IterMut"
@@ -6234,10 +6607,12 @@ Module collections.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "core::marker::PhantomData")
+                        []
                         [
                           Ty.apply
                             (Ty.path "&mut")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       [],
                       "default",
@@ -6246,7 +6621,7 @@ Module collections.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6261,6 +6636,7 @@ Module collections.
     (* StructRecord
       {
         name := "Cursor";
+        const_params := [];
         ty_params := [ "T"; "A" ];
         fields :=
           [
@@ -6268,21 +6644,24 @@ Module collections.
             ("current",
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ]);
             ("list",
               Ty.apply
                 (Ty.path "&")
-                [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ] ])
+                []
+                [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ])
           ];
       } *)
     
     Module Impl_core_clone_Clone_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_Cursor_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [] [ T; A ].
       
       (*
           fn clone(&self) -> Self {
@@ -6290,10 +6669,10 @@ Module collections.
               Cursor { index, current, list }
           }
       *)
-      Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -6335,7 +6714,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6349,17 +6728,17 @@ Module collections.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_Cursor_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [] [ T; A ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_tuple("Cursor").field(&self.list).field(&self.index()).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6408,7 +6787,10 @@ Module collections.
                       (M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [ T; A ],
+                            Ty.apply
+                              (Ty.path "alloc::collections::linked_list::Cursor")
+                              []
+                              [ T; A ],
                             "index",
                             []
                           |),
@@ -6419,7 +6801,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6434,6 +6816,7 @@ Module collections.
     (* StructRecord
       {
         name := "CursorMut";
+        const_params := [];
         ty_params := [ "T"; "A" ];
         fields :=
           [
@@ -6441,31 +6824,34 @@ Module collections.
             ("current",
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ]);
             ("list",
               Ty.apply
                 (Ty.path "&mut")
-                [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ] ])
+                []
+                [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ])
           ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_CursorMut_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::CursorMut") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::CursorMut") [] [ T; A ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_tuple("CursorMut").field(&self.list).field(&self.index()).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6516,6 +6902,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::linked_list::CursorMut")
+                              []
                               [ T; A ],
                             "index",
                             []
@@ -6527,7 +6914,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6541,7 +6928,7 @@ Module collections.
     
     Module Impl_alloc_collections_linked_list_Cursor_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [] [ T; A ].
       
       (*
           pub fn index(&self) -> Option<usize> {
@@ -6549,10 +6936,10 @@ Module collections.
               Some(self.index)
           }
       *)
-      Definition index (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -6566,10 +6953,16 @@ Module collections.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ]
                               ],
                             [],
@@ -6606,10 +6999,12 @@ Module collections.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "usize" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "core::convert::Infallible" ]
                                         ],
                                         "from_residual",
@@ -6653,7 +7048,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_index :
@@ -6677,10 +7072,10 @@ Module collections.
               }
           }
       *)
-      Definition move_next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition move_next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -6690,10 +7085,12 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::option::Option")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       "take",
                       []
@@ -6764,9 +7161,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::Node")
+                                        []
                                         [ T ]
                                     ],
                                   "as_ref",
@@ -6794,7 +7193,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_move_next :
@@ -6817,10 +7216,10 @@ Module collections.
               }
           }
       *)
-      Definition move_prev (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition move_prev (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -6830,10 +7229,12 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::option::Option")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       "take",
                       []
@@ -6881,7 +7282,7 @@ Module collections.
                           |),
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or",
                               []
                             |),
@@ -6893,6 +7294,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::LinkedList")
+                                        []
                                         [ T; A ],
                                       "len",
                                       []
@@ -6937,9 +7339,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::Node")
+                                        []
                                         [ T ]
                                     ],
                                   "as_ref",
@@ -6961,7 +7365,7 @@ Module collections.
                           |),
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or_else",
                               [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
                             |),
@@ -6994,6 +7398,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::linked_list::LinkedList")
+                                                    []
                                                     [ T; A ],
                                                   "len",
                                                   []
@@ -7019,7 +7424,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_move_prev :
@@ -7031,34 +7436,37 @@ Module collections.
               unsafe { self.current.map(|current| &( *current.as_ptr()).element) }
           }
       *)
-      Definition current (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition current (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                      []
+                      [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                   ],
                 "map",
                 [
-                  Ty.apply (Ty.path "&") [ T ];
+                  Ty.apply (Ty.path "&") [] [ T ];
                   Ty.function
                     [
                       Ty.tuple
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ]
                     ]
-                    (Ty.apply (Ty.path "&") [ T ])
+                    (Ty.apply (Ty.path "&") [] [ T ])
                 ]
               |),
               [
@@ -7085,9 +7493,11 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::Node")
+                                            []
                                             [ T ]
                                         ],
                                       "as_ptr",
@@ -7104,7 +7514,7 @@ Module collections.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_current :
@@ -7122,10 +7532,10 @@ Module collections.
               }
           }
       *)
-      Definition peek_next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition peek_next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -7166,7 +7576,12 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ],
                                 "as_ref",
                                 []
@@ -7184,24 +7599,32 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "map",
                     [
-                      Ty.apply (Ty.path "&") [ T ];
+                      Ty.apply (Ty.path "&") [] [ T ];
                       Ty.function
                         [
                           Ty.tuple
                             [
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ]
+                                ]
                             ]
                         ]
-                        (Ty.apply (Ty.path "&") [ T ])
+                        (Ty.apply (Ty.path "&") [] [ T ])
                     ]
                   |),
                   [
@@ -7222,9 +7645,11 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::linked_list::Node")
+                                                []
                                                 [ T ]
                                             ],
                                           "as_ptr",
@@ -7243,7 +7668,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_peek_next :
@@ -7261,10 +7686,10 @@ Module collections.
               }
           }
       *)
-      Definition peek_prev (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition peek_prev (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -7305,7 +7730,12 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ],
                                 "as_ref",
                                 []
@@ -7323,24 +7753,32 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "map",
                     [
-                      Ty.apply (Ty.path "&") [ T ];
+                      Ty.apply (Ty.path "&") [] [ T ];
                       Ty.function
                         [
                           Ty.tuple
                             [
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ]
+                                ]
                             ]
                         ]
-                        (Ty.apply (Ty.path "&") [ T ])
+                        (Ty.apply (Ty.path "&") [] [ T ])
                     ]
                   |),
                   [
@@ -7361,9 +7799,11 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::linked_list::Node")
+                                                []
                                                 [ T ]
                                             ],
                                           "as_ptr",
@@ -7382,7 +7822,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_peek_prev :
@@ -7394,15 +7834,15 @@ Module collections.
               self.list.front()
           }
       *)
-      Definition front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition front (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "front",
                 []
               |),
@@ -7416,7 +7856,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_front :
@@ -7428,15 +7868,15 @@ Module collections.
               self.list.back()
           }
       *)
-      Definition back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition back (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "back",
                 []
               |),
@@ -7450,7 +7890,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_back :
@@ -7460,7 +7900,7 @@ Module collections.
     
     Module Impl_alloc_collections_linked_list_CursorMut_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::CursorMut") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::CursorMut") [] [ T; A ].
       
       (*
           pub fn index(&self) -> Option<usize> {
@@ -7468,10 +7908,10 @@ Module collections.
               Some(self.index)
           }
       *)
-      Definition index (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -7485,10 +7925,16 @@ Module collections.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ]
                               ],
                             [],
@@ -7525,10 +7971,12 @@ Module collections.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "usize" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "core::convert::Infallible" ]
                                         ],
                                         "from_residual",
@@ -7572,7 +8020,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_index :
@@ -7596,10 +8044,10 @@ Module collections.
               }
           }
       *)
-      Definition move_next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition move_next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -7609,10 +8057,12 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::option::Option")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       "take",
                       []
@@ -7683,9 +8133,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::Node")
+                                        []
                                         [ T ]
                                     ],
                                   "as_ref",
@@ -7713,7 +8165,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_move_next :
@@ -7736,10 +8188,10 @@ Module collections.
               }
           }
       *)
-      Definition move_prev (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition move_prev (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -7749,10 +8201,12 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::option::Option")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       "take",
                       []
@@ -7800,7 +8254,7 @@ Module collections.
                           |),
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or",
                               []
                             |),
@@ -7812,6 +8266,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::LinkedList")
+                                        []
                                         [ T; A ],
                                       "len",
                                       []
@@ -7856,9 +8311,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::Node")
+                                        []
                                         [ T ]
                                     ],
                                   "as_ref",
@@ -7880,7 +8337,7 @@ Module collections.
                           |),
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or_else",
                               [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
                             |),
@@ -7913,6 +8370,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::linked_list::LinkedList")
+                                                    []
                                                     [ T; A ],
                                                   "len",
                                                   []
@@ -7938,7 +8396,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_move_prev :
@@ -7950,34 +8408,37 @@ Module collections.
               unsafe { self.current.map(|current| &mut ( *current.as_ptr()).element) }
           }
       *)
-      Definition current (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition current (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                      []
+                      [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                   ],
                 "map",
                 [
-                  Ty.apply (Ty.path "&mut") [ T ];
+                  Ty.apply (Ty.path "&mut") [] [ T ];
                   Ty.function
                     [
                       Ty.tuple
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ]
                     ]
-                    (Ty.apply (Ty.path "&mut") [ T ])
+                    (Ty.apply (Ty.path "&mut") [] [ T ])
                 ]
               |),
               [
@@ -8004,9 +8465,11 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::Node")
+                                            []
                                             [ T ]
                                         ],
                                       "as_ptr",
@@ -8023,7 +8486,7 @@ Module collections.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_current :
@@ -8041,10 +8504,10 @@ Module collections.
               }
           }
       *)
-      Definition peek_next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition peek_next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -8085,7 +8548,12 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ],
                                 "as_ref",
                                 []
@@ -8103,24 +8571,32 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "map",
                     [
-                      Ty.apply (Ty.path "&mut") [ T ];
+                      Ty.apply (Ty.path "&mut") [] [ T ];
                       Ty.function
                         [
                           Ty.tuple
                             [
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ]
+                                ]
                             ]
                         ]
-                        (Ty.apply (Ty.path "&mut") [ T ])
+                        (Ty.apply (Ty.path "&mut") [] [ T ])
                     ]
                   |),
                   [
@@ -8141,9 +8617,11 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::linked_list::Node")
+                                                []
                                                 [ T ]
                                             ],
                                           "as_ptr",
@@ -8162,7 +8640,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_peek_next :
@@ -8180,10 +8658,10 @@ Module collections.
               }
           }
       *)
-      Definition peek_prev (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition peek_prev (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -8224,7 +8702,12 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ],
                                 "as_ref",
                                 []
@@ -8242,24 +8725,32 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "map",
                     [
-                      Ty.apply (Ty.path "&mut") [ T ];
+                      Ty.apply (Ty.path "&mut") [] [ T ];
                       Ty.function
                         [
                           Ty.tuple
                             [
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ]
+                                ]
                             ]
                         ]
-                        (Ty.apply (Ty.path "&mut") [ T ])
+                        (Ty.apply (Ty.path "&mut") [] [ T ])
                     ]
                   |),
                   [
@@ -8280,9 +8771,11 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::linked_list::Node")
+                                                []
                                                 [ T ]
                                             ],
                                           "as_ptr",
@@ -8301,7 +8794,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_peek_prev :
@@ -8313,10 +8806,10 @@ Module collections.
               Cursor { list: self.list, current: self.current, index: self.index }
           }
       *)
-      Definition as_cursor (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_cursor (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -8347,7 +8840,7 @@ Module collections.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_cursor :
@@ -8369,10 +8862,15 @@ Module collections.
               }
           }
       *)
-      Definition insert_after (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition insert_after
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; item ] =>
+        match ε, τ, α with
+        | [], [], [ self; item ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
@@ -8384,11 +8882,13 @@ Module collections.
                       "core::convert::Into",
                       Ty.apply
                         (Ty.path "&mut")
-                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                       "into",
                       []
@@ -8398,9 +8898,10 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
+                            []
                             [
-                              Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                              Ty.apply (Ty.path "&") [ A ]
+                              Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                              Ty.apply (Ty.path "&") [] [ A ]
                             ],
                           "leak",
                           []
@@ -8410,9 +8911,13 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
-                                  Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                                  Ty.apply (Ty.path "&") [ A ]
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ];
+                                  Ty.apply (Ty.path "&") [] [ A ]
                                 ],
                               "new_in",
                               []
@@ -8420,7 +8925,10 @@ Module collections.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ],
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ],
                                   "new",
                                   []
                                 |),
@@ -8481,7 +8989,12 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ],
                                 "as_ref",
                                 []
@@ -8498,7 +9011,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "splice_nodes",
                       []
                     |),
@@ -8536,12 +9049,15 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::collections::linked_list::Node")
+                                          []
                                           [ T ]
                                       ]
                                   ],
@@ -8584,7 +9100,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_insert_after :
@@ -8604,10 +9120,15 @@ Module collections.
               }
           }
       *)
-      Definition insert_before (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition insert_before
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; item ] =>
+        match ε, τ, α with
+        | [], [], [ self; item ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
@@ -8619,11 +9140,13 @@ Module collections.
                       "core::convert::Into",
                       Ty.apply
                         (Ty.path "&mut")
-                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                       "into",
                       []
@@ -8633,9 +9156,10 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
+                            []
                             [
-                              Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                              Ty.apply (Ty.path "&") [ A ]
+                              Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                              Ty.apply (Ty.path "&") [] [ A ]
                             ],
                           "leak",
                           []
@@ -8645,9 +9169,13 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
-                                  Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
-                                  Ty.apply (Ty.path "&") [ A ]
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ];
+                                  Ty.apply (Ty.path "&") [] [ A ]
                                 ],
                               "new_in",
                               []
@@ -8655,7 +9183,10 @@ Module collections.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ],
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ],
                                   "new",
                                   []
                                 |),
@@ -8716,7 +9247,12 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Node")
+                                      []
+                                      [ T ]
                                   ],
                                 "as_ref",
                                 []
@@ -8733,7 +9269,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "splice_nodes",
                       []
                     |),
@@ -8769,7 +9305,7 @@ Module collections.
                 M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_insert_before :
@@ -8787,10 +9323,15 @@ Module collections.
               }
           }
       *)
-      Definition remove_current (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remove_current
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -8805,12 +9346,15 @@ Module collections.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::Node")
+                                        []
                                         [ T ]
                                     ]
                                 ],
@@ -8846,10 +9390,11 @@ Module collections.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::ops::try_trait::FromResidual",
-                                          Ty.apply (Ty.path "core::option::Option") [ T ],
+                                          Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -8887,7 +9432,12 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ]
                                 ],
                               "as_ref",
                               []
@@ -8903,7 +9453,10 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                          Ty.apply
+                            (Ty.path "alloc::collections::linked_list::LinkedList")
+                            []
+                            [ T; A ],
                           "unlink_node",
                           []
                         |),
@@ -8925,8 +9478,9 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
+                            []
                             [
-                              Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ];
+                              Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
                               Ty.path "alloc::alloc::Global"
                             ],
                           "from_raw",
@@ -8937,7 +9491,12 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ]
                                 ],
                               "as_ptr",
                               []
@@ -8962,7 +9521,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remove_current :
@@ -8991,10 +9550,15 @@ Module collections.
               }
           }
       *)
-      Definition remove_current_as_list (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remove_current_as_list
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -9009,12 +9573,15 @@ Module collections.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::Node")
+                                        []
                                         [ T ]
                                     ]
                                 ],
@@ -9052,15 +9619,18 @@ Module collections.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path
                                                   "alloc::collections::linked_list::LinkedList")
+                                                []
                                                 [ T; A ]
                                             ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -9098,7 +9668,12 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Node")
+                                    []
+                                    [ T ]
                                 ],
                               "as_ref",
                               []
@@ -9114,7 +9689,10 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                          Ty.apply
+                            (Ty.path "alloc::collections::linked_list::LinkedList")
+                            []
+                            [ T; A ],
                           "unlink_node",
                           []
                         |),
@@ -9137,7 +9715,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
-                              [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                              []
+                              [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ]
+                              ],
                             "as_mut",
                             []
                           |),
@@ -9155,7 +9735,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
-                              [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ],
+                              []
+                              [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ]
+                              ],
                             "as_mut",
                             []
                           |),
@@ -9205,7 +9787,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remove_current_as_list :
@@ -9225,10 +9807,15 @@ Module collections.
               unsafe { self.list.split_off_after_node(self.current, split_off_idx) }
           }
       *)
-      Definition split_after (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition split_after
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -9333,7 +9920,7 @@ Module collections.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "split_off_after_node",
                     []
                   |),
@@ -9357,7 +9944,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_split_after :
@@ -9374,10 +9961,15 @@ Module collections.
               unsafe { self.list.split_off_before_node(self.current, split_off_idx) }
           }
       *)
-      Definition split_before (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition split_before
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -9401,7 +9993,7 @@ Module collections.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "split_off_before_node",
                     []
                   |),
@@ -9425,7 +10017,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_split_before :
@@ -9441,10 +10033,15 @@ Module collections.
               self.index += 1;
           }
       *)
-      Definition push_front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push_front
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; elt ] =>
+        match ε, τ, α with
+        | [], [], [ self; elt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let elt := M.alloc (| elt |) in
@@ -9453,7 +10050,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "push_front",
                       []
                     |),
@@ -9479,7 +10076,7 @@ Module collections.
                 M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_push_front :
@@ -9499,10 +10096,10 @@ Module collections.
               }
           }
       *)
-      Definition push_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push_back (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; elt ] =>
+        match ε, τ, α with
+        | [], [], [ self; elt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let elt := M.alloc (| elt |) in
@@ -9511,7 +10108,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "push_back",
                       []
                     |),
@@ -9539,7 +10136,8 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
-                                  [ Ty.apply (Ty.path "&mut") [ T ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                 "is_none",
                                 []
                               |),
@@ -9549,6 +10147,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::CursorMut")
+                                        []
                                         [ T; A ],
                                       "current",
                                       []
@@ -9576,7 +10175,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_push_back :
@@ -9604,10 +10203,10 @@ Module collections.
               }
           }
       *)
-      Definition pop_front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop_front (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -9623,6 +10222,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::linked_list::LinkedList")
+                                  []
                                   [ T; A ],
                                 "is_empty",
                                 []
@@ -9656,26 +10256,32 @@ Module collections.
                                           "core::cmp::PartialEq",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::linked_list::Node")
+                                                    []
                                                     [ T ]
                                                 ]
                                             ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloc::collections::linked_list::Node")
+                                                      []
                                                       [ T ]
                                                   ]
                                               ]
@@ -9714,6 +10320,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::linked_list::CursorMut")
+                                          []
                                           [ T; A ],
                                         "move_next",
                                         []
@@ -9743,6 +10350,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::linked_list::LinkedList")
+                              []
                               [ T; A ],
                             "pop_front",
                             []
@@ -9761,7 +10369,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop_front :
@@ -9785,10 +10393,10 @@ Module collections.
               }
           }
       *)
-      Definition pop_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop_back (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -9804,6 +10412,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::linked_list::LinkedList")
+                                  []
                                   [ T; A ],
                                 "is_empty",
                                 []
@@ -9837,26 +10446,32 @@ Module collections.
                                           "core::cmp::PartialEq",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::linked_list::Node")
+                                                    []
                                                     [ T ]
                                                 ]
                                             ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloc::collections::linked_list::Node")
+                                                      []
                                                       [ T ]
                                                   ]
                                               ]
@@ -9913,13 +10528,16 @@ Module collections.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloc::collections::linked_list::Node")
+                                                            []
                                                             [ T ]
                                                         ]
                                                     ],
@@ -9975,6 +10593,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::linked_list::LinkedList")
+                              []
                               [ T; A ],
                             "pop_back",
                             []
@@ -9993,7 +10612,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop_back :
@@ -10005,15 +10624,15 @@ Module collections.
               self.list.front()
           }
       *)
-      Definition front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition front (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "front",
                 []
               |),
@@ -10027,7 +10646,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_front :
@@ -10039,15 +10658,15 @@ Module collections.
               self.list.front_mut()
           }
       *)
-      Definition front_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition front_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "front_mut",
                 []
               |),
@@ -10061,7 +10680,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_front_mut :
@@ -10073,15 +10692,15 @@ Module collections.
               self.list.back()
           }
       *)
-      Definition back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition back (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "back",
                 []
               |),
@@ -10095,7 +10714,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_back :
@@ -10107,15 +10726,15 @@ Module collections.
               self.list.back_mut()
           }
       *)
-      Definition back_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition back_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "back_mut",
                 []
               |),
@@ -10129,7 +10748,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_back_mut :
@@ -10141,6 +10760,7 @@ Module collections.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::linked_list::CursorMut")
+          []
           [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -10162,10 +10782,15 @@ Module collections.
               }
           }
       *)
-      Definition splice_after (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition splice_after
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; list ] =>
+        match ε, τ, α with
+        | [], [], [ self; list ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let list := M.alloc (| list |) in
@@ -10179,6 +10804,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::linked_list::LinkedList")
+                              []
                               [ T; Ty.path "alloc::alloc::Global" ],
                             "detach_all_nodes",
                             []
@@ -10251,9 +10877,11 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
                                                   [ T ]
                                               ],
                                             "as_ref",
@@ -10273,6 +10901,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::linked_list::LinkedList")
+                                    []
                                     [ T; Ty.path "alloc::alloc::Global" ],
                                   "splice_nodes",
                                   []
@@ -10311,13 +10940,16 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloc::collections::linked_list::Node")
+                                                      []
                                                       [ T ]
                                                   ]
                                               ],
@@ -10367,7 +10999,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_splice_after :
@@ -10390,10 +11022,15 @@ Module collections.
               }
           }
       *)
-      Definition splice_before (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition splice_before
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; list ] =>
+        match ε, τ, α with
+        | [], [], [ self; list ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let list := M.alloc (| list |) in
@@ -10407,6 +11044,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::linked_list::LinkedList")
+                              []
                               [ T; Ty.path "alloc::alloc::Global" ],
                             "detach_all_nodes",
                             []
@@ -10479,9 +11117,11 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
                                                   [ T ]
                                               ],
                                             "as_ref",
@@ -10501,6 +11141,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::linked_list::LinkedList")
+                                    []
                                     [ T; Ty.path "alloc::alloc::Global" ],
                                   "splice_nodes",
                                   []
@@ -10546,7 +11187,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_splice_before :
@@ -10558,20 +11199,24 @@ Module collections.
     (* StructRecord
       {
         name := "ExtractIf";
+        const_params := [];
         ty_params := [ "T"; "F"; "A" ];
         fields :=
           [
             ("list",
               Ty.apply
                 (Ty.path "&mut")
-                [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ] ]);
+                []
+                [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ]);
             ("it",
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                 ]);
             ("pred", F);
             ("idx", Ty.path "usize");
@@ -10581,7 +11226,7 @@ Module collections.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_where_core_ops_function_FnMut_F_Tuple_ref_mut_T__for_alloc_collections_linked_list_ExtractIf_T_F_A.
       Definition Self (T F A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::ExtractIf") [ T; F; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::ExtractIf") [] [ T; F; A ].
       
       (*     type Item = T; *)
       Definition _Item (T F A : Ty.t) : Ty.t := T.
@@ -10604,10 +11249,10 @@ Module collections.
               None
           }
       *)
-      Definition next (T F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T F A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -10647,9 +11292,11 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
                                                   [ T ]
                                               ],
                                             "as_ref",
@@ -10685,7 +11332,8 @@ Module collections.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                                                  ],
                                                   "call_mut",
                                                   []
                                                 |),
@@ -10703,10 +11351,12 @@ Module collections.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::ptr::non_null::NonNull")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::collections::linked_list::Node")
+                                                                  []
                                                                   [ T ]
                                                               ],
                                                             "as_mut",
@@ -10736,6 +11386,7 @@ Module collections.
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::linked_list::LinkedList")
+                                                        []
                                                         [ T; A ],
                                                       "unlink_node",
                                                       []
@@ -10762,10 +11413,12 @@ Module collections.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "alloc::boxed::Box")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::collections::linked_list::Node")
+                                                                  []
                                                                   [ T ];
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
@@ -10778,10 +11431,12 @@ Module collections.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::ptr::non_null::NonNull")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "alloc::collections::linked_list::Node")
+                                                                      []
                                                                       [ T ]
                                                                   ],
                                                                 "as_ptr",
@@ -10822,7 +11477,7 @@ Module collections.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -10830,10 +11485,15 @@ Module collections.
               (0, Some(self.old_len - self.idx))
           }
       *)
-      Definition size_hint (T F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint
+          (T F A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T F A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple
@@ -10860,7 +11520,7 @@ Module collections.
                       |))
                   ]
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10881,6 +11541,7 @@ Module collections.
       Definition Self (T F : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::linked_list::ExtractIf")
+          []
           [ T; F; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -10888,10 +11549,10 @@ Module collections.
               f.debug_tuple("ExtractIf").field(&self.list).finish()
           }
       *)
-      Definition fmt (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -10930,7 +11591,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10944,7 +11605,7 @@ Module collections.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [] [ T; A ].
       
       (*     type Item = T; *)
       Definition _Item (T A : Ty.t) : Ty.t := T.
@@ -10954,15 +11615,15 @@ Module collections.
               self.list.pop_front()
           }
       *)
-      Definition next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "pop_front",
                 []
               |),
@@ -10974,7 +11635,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -10982,10 +11643,10 @@ Module collections.
               (self.list.len, Some(self.list.len))
           }
       *)
-      Definition size_hint (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple
@@ -11017,7 +11678,7 @@ Module collections.
                     |)
                   ]
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11036,22 +11697,22 @@ Module collections.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [] [ T; A ].
       
       (*
           fn next_back(&mut self) -> Option<T> {
               self.list.pop_back()
           }
       *)
-      Definition next_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "pop_back",
                 []
               |),
@@ -11063,7 +11724,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11077,7 +11738,7 @@ Module collections.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -11090,7 +11751,7 @@ Module collections.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -11105,6 +11766,7 @@ Module collections.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::linked_list::IntoIter")
+          []
           [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -11112,16 +11774,17 @@ Module collections.
               LinkedList::new().into_iter()
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::collect::IntoIterator",
                 Ty.apply
                   (Ty.path "alloc::collections::linked_list::LinkedList")
+                  []
                   [ T; Ty.path "alloc::alloc::Global" ],
                 [],
                 "into_iter",
@@ -11132,6 +11795,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::linked_list::LinkedList")
+                      []
                       [ T; Ty.path "alloc::alloc::Global" ],
                     "new",
                     []
@@ -11140,7 +11804,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11156,6 +11820,7 @@ Module collections.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::linked_list::LinkedList")
+          []
           [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -11165,10 +11830,10 @@ Module collections.
               list
           }
       *)
-      Definition from_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ _ as I ], [ iter ] =>
+        match ε, τ, α with
+        | [], [ _ as I ], [ iter ] =>
           ltac:(M.monadic
             (let iter := M.alloc (| iter |) in
             M.read (|
@@ -11178,6 +11843,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::linked_list::LinkedList")
+                        []
                         [ T; Ty.path "alloc::alloc::Global" ],
                       "new",
                       []
@@ -11192,6 +11858,7 @@ Module collections.
                       "core::iter::traits::collect::Extend",
                       Ty.apply
                         (Ty.path "alloc::collections::linked_list::LinkedList")
+                        []
                         [ T; Ty.path "alloc::alloc::Global" ],
                       [ T ],
                       "extend",
@@ -11202,7 +11869,7 @@ Module collections.
                 |) in
               list
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11216,30 +11883,30 @@ Module collections.
     
     Module Impl_core_iter_traits_collect_IntoIterator_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       (*     type Item = T; *)
       Definition _Item (T A : Ty.t) : Ty.t := T.
       
       (*     type IntoIter = IntoIter<T, A>; *)
       Definition _IntoIter (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [] [ T; A ].
       
       (*
           fn into_iter(self) -> IntoIter<T, A> {
               IntoIter { list: self }
           }
       *)
-      Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_iter (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::linked_list::IntoIter"
               [ ("list", M.read (| self |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11260,35 +11927,36 @@ Module collections.
       Definition Self (T A : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "&")
-          [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ] ].
+          []
+          [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ].
       
       (*     type Item = &'a T; *)
-      Definition _Item (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition _Item (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (*     type IntoIter = Iter<'a, T>; *)
       Definition _IntoIter (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ].
       
       (*
           fn into_iter(self) -> Iter<'a, T> {
               self.iter()
           }
       *)
-      Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_iter (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "iter",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11309,35 +11977,36 @@ Module collections.
       Definition Self (T A : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "&mut")
-          [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ] ].
+          []
+          [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ].
       
       (*     type Item = &'a mut T; *)
-      Definition _Item (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition _Item (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (*     type IntoIter = IterMut<'a, T>; *)
       Definition _IntoIter (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [] [ T ].
       
       (*
           fn into_iter(self) -> IterMut<'a, T> {
               self.iter_mut()
           }
       *)
-      Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_iter (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "iter_mut",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11356,17 +12025,17 @@ Module collections.
     
     Module Impl_core_iter_traits_collect_Extend_where_core_alloc_Allocator_A_T_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       (*
           fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
               <Self as SpecExtend<I>>::spec_extend(self, iter);
           }
       *)
-      Definition extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [ _ as I ], [ self; iter ] =>
+        match ε, τ, α with
+        | [], [ _ as I ], [ self; iter ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let iter := M.alloc (| iter |) in
@@ -11376,7 +12045,7 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "alloc::collections::SpecExtend",
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       [ I ],
                       "spec_extend",
                       []
@@ -11386,7 +12055,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -11394,10 +12063,15 @@ Module collections.
               self.push_back(elem);
           }
       *)
-      Definition extend_one (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend_one
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; elem ] =>
+        match ε, τ, α with
+        | [], [], [ self; elem ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let elem := M.alloc (| elem |) in
@@ -11406,7 +12080,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "push_back",
                       []
                     |),
@@ -11415,7 +12089,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11433,17 +12107,22 @@ Module collections.
     
     Module Impl_alloc_collections_SpecExtend_where_core_iter_traits_collect_IntoIterator_I_where_core_alloc_Allocator_A_I_for_alloc_collections_linked_list_LinkedList_associated_type_A.
       Definition Self (I A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ Ty.associated; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ Ty.associated; A ].
       
       (*
           default fn spec_extend(&mut self, iter: I) {
               iter.into_iter().for_each(move |elt| self.push_back(elt));
           }
       *)
-      Definition spec_extend (I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend
+          (I A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self I A in
-        match τ, α with
-        | [], [ self; iter ] =>
+        match ε, τ, α with
+        | [], [], [ self; iter ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let iter := M.alloc (| iter |) in
@@ -11484,6 +12163,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::LinkedList")
+                                            []
                                             [ Ty.associated; A ],
                                           "push_back",
                                           []
@@ -11499,7 +12179,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11515,6 +12195,7 @@ Module collections.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::linked_list::LinkedList")
+          []
           [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -11522,10 +12203,10 @@ Module collections.
               self.append(other);
           }
       *)
-      Definition spec_extend (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; β1 ] =>
+        match ε, τ, α with
+        | [], [], [ self; β1 ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
@@ -11542,6 +12223,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
+                                []
                                 [ T; Ty.path "alloc::alloc::Global" ],
                               "append",
                               []
@@ -11553,7 +12235,7 @@ Module collections.
                     |)))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11566,6 +12248,7 @@ Module collections.
             (* I *)
             Ty.apply
               (Ty.path "alloc::collections::linked_list::LinkedList")
+              []
               [ T; Ty.path "alloc::alloc::Global" ]
           ]
           (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T)) ].
@@ -11573,17 +12256,17 @@ Module collections.
     
     Module Impl_core_iter_traits_collect_Extend_where_core_marker_Copy_T_where_core_alloc_Allocator_A_ref__T_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       (*
           fn extend<I: IntoIterator<Item = &'a T>>(&mut self, iter: I) {
               self.extend(iter.into_iter().cloned());
           }
       *)
-      Definition extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [ _ as I ], [ self; iter ] =>
+        match ε, τ, α with
+        | [], [ _ as I ], [ self; iter ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let iter := M.alloc (| iter |) in
@@ -11593,10 +12276,14 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::collect::Extend",
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       [ T ],
                       "extend",
-                      [ Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ Ty.associated ]
+                      [
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::cloned::Cloned")
+                          []
+                          [ Ty.associated ]
                       ]
                     |),
                     [
@@ -11627,7 +12314,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -11635,10 +12322,15 @@ Module collections.
               self.push_back(elem);
           }
       *)
-      Definition extend_one (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend_one
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; β1 ] =>
+        match ε, τ, α with
+        | [], [], [ self; β1 ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
@@ -11656,6 +12348,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
+                                []
                                 [ T; A ],
                               "push_back",
                               []
@@ -11667,7 +12360,7 @@ Module collections.
                     |)))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11675,7 +12368,7 @@ Module collections.
         M.IsTraitInstance
           "core::iter::traits::collect::Extend"
           (Self T A)
-          (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ T ] ]
+          (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ T ] ]
           (* Instance *)
           [
             ("extend", InstanceField.Method (extend T A));
@@ -11685,17 +12378,17 @@ Module collections.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       (*
           fn eq(&self, other: &Self) -> bool {
               self.len() == other.len() && self.iter().eq(other)
           }
       *)
-      Definition eq (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11703,7 +12396,7 @@ Module collections.
               BinOp.Pure.eq
                 (M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -11711,7 +12404,7 @@ Module collections.
                 |))
                 (M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -11721,20 +12414,28 @@ Module collections.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ],
+                    Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                     [],
                     "eq",
                     [
                       Ty.apply
                         (Ty.path "&")
-                        [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ]
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::collections::linked_list::LinkedList")
+                            []
+                            [ T; A ]
                         ]
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                        Ty.apply
+                          (Ty.path "alloc::collections::linked_list::LinkedList")
+                          []
+                          [ T; A ],
                         "iter",
                         []
                       |),
@@ -11744,7 +12445,7 @@ Module collections.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -11752,10 +12453,10 @@ Module collections.
               self.len() != other.len() || self.iter().ne(other)
           }
       *)
-      Definition ne (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11763,7 +12464,7 @@ Module collections.
               BinOp.Pure.ne
                 (M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -11771,7 +12472,7 @@ Module collections.
                 |))
                 (M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -11781,20 +12482,28 @@ Module collections.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ],
+                    Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                     [],
                     "ne",
                     [
                       Ty.apply
                         (Ty.path "&")
-                        [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ]
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::collections::linked_list::LinkedList")
+                            []
+                            [ T; A ]
                         ]
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                        Ty.apply
+                          (Ty.path "alloc::collections::linked_list::LinkedList")
+                          []
+                          [ T; A ],
                         "iter",
                         []
                       |),
@@ -11804,7 +12513,7 @@ Module collections.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11819,7 +12528,7 @@ Module collections.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -11832,36 +12541,42 @@ Module collections.
     
     Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       (*
           fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
               self.iter().partial_cmp(other)
           }
       *)
-      Definition partial_cmp (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                 [],
                 "partial_cmp",
                 [
                   Ty.apply
                     (Ty.path "&")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ]
                 ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "iter",
                     []
                   |),
@@ -11870,7 +12585,7 @@ Module collections.
                 M.read (| other |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11884,36 +12599,37 @@ Module collections.
     
     Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       (*
           fn cmp(&self, other: &Self) -> Ordering {
               self.iter().cmp(other)
           }
       *)
-      Definition cmp (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ],
+                Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                 [],
                 "cmp",
                 [
                   Ty.apply
                     (Ty.path "&")
-                    [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ] ]
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ]
                 ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "iter",
                     []
                   |),
@@ -11922,7 +12638,7 @@ Module collections.
                 M.read (| other |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11936,7 +12652,7 @@ Module collections.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       (*
           fn clone(&self) -> Self {
@@ -11945,10 +12661,10 @@ Module collections.
               list
           }
       *)
-      Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -11956,7 +12672,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "new_in",
                       []
                     |),
@@ -11979,13 +12695,14 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::collect::Extend",
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       [ T ],
                       "extend",
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
-                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ] ]
                       ]
                     |),
                     [
@@ -11993,7 +12710,7 @@ Module collections.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ],
+                          Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                           [],
                           "cloned",
                           [ T ]
@@ -12003,6 +12720,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
+                                []
                                 [ T; A ],
                               "iter",
                               []
@@ -12016,7 +12734,7 @@ Module collections.
                 |) in
               list
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -12033,10 +12751,15 @@ Module collections.
               }
           }
       *)
-      Definition clone_from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone_from
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12045,7 +12768,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "iter",
                       []
                     |),
@@ -12066,6 +12789,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::linked_list::LinkedList")
+                                      []
                                       [ T; A ],
                                     "len",
                                     []
@@ -12076,6 +12800,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::linked_list::LinkedList")
+                                      []
                                       [ T; A ],
                                     "len",
                                     []
@@ -12091,6 +12816,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::linked_list::LinkedList")
+                                  []
                                   [ T; A ],
                                 "split_off",
                                 []
@@ -12101,6 +12827,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::linked_list::LinkedList")
+                                      []
                                       [ T; A ],
                                     "len",
                                     []
@@ -12123,11 +12850,21 @@ Module collections.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::zip::Zip")
+                            []
                             [
-                              Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [ T ];
+                              Ty.apply
+                                (Ty.path "alloc::collections::linked_list::IterMut")
+                                []
+                                [ T ];
                               Ty.apply
                                 (Ty.path "&mut")
-                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ] ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Iter")
+                                    []
+                                    [ T ]
+                                ]
                             ],
                           [],
                           "into_iter",
@@ -12137,13 +12874,21 @@ Module collections.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [ T ],
+                              Ty.apply
+                                (Ty.path "alloc::collections::linked_list::IterMut")
+                                []
+                                [ T ],
                               [],
                               "zip",
                               [
                                 Ty.apply
                                   (Ty.path "&mut")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Iter")
+                                      []
+                                      [ T ]
                                   ]
                               ]
                             |),
@@ -12152,6 +12897,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::linked_list::LinkedList")
+                                    []
                                     [ T; A ],
                                   "iter_mut",
                                   []
@@ -12178,15 +12924,19 @@ Module collections.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::zip::Zip")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::collections::linked_list::IterMut")
+                                              []
                                               [ T ];
                                             Ty.apply
                                               (Ty.path "&mut")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::collections::linked_list::Iter")
+                                                  []
                                                   [ T ]
                                               ]
                                           ],
@@ -12249,7 +12999,10 @@ Module collections.
                               (M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
-                                  Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ],
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Iter")
+                                    []
+                                    [ T ],
                                   [],
                                   "is_empty",
                                   []
@@ -12265,13 +13018,19 @@ Module collections.
                               "core::iter::traits::collect::Extend",
                               Ty.apply
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
+                                []
                                 [ T; A ],
                               [ T ],
                               "extend",
                               [
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::cloned::Cloned")
-                                  [ Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::linked_list::Iter")
+                                      []
+                                      [ T ]
                                   ]
                               ]
                             |),
@@ -12280,7 +13039,10 @@ Module collections.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ],
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::linked_list::Iter")
+                                    []
+                                    [ T ],
                                   [],
                                   "cloned",
                                   [ T ]
@@ -12295,7 +13057,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12313,17 +13075,17 @@ Module collections.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_list().entries(self).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -12339,10 +13101,15 @@ Module collections.
                     Ty.path "core::fmt::builders::DebugList",
                     "entries",
                     [
-                      Ty.apply (Ty.path "&") [ T ];
+                      Ty.apply (Ty.path "&") [] [ T ];
                       Ty.apply
                         (Ty.path "&")
-                        [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ]
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::collections::linked_list::LinkedList")
+                            []
+                            [ T; A ]
                         ]
                     ]
                   |),
@@ -12362,7 +13129,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12376,7 +13143,7 @@ Module collections.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       (*
           fn hash<H: Hasher>(&self, state: &mut H) {
@@ -12386,10 +13153,10 @@ Module collections.
               }
           }
       *)
-      Definition hash (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [ H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -12402,7 +13169,10 @@ Module collections.
                       M.read (| state |);
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                          Ty.apply
+                            (Ty.path "alloc::collections::linked_list::LinkedList")
+                            []
+                            [ T; A ],
                           "len",
                           []
                         |),
@@ -12419,9 +13189,11 @@ Module collections.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "&")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::linked_list::LinkedList")
+                              []
                               [ T; A ]
                           ],
                         [],
@@ -12445,6 +13217,7 @@ Module collections.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "alloc::collections::linked_list::Iter")
+                                        []
                                         [ T ],
                                       [],
                                       "next",
@@ -12491,7 +13264,7 @@ Module collections.
                   ]
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12503,10 +13276,11 @@ Module collections.
           (* Instance *) [ ("hash", InstanceField.Method (hash T A)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
     
-    Module Impl_core_convert_From_array_T_for_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global.
-      Definition Self (T : Ty.t) : Ty.t :=
+    Module Impl_core_convert_From_array_N_T_for_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global.
+      Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::linked_list::LinkedList")
+          []
           [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -12514,10 +13288,16 @@ Module collections.
               Self::from_iter(arr)
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ arr ] =>
+      Definition from
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T in
+        match ε, τ, α with
+        | [], [], [ arr ] =>
           ltac:(M.monadic
             (let arr := M.alloc (| arr |) in
             M.call_closure (|
@@ -12525,24 +13305,25 @@ Module collections.
                 "core::iter::traits::collect::FromIterator",
                 Ty.apply
                   (Ty.path "alloc::collections::linked_list::LinkedList")
+                  []
                   [ T; Ty.path "alloc::alloc::Global" ],
                 [ T ],
                 "from_iter",
-                [ Ty.apply (Ty.path "array") [ T ] ]
+                [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
               |),
               [ M.read (| arr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (T : Ty.t),
+        forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
-          (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ T ] ]
-          (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-    End Impl_core_convert_From_array_T_for_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global.
+          (Self N T)
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ N ] [ T ] ]
+          (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
+    End Impl_core_convert_From_array_N_T_for_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global.
     
     (*
     fn assert_covariance() {
@@ -12557,8 +13338,11 @@ Module collections.
         }
     }
     *)
-    Definition assert_covariance (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+    Definition assert_covariance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] => ltac:(M.monadic (Value.Tuple []))
+      | _, _, _ => M.impossible
+      end.
     
     Axiom Function_assert_covariance :
       M.IsFunction "alloc::collections::linked_list::assert_covariance" assert_covariance.
@@ -12569,13 +13353,13 @@ Module collections.
               x
           }
       *)
-      Definition a (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition a (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (| x |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_a : M.IsFunction "alloc::collections::linked_list::assert_covariance::a" a.
@@ -12585,13 +13369,13 @@ Module collections.
               x
           }
       *)
-      Definition b (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition b (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (| x |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_b : M.IsFunction "alloc::collections::linked_list::assert_covariance::b" b.
@@ -12601,13 +13385,13 @@ Module collections.
               x
           }
       *)
-      Definition c (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition c (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (| x |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_c : M.IsFunction "alloc::collections::linked_list::assert_covariance::c" c.
@@ -12615,7 +13399,7 @@ Module collections.
     
     Module Impl_core_marker_Send_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Send_A_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -12628,7 +13412,7 @@ Module collections.
     
     Module Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_collections_linked_list_LinkedList_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -12641,7 +13425,7 @@ Module collections.
     
     Module Impl_core_marker_Send_where_core_marker_Sync_T_for_alloc_collections_linked_list_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -12654,7 +13438,7 @@ Module collections.
     
     Module Impl_core_marker_Sync_where_core_marker_Sync_T_for_alloc_collections_linked_list_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -12667,7 +13451,7 @@ Module collections.
     
     Module Impl_core_marker_Send_where_core_marker_Send_T_for_alloc_collections_linked_list_IterMut_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -12680,7 +13464,7 @@ Module collections.
     
     Module Impl_core_marker_Sync_where_core_marker_Sync_T_for_alloc_collections_linked_list_IterMut_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [ T ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -12693,7 +13477,7 @@ Module collections.
     
     Module Impl_core_marker_Send_where_core_marker_Sync_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_collections_linked_list_Cursor_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -12706,7 +13490,7 @@ Module collections.
     
     Module Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_collections_linked_list_Cursor_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -12719,7 +13503,7 @@ Module collections.
     
     Module Impl_core_marker_Send_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Send_A_for_alloc_collections_linked_list_CursorMut_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::CursorMut") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::CursorMut") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -12732,7 +13516,7 @@ Module collections.
     
     Module Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_collections_linked_list_CursorMut_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::CursorMut") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::linked_list::CursorMut") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),

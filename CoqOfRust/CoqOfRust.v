@@ -49,12 +49,12 @@ Module FunctionTraitAutomaticImpl.
       "core::ops::function::Fn"
       (Ty.function Args Output)
       (* Trait polymorphic types *) [Ty.tuple Args]
-      (* Instance *) [ ("call", InstanceField.Method (fun τ α =>
-        match τ, α with
-        | [], [self; Value.Tuple args] =>
+      (* Instance *) [ ("call", InstanceField.Method (fun ε τ α =>
+        match ε, τ, α with
+        | [], [], [self; Value.Tuple args] =>
           let* self := M.read self in
           M.call_closure self args
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end
       )) ].
 
@@ -64,12 +64,12 @@ Module FunctionTraitAutomaticImpl.
       "core::ops::function::FnMut"
       (Ty.function Args Output)
       (* Trait polymorphic types *) [Ty.tuple Args]
-      (* Instance *) [ ("call_mut", InstanceField.Method (fun τ α =>
-        match τ, α with
-        | [], [self; Value.Tuple args] =>
+      (* Instance *) [ ("call_mut", InstanceField.Method (fun ε τ α =>
+        match ε, τ, α with
+        | [], [], [self; Value.Tuple args] =>
           let* self := M.read self in
           M.call_closure self args
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end
       )) ].
 
@@ -79,11 +79,11 @@ Module FunctionTraitAutomaticImpl.
       "core::ops::function::FnOnce"
       (Ty.function Args Output)
       (* Trait polymorphic types *) [Ty.tuple Args]
-      (* Instance *) [ ("call_once", InstanceField.Method (fun τ α =>
-        match τ, α with
-        | [], [self; Value.Tuple args] =>
+      (* Instance *) [ ("call_once", InstanceField.Method (fun ε τ α =>
+        match ε, τ, α with
+        | [], [], [self; Value.Tuple args] =>
           M.call_closure self args
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end
       )) ].
 End FunctionTraitAutomaticImpl.

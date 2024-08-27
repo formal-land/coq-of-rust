@@ -23,26 +23,6 @@ Notation "{ x @ P }" := (sigS (fun x => P)) : type_scope.
 Notation "{ x : A @ P }" := (sigS (A := A) (fun x => P)) : type_scope.
 Notation "{ ' pat : A @ P }" := (sigS (A := A) (fun pat => P)) : type_scope.
 
-Module Ty.
-  Parameter t : Set.
-
-  Parameter path : string -> t.
-
-  Parameter apply : t -> list t -> t.
-
-  Parameter function : list t -> t -> t.
-
-  Parameter tuple : list t -> t.
-
-  (** As parameter: a list of traits, described by their absolute name and their
-      list of type parameters, excluding `Self`. *)
-  Parameter dyn : list (string * list t) -> t.
-
-  (** This primitive is for associated types; it will require additional
-      parameters. *)
-  Parameter associated : t.
-End Ty.
-
 Module List.
   Fixpoint assoc {A : Set} (l : list (string * A)) (key : string) : option A :=
     match l with
@@ -319,6 +299,26 @@ Module Value.
   Qed.
 End Value.
 
+Module Ty.
+  Parameter t : Set.
+
+  Parameter path : string -> t.
+
+  Parameter apply : t -> list Value.t -> list t -> t.
+
+  Parameter function : list t -> t -> t.
+
+  Parameter tuple : list t -> t.
+
+  (** As parameter: a list of traits, described by their absolute name and their
+      list of type parameters, excluding `Self`. *)
+  Parameter dyn : list (string * list t) -> t.
+
+  (** This primitive is for associated types; it will require additional
+      parameters. *)
+  Parameter associated : t.
+End Ty.
+
 Module Primitive.
   Inductive t : Set :=
   | StateAlloc (value : Value.t)
@@ -402,10 +402,15 @@ Definition let_user_monadic (e1 : M) (e2 : Value.t -> M) : M :=
   | inr error => LowM.Pure (inr error)
   end).
 
+Module PolymorphicFunction.
+  Definition t : Set :=
+    list Value.t -> list Ty.t -> list Value.t -> M.
+End PolymorphicFunction.
+
 Module InstanceField.
   Inductive t : Set :=
   | Constant (constant : Value.t)
-  | Method (method : list Ty.t -> list Value.t -> M)
+  | Method (method : PolymorphicFunction.t)
   | Ty (ty : Ty.t).
 End InstanceField.
 
@@ -424,14 +429,14 @@ Parameter IsTraitInstance :
 Parameter IsFunction :
   forall
     (name : string)
-    (function : list Ty.t -> list Value.t -> M),
+    (function : PolymorphicFunction.t),
   Prop.
 
 Parameter IsAssociatedFunction :
   forall
     (Self : Ty.t)
     (function_name : string)
-    (function : list Ty.t -> list Value.t -> M),
+    (function : PolymorphicFunction.t),
   Prop.
 
 Parameter IsAssociatedConstant :
@@ -445,7 +450,7 @@ Parameter IsProvidedMethod :
   forall
     (trait_name : string)
     (method_name : string)
-    (method : Ty.t -> list Ty.t -> list Value.t -> M),
+    (method : Ty.t -> PolymorphicFunction.t),
   Prop.
 
 Module IsTraitMethod.
@@ -454,8 +459,8 @@ Module IsTraitMethod.
       (self_ty : Ty.t)
       (trait_tys : list Ty.t)
       (method_name : string) :
-      (list Ty.t -> list Value.t -> M) -> Prop :=
-  | Explicit (instance : Instance.t) (method : list Ty.t -> list Value.t -> M) :
+      (PolymorphicFunction.t) -> Prop :=
+  | Explicit (instance : Instance.t) (method : PolymorphicFunction.t) :
     M.IsTraitInstance
       trait_name
       self_ty
@@ -463,7 +468,7 @@ Module IsTraitMethod.
       instance ->
     List.assoc instance method_name = Some (InstanceField.Method method) ->
     t trait_name self_ty trait_tys method_name method
-  | Implicit (instance : Instance.t) (method : Ty.t -> list Ty.t -> list Value.t -> M) :
+  | Implicit (instance : Instance.t) (method : Ty.t -> PolymorphicFunction.t) :
     M.IsTraitInstance
       trait_name
       self_ty
@@ -828,5 +833,7 @@ Definition constructor_as_closure (constructor : string) : Value.t :=
     pure (Value.StructTuple constructor args)).
 
 Parameter struct_record_update : Value.t -> list (string * Value.t) -> Value.t.
+
+Parameter unevaluated_const : Value.t -> Value.t.
 
 Parameter yield : Value.t -> M.

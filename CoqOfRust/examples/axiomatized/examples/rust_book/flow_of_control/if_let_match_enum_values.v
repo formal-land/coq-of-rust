@@ -27,6 +27,6 @@ Enum Foo
 }
 *)
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "if_let_match_enum_values::main" main.

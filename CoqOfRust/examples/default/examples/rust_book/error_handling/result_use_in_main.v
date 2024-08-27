@@ -12,9 +12,9 @@ fn main() -> Result<(), ParseIntError> {
     Ok(())
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.catch_return (|
         ltac:(M.monadic
@@ -105,7 +105,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "result_use_in_main::main" main.

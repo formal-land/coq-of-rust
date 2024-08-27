@@ -6,9 +6,12 @@ Module vec.
     (* StructRecord
       {
         name := "SetLenOnDrop";
+        const_params := [];
         ty_params := [];
         fields :=
-          [ ("len", Ty.apply (Ty.path "&mut") [ Ty.path "usize" ]); ("local_len", Ty.path "usize")
+          [
+            ("len", Ty.apply (Ty.path "&mut") [] [ Ty.path "usize" ]);
+            ("local_len", Ty.path "usize")
           ];
       } *)
     
@@ -20,15 +23,15 @@ Module vec.
               SetLenOnDrop { local_len: *len, len }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ len ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ len ] =>
           ltac:(M.monadic
             (let len := M.alloc (| len |) in
             Value.StructRecord
               "alloc::vec::set_len_on_drop::SetLenOnDrop"
               [ ("local_len", M.read (| M.read (| len |) |)); ("len", M.read (| len |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -38,9 +41,9 @@ Module vec.
               self.local_len += increment;
           }
       *)
-      Definition increment_len (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; increment ] =>
+      Definition increment_len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; increment ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let increment := M.alloc (| increment |) in
@@ -58,7 +61,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_increment_len :
@@ -69,9 +72,9 @@ Module vec.
               self.local_len
           }
       *)
-      Definition current_len (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition current_len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -81,7 +84,7 @@ Module vec.
                 "local_len"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_current_len : M.IsAssociatedFunction Self "current_len" current_len.
@@ -95,9 +98,9 @@ Module vec.
               *self.len = self.local_len;
           }
       *)
-      Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -120,7 +123,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

@@ -9,9 +9,9 @@ fn read_lines(filename: String) -> io::Lines<BufReader<File>> {
     return io::BufReader::new(file).lines();
 }
 *)
-Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ filename ] =>
+Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ filename ] =>
     ltac:(M.monadic
       (let filename := M.alloc (| filename |) in
       M.catch_return (|
@@ -71,7 +71,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_read_lines : M.IsFunction "file_io_read_lines::read_lines" read_lines.
@@ -86,9 +86,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ lines :=
@@ -242,7 +242,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "file_io_read_lines::main" main.

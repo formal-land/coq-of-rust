@@ -17,10 +17,10 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [] [ K; V ].
   
   (* Default *)
-  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match τ, α with
-    | [], [] =>
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "dns::Mapping"
@@ -48,7 +48,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -68,7 +68,7 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
@@ -79,7 +79,7 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -90,7 +90,7 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -101,7 +101,7 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter new : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new :
     forall (K V : Ty.t),
@@ -112,7 +112,7 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
@@ -123,7 +123,7 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
@@ -134,7 +134,7 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -153,9 +153,9 @@ Module Impl_core_default_Default_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "dns::AccountId"
@@ -165,7 +165,7 @@ Module Impl_core_default_Default_for_dns_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -180,9 +180,9 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -191,7 +191,7 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -224,9 +224,9 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -237,7 +237,7 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
           (M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "dns::AccountId", 0 |)
           |))))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -256,7 +256,7 @@ Module Impl_core_convert_From_array_32_u8_for_dns_AccountId.
           unimplemented!()
       }
   *)
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -354,15 +354,15 @@ Module Impl_dns_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition caller (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "dns::Env", "caller" |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -372,7 +372,7 @@ Module Impl_dns_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_dns_Env.
@@ -409,9 +409,9 @@ fn zero_address() -> AccountId {
     [0u8; 32].into()
 }
 *)
-Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.call_closure (|
         M.get_trait_method (|
@@ -423,7 +423,7 @@ Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
         |),
         [ repeat (Value.Integer 0) 32 ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_zero_address : M.IsFunction "dns::zero_address" zero_address.
@@ -445,9 +445,9 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
           }
       }
   *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ name_to_address :=
@@ -555,7 +555,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
               ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -602,9 +602,9 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -631,7 +631,7 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
             |) in
           M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -657,13 +657,17 @@ Module Impl_core_cmp_Eq_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -676,7 +680,7 @@ Module Impl_core_cmp_Eq_for_dns_Error.
 End Impl_core_cmp_Eq_for_dns_Error.
 
 Axiom Result :
-  forall ( : Ty.t) (T : Ty.t),
+  forall (T : Ty.t),
   (Ty.apply (Ty.path "dns::Result") [] [ T ]) =
     (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "dns::Error" ]).
 
@@ -688,7 +692,7 @@ Module Impl_dns_DomainNameService.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -697,16 +701,16 @@ Module Impl_dns_DomainNameService.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "dns::DomainNameService", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -716,9 +720,9 @@ Module Impl_dns_DomainNameService.
           Default::default()
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_trait_method (|
@@ -730,7 +734,7 @@ Module Impl_dns_DomainNameService.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -749,9 +753,9 @@ Module Impl_dns_DomainNameService.
           Ok(())
       }
   *)
-  Definition register (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; name ] =>
+  Definition register (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; name ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
@@ -879,7 +883,7 @@ Module Impl_dns_DomainNameService.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_register : M.IsAssociatedFunction Self "register" register.
@@ -891,9 +895,9 @@ Module Impl_dns_DomainNameService.
               .unwrap_or(self.default_address)
       }
   *)
-  Definition get_owner_or_default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; name ] =>
+  Definition get_owner_or_default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; name ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
@@ -934,7 +938,7 @@ Module Impl_dns_DomainNameService.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_owner_or_default :
@@ -960,9 +964,9 @@ Module Impl_dns_DomainNameService.
           Ok(())
       }
   *)
-  Definition set_address (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; name; new_address ] =>
+  Definition set_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; name; new_address ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
@@ -1117,7 +1121,7 @@ Module Impl_dns_DomainNameService.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_set_address : M.IsAssociatedFunction Self "set_address" set_address.
@@ -1143,9 +1147,9 @@ Module Impl_dns_DomainNameService.
           Ok(())
       }
   *)
-  Definition transfer (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; name; to ] =>
+  Definition transfer (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; name; to ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
@@ -1300,7 +1304,7 @@ Module Impl_dns_DomainNameService.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
@@ -1312,9 +1316,9 @@ Module Impl_dns_DomainNameService.
               .unwrap_or(self.default_address)
       }
   *)
-  Definition get_address_or_default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; name ] =>
+  Definition get_address_or_default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; name ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
@@ -1355,7 +1359,7 @@ Module Impl_dns_DomainNameService.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_address_or_default :
@@ -1366,9 +1370,9 @@ Module Impl_dns_DomainNameService.
           self.get_address_or_default(name)
       }
   *)
-  Definition get_address (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; name ] =>
+  Definition get_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; name ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
@@ -1380,7 +1384,7 @@ Module Impl_dns_DomainNameService.
           |),
           [ M.read (| self |); M.read (| name |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_address : M.IsAssociatedFunction Self "get_address" get_address.
@@ -1390,9 +1394,9 @@ Module Impl_dns_DomainNameService.
           self.get_owner_or_default(name)
       }
   *)
-  Definition get_owner (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; name ] =>
+  Definition get_owner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; name ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let name := M.alloc (| name |) in
@@ -1404,7 +1408,7 @@ Module Impl_dns_DomainNameService.
           |),
           [ M.read (| self |); M.read (| name |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_owner : M.IsAssociatedFunction Self "get_owner" get_owner.

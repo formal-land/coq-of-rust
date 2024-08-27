@@ -6,6 +6,7 @@ Module ops.
     (*
     Enum CoroutineState
     {
+      const_params := [];
       ty_params := [ "Y"; "R" ];
       variants :=
         [
@@ -25,13 +26,13 @@ Module ops.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_Y_where_core_clone_Clone_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
+        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
       
       (* Clone *)
-      Definition clone (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Y R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Y R in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -81,7 +82,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -95,7 +96,7 @@ Module ops.
     
     Module Impl_core_marker_Copy_where_core_marker_Copy_Y_where_core_marker_Copy_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
+        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
       
       Axiom Implements :
         forall (Y R : Ty.t),
@@ -108,7 +109,7 @@ Module ops.
     
     Module Impl_core_marker_StructuralPartialEq_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
+        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
       
       Axiom Implements :
         forall (Y R : Ty.t),
@@ -121,13 +122,13 @@ Module ops.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
+        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
       
       (* PartialEq *)
-      Definition eq (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Y R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Y R in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -137,7 +138,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ] ]
+                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| self |) ]
                   |)
@@ -147,7 +148,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ] ]
+                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| other |) ]
                   |)
@@ -240,7 +241,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -254,13 +255,18 @@ Module ops.
     
     Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
+        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
       
       (* PartialOrd *)
-      Definition partial_cmp (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp
+          (Y R : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self Y R in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -270,7 +276,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ] ]
+                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| self |) ]
                   |)
@@ -280,7 +286,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ] ]
+                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| other |) ]
                   |)
@@ -369,7 +375,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -383,7 +389,7 @@ Module ops.
     
     Module Impl_core_marker_StructuralEq_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
+        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
       
       Axiom Implements :
         forall (Y R : Ty.t),
@@ -396,13 +402,18 @@ Module ops.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Y_where_core_cmp_Eq_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
+        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq
+          (Y R : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self Y R in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -418,7 +429,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -434,13 +445,13 @@ Module ops.
     
     Module Impl_core_cmp_Ord_where_core_cmp_Ord_Y_where_core_cmp_Ord_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
+        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
       
       (* Ord *)
-      Definition cmp (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (Y R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Y R in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -450,7 +461,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ] ]
+                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| self |) ]
                   |)
@@ -460,7 +471,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ] ]
+                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| other |) ]
                   |)
@@ -550,7 +561,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -564,13 +575,13 @@ Module ops.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_Y_where_core_fmt_Debug_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
+        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
       
       (* Debug *)
-      Definition fmt (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Y R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Y R in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -629,7 +640,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -643,13 +654,13 @@ Module ops.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_Y_where_core_hash_Hash_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ].
+        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
       
       (* Hash *)
-      Definition hash (Y R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Y R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Y R in
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -659,7 +670,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [ Y; R ] ]
+                      [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| self |) ]
                   |)
@@ -715,7 +726,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -732,7 +743,7 @@ Module ops.
     
     Module Impl_core_ops_coroutine_Coroutine_where_core_marker_Sized_G_where_core_ops_coroutine_Coroutine_G_R_R_for_core_pin_Pin_ref_mut_G.
       Definition Self (G R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ G ] ].
+        Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ].
       
       (*     type Yield = G::Yield; *)
       Definition _Yield (G R : Ty.t) : Ty.t := Ty.associated.
@@ -745,10 +756,10 @@ Module ops.
               G::resume(( *self).as_mut(), arg)
           }
       *)
-      Definition resume (G R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition resume (G R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self G R in
-        match τ, α with
-        | [], [ self; arg ] =>
+        match ε, τ, α with
+        | [], [], [ self; arg ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arg := M.alloc (| arg |) in
@@ -757,7 +768,7 @@ Module ops.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ G ] ],
+                    Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                     "as_mut",
                     []
                   |),
@@ -767,13 +778,16 @@ Module ops.
                         "core::ops::deref::DerefMut",
                         Ty.apply
                           (Ty.path "core::pin::Pin")
+                          []
                           [
                             Ty.apply
                               (Ty.path "&mut")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::pin::Pin")
-                                  [ Ty.apply (Ty.path "&mut") [ G ] ]
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ G ] ]
                               ]
                           ],
                         [],
@@ -787,7 +801,7 @@ Module ops.
                 M.read (| arg |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -805,7 +819,7 @@ Module ops.
     End Impl_core_ops_coroutine_Coroutine_where_core_marker_Sized_G_where_core_ops_coroutine_Coroutine_G_R_R_for_core_pin_Pin_ref_mut_G.
     
     Module Impl_core_ops_coroutine_Coroutine_where_core_marker_Sized_G_where_core_ops_coroutine_Coroutine_G_R_where_core_marker_Unpin_G_R_for_ref_mut_G.
-      Definition Self (G R : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ G ].
+      Definition Self (G R : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ G ].
       
       (*     type Yield = G::Yield; *)
       Definition _Yield (G R : Ty.t) : Ty.t := Ty.associated.
@@ -818,10 +832,10 @@ Module ops.
               G::resume(Pin::new(&mut *self), arg)
           }
       *)
-      Definition resume (G R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition resume (G R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self G R in
-        match τ, α with
-        | [], [ self; arg ] =>
+        match ε, τ, α with
+        | [], [], [ self; arg ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let arg := M.alloc (| arg |) in
@@ -830,7 +844,7 @@ Module ops.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ G ] ],
+                    Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                     "new",
                     []
                   |),
@@ -841,7 +855,8 @@ Module ops.
                           "core::ops::deref::DerefMut",
                           Ty.apply
                             (Ty.path "core::pin::Pin")
-                            [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "&mut") [ G ] ] ],
+                            []
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ] ],
                           [],
                           "deref_mut",
                           []
@@ -854,7 +869,7 @@ Module ops.
                 M.read (| arg |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

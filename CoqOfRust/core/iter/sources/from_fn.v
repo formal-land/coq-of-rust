@@ -12,13 +12,13 @@ Module iter.
           FromFn(f)
       }
       *)
-      Definition from_fn (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T; F ], [ f ] =>
+      Definition from_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T; F ], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
             Value.StructTuple "core::iter::sources::from_fn::FromFn" [ M.read (| f |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_from_fn : M.IsFunction "core::iter::sources::from_fn::from_fn" from_fn.
@@ -26,19 +26,20 @@ Module iter.
       (* StructTuple
         {
           name := "FromFn";
+          const_params := [];
           ty_params := [ "F" ];
           fields := [ F ];
         } *)
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_F_for_core_iter_sources_from_fn_FromFn_F.
         Definition Self (F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::from_fn::FromFn") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::from_fn::FromFn") [] [ F ].
         
         (* Clone *)
-        Definition clone (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple
@@ -55,7 +56,7 @@ Module iter.
                     ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -69,7 +70,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_F_Tuple__for_core_iter_sources_from_fn_FromFn_F.
         Definition Self (T F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::from_fn::FromFn") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::from_fn::FromFn") [] [ F ].
         
         (*     type Item = T; *)
         Definition _Item (T F : Ty.t) : Ty.t := T.
@@ -79,10 +80,10 @@ Module iter.
                 (self.0)()
             }
         *)
-        Definition next (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -102,7 +103,7 @@ Module iter.
                   Value.Tuple []
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -117,17 +118,17 @@ Module iter.
       
       Module Impl_core_fmt_Debug_for_core_iter_sources_from_fn_FromFn_F.
         Definition Self (F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::from_fn::FromFn") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::from_fn::FromFn") [] [ F ].
         
         (*
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 f.debug_struct("FromFn").finish()
             }
         *)
-        Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self F in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -150,7 +151,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

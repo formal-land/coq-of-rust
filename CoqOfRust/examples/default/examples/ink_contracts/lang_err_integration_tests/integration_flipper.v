@@ -21,9 +21,9 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
   Definition Self : Ty.t := Ty.path "integration_flipper::FlipperError".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -31,7 +31,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "FlipperError" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -50,13 +50,13 @@ Module Impl_integration_flipper_Flipper.
           Self { value: init_value }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ init_value ] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord "integration_flipper::Flipper" [ ("value", M.read (| init_value |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -66,9 +66,9 @@ Module Impl_integration_flipper_Flipper.
           Self::new(Default::default())
       }
   *)
-  Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition new_default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_associated_function (| Ty.path "integration_flipper::Flipper", "new", [] |),
@@ -79,7 +79,7 @@ Module Impl_integration_flipper_Flipper.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
@@ -93,9 +93,9 @@ Module Impl_integration_flipper_Flipper.
           }
       }
   *)
-  Definition try_new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ succeed ] =>
+  Definition try_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ succeed ] =>
       ltac:(M.monadic
         (let succeed := M.alloc (| succeed |) in
         M.read (|
@@ -130,7 +130,7 @@ Module Impl_integration_flipper_Flipper.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
@@ -140,9 +140,9 @@ Module Impl_integration_flipper_Flipper.
           self.value = !self.value;
       }
   *)
-  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition flip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -164,7 +164,7 @@ Module Impl_integration_flipper_Flipper.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
@@ -174,9 +174,9 @@ Module Impl_integration_flipper_Flipper.
           self.value
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -186,7 +186,7 @@ Module Impl_integration_flipper_Flipper.
             "value"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -197,9 +197,9 @@ Module Impl_integration_flipper_Flipper.
           Err(())
       }
   *)
-  Definition err_flip (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition err_flip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -212,7 +212,7 @@ Module Impl_integration_flipper_Flipper.
             |) in
           M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_err_flip : M.IsAssociatedFunction Self "err_flip" err_flip.

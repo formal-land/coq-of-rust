@@ -13,9 +13,9 @@ Module hint.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             M.match_operator (|
@@ -42,14 +42,17 @@ Module hint.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_runtime : M.IsFunction "core::hint::unreachable_unchecked::runtime" runtime.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [] => ltac:(M.monadic (Value.Tuple []))
+      | _, _, _ => M.impossible
+      end.
     
     Axiom Function_comptime : M.IsFunction "core::hint::unreachable_unchecked::comptime" comptime.
   End unreachable_unchecked.
@@ -62,1093 +65,1094 @@ Module intrinsics.
       unsafe { crate::ptr::drop_in_place(to_drop) }
   }
   *)
-  Definition drop_in_place (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ to_drop ] =>
+  Definition drop_in_place (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ to_drop ] =>
       ltac:(M.monadic
         (let to_drop := M.alloc (| to_drop |) in
         M.call_closure (|
           M.get_function (| "core::ptr::drop_in_place", [ T ] |),
           [ M.read (| to_drop |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_drop_in_place : M.IsFunction "core::intrinsics::drop_in_place" drop_in_place.
   
-  Parameter atomic_cxchg_relaxed_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_relaxed_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_relaxed_relaxed :
     M.IsFunction "core::intrinsics::atomic_cxchg_relaxed_relaxed" atomic_cxchg_relaxed_relaxed.
   
-  Parameter atomic_cxchg_relaxed_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_relaxed_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_relaxed_acquire :
     M.IsFunction "core::intrinsics::atomic_cxchg_relaxed_acquire" atomic_cxchg_relaxed_acquire.
   
-  Parameter atomic_cxchg_relaxed_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_relaxed_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_relaxed_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchg_relaxed_seqcst" atomic_cxchg_relaxed_seqcst.
   
-  Parameter atomic_cxchg_acquire_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_acquire_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_acquire_relaxed :
     M.IsFunction "core::intrinsics::atomic_cxchg_acquire_relaxed" atomic_cxchg_acquire_relaxed.
   
-  Parameter atomic_cxchg_acquire_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_acquire_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_acquire_acquire :
     M.IsFunction "core::intrinsics::atomic_cxchg_acquire_acquire" atomic_cxchg_acquire_acquire.
   
-  Parameter atomic_cxchg_acquire_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_acquire_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_acquire_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchg_acquire_seqcst" atomic_cxchg_acquire_seqcst.
   
-  Parameter atomic_cxchg_release_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_release_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_release_relaxed :
     M.IsFunction "core::intrinsics::atomic_cxchg_release_relaxed" atomic_cxchg_release_relaxed.
   
-  Parameter atomic_cxchg_release_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_release_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_release_acquire :
     M.IsFunction "core::intrinsics::atomic_cxchg_release_acquire" atomic_cxchg_release_acquire.
   
-  Parameter atomic_cxchg_release_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_release_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_release_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchg_release_seqcst" atomic_cxchg_release_seqcst.
   
-  Parameter atomic_cxchg_acqrel_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_acqrel_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_acqrel_relaxed :
     M.IsFunction "core::intrinsics::atomic_cxchg_acqrel_relaxed" atomic_cxchg_acqrel_relaxed.
   
-  Parameter atomic_cxchg_acqrel_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_acqrel_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_acqrel_acquire :
     M.IsFunction "core::intrinsics::atomic_cxchg_acqrel_acquire" atomic_cxchg_acqrel_acquire.
   
-  Parameter atomic_cxchg_acqrel_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_acqrel_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_acqrel_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchg_acqrel_seqcst" atomic_cxchg_acqrel_seqcst.
   
-  Parameter atomic_cxchg_seqcst_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_seqcst_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_seqcst_relaxed :
     M.IsFunction "core::intrinsics::atomic_cxchg_seqcst_relaxed" atomic_cxchg_seqcst_relaxed.
   
-  Parameter atomic_cxchg_seqcst_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_seqcst_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_seqcst_acquire :
     M.IsFunction "core::intrinsics::atomic_cxchg_seqcst_acquire" atomic_cxchg_seqcst_acquire.
   
-  Parameter atomic_cxchg_seqcst_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchg_seqcst_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_seqcst_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchg_seqcst_seqcst" atomic_cxchg_seqcst_seqcst.
   
-  Parameter atomic_cxchgweak_relaxed_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_relaxed_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_relaxed_relaxed :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_relaxed_relaxed"
       atomic_cxchgweak_relaxed_relaxed.
   
-  Parameter atomic_cxchgweak_relaxed_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_relaxed_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_relaxed_acquire :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_relaxed_acquire"
       atomic_cxchgweak_relaxed_acquire.
   
-  Parameter atomic_cxchgweak_relaxed_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_relaxed_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_relaxed_seqcst :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_relaxed_seqcst"
       atomic_cxchgweak_relaxed_seqcst.
   
-  Parameter atomic_cxchgweak_acquire_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_acquire_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_acquire_relaxed :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_acquire_relaxed"
       atomic_cxchgweak_acquire_relaxed.
   
-  Parameter atomic_cxchgweak_acquire_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_acquire_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_acquire_acquire :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_acquire_acquire"
       atomic_cxchgweak_acquire_acquire.
   
-  Parameter atomic_cxchgweak_acquire_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_acquire_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_acquire_seqcst :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_acquire_seqcst"
       atomic_cxchgweak_acquire_seqcst.
   
-  Parameter atomic_cxchgweak_release_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_release_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_release_relaxed :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_release_relaxed"
       atomic_cxchgweak_release_relaxed.
   
-  Parameter atomic_cxchgweak_release_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_release_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_release_acquire :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_release_acquire"
       atomic_cxchgweak_release_acquire.
   
-  Parameter atomic_cxchgweak_release_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_release_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_release_seqcst :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_release_seqcst"
       atomic_cxchgweak_release_seqcst.
   
-  Parameter atomic_cxchgweak_acqrel_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_acqrel_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_acqrel_relaxed :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_acqrel_relaxed"
       atomic_cxchgweak_acqrel_relaxed.
   
-  Parameter atomic_cxchgweak_acqrel_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_acqrel_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_acqrel_acquire :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_acqrel_acquire"
       atomic_cxchgweak_acqrel_acquire.
   
-  Parameter atomic_cxchgweak_acqrel_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_acqrel_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_acqrel_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchgweak_acqrel_seqcst" atomic_cxchgweak_acqrel_seqcst.
   
-  Parameter atomic_cxchgweak_seqcst_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_seqcst_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_seqcst_relaxed :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_seqcst_relaxed"
       atomic_cxchgweak_seqcst_relaxed.
   
-  Parameter atomic_cxchgweak_seqcst_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_seqcst_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_seqcst_acquire :
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_seqcst_acquire"
       atomic_cxchgweak_seqcst_acquire.
   
-  Parameter atomic_cxchgweak_seqcst_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_cxchgweak_seqcst_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_seqcst_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchgweak_seqcst_seqcst" atomic_cxchgweak_seqcst_seqcst.
   
-  Parameter atomic_load_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_load_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_load_seqcst :
     M.IsFunction "core::intrinsics::atomic_load_seqcst" atomic_load_seqcst.
   
-  Parameter atomic_load_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_load_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_load_acquire :
     M.IsFunction "core::intrinsics::atomic_load_acquire" atomic_load_acquire.
   
-  Parameter atomic_load_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_load_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_load_relaxed :
     M.IsFunction "core::intrinsics::atomic_load_relaxed" atomic_load_relaxed.
   
-  Parameter atomic_load_unordered : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_load_unordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_load_unordered :
     M.IsFunction "core::intrinsics::atomic_load_unordered" atomic_load_unordered.
   
-  Parameter atomic_store_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_store_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_store_seqcst :
     M.IsFunction "core::intrinsics::atomic_store_seqcst" atomic_store_seqcst.
   
-  Parameter atomic_store_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_store_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_store_release :
     M.IsFunction "core::intrinsics::atomic_store_release" atomic_store_release.
   
-  Parameter atomic_store_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_store_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_store_relaxed :
     M.IsFunction "core::intrinsics::atomic_store_relaxed" atomic_store_relaxed.
   
-  Parameter atomic_store_unordered : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_store_unordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_store_unordered :
     M.IsFunction "core::intrinsics::atomic_store_unordered" atomic_store_unordered.
   
-  Parameter atomic_xchg_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xchg_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xchg_seqcst :
     M.IsFunction "core::intrinsics::atomic_xchg_seqcst" atomic_xchg_seqcst.
   
-  Parameter atomic_xchg_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xchg_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xchg_acquire :
     M.IsFunction "core::intrinsics::atomic_xchg_acquire" atomic_xchg_acquire.
   
-  Parameter atomic_xchg_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xchg_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xchg_release :
     M.IsFunction "core::intrinsics::atomic_xchg_release" atomic_xchg_release.
   
-  Parameter atomic_xchg_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xchg_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xchg_acqrel :
     M.IsFunction "core::intrinsics::atomic_xchg_acqrel" atomic_xchg_acqrel.
   
-  Parameter atomic_xchg_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xchg_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xchg_relaxed :
     M.IsFunction "core::intrinsics::atomic_xchg_relaxed" atomic_xchg_relaxed.
   
-  Parameter atomic_xadd_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xadd_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xadd_seqcst :
     M.IsFunction "core::intrinsics::atomic_xadd_seqcst" atomic_xadd_seqcst.
   
-  Parameter atomic_xadd_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xadd_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xadd_acquire :
     M.IsFunction "core::intrinsics::atomic_xadd_acquire" atomic_xadd_acquire.
   
-  Parameter atomic_xadd_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xadd_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xadd_release :
     M.IsFunction "core::intrinsics::atomic_xadd_release" atomic_xadd_release.
   
-  Parameter atomic_xadd_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xadd_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xadd_acqrel :
     M.IsFunction "core::intrinsics::atomic_xadd_acqrel" atomic_xadd_acqrel.
   
-  Parameter atomic_xadd_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xadd_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xadd_relaxed :
     M.IsFunction "core::intrinsics::atomic_xadd_relaxed" atomic_xadd_relaxed.
   
-  Parameter atomic_xsub_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xsub_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xsub_seqcst :
     M.IsFunction "core::intrinsics::atomic_xsub_seqcst" atomic_xsub_seqcst.
   
-  Parameter atomic_xsub_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xsub_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xsub_acquire :
     M.IsFunction "core::intrinsics::atomic_xsub_acquire" atomic_xsub_acquire.
   
-  Parameter atomic_xsub_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xsub_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xsub_release :
     M.IsFunction "core::intrinsics::atomic_xsub_release" atomic_xsub_release.
   
-  Parameter atomic_xsub_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xsub_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xsub_acqrel :
     M.IsFunction "core::intrinsics::atomic_xsub_acqrel" atomic_xsub_acqrel.
   
-  Parameter atomic_xsub_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xsub_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xsub_relaxed :
     M.IsFunction "core::intrinsics::atomic_xsub_relaxed" atomic_xsub_relaxed.
   
-  Parameter atomic_and_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_and_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_and_seqcst :
     M.IsFunction "core::intrinsics::atomic_and_seqcst" atomic_and_seqcst.
   
-  Parameter atomic_and_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_and_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_and_acquire :
     M.IsFunction "core::intrinsics::atomic_and_acquire" atomic_and_acquire.
   
-  Parameter atomic_and_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_and_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_and_release :
     M.IsFunction "core::intrinsics::atomic_and_release" atomic_and_release.
   
-  Parameter atomic_and_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_and_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_and_acqrel :
     M.IsFunction "core::intrinsics::atomic_and_acqrel" atomic_and_acqrel.
   
-  Parameter atomic_and_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_and_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_and_relaxed :
     M.IsFunction "core::intrinsics::atomic_and_relaxed" atomic_and_relaxed.
   
-  Parameter atomic_nand_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_nand_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_nand_seqcst :
     M.IsFunction "core::intrinsics::atomic_nand_seqcst" atomic_nand_seqcst.
   
-  Parameter atomic_nand_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_nand_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_nand_acquire :
     M.IsFunction "core::intrinsics::atomic_nand_acquire" atomic_nand_acquire.
   
-  Parameter atomic_nand_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_nand_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_nand_release :
     M.IsFunction "core::intrinsics::atomic_nand_release" atomic_nand_release.
   
-  Parameter atomic_nand_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_nand_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_nand_acqrel :
     M.IsFunction "core::intrinsics::atomic_nand_acqrel" atomic_nand_acqrel.
   
-  Parameter atomic_nand_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_nand_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_nand_relaxed :
     M.IsFunction "core::intrinsics::atomic_nand_relaxed" atomic_nand_relaxed.
   
-  Parameter atomic_or_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_or_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_or_seqcst :
     M.IsFunction "core::intrinsics::atomic_or_seqcst" atomic_or_seqcst.
   
-  Parameter atomic_or_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_or_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_or_acquire :
     M.IsFunction "core::intrinsics::atomic_or_acquire" atomic_or_acquire.
   
-  Parameter atomic_or_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_or_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_or_release :
     M.IsFunction "core::intrinsics::atomic_or_release" atomic_or_release.
   
-  Parameter atomic_or_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_or_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_or_acqrel :
     M.IsFunction "core::intrinsics::atomic_or_acqrel" atomic_or_acqrel.
   
-  Parameter atomic_or_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_or_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_or_relaxed :
     M.IsFunction "core::intrinsics::atomic_or_relaxed" atomic_or_relaxed.
   
-  Parameter atomic_xor_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xor_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xor_seqcst :
     M.IsFunction "core::intrinsics::atomic_xor_seqcst" atomic_xor_seqcst.
   
-  Parameter atomic_xor_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xor_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xor_acquire :
     M.IsFunction "core::intrinsics::atomic_xor_acquire" atomic_xor_acquire.
   
-  Parameter atomic_xor_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xor_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xor_release :
     M.IsFunction "core::intrinsics::atomic_xor_release" atomic_xor_release.
   
-  Parameter atomic_xor_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xor_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xor_acqrel :
     M.IsFunction "core::intrinsics::atomic_xor_acqrel" atomic_xor_acqrel.
   
-  Parameter atomic_xor_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_xor_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xor_relaxed :
     M.IsFunction "core::intrinsics::atomic_xor_relaxed" atomic_xor_relaxed.
   
-  Parameter atomic_max_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_max_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_max_seqcst :
     M.IsFunction "core::intrinsics::atomic_max_seqcst" atomic_max_seqcst.
   
-  Parameter atomic_max_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_max_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_max_acquire :
     M.IsFunction "core::intrinsics::atomic_max_acquire" atomic_max_acquire.
   
-  Parameter atomic_max_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_max_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_max_release :
     M.IsFunction "core::intrinsics::atomic_max_release" atomic_max_release.
   
-  Parameter atomic_max_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_max_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_max_acqrel :
     M.IsFunction "core::intrinsics::atomic_max_acqrel" atomic_max_acqrel.
   
-  Parameter atomic_max_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_max_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_max_relaxed :
     M.IsFunction "core::intrinsics::atomic_max_relaxed" atomic_max_relaxed.
   
-  Parameter atomic_min_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_min_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_min_seqcst :
     M.IsFunction "core::intrinsics::atomic_min_seqcst" atomic_min_seqcst.
   
-  Parameter atomic_min_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_min_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_min_acquire :
     M.IsFunction "core::intrinsics::atomic_min_acquire" atomic_min_acquire.
   
-  Parameter atomic_min_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_min_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_min_release :
     M.IsFunction "core::intrinsics::atomic_min_release" atomic_min_release.
   
-  Parameter atomic_min_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_min_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_min_acqrel :
     M.IsFunction "core::intrinsics::atomic_min_acqrel" atomic_min_acqrel.
   
-  Parameter atomic_min_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_min_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_min_relaxed :
     M.IsFunction "core::intrinsics::atomic_min_relaxed" atomic_min_relaxed.
   
-  Parameter atomic_umin_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_umin_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umin_seqcst :
     M.IsFunction "core::intrinsics::atomic_umin_seqcst" atomic_umin_seqcst.
   
-  Parameter atomic_umin_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_umin_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umin_acquire :
     M.IsFunction "core::intrinsics::atomic_umin_acquire" atomic_umin_acquire.
   
-  Parameter atomic_umin_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_umin_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umin_release :
     M.IsFunction "core::intrinsics::atomic_umin_release" atomic_umin_release.
   
-  Parameter atomic_umin_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_umin_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umin_acqrel :
     M.IsFunction "core::intrinsics::atomic_umin_acqrel" atomic_umin_acqrel.
   
-  Parameter atomic_umin_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_umin_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umin_relaxed :
     M.IsFunction "core::intrinsics::atomic_umin_relaxed" atomic_umin_relaxed.
   
-  Parameter atomic_umax_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_umax_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umax_seqcst :
     M.IsFunction "core::intrinsics::atomic_umax_seqcst" atomic_umax_seqcst.
   
-  Parameter atomic_umax_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_umax_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umax_acquire :
     M.IsFunction "core::intrinsics::atomic_umax_acquire" atomic_umax_acquire.
   
-  Parameter atomic_umax_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_umax_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umax_release :
     M.IsFunction "core::intrinsics::atomic_umax_release" atomic_umax_release.
   
-  Parameter atomic_umax_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_umax_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umax_acqrel :
     M.IsFunction "core::intrinsics::atomic_umax_acqrel" atomic_umax_acqrel.
   
-  Parameter atomic_umax_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_umax_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umax_relaxed :
     M.IsFunction "core::intrinsics::atomic_umax_relaxed" atomic_umax_relaxed.
   
-  Parameter atomic_fence_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_fence_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_fence_seqcst :
     M.IsFunction "core::intrinsics::atomic_fence_seqcst" atomic_fence_seqcst.
   
-  Parameter atomic_fence_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_fence_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_fence_acquire :
     M.IsFunction "core::intrinsics::atomic_fence_acquire" atomic_fence_acquire.
   
-  Parameter atomic_fence_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_fence_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_fence_release :
     M.IsFunction "core::intrinsics::atomic_fence_release" atomic_fence_release.
   
-  Parameter atomic_fence_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_fence_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_fence_acqrel :
     M.IsFunction "core::intrinsics::atomic_fence_acqrel" atomic_fence_acqrel.
   
-  Parameter atomic_singlethreadfence_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_singlethreadfence_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_singlethreadfence_seqcst :
     M.IsFunction
       "core::intrinsics::atomic_singlethreadfence_seqcst"
       atomic_singlethreadfence_seqcst.
   
-  Parameter atomic_singlethreadfence_acquire : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_singlethreadfence_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_singlethreadfence_acquire :
     M.IsFunction
       "core::intrinsics::atomic_singlethreadfence_acquire"
       atomic_singlethreadfence_acquire.
   
-  Parameter atomic_singlethreadfence_release : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_singlethreadfence_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_singlethreadfence_release :
     M.IsFunction
       "core::intrinsics::atomic_singlethreadfence_release"
       atomic_singlethreadfence_release.
   
-  Parameter atomic_singlethreadfence_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  Parameter atomic_singlethreadfence_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_singlethreadfence_acqrel :
     M.IsFunction
       "core::intrinsics::atomic_singlethreadfence_acqrel"
       atomic_singlethreadfence_acqrel.
   
-  Parameter prefetch_read_data : (list Ty.t) -> (list Value.t) -> M.
+  Parameter prefetch_read_data : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_prefetch_read_data :
     M.IsFunction "core::intrinsics::prefetch_read_data" prefetch_read_data.
   
-  Parameter prefetch_write_data : (list Ty.t) -> (list Value.t) -> M.
+  Parameter prefetch_write_data : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_prefetch_write_data :
     M.IsFunction "core::intrinsics::prefetch_write_data" prefetch_write_data.
   
-  Parameter prefetch_read_instruction : (list Ty.t) -> (list Value.t) -> M.
+  Parameter prefetch_read_instruction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_prefetch_read_instruction :
     M.IsFunction "core::intrinsics::prefetch_read_instruction" prefetch_read_instruction.
   
-  Parameter prefetch_write_instruction : (list Ty.t) -> (list Value.t) -> M.
+  Parameter prefetch_write_instruction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_prefetch_write_instruction :
     M.IsFunction "core::intrinsics::prefetch_write_instruction" prefetch_write_instruction.
   
-  Parameter rustc_peek : (list Ty.t) -> (list Value.t) -> M.
+  Parameter rustc_peek : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_rustc_peek : M.IsFunction "core::intrinsics::rustc_peek" rustc_peek.
   
-  Parameter abort : (list Ty.t) -> (list Value.t) -> M.
+  Parameter abort : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_abort : M.IsFunction "core::intrinsics::abort" abort.
   
-  Parameter unreachable : (list Ty.t) -> (list Value.t) -> M.
+  Parameter unreachable : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unreachable : M.IsFunction "core::intrinsics::unreachable" unreachable.
   
-  Parameter assume : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assume : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_assume : M.IsFunction "core::intrinsics::assume" assume.
   
-  Parameter likely : (list Ty.t) -> (list Value.t) -> M.
+  Parameter likely : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_likely : M.IsFunction "core::intrinsics::likely" likely.
   
-  Parameter unlikely : (list Ty.t) -> (list Value.t) -> M.
+  Parameter unlikely : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unlikely : M.IsFunction "core::intrinsics::unlikely" unlikely.
   
-  Parameter breakpoint : (list Ty.t) -> (list Value.t) -> M.
+  Parameter breakpoint : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_breakpoint : M.IsFunction "core::intrinsics::breakpoint" breakpoint.
   
-  Parameter size_of : (list Ty.t) -> (list Value.t) -> M.
+  Parameter size_of : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_size_of : M.IsFunction "core::intrinsics::size_of" size_of.
   
-  Parameter min_align_of : (list Ty.t) -> (list Value.t) -> M.
+  Parameter min_align_of : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_min_align_of : M.IsFunction "core::intrinsics::min_align_of" min_align_of.
   
-  Parameter pref_align_of : (list Ty.t) -> (list Value.t) -> M.
+  Parameter pref_align_of : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_pref_align_of : M.IsFunction "core::intrinsics::pref_align_of" pref_align_of.
   
-  Parameter size_of_val : (list Ty.t) -> (list Value.t) -> M.
+  Parameter size_of_val : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_size_of_val : M.IsFunction "core::intrinsics::size_of_val" size_of_val.
   
-  Parameter min_align_of_val : (list Ty.t) -> (list Value.t) -> M.
+  Parameter min_align_of_val : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_min_align_of_val :
     M.IsFunction "core::intrinsics::min_align_of_val" min_align_of_val.
   
-  Parameter type_name : (list Ty.t) -> (list Value.t) -> M.
+  Parameter type_name : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_type_name : M.IsFunction "core::intrinsics::type_name" type_name.
   
-  Parameter type_id : (list Ty.t) -> (list Value.t) -> M.
+  Parameter type_id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_type_id : M.IsFunction "core::intrinsics::type_id" type_id.
   
-  Parameter assert_inhabited : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_inhabited : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_assert_inhabited :
     M.IsFunction "core::intrinsics::assert_inhabited" assert_inhabited.
   
-  Parameter assert_zero_valid : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_zero_valid : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_assert_zero_valid :
     M.IsFunction "core::intrinsics::assert_zero_valid" assert_zero_valid.
   
-  Parameter assert_mem_uninitialized_valid : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_mem_uninitialized_valid : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_assert_mem_uninitialized_valid :
     M.IsFunction "core::intrinsics::assert_mem_uninitialized_valid" assert_mem_uninitialized_valid.
   
-  Parameter caller_location : (list Ty.t) -> (list Value.t) -> M.
+  Parameter caller_location : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_caller_location : M.IsFunction "core::intrinsics::caller_location" caller_location.
   
-  Parameter forget : (list Ty.t) -> (list Value.t) -> M.
+  Parameter forget : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_forget : M.IsFunction "core::intrinsics::forget" forget.
   
-  Parameter transmute : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transmute : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_transmute : M.IsFunction "core::intrinsics::transmute" transmute.
   
-  Parameter transmute_unchecked : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transmute_unchecked : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_transmute_unchecked :
     M.IsFunction "core::intrinsics::transmute_unchecked" transmute_unchecked.
   
-  Parameter needs_drop : (list Ty.t) -> (list Value.t) -> M.
+  Parameter needs_drop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_needs_drop : M.IsFunction "core::intrinsics::needs_drop" needs_drop.
   
-  Parameter offset : (list Ty.t) -> (list Value.t) -> M.
+  Parameter offset : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_offset : M.IsFunction "core::intrinsics::offset" offset.
   
-  Parameter arith_offset : (list Ty.t) -> (list Value.t) -> M.
+  Parameter arith_offset : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_arith_offset : M.IsFunction "core::intrinsics::arith_offset" arith_offset.
   
-  Parameter ptr_mask : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ptr_mask : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ptr_mask : M.IsFunction "core::intrinsics::ptr_mask" ptr_mask.
   
-  Parameter volatile_copy_nonoverlapping_memory : (list Ty.t) -> (list Value.t) -> M.
+  Parameter volatile_copy_nonoverlapping_memory :
+      (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_volatile_copy_nonoverlapping_memory :
     M.IsFunction
       "core::intrinsics::volatile_copy_nonoverlapping_memory"
       volatile_copy_nonoverlapping_memory.
   
-  Parameter volatile_copy_memory : (list Ty.t) -> (list Value.t) -> M.
+  Parameter volatile_copy_memory : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_volatile_copy_memory :
     M.IsFunction "core::intrinsics::volatile_copy_memory" volatile_copy_memory.
   
-  Parameter volatile_set_memory : (list Ty.t) -> (list Value.t) -> M.
+  Parameter volatile_set_memory : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_volatile_set_memory :
     M.IsFunction "core::intrinsics::volatile_set_memory" volatile_set_memory.
   
-  Parameter volatile_load : (list Ty.t) -> (list Value.t) -> M.
+  Parameter volatile_load : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_volatile_load : M.IsFunction "core::intrinsics::volatile_load" volatile_load.
   
-  Parameter volatile_store : (list Ty.t) -> (list Value.t) -> M.
+  Parameter volatile_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_volatile_store : M.IsFunction "core::intrinsics::volatile_store" volatile_store.
   
-  Parameter unaligned_volatile_load : (list Ty.t) -> (list Value.t) -> M.
+  Parameter unaligned_volatile_load : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unaligned_volatile_load :
     M.IsFunction "core::intrinsics::unaligned_volatile_load" unaligned_volatile_load.
   
-  Parameter unaligned_volatile_store : (list Ty.t) -> (list Value.t) -> M.
+  Parameter unaligned_volatile_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unaligned_volatile_store :
     M.IsFunction "core::intrinsics::unaligned_volatile_store" unaligned_volatile_store.
   
-  Parameter sqrtf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter sqrtf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sqrtf32 : M.IsFunction "core::intrinsics::sqrtf32" sqrtf32.
   
-  Parameter sqrtf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter sqrtf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sqrtf64 : M.IsFunction "core::intrinsics::sqrtf64" sqrtf64.
   
-  Parameter powif32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter powif32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_powif32 : M.IsFunction "core::intrinsics::powif32" powif32.
   
-  Parameter powif64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter powif64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_powif64 : M.IsFunction "core::intrinsics::powif64" powif64.
   
-  Parameter sinf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter sinf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sinf32 : M.IsFunction "core::intrinsics::sinf32" sinf32.
   
-  Parameter sinf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter sinf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sinf64 : M.IsFunction "core::intrinsics::sinf64" sinf64.
   
-  Parameter cosf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter cosf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_cosf32 : M.IsFunction "core::intrinsics::cosf32" cosf32.
   
-  Parameter cosf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter cosf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_cosf64 : M.IsFunction "core::intrinsics::cosf64" cosf64.
   
-  Parameter powf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter powf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_powf32 : M.IsFunction "core::intrinsics::powf32" powf32.
   
-  Parameter powf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter powf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_powf64 : M.IsFunction "core::intrinsics::powf64" powf64.
   
-  Parameter expf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter expf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_expf32 : M.IsFunction "core::intrinsics::expf32" expf32.
   
-  Parameter expf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter expf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_expf64 : M.IsFunction "core::intrinsics::expf64" expf64.
   
-  Parameter exp2f32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter exp2f32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_exp2f32 : M.IsFunction "core::intrinsics::exp2f32" exp2f32.
   
-  Parameter exp2f64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter exp2f64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_exp2f64 : M.IsFunction "core::intrinsics::exp2f64" exp2f64.
   
-  Parameter logf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter logf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_logf32 : M.IsFunction "core::intrinsics::logf32" logf32.
   
-  Parameter logf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter logf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_logf64 : M.IsFunction "core::intrinsics::logf64" logf64.
   
-  Parameter log10f32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter log10f32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_log10f32 : M.IsFunction "core::intrinsics::log10f32" log10f32.
   
-  Parameter log10f64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter log10f64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_log10f64 : M.IsFunction "core::intrinsics::log10f64" log10f64.
   
-  Parameter log2f32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter log2f32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_log2f32 : M.IsFunction "core::intrinsics::log2f32" log2f32.
   
-  Parameter log2f64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter log2f64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_log2f64 : M.IsFunction "core::intrinsics::log2f64" log2f64.
   
-  Parameter fmaf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmaf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fmaf32 : M.IsFunction "core::intrinsics::fmaf32" fmaf32.
   
-  Parameter fmaf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmaf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fmaf64 : M.IsFunction "core::intrinsics::fmaf64" fmaf64.
   
-  Parameter fabsf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fabsf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fabsf32 : M.IsFunction "core::intrinsics::fabsf32" fabsf32.
   
-  Parameter fabsf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fabsf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fabsf64 : M.IsFunction "core::intrinsics::fabsf64" fabsf64.
   
-  Parameter minnumf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter minnumf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_minnumf32 : M.IsFunction "core::intrinsics::minnumf32" minnumf32.
   
-  Parameter minnumf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter minnumf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_minnumf64 : M.IsFunction "core::intrinsics::minnumf64" minnumf64.
   
-  Parameter maxnumf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter maxnumf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_maxnumf32 : M.IsFunction "core::intrinsics::maxnumf32" maxnumf32.
   
-  Parameter maxnumf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter maxnumf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_maxnumf64 : M.IsFunction "core::intrinsics::maxnumf64" maxnumf64.
   
-  Parameter copysignf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter copysignf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_copysignf32 : M.IsFunction "core::intrinsics::copysignf32" copysignf32.
   
-  Parameter copysignf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter copysignf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_copysignf64 : M.IsFunction "core::intrinsics::copysignf64" copysignf64.
   
-  Parameter floorf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter floorf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_floorf32 : M.IsFunction "core::intrinsics::floorf32" floorf32.
   
-  Parameter floorf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter floorf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_floorf64 : M.IsFunction "core::intrinsics::floorf64" floorf64.
   
-  Parameter ceilf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ceilf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ceilf32 : M.IsFunction "core::intrinsics::ceilf32" ceilf32.
   
-  Parameter ceilf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ceilf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ceilf64 : M.IsFunction "core::intrinsics::ceilf64" ceilf64.
   
-  Parameter truncf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter truncf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_truncf32 : M.IsFunction "core::intrinsics::truncf32" truncf32.
   
-  Parameter truncf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter truncf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_truncf64 : M.IsFunction "core::intrinsics::truncf64" truncf64.
   
-  Parameter rintf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter rintf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_rintf32 : M.IsFunction "core::intrinsics::rintf32" rintf32.
   
-  Parameter rintf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter rintf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_rintf64 : M.IsFunction "core::intrinsics::rintf64" rintf64.
   
-  Parameter nearbyintf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter nearbyintf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_nearbyintf32 : M.IsFunction "core::intrinsics::nearbyintf32" nearbyintf32.
   
-  Parameter nearbyintf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter nearbyintf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_nearbyintf64 : M.IsFunction "core::intrinsics::nearbyintf64" nearbyintf64.
   
-  Parameter roundf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter roundf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_roundf32 : M.IsFunction "core::intrinsics::roundf32" roundf32.
   
-  Parameter roundf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter roundf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_roundf64 : M.IsFunction "core::intrinsics::roundf64" roundf64.
   
-  Parameter roundevenf32 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter roundevenf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_roundevenf32 : M.IsFunction "core::intrinsics::roundevenf32" roundevenf32.
   
-  Parameter roundevenf64 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter roundevenf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_roundevenf64 : M.IsFunction "core::intrinsics::roundevenf64" roundevenf64.
   
-  Parameter fadd_fast : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fadd_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fadd_fast : M.IsFunction "core::intrinsics::fadd_fast" fadd_fast.
   
-  Parameter fsub_fast : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fsub_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fsub_fast : M.IsFunction "core::intrinsics::fsub_fast" fsub_fast.
   
-  Parameter fmul_fast : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmul_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fmul_fast : M.IsFunction "core::intrinsics::fmul_fast" fmul_fast.
   
-  Parameter fdiv_fast : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fdiv_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fdiv_fast : M.IsFunction "core::intrinsics::fdiv_fast" fdiv_fast.
   
-  Parameter frem_fast : (list Ty.t) -> (list Value.t) -> M.
+  Parameter frem_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_frem_fast : M.IsFunction "core::intrinsics::frem_fast" frem_fast.
   
-  Parameter float_to_int_unchecked : (list Ty.t) -> (list Value.t) -> M.
+  Parameter float_to_int_unchecked : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_float_to_int_unchecked :
     M.IsFunction "core::intrinsics::float_to_int_unchecked" float_to_int_unchecked.
   
-  Parameter ctpop : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ctpop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ctpop : M.IsFunction "core::intrinsics::ctpop" ctpop.
   
-  Parameter ctlz : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ctlz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ctlz : M.IsFunction "core::intrinsics::ctlz" ctlz.
   
-  Parameter ctlz_nonzero : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ctlz_nonzero : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ctlz_nonzero : M.IsFunction "core::intrinsics::ctlz_nonzero" ctlz_nonzero.
   
-  Parameter cttz : (list Ty.t) -> (list Value.t) -> M.
+  Parameter cttz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_cttz : M.IsFunction "core::intrinsics::cttz" cttz.
   
-  Parameter cttz_nonzero : (list Ty.t) -> (list Value.t) -> M.
+  Parameter cttz_nonzero : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_cttz_nonzero : M.IsFunction "core::intrinsics::cttz_nonzero" cttz_nonzero.
   
-  Parameter bswap : (list Ty.t) -> (list Value.t) -> M.
+  Parameter bswap : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_bswap : M.IsFunction "core::intrinsics::bswap" bswap.
   
-  Parameter bitreverse : (list Ty.t) -> (list Value.t) -> M.
+  Parameter bitreverse : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_bitreverse : M.IsFunction "core::intrinsics::bitreverse" bitreverse.
   
-  Parameter add_with_overflow : (list Ty.t) -> (list Value.t) -> M.
+  Parameter add_with_overflow : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_add_with_overflow :
     M.IsFunction "core::intrinsics::add_with_overflow" add_with_overflow.
   
-  Parameter sub_with_overflow : (list Ty.t) -> (list Value.t) -> M.
+  Parameter sub_with_overflow : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sub_with_overflow :
     M.IsFunction "core::intrinsics::sub_with_overflow" sub_with_overflow.
   
-  Parameter mul_with_overflow : (list Ty.t) -> (list Value.t) -> M.
+  Parameter mul_with_overflow : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_mul_with_overflow :
     M.IsFunction "core::intrinsics::mul_with_overflow" mul_with_overflow.
   
-  Parameter exact_div : (list Ty.t) -> (list Value.t) -> M.
+  Parameter exact_div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_exact_div : M.IsFunction "core::intrinsics::exact_div" exact_div.
   
-  Parameter unchecked_div : (list Ty.t) -> (list Value.t) -> M.
+  Parameter unchecked_div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_div : M.IsFunction "core::intrinsics::unchecked_div" unchecked_div.
   
-  Parameter unchecked_rem : (list Ty.t) -> (list Value.t) -> M.
+  Parameter unchecked_rem : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_rem : M.IsFunction "core::intrinsics::unchecked_rem" unchecked_rem.
   
-  Parameter unchecked_shl : (list Ty.t) -> (list Value.t) -> M.
+  Parameter unchecked_shl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_shl : M.IsFunction "core::intrinsics::unchecked_shl" unchecked_shl.
   
-  Parameter unchecked_shr : (list Ty.t) -> (list Value.t) -> M.
+  Parameter unchecked_shr : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_shr : M.IsFunction "core::intrinsics::unchecked_shr" unchecked_shr.
   
-  Parameter unchecked_add : (list Ty.t) -> (list Value.t) -> M.
+  Parameter unchecked_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_add : M.IsFunction "core::intrinsics::unchecked_add" unchecked_add.
   
-  Parameter unchecked_sub : (list Ty.t) -> (list Value.t) -> M.
+  Parameter unchecked_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_sub : M.IsFunction "core::intrinsics::unchecked_sub" unchecked_sub.
   
-  Parameter unchecked_mul : (list Ty.t) -> (list Value.t) -> M.
+  Parameter unchecked_mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_mul : M.IsFunction "core::intrinsics::unchecked_mul" unchecked_mul.
   
-  Parameter rotate_left : (list Ty.t) -> (list Value.t) -> M.
+  Parameter rotate_left : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_rotate_left : M.IsFunction "core::intrinsics::rotate_left" rotate_left.
   
-  Parameter rotate_right : (list Ty.t) -> (list Value.t) -> M.
+  Parameter rotate_right : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_rotate_right : M.IsFunction "core::intrinsics::rotate_right" rotate_right.
   
-  Parameter wrapping_add : (list Ty.t) -> (list Value.t) -> M.
+  Parameter wrapping_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_wrapping_add : M.IsFunction "core::intrinsics::wrapping_add" wrapping_add.
   
-  Parameter wrapping_sub : (list Ty.t) -> (list Value.t) -> M.
+  Parameter wrapping_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_wrapping_sub : M.IsFunction "core::intrinsics::wrapping_sub" wrapping_sub.
   
-  Parameter wrapping_mul : (list Ty.t) -> (list Value.t) -> M.
+  Parameter wrapping_mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_wrapping_mul : M.IsFunction "core::intrinsics::wrapping_mul" wrapping_mul.
   
-  Parameter saturating_add : (list Ty.t) -> (list Value.t) -> M.
+  Parameter saturating_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_saturating_add : M.IsFunction "core::intrinsics::saturating_add" saturating_add.
   
-  Parameter saturating_sub : (list Ty.t) -> (list Value.t) -> M.
+  Parameter saturating_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_saturating_sub : M.IsFunction "core::intrinsics::saturating_sub" saturating_sub.
   
-  Parameter read_via_copy : (list Ty.t) -> (list Value.t) -> M.
+  Parameter read_via_copy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_read_via_copy : M.IsFunction "core::intrinsics::read_via_copy" read_via_copy.
   
-  Parameter write_via_move : (list Ty.t) -> (list Value.t) -> M.
+  Parameter write_via_move : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_write_via_move : M.IsFunction "core::intrinsics::write_via_move" write_via_move.
   
-  Parameter discriminant_value : (list Ty.t) -> (list Value.t) -> M.
+  Parameter discriminant_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_discriminant_value :
     M.IsFunction "core::intrinsics::discriminant_value" discriminant_value.
   
-  Parameter variant_count : (list Ty.t) -> (list Value.t) -> M.
+  Parameter variant_count : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_variant_count : M.IsFunction "core::intrinsics::variant_count" variant_count.
   
-  Parameter try : (list Ty.t) -> (list Value.t) -> M.
+  Parameter try : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_try : M.IsFunction "core::intrinsics::try" try.
   
-  Parameter nontemporal_store : (list Ty.t) -> (list Value.t) -> M.
+  Parameter nontemporal_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_nontemporal_store :
     M.IsFunction "core::intrinsics::nontemporal_store" nontemporal_store.
   
-  Parameter ptr_offset_from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ptr_offset_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ptr_offset_from : M.IsFunction "core::intrinsics::ptr_offset_from" ptr_offset_from.
   
-  Parameter ptr_offset_from_unsigned : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ptr_offset_from_unsigned : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ptr_offset_from_unsigned :
     M.IsFunction "core::intrinsics::ptr_offset_from_unsigned" ptr_offset_from_unsigned.
   
-  Parameter ptr_guaranteed_cmp : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ptr_guaranteed_cmp : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ptr_guaranteed_cmp :
     M.IsFunction "core::intrinsics::ptr_guaranteed_cmp" ptr_guaranteed_cmp.
   
-  Parameter const_allocate : (list Ty.t) -> (list Value.t) -> M.
+  Parameter const_allocate : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_const_allocate : M.IsFunction "core::intrinsics::const_allocate" const_allocate.
   
-  Parameter const_deallocate : (list Ty.t) -> (list Value.t) -> M.
+  Parameter const_deallocate : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_const_deallocate :
     M.IsFunction "core::intrinsics::const_deallocate" const_deallocate.
   
-  Parameter raw_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter raw_eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_raw_eq : M.IsFunction "core::intrinsics::raw_eq" raw_eq.
   
-  Parameter compare_bytes : (list Ty.t) -> (list Value.t) -> M.
+  Parameter compare_bytes : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_compare_bytes : M.IsFunction "core::intrinsics::compare_bytes" compare_bytes.
   
-  Parameter black_box : (list Ty.t) -> (list Value.t) -> M.
+  Parameter black_box : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_black_box : M.IsFunction "core::intrinsics::black_box" black_box.
   
-  Parameter vtable_size : (list Ty.t) -> (list Value.t) -> M.
+  Parameter vtable_size : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_vtable_size : M.IsFunction "core::intrinsics::vtable_size" vtable_size.
   
-  Parameter vtable_align : (list Ty.t) -> (list Value.t) -> M.
+  Parameter vtable_align : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_vtable_align : M.IsFunction "core::intrinsics::vtable_align" vtable_align.
   
-  Parameter const_eval_select : (list Ty.t) -> (list Value.t) -> M.
+  Parameter const_eval_select : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_const_eval_select :
     M.IsFunction "core::intrinsics::const_eval_select" const_eval_select.
@@ -1158,24 +1162,28 @@ Module intrinsics.
       !ptr.is_null() && ptr.is_aligned()
   }
   *)
-  Definition is_aligned_and_not_null (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ ptr ] =>
+  Definition is_aligned_and_not_null (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ ptr ] =>
       ltac:(M.monadic
         (let ptr := M.alloc (| ptr |) in
         LogicalOp.and (|
           UnOp.Pure.not
             (M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "is_null", [] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "is_null", [] |),
               [ M.read (| ptr |) ]
             |)),
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "is_aligned", [] |),
+              M.get_associated_function (|
+                Ty.apply (Ty.path "*const") [] [ T ],
+                "is_aligned",
+                []
+              |),
               [ M.read (| ptr |) ]
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_is_aligned_and_not_null :
@@ -1190,9 +1198,9 @@ Module intrinsics.
       len <= max_len
   }
   *)
-  Definition is_valid_allocation_size (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ len ] =>
+  Definition is_valid_allocation_size (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ len ] =>
       ltac:(M.monadic
         (let len := M.alloc (| len |) in
         M.read (|
@@ -1202,7 +1210,7 @@ Module intrinsics.
             |) in
           M.alloc (| BinOp.Pure.le (M.read (| len |)) (M.read (| max_len |)) |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_is_valid_allocation_size :
@@ -1221,9 +1229,9 @@ Module intrinsics.
       diff >= size
   }
   *)
-  Definition is_nonoverlapping (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ src; dst; count ] =>
+  Definition is_nonoverlapping (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ src; dst; count ] =>
       ltac:(M.monadic
         (let src := M.alloc (| src |) in
         let dst := M.alloc (| dst |) in
@@ -1232,14 +1240,14 @@ Module intrinsics.
           let~ src_usize :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "addr", [] |),
+                M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "addr", [] |),
                 [ M.read (| src |) ]
               |)
             |) in
           let~ dst_usize :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "addr", [] |),
+                M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "addr", [] |),
                 [ M.read (| dst |) ]
               |)
             |) in
@@ -1247,7 +1255,7 @@ Module intrinsics.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                   "expect",
                   []
                 |),
@@ -1274,7 +1282,7 @@ Module intrinsics.
             |) in
           M.alloc (| BinOp.Pure.ge (M.read (| diff |)) (M.read (| size |)) |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_is_nonoverlapping :
@@ -1303,9 +1311,9 @@ Module intrinsics.
       }
   }
   *)
-  Definition copy_nonoverlapping (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ src; dst; count ] =>
+  Definition copy_nonoverlapping (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ src; dst; count ] =>
       ltac:(M.monadic
         (let src := M.alloc (| src |) in
         let dst := M.alloc (| dst |) in
@@ -1327,21 +1335,21 @@ Module intrinsics.
                             [
                               Ty.tuple
                                 [
-                                  Ty.apply (Ty.path "*const") [ T ];
-                                  Ty.apply (Ty.path "*mut") [ T ];
+                                  Ty.apply (Ty.path "*const") [] [ T ];
+                                  Ty.apply (Ty.path "*mut") [] [ T ];
                                   Ty.path "usize"
                                 ];
                               Ty.function
                                 [
-                                  Ty.apply (Ty.path "*const") [ T ];
-                                  Ty.apply (Ty.path "*mut") [ T ];
+                                  Ty.apply (Ty.path "*const") [] [ T ];
+                                  Ty.apply (Ty.path "*mut") [] [ T ];
                                   Ty.path "usize"
                                 ]
                                 (Ty.tuple []);
                               Ty.function
                                 [
-                                  Ty.apply (Ty.path "*const") [ T ];
-                                  Ty.apply (Ty.path "*mut") [ T ];
+                                  Ty.apply (Ty.path "*const") [] [ T ];
+                                  Ty.apply (Ty.path "*mut") [] [ T ];
                                   Ty.path "usize"
                                 ]
                                 (Ty.tuple []);
@@ -1372,14 +1380,14 @@ Module intrinsics.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_copy_nonoverlapping :
     M.IsFunction "core::intrinsics::copy_nonoverlapping" copy_nonoverlapping.
   
   Module copy_nonoverlapping.
-    Parameter copy_nonoverlapping : (list Ty.t) -> (list Value.t) -> M.
+    Parameter copy_nonoverlapping : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_copy_nonoverlapping :
       M.IsFunction "core::intrinsics::copy_nonoverlapping::copy_nonoverlapping" copy_nonoverlapping.
@@ -1394,9 +1402,9 @@ Module intrinsics.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ src; dst; count ] =>
+    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ src; dst; count ] =>
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           let dst := M.alloc (| dst |) in
@@ -1459,15 +1467,15 @@ Module intrinsics.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_runtime : M.IsFunction "core::intrinsics::copy_nonoverlapping::runtime" runtime.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ β0; β1; β2 ] =>
+    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ β0; β1; β2 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           let β1 := M.alloc (| β1 |) in
@@ -1490,7 +1498,7 @@ Module intrinsics.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_comptime :
@@ -1516,9 +1524,9 @@ Module intrinsics.
       }
   }
   *)
-  Definition copy (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ src; dst; count ] =>
+  Definition copy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ src; dst; count ] =>
       ltac:(M.monadic
         (let src := M.alloc (| src |) in
         let dst := M.alloc (| dst |) in
@@ -1539,14 +1547,20 @@ Module intrinsics.
                             "core::intrinsics::const_eval_select",
                             [
                               Ty.tuple
-                                [ Ty.apply (Ty.path "*const") [ T ]; Ty.apply (Ty.path "*mut") [ T ]
+                                [
+                                  Ty.apply (Ty.path "*const") [] [ T ];
+                                  Ty.apply (Ty.path "*mut") [] [ T ]
                                 ];
                               Ty.function
-                                [ Ty.apply (Ty.path "*const") [ T ]; Ty.apply (Ty.path "*mut") [ T ]
+                                [
+                                  Ty.apply (Ty.path "*const") [] [ T ];
+                                  Ty.apply (Ty.path "*mut") [] [ T ]
                                 ]
                                 (Ty.tuple []);
                               Ty.function
-                                [ Ty.apply (Ty.path "*const") [ T ]; Ty.apply (Ty.path "*mut") [ T ]
+                                [
+                                  Ty.apply (Ty.path "*const") [] [ T ];
+                                  Ty.apply (Ty.path "*mut") [] [ T ]
                                 ]
                                 (Ty.tuple []);
                               Ty.tuple []
@@ -1570,13 +1584,13 @@ Module intrinsics.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_copy : M.IsFunction "core::intrinsics::copy" copy.
   
   Module copy.
-    Parameter copy : (list Ty.t) -> (list Value.t) -> M.
+    Parameter copy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_copy : M.IsFunction "core::intrinsics::copy::copy" copy.
     
@@ -1590,9 +1604,9 @@ Module intrinsics.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ src; dst ] =>
+    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ src; dst ] =>
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           let dst := M.alloc (| dst |) in
@@ -1642,15 +1656,15 @@ Module intrinsics.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_runtime : M.IsFunction "core::intrinsics::copy::runtime" runtime.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ β0; β1 ] =>
+    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ β0; β1 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           let β1 := M.alloc (| β1 |) in
@@ -1662,7 +1676,7 @@ Module intrinsics.
                   (M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_comptime : M.IsFunction "core::intrinsics::copy::comptime" comptime.
@@ -1686,9 +1700,9 @@ Module intrinsics.
       }
   }
   *)
-  Definition write_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ dst; val; count ] =>
+  Definition write_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ dst; val; count ] =>
       ltac:(M.monadic
         (let dst := M.alloc (| dst |) in
         let val := M.alloc (| val |) in
@@ -1708,9 +1722,9 @@ Module intrinsics.
                           M.get_function (|
                             "core::intrinsics::const_eval_select",
                             [
-                              Ty.tuple [ Ty.apply (Ty.path "*mut") [ T ] ];
-                              Ty.function [ Ty.apply (Ty.path "*mut") [ T ] ] (Ty.tuple []);
-                              Ty.function [ Ty.apply (Ty.path "*mut") [ T ] ] (Ty.tuple []);
+                              Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ] ];
+                              Ty.function [ Ty.apply (Ty.path "*mut") [] [ T ] ] (Ty.tuple []);
+                              Ty.function [ Ty.apply (Ty.path "*mut") [] [ T ] ] (Ty.tuple []);
                               Ty.tuple []
                             ]
                           |),
@@ -1732,13 +1746,13 @@ Module intrinsics.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_write_bytes : M.IsFunction "core::intrinsics::write_bytes" write_bytes.
   
   Module write_bytes.
-    Parameter write_bytes : (list Ty.t) -> (list Value.t) -> M.
+    Parameter write_bytes : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_write_bytes :
       M.IsFunction "core::intrinsics::write_bytes::write_bytes" write_bytes.
@@ -1753,9 +1767,9 @@ Module intrinsics.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst ] =>
+    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           M.read (|
@@ -1794,19 +1808,19 @@ Module intrinsics.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_runtime : M.IsFunction "core::intrinsics::write_bytes::runtime" runtime.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ β0 ] =>
+    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_comptime : M.IsFunction "core::intrinsics::write_bytes::comptime" comptime.
@@ -1825,9 +1839,9 @@ Module ptr.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ x; y; count ] =>
+    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ x; y; count ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let y := M.alloc (| y |) in
@@ -1889,15 +1903,15 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ptr::swap_nonoverlapping::runtime" runtime.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ β0; β1; β2 ] =>
+    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ β0; β1; β2 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           let β1 := M.alloc (| β1 |) in
@@ -1920,7 +1934,7 @@ Module ptr.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ptr::swap_nonoverlapping::comptime" comptime.
@@ -1937,9 +1951,9 @@ Module ptr.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst ] =>
+    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           M.read (|
@@ -1978,19 +1992,19 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ptr::replace::runtime" runtime.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ β0 ] =>
+    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ptr::replace::comptime" comptime.
@@ -2007,9 +2021,9 @@ Module ptr.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ src ] =>
+    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ src ] =>
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.read (|
@@ -2048,19 +2062,19 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ptr::read::runtime" runtime.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ β0 ] =>
+    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ptr::read::comptime" comptime.
@@ -2077,9 +2091,9 @@ Module ptr.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst ] =>
+    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           M.read (|
@@ -2118,19 +2132,19 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ptr::write::runtime" runtime.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ β0 ] =>
+    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ptr::write::comptime" comptime.
@@ -2147,9 +2161,9 @@ Module ptr.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ src ] =>
+    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ src ] =>
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.read (|
@@ -2188,19 +2202,19 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ptr::read_volatile::runtime" runtime.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ β0 ] =>
+    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ptr::read_volatile::comptime" comptime.
@@ -2217,9 +2231,9 @@ Module ptr.
                     }
                 }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ dst ] =>
+    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ dst ] =>
         ltac:(M.monadic
           (let dst := M.alloc (| dst |) in
           M.read (|
@@ -2258,19 +2272,19 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ptr::write_volatile::runtime" runtime.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ β0 ] =>
+    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ β0 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ptr::write_volatile::comptime" comptime.
@@ -2290,9 +2304,9 @@ Module slice.
                       }
                   }
       *)
-      Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ data; len ] =>
+      Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ data; len ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let len := M.alloc (| len |) in
@@ -2342,15 +2356,15 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_runtime : M.IsFunction "core::slice::raw::from_raw_parts::runtime" runtime.
       
       (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-      Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ β0; β1 ] =>
+      Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [ T ], [ β0; β1 ] =>
           ltac:(M.monadic
             (let β0 := M.alloc (| β0 |) in
             let β1 := M.alloc (| β1 |) in
@@ -2362,7 +2376,7 @@ Module slice.
                     (M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_comptime : M.IsFunction "core::slice::raw::from_raw_parts::comptime" comptime.
@@ -2379,9 +2393,9 @@ Module slice.
                       }
                   }
       *)
-      Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ data; len ] =>
+      Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ data; len ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let len := M.alloc (| len |) in
@@ -2431,15 +2445,15 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_runtime : M.IsFunction "core::slice::raw::from_raw_parts_mut::runtime" runtime.
       
       (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
-      Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ β0; β1 ] =>
+      Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [ T ], [ β0; β1 ] =>
           ltac:(M.monadic
             (let β0 := M.alloc (| β0 |) in
             let β1 := M.alloc (| β1 |) in
@@ -2451,7 +2465,7 @@ Module slice.
                     (M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_comptime :

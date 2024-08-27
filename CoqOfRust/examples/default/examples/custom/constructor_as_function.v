@@ -9,9 +9,9 @@ fn matching(tuple: (i32, i32)) -> i32 {
     }
 }
 *)
-Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ tuple ] =>
+Definition matching (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ tuple ] =>
     ltac:(M.monadic
       (let tuple := M.alloc (| tuple |) in
       M.read (|
@@ -33,7 +33,7 @@ Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_matching : M.IsFunction "constructor_as_function::matching" matching.
@@ -50,9 +50,9 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
   Definition Self : Ty.t := Ty.path "constructor_as_function::Constructor".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -76,7 +76,7 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -94,9 +94,9 @@ fn main() {
     println!("{v:?}");
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ v :=
@@ -242,7 +242,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "constructor_as_function::main" main.

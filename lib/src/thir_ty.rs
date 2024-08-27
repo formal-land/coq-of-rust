@@ -49,7 +49,7 @@ pub(crate) fn compile_type<'a>(
             let consts = substs
                 .iter()
                 .filter_map(|subst| match &subst.unpack() {
-                    GenericArgKind::Const(constant) => Some(compile_const(constant)),
+                    GenericArgKind::Const(constant) => Some(compile_const(env, constant)),
                     _ => None,
                 })
                 .collect();
@@ -72,7 +72,7 @@ pub(crate) fn compile_type<'a>(
         TyKind::Str => CoqType::path(&["str"]),
         TyKind::Array(ty, const_) => Rc::new(CoqType::Application {
             func: CoqType::path(&["array"]),
-            consts: vec![compile_const(const_)],
+            consts: vec![compile_const(env, const_)],
             tys: vec![compile_type(env, generics, ty)],
         }),
         TyKind::Slice(ty) => Rc::new(CoqType::Application {

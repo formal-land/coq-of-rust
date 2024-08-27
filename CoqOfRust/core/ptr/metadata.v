@@ -16,9 +16,9 @@ Module ptr.
         unsafe { PtrRepr { const_ptr: ptr }.components.metadata }
     }
     *)
-    Definition metadata (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ ptr ] =>
+    Definition metadata (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ ptr ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.read (|
@@ -36,7 +36,7 @@ Module ptr.
               "metadata"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_metadata : M.IsFunction "core::ptr::metadata::metadata" metadata.
@@ -52,9 +52,9 @@ Module ptr.
         unsafe { PtrRepr { components: PtrComponents { data_address, metadata } }.const_ptr }
     }
     *)
-    Definition from_raw_parts (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ data_address; metadata ] =>
+    Definition from_raw_parts (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ data_address; metadata ] =>
         ltac:(M.monadic
           (let data_address := M.alloc (| data_address |) in
           let metadata := M.alloc (| metadata |) in
@@ -77,7 +77,7 @@ Module ptr.
               "const_ptr"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_raw_parts :
@@ -94,9 +94,9 @@ Module ptr.
         unsafe { PtrRepr { components: PtrComponents { data_address, metadata } }.mut_ptr }
     }
     *)
-    Definition from_raw_parts_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ data_address; metadata ] =>
+    Definition from_raw_parts_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ data_address; metadata ] =>
         ltac:(M.monadic
           (let data_address := M.alloc (| data_address |) in
           let metadata := M.alloc (| metadata |) in
@@ -120,7 +120,7 @@ Module ptr.
               "mut_ptr"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_raw_parts_mut :
@@ -131,17 +131,18 @@ Module ptr.
     (* StructRecord
       {
         name := "PtrComponents";
+        const_params := [];
         ty_params := [ "T" ];
         fields :=
           [
-            ("data_address", Ty.apply (Ty.path "*const") [ Ty.tuple [] ]);
+            ("data_address", Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]);
             ("metadata", Ty.associated)
           ];
       } *)
     
     Module Impl_core_marker_Copy_where_core_marker_Sized_T_for_core_ptr_metadata_PtrComponents_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::PtrComponents") [ T ].
+        Ty.apply (Ty.path "core::ptr::metadata::PtrComponents") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -154,21 +155,21 @@ Module ptr.
     
     Module Impl_core_clone_Clone_where_core_marker_Sized_T_for_core_ptr_metadata_PtrComponents_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::PtrComponents") [ T ].
+        Ty.apply (Ty.path "core::ptr::metadata::PtrComponents") [] [ T ].
       
       (*
           fn clone(&self) -> Self {
               *self
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -183,11 +184,12 @@ Module ptr.
     (* StructRecord
       {
         name := "DynMetadata";
+        const_params := [];
         ty_params := [ "Dyn" ];
         fields :=
           [
-            ("vtable_ptr", Ty.apply (Ty.path "&") [ Ty.path "core::ptr::metadata::VTable" ]);
-            ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [ Dyn ])
+            ("vtable_ptr", Ty.apply (Ty.path "&") [] [ Ty.path "core::ptr::metadata::VTable" ]);
+            ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [] [ Dyn ])
           ];
       } *)
     
@@ -195,7 +197,7 @@ Module ptr.
     
     Module Impl_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ].
+        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       (*
           pub fn size_of(self) -> usize {
@@ -208,10 +210,10 @@ Module ptr.
               };
           }
       *)
-      Definition size_of (Dyn : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_of (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Dyn in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -241,7 +243,7 @@ Module ptr.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_size_of :
@@ -256,10 +258,10 @@ Module ptr.
               };
           }
       *)
-      Definition align_of (Dyn : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition align_of (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Dyn in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -289,7 +291,7 @@ Module ptr.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_align_of :
@@ -303,10 +305,10 @@ Module ptr.
               unsafe { crate::alloc::Layout::from_size_align_unchecked(self.size_of(), self.align_of()) }
           }
       *)
-      Definition layout (Dyn : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition layout (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Dyn in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -318,7 +320,7 @@ Module ptr.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ],
+                    Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     "size_of",
                     []
                   |),
@@ -326,7 +328,7 @@ Module ptr.
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ],
+                    Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     "align_of",
                     []
                   |),
@@ -334,7 +336,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_layout :
@@ -344,7 +346,7 @@ Module ptr.
     
     Module Impl_core_marker_Send_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ].
+        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       Axiom Implements :
         forall (Dyn : Ty.t),
@@ -357,7 +359,7 @@ Module ptr.
     
     Module Impl_core_marker_Sync_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ].
+        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       Axiom Implements :
         forall (Dyn : Ty.t),
@@ -370,17 +372,17 @@ Module ptr.
     
     Module Impl_core_fmt_Debug_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ].
+        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_tuple("DynMetadata").field(&(self.vtable_ptr as *const VTable)).finish()
           }
       *)
-      Definition fmt (Dyn : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Dyn in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -424,7 +426,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -438,7 +440,7 @@ Module ptr.
     
     Module Impl_core_marker_Unpin_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ].
+        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       Axiom Implements :
         forall (Dyn : Ty.t),
@@ -451,7 +453,7 @@ Module ptr.
     
     Module Impl_core_marker_Copy_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ].
+        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       Axiom Implements :
         forall (Dyn : Ty.t),
@@ -464,21 +466,21 @@ Module ptr.
     
     Module Impl_core_clone_Clone_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ].
+        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       (*
           fn clone(&self) -> Self {
               *self
           }
       *)
-      Definition clone (Dyn : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Dyn in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -492,7 +494,7 @@ Module ptr.
     
     Module Impl_core_cmp_Eq_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ].
+        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       Axiom Implements :
         forall (Dyn : Ty.t),
@@ -505,17 +507,17 @@ Module ptr.
     
     Module Impl_core_cmp_PartialEq_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ].
+        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       (*
           fn eq(&self, other: &Self) -> bool {
               crate::ptr::eq::<VTable>(self.vtable_ptr, other.vtable_ptr)
           }
       *)
-      Definition eq (Dyn : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Dyn in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -538,7 +540,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -552,24 +554,24 @@ Module ptr.
     
     Module Impl_core_cmp_Ord_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ].
+        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       (*
           fn cmp(&self, other: &Self) -> crate::cmp::Ordering {
               (self.vtable_ptr as *const VTable).cmp(&(other.vtable_ptr as *const VTable))
           }
       *)
-      Definition cmp (Dyn : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Dyn in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::Ord",
-                Ty.apply (Ty.path "*const") [ Ty.path "core::ptr::metadata::VTable" ],
+                Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                 [],
                 "cmp",
                 []
@@ -597,7 +599,7 @@ Module ptr.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -611,17 +613,22 @@ Module ptr.
     
     Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ].
+        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       (*
           fn partial_cmp(&self, other: &Self) -> Option<crate::cmp::Ordering> {
               Some(self.cmp(other))
           }
       *)
-      Definition partial_cmp (Dyn : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp
+          (Dyn : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self Dyn in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -631,7 +638,7 @@ Module ptr.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::Ord",
-                    Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ],
+                    Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     [],
                     "cmp",
                     []
@@ -639,7 +646,7 @@ Module ptr.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -653,17 +660,17 @@ Module ptr.
     
     Module Impl_core_hash_Hash_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [ Dyn ].
+        Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       (*
           fn hash<H: Hasher>(&self, hasher: &mut H) {
               crate::ptr::hash::<VTable, _>(self.vtable_ptr, hasher)
           }
       *)
-      Definition hash (Dyn : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Dyn in
-        match τ, α with
-        | [ H ], [ self; hasher ] =>
+        match ε, τ, α with
+        | [], [ H ], [ self; hasher ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let hasher := M.alloc (| hasher |) in
@@ -680,7 +687,7 @@ Module ptr.
                 M.read (| hasher |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

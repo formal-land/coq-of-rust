@@ -23,13 +23,13 @@ Module Impl_trait_incrementer_Incrementer.
           Self { value: init_value }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ init_value ] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord "trait_incrementer::Incrementer" [ ("value", M.read (| init_value |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -39,9 +39,9 @@ Module Impl_trait_incrementer_Incrementer.
           self.value += delta;
       }
   *)
-  Definition inc_by (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; delta ] =>
+  Definition inc_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; delta ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let delta := M.alloc (| delta |) in
@@ -56,7 +56,7 @@ Module Impl_trait_incrementer_Incrementer.
             M.write (| β, BinOp.Wrap.add Integer.U64 (M.read (| β |)) (M.read (| delta |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_inc_by : M.IsAssociatedFunction Self "inc_by" inc_by.
@@ -70,16 +70,16 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
           self.inc_by(1)
       }
   *)
-  Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition inc (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "trait_incrementer::Incrementer", "inc_by", [] |),
           [ M.read (| self |); Value.Integer 1 ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -87,9 +87,9 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
           self.value
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -99,7 +99,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
             "value"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -118,9 +118,9 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
           self.value = 0;
       }
   *)
-  Definition reset (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition reset (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -135,7 +135,7 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :

@@ -17,13 +17,13 @@ Module Impl_core_convert_From_i32_for_from_Number.
           Number { value: item }
       }
   *)
-  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ item ] =>
+  Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ item ] =>
       ltac:(M.monadic
         (let item := M.alloc (| item |) in
         Value.StructRecord "from::Number" [ ("value", M.read (| item |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -39,9 +39,9 @@ fn main() {
     Number::from(30);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -59,7 +59,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "from::main" main.

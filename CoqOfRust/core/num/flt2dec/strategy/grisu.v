@@ -386,9 +386,9 @@ Module num.
             (k, Fp { f, e })
         }
         *)
-        Definition cached_power (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ alpha; gamma ] =>
+        Definition cached_power (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ alpha; gamma ] =>
             ltac:(M.monadic
               (let alpha := M.alloc (| alpha |) in
               let gamma := M.alloc (| gamma |) in
@@ -411,6 +411,7 @@ Module num.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
+                              []
                               [ Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i16" ] ],
                             "len",
                             []
@@ -541,7 +542,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Function_cached_power :
@@ -578,9 +579,13 @@ Module num.
             }
         }
         *)
-        Definition max_pow10_no_more_than (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ x ] =>
+        Definition max_pow10_no_more_than
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ x ] =>
             ltac:(M.monadic
               (let x := M.alloc (| x |) in
               M.read (|
@@ -950,7 +955,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Function_max_pow10_no_more_than :
@@ -1272,9 +1277,9 @@ Module num.
             }
         }
         *)
-        Definition format_shortest_opt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ d; buf ] =>
+        Definition format_shortest_opt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ d; buf ] =>
             ltac:(M.monadic
               (let d := M.alloc (| d |) in
               let buf := M.alloc (| buf |) in
@@ -1404,6 +1409,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "u64" ],
                                             "is_some",
                                             []
@@ -1472,6 +1478,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "u64" ],
                                             "is_some",
                                             []
@@ -1541,9 +1548,11 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
                                                     [ Ty.path "u8" ]
                                                 ],
                                               "len",
@@ -2232,6 +2241,7 @@ Module num.
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
                                                       [ Ty.path "u8" ],
                                                     "new",
                                                     []
@@ -2302,6 +2312,7 @@ Module num.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::mem::maybe_uninit::MaybeUninit")
+                                                                        []
                                                                         [ Ty.path "u8" ],
                                                                       "slice_assume_init_mut",
                                                                       []
@@ -2312,16 +2323,19 @@ Module num.
                                                                           "core::ops::index::IndexMut",
                                                                           Ty.apply
                                                                             (Ty.path "slice")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::mem::maybe_uninit::MaybeUninit")
+                                                                                []
                                                                                 [ Ty.path "u8" ]
                                                                             ],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::ops::range::RangeTo")
+                                                                              []
                                                                               [ Ty.path "usize" ]
                                                                           ],
                                                                           "index_mut",
@@ -2670,6 +2684,7 @@ Module num.
                                                           Ty.apply
                                                             (Ty.path
                                                               "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
                                                             [ Ty.path "u8" ],
                                                           "new",
                                                           []
@@ -2730,6 +2745,7 @@ Module num.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ Ty.path "u8" ],
                                                                             "slice_assume_init_mut",
                                                                             []
@@ -2740,10 +2756,12 @@ Module num.
                                                                                 "core::ops::index::IndexMut",
                                                                                 Ty.apply
                                                                                   (Ty.path "slice")
+                                                                                  []
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                                      []
                                                                                       [ Ty.path "u8"
                                                                                       ]
                                                                                   ],
@@ -2751,6 +2769,7 @@ Module num.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::ops::range::RangeTo")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "usize"
@@ -2817,7 +2836,7 @@ Module num.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Function_format_shortest_opt :
@@ -2920,9 +2939,9 @@ Module num.
                   if 2 * ulp <= plus1w && plus1w <= threshold - 4 * ulp { Some((buf, exp)) } else { None }
               }
           *)
-          Definition round_and_weed (τ : list Ty.t) (α : list Value.t) : M :=
-            match τ, α with
-            | [], [ buf; exp; remainder; threshold; plus1v; ten_kappa; ulp ] =>
+          Definition round_and_weed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            match ε, τ, α with
+            | [], [], [ buf; exp; remainder; threshold; plus1v; ten_kappa; ulp ] =>
               ltac:(M.monadic
                 (let buf := M.alloc (| buf |) in
                 let exp := M.alloc (| exp |) in
@@ -2947,7 +2966,7 @@ Module num.
                                         (UnOp.Pure.not
                                           (M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               "is_empty",
                                               []
                                             |),
@@ -2990,14 +3009,15 @@ Module num.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
-                                  [ Ty.apply (Ty.path "&mut") [ Ty.path "u8" ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ] ],
                                 "unwrap",
                                 []
                               |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "last_mut",
                                     []
                                   |),
@@ -3253,7 +3273,7 @@ Module num.
                       |)
                     |)))
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Function_round_and_weed :
@@ -3277,9 +3297,9 @@ Module num.
             }
         }
         *)
-        Definition format_shortest (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ d; buf ] =>
+        Definition format_shortest (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ d; buf ] =>
             ltac:(M.monadic
               (let d := M.alloc (| d |) in
               let buf := M.alloc (| buf |) in
@@ -3320,7 +3340,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Function_format_shortest :
@@ -3616,9 +3636,9 @@ Module num.
             }
         }
         *)
-        Definition format_exact_opt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ d; buf; limit ] =>
+        Definition format_exact_opt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ d; buf; limit ] =>
             ltac:(M.monadic
               (let d := M.alloc (| d |) in
               let buf := M.alloc (| buf |) in
@@ -3718,9 +3738,11 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
                                                     [ Ty.path "u8" ]
                                                 ],
                                               "is_empty",
@@ -3894,9 +3916,11 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ Ty.path "u8" ]
                                         ],
                                       "len",
@@ -4066,10 +4090,12 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "slice")
+                                                                        []
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::mem::maybe_uninit::MaybeUninit")
+                                                                            []
                                                                             [ Ty.path "u8" ]
                                                                         ],
                                                                       "len",
@@ -4097,10 +4123,12 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ Ty.path "u8" ]
                                                                   ],
                                                                 "len",
@@ -4260,6 +4288,7 @@ Module num.
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
                                                       [ Ty.path "u8" ],
                                                     "new",
                                                     []
@@ -4807,6 +4836,7 @@ Module num.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                              []
                                                               [ Ty.path "u8" ],
                                                             "new",
                                                             []
@@ -4907,7 +4937,7 @@ Module num.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Function_format_exact_opt :
@@ -5045,9 +5075,9 @@ Module num.
                   None
               }
           *)
-          Definition possibly_round (τ : list Ty.t) (α : list Value.t) : M :=
-            match τ, α with
-            | [], [ buf; len; exp; limit; remainder; ten_kappa; ulp ] =>
+          Definition possibly_round (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+            match ε, τ, α with
+            | [], [], [ buf; len; exp; limit; remainder; ten_kappa; ulp ] =>
               ltac:(M.monadic
                 (let buf := M.alloc (| buf |) in
                 let len := M.alloc (| len |) in
@@ -5221,6 +5251,7 @@ Module num.
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
                                                       [ Ty.path "u8" ],
                                                     "slice_assume_init_ref",
                                                     []
@@ -5231,15 +5262,18 @@ Module num.
                                                         "core::ops::index::Index",
                                                         Ty.apply
                                                           (Ty.path "slice")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                              []
                                                               [ Ty.path "u8" ]
                                                           ],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::RangeTo")
+                                                            []
                                                             [ Ty.path "usize" ]
                                                         ],
                                                         "index",
@@ -5317,6 +5351,7 @@ Module num.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                              []
                                                               [ Ty.path "u8" ],
                                                             "slice_assume_init_mut",
                                                             []
@@ -5327,16 +5362,19 @@ Module num.
                                                                 "core::ops::index::IndexMut",
                                                                 Ty.apply
                                                                   (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
                                                                       [ Ty.path "u8" ]
                                                                   ],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "core::ops::range::RangeTo")
+                                                                    []
                                                                     [ Ty.path "usize" ]
                                                                 ],
                                                                 "index_mut",
@@ -5389,10 +5427,12 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "slice")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
                                                                               [ Ty.path "u8" ]
                                                                           ],
                                                                         "len",
@@ -5418,6 +5458,7 @@ Module num.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::mem::maybe_uninit::MaybeUninit")
+                                                                  []
                                                                   [ Ty.path "u8" ],
                                                                 "new",
                                                                 []
@@ -5454,6 +5495,7 @@ Module num.
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
                                                       [ Ty.path "u8" ],
                                                     "slice_assume_init_ref",
                                                     []
@@ -5464,15 +5506,18 @@ Module num.
                                                         "core::ops::index::Index",
                                                         Ty.apply
                                                           (Ty.path "slice")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::mem::maybe_uninit::MaybeUninit")
+                                                              []
                                                               [ Ty.path "u8" ]
                                                           ],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::RangeTo")
+                                                            []
                                                             [ Ty.path "usize" ]
                                                         ],
                                                         "index",
@@ -5500,7 +5545,7 @@ Module num.
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                     |)))
                 |)))
-            | _, _ => M.impossible
+            | _, _, _ => M.impossible
             end.
           
           Axiom Function_possibly_round :
@@ -5525,9 +5570,9 @@ Module num.
             }
         }
         *)
-        Definition format_exact (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ d; buf; limit ] =>
+        Definition format_exact (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ d; buf; limit ] =>
             ltac:(M.monadic
               (let d := M.alloc (| d |) in
               let buf := M.alloc (| buf |) in
@@ -5573,7 +5618,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Function_format_exact :

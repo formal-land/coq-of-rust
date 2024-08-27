@@ -3,6 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter message : Value.t.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "hello_world::main" main.

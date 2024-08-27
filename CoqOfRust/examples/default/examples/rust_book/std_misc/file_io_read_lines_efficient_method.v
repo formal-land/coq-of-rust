@@ -10,9 +10,9 @@ where
     Ok(io::BufReader::new(file).lines())
 }
 *)
-Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ P ], [ filename ] =>
+Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ P ], [ filename ] =>
     ltac:(M.monadic
       (let filename := M.alloc (| filename |) in
       M.catch_return (|
@@ -137,7 +137,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_read_lines :
@@ -156,9 +156,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         M.match_operator (|
@@ -324,7 +324,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "file_io_read_lines_efficient_method::main" main.

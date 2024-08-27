@@ -8,8 +8,11 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] => ltac:(M.monadic (Value.Tuple []))
+  | _, _, _ => M.impossible
+  end.
 
 Axiom Function_main : M.IsFunction "diverging_functions::main" main.
 
@@ -19,9 +22,9 @@ Module main.
           panic!("This call never returns.");
       }
   *)
-  Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_function (|
@@ -30,7 +33,7 @@ Module main.
           |),
           [ M.read (| Value.String "This call never returns." |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_foo : M.IsFunction "diverging_functions::main::foo" foo.

@@ -11,16 +11,16 @@ Module str.
               self.as_bytes().cmp(other.as_bytes())
           }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::Ord",
-                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 [],
                 "cmp",
                 []
@@ -36,7 +36,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -55,17 +55,17 @@ Module str.
               self.as_bytes() == other.as_bytes()
           }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
-                [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
                 "eq",
                 []
               |),
@@ -84,7 +84,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -110,9 +110,9 @@ Module str.
               Some(self.cmp(other))
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -124,7 +124,7 @@ Module str.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -146,10 +146,10 @@ Module str.
               index.index(self)
           }
       *)
-      Definition index (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ self; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let index := M.alloc (| index |) in
@@ -163,7 +163,7 @@ Module str.
               |),
               [ M.read (| index |); M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -184,10 +184,10 @@ Module str.
               index.index_mut(self)
           }
       *)
-      Definition index_mut (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index_mut (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ self; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let index := M.alloc (| index |) in
@@ -201,7 +201,7 @@ Module str.
               |),
               [ M.read (| index |); M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -218,9 +218,9 @@ Module str.
         panic!("attempted to index str up to maximum usize");
     }
     *)
-    Definition str_index_overflow_fail (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition str_index_overflow_fail (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -238,7 +238,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_str_index_overflow_fail :
@@ -255,14 +255,14 @@ Module str.
               Some(slice)
           }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             Value.StructTuple "core::option::Option::Some" [ M.read (| slice |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -270,14 +270,14 @@ Module str.
               Some(slice)
           }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             Value.StructTuple "core::option::Option::Some" [ M.read (| slice |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -285,14 +285,14 @@ Module str.
               slice
           }
       *)
-      Definition get_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -300,14 +300,14 @@ Module str.
               slice
           }
       *)
-      Definition get_unchecked_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -315,14 +315,14 @@ Module str.
               slice
           }
       *)
-      Definition index (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -330,14 +330,14 @@ Module str.
               slice
           }
       *)
-      Definition index_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -358,7 +358,7 @@ Module str.
     End Impl_core_slice_index_SliceIndex_str_for_core_ops_range_RangeFull.
     
     Module Impl_core_slice_index_SliceIndex_str_for_core_ops_range_Range_usize.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ].
       
       (*     type Output = str; *)
       Definition _Output : Ty.t := Ty.path "str".
@@ -378,9 +378,9 @@ Module str.
               }
           }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -457,7 +457,7 @@ Module str.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::slice::index::SliceIndex",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [ Ty.path "str" ],
                                 "get_unchecked",
                                 []
@@ -472,7 +472,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -489,9 +489,9 @@ Module str.
               }
           }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -568,7 +568,7 @@ Module str.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::slice::index::SliceIndex",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [ Ty.path "str" ],
                                 "get_unchecked_mut",
                                 []
@@ -583,7 +583,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -608,9 +608,9 @@ Module str.
               ptr::slice_from_raw_parts(ptr, len) as *const str
           }
       *)
-      Definition get_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -663,7 +663,9 @@ Module str.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "*const")
-                                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
                                                   "len",
                                                   []
                                                 |),
@@ -719,7 +721,7 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                       "add",
                       []
                     |),
@@ -728,7 +730,8 @@ Module str.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "*const")
-                            [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           "as_ptr",
                           []
                         |),
@@ -771,7 +774,7 @@ Module str.
                   |))
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -789,9 +792,9 @@ Module str.
               ptr::slice_from_raw_parts_mut(ptr, len) as *mut str
           }
       *)
-      Definition get_unchecked_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -844,7 +847,9 @@ Module str.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "*mut")
-                                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
                                                   "len",
                                                   []
                                                 |),
@@ -900,14 +905,17 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                       "add",
                       []
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                          Ty.apply
+                            (Ty.path "*mut")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           "as_mut_ptr",
                           []
                         |),
@@ -950,7 +958,7 @@ Module str.
                   |))
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -962,9 +970,9 @@ Module str.
               }
           }
       *)
-      Definition index (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -1001,7 +1009,7 @@ Module str.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::slice::index::SliceIndex",
-                              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               [ Ty.path "str" ],
                               "get",
                               []
@@ -1036,7 +1044,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1055,9 +1063,9 @@ Module str.
               }
           }
       *)
-      Definition index_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -1131,7 +1139,7 @@ Module str.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [ Ty.path "str" ],
                             "get_unchecked_mut",
                             []
@@ -1168,7 +1176,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1192,8 +1200,8 @@ Module str.
       Definition Self : Ty.t :=
         Ty.tuple
           [
-            Ty.apply (Ty.path "core::ops::range::Bound") [ Ty.path "usize" ];
-            Ty.apply (Ty.path "core::ops::range::Bound") [ Ty.path "usize" ]
+            Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
+            Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
           ].
       
       (*     type Output = str; *)
@@ -1204,9 +1212,9 @@ Module str.
               crate::slice::index::into_range(slice.len(), self)?.get(slice)
           }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -1215,7 +1223,7 @@ Module str.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     [ Ty.path "str" ],
                     "get",
                     []
@@ -1229,7 +1237,12 @@ Module str.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::option::Option")
-                                [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
                                 ],
                               [],
                               "branch",
@@ -1268,10 +1281,12 @@ Module str.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
-                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -1300,7 +1315,7 @@ Module str.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1308,9 +1323,9 @@ Module str.
               crate::slice::index::into_range(slice.len(), self)?.get_mut(slice)
           }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -1319,7 +1334,7 @@ Module str.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     [ Ty.path "str" ],
                     "get_mut",
                     []
@@ -1333,7 +1348,12 @@ Module str.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::option::Option")
-                                [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
                                 ],
                               [],
                               "branch",
@@ -1372,10 +1392,12 @@ Module str.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
-                                            [ Ty.apply (Ty.path "&mut") [ Ty.path "str" ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ] ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -1404,7 +1426,7 @@ Module str.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1414,9 +1436,9 @@ Module str.
               unsafe { crate::slice::index::into_range_unchecked(len, self).get_unchecked(slice) }
           }
       *)
-      Definition get_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -1425,7 +1447,10 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                      Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       "len",
                       []
                     |),
@@ -1436,7 +1461,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     [ Ty.path "str" ],
                     "get_unchecked",
                     []
@@ -1451,7 +1476,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1461,9 +1486,9 @@ Module str.
               unsafe { crate::slice::index::into_range_unchecked(len, self).get_unchecked_mut(slice) }
           }
       *)
-      Definition get_unchecked_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -1472,7 +1497,10 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                      Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       "len",
                       []
                     |),
@@ -1483,7 +1511,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     [ Ty.path "str" ],
                     "get_unchecked_mut",
                     []
@@ -1498,7 +1526,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1506,16 +1534,16 @@ Module str.
               crate::slice::index::into_slice_range(slice.len(), self).index(slice)
           }
       *)
-      Definition index (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
-                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                 [ Ty.path "str" ],
                 "index",
                 []
@@ -1534,7 +1562,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1542,16 +1570,16 @@ Module str.
               crate::slice::index::into_slice_range(slice.len(), self).index_mut(slice)
           }
       *)
-      Definition index_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
-                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                 [ Ty.path "str" ],
                 "index_mut",
                 []
@@ -1570,7 +1598,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1591,7 +1619,8 @@ Module str.
     End Impl_core_slice_index_SliceIndex_str_for_Tuple_core_ops_range_Bound_usize_core_ops_range_Bound_usize_.
     
     Module Impl_core_slice_index_SliceIndex_str_for_core_ops_range_RangeTo_usize.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ].
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ].
       
       (*     type Output = str; *)
       Definition _Output : Ty.t := Ty.path "str".
@@ -1607,9 +1636,9 @@ Module str.
               }
           }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -1644,7 +1673,10 @@ Module str.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::slice::index::SliceIndex",
-                                Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ],
+                                Ty.apply
+                                  (Ty.path "core::ops::range::RangeTo")
+                                  []
+                                  [ Ty.path "usize" ],
                                 [ Ty.path "str" ],
                                 "get_unchecked",
                                 []
@@ -1659,7 +1691,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1673,9 +1705,9 @@ Module str.
               }
           }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -1710,7 +1742,10 @@ Module str.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::slice::index::SliceIndex",
-                                Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ],
+                                Ty.apply
+                                  (Ty.path "core::ops::range::RangeTo")
+                                  []
+                                  [ Ty.path "usize" ],
                                 [ Ty.path "str" ],
                                 "get_unchecked_mut",
                                 []
@@ -1725,7 +1760,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1734,16 +1769,16 @@ Module str.
               unsafe { (0..self.end).get_unchecked(slice) }
           }
       *)
-      Definition get_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
-                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                 [ Ty.path "str" ],
                 "get_unchecked",
                 []
@@ -1765,7 +1800,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1774,16 +1809,16 @@ Module str.
               unsafe { (0..self.end).get_unchecked_mut(slice) }
           }
       *)
-      Definition get_unchecked_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
-                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                 [ Ty.path "str" ],
                 "get_unchecked_mut",
                 []
@@ -1805,7 +1840,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1817,9 +1852,9 @@ Module str.
               }
           }
       *)
-      Definition index (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -1837,7 +1872,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::slice::index::SliceIndex",
-                      Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ],
+                      Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ],
                       [ Ty.path "str" ],
                       "get",
                       []
@@ -1870,7 +1905,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1884,9 +1919,9 @@ Module str.
               }
           }
       *)
-      Definition index_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -1918,7 +1953,7 @@ Module str.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
-                            Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ],
+                            Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ],
                             [ Ty.path "str" ],
                             "get_unchecked_mut",
                             []
@@ -1949,7 +1984,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1971,7 +2006,7 @@ Module str.
     
     Module Impl_core_slice_index_SliceIndex_str_for_core_ops_range_RangeFrom_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ].
       
       (*     type Output = str; *)
       Definition _Output : Ty.t := Ty.path "str".
@@ -1987,9 +2022,9 @@ Module str.
               }
           }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -2026,6 +2061,7 @@ Module str.
                                 "core::slice::index::SliceIndex",
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeFrom")
+                                  []
                                   [ Ty.path "usize" ],
                                 [ Ty.path "str" ],
                                 "get_unchecked",
@@ -2041,7 +2077,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2055,9 +2091,9 @@ Module str.
               }
           }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -2094,6 +2130,7 @@ Module str.
                                 "core::slice::index::SliceIndex",
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeFrom")
+                                  []
                                   [ Ty.path "usize" ],
                                 [ Ty.path "str" ],
                                 "get_unchecked_mut",
@@ -2109,7 +2146,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2119,9 +2156,9 @@ Module str.
               unsafe { (self.start..len).get_unchecked(slice) }
           }
       *)
-      Definition get_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -2130,7 +2167,10 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                      Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       "len",
                       []
                     |),
@@ -2141,7 +2181,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     [ Ty.path "str" ],
                     "get_unchecked",
                     []
@@ -2165,7 +2205,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2175,9 +2215,9 @@ Module str.
               unsafe { (self.start..len).get_unchecked_mut(slice) }
           }
       *)
-      Definition get_unchecked_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -2186,7 +2226,10 @@ Module str.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                      Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       "len",
                       []
                     |),
@@ -2197,7 +2240,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     [ Ty.path "str" ],
                     "get_unchecked_mut",
                     []
@@ -2221,7 +2264,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2233,9 +2276,9 @@ Module str.
               }
           }
       *)
-      Definition index (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -2269,7 +2312,10 @@ Module str.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::slice::index::SliceIndex",
-                              Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ],
+                              Ty.apply
+                                (Ty.path "core::ops::range::RangeFrom")
+                                []
+                                [ Ty.path "usize" ],
                               [ Ty.path "str" ],
                               "get",
                               []
@@ -2304,7 +2350,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2318,9 +2364,9 @@ Module str.
               }
           }
       *)
-      Definition index_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -2352,7 +2398,7 @@ Module str.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
-                            Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ],
+                            Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
                             [ Ty.path "str" ],
                             "get_unchecked_mut",
                             []
@@ -2386,7 +2432,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2408,7 +2454,7 @@ Module str.
     
     Module Impl_core_slice_index_SliceIndex_str_for_core_ops_range_RangeInclusive_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ].
       
       (*     type Output = str; *)
       Definition _Output : Ty.t := Ty.path "str".
@@ -2418,9 +2464,9 @@ Module str.
               if *self.end() == usize::MAX { None } else { self.into_slice_range().get(slice) }
           }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -2439,6 +2485,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeInclusive")
+                                      []
                                       [ Ty.path "usize" ],
                                     "end",
                                     []
@@ -2456,7 +2503,7 @@ Module str.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [ Ty.path "str" ],
                             "get",
                             []
@@ -2466,6 +2513,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeInclusive")
+                                  []
                                   [ Ty.path "usize" ],
                                 "into_slice_range",
                                 []
@@ -2479,7 +2527,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2487,9 +2535,9 @@ Module str.
               if *self.end() == usize::MAX { None } else { self.into_slice_range().get_mut(slice) }
           }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -2508,6 +2556,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeInclusive")
+                                      []
                                       [ Ty.path "usize" ],
                                     "end",
                                     []
@@ -2525,7 +2574,7 @@ Module str.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [ Ty.path "str" ],
                             "get_mut",
                             []
@@ -2535,6 +2584,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeInclusive")
+                                  []
                                   [ Ty.path "usize" ],
                                 "into_slice_range",
                                 []
@@ -2548,7 +2598,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2557,16 +2607,16 @@ Module str.
               unsafe { self.into_slice_range().get_unchecked(slice) }
           }
       *)
-      Definition get_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
-                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                 [ Ty.path "str" ],
                 "get_unchecked",
                 []
@@ -2574,7 +2624,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "into_slice_range",
                     []
                   |),
@@ -2583,7 +2633,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2592,16 +2642,16 @@ Module str.
               unsafe { self.into_slice_range().get_unchecked_mut(slice) }
           }
       *)
-      Definition get_unchecked_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
-                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                 [ Ty.path "str" ],
                 "get_unchecked_mut",
                 []
@@ -2609,7 +2659,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "into_slice_range",
                     []
                   |),
@@ -2618,7 +2668,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2629,9 +2679,9 @@ Module str.
               self.into_slice_range().index(slice)
           }
       *)
-      Definition index (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -2651,6 +2701,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeInclusive")
+                                        []
                                         [ Ty.path "usize" ],
                                       "end",
                                       []
@@ -2677,7 +2728,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     [ Ty.path "str" ],
                     "index",
                     []
@@ -2685,7 +2736,10 @@ Module str.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                        Ty.apply
+                          (Ty.path "core::ops::range::RangeInclusive")
+                          []
+                          [ Ty.path "usize" ],
                         "into_slice_range",
                         []
                       |),
@@ -2696,7 +2750,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2707,9 +2761,9 @@ Module str.
               self.into_slice_range().index_mut(slice)
           }
       *)
-      Definition index_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -2729,6 +2783,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeInclusive")
+                                        []
                                         [ Ty.path "usize" ],
                                       "end",
                                       []
@@ -2755,7 +2810,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     [ Ty.path "str" ],
                     "index_mut",
                     []
@@ -2763,7 +2818,10 @@ Module str.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                        Ty.apply
+                          (Ty.path "core::ops::range::RangeInclusive")
+                          []
+                          [ Ty.path "usize" ],
                         "into_slice_range",
                         []
                       |),
@@ -2774,7 +2832,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2796,7 +2854,7 @@ Module str.
     
     Module Impl_core_slice_index_SliceIndex_str_for_core_ops_range_RangeToInclusive_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Ty.path "usize" ].
       
       (*     type Output = str; *)
       Definition _Output : Ty.t := Ty.path "str".
@@ -2806,16 +2864,16 @@ Module str.
               (0..=self.end).get(slice)
           }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
-                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                 [ Ty.path "str" ],
                 "get",
                 []
@@ -2823,7 +2881,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
                     []
                   |),
@@ -2841,7 +2899,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2849,16 +2907,16 @@ Module str.
               (0..=self.end).get_mut(slice)
           }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
-                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                 [ Ty.path "str" ],
                 "get_mut",
                 []
@@ -2866,7 +2924,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
                     []
                   |),
@@ -2884,7 +2942,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2893,16 +2951,16 @@ Module str.
               unsafe { (0..=self.end).get_unchecked(slice) }
           }
       *)
-      Definition get_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
-                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                 [ Ty.path "str" ],
                 "get_unchecked",
                 []
@@ -2910,7 +2968,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
                     []
                   |),
@@ -2928,7 +2986,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2937,16 +2995,16 @@ Module str.
               unsafe { (0..=self.end).get_unchecked_mut(slice) }
           }
       *)
-      Definition get_unchecked_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition get_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
-                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                 [ Ty.path "str" ],
                 "get_unchecked_mut",
                 []
@@ -2954,7 +3012,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
                     []
                   |),
@@ -2972,7 +3030,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2980,16 +3038,16 @@ Module str.
               (0..=self.end).index(slice)
           }
       *)
-      Definition index (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
-                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                 [ Ty.path "str" ],
                 "index",
                 []
@@ -2997,7 +3055,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
                     []
                   |),
@@ -3015,7 +3073,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3023,16 +3081,16 @@ Module str.
               (0..=self.end).index_mut(slice)
           }
       *)
-      Definition index_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
-                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                 [ Ty.path "str" ],
                 "index_mut",
                 []
@@ -3040,7 +3098,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
                     []
                   |),
@@ -3058,7 +3116,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3096,9 +3154,9 @@ Module str.
               }
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.read (|
@@ -3129,7 +3187,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

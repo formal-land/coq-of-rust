@@ -15,9 +15,9 @@ Module str.
         }
     }
     *)
-    Definition from_utf8 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ v ] =>
+    Definition from_utf8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.read (|
@@ -54,7 +54,7 @@ Module str.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_utf8 : M.IsFunction "core::str::converts::from_utf8" from_utf8.
@@ -71,9 +71,9 @@ Module str.
         }
     }
     *)
-    Definition from_utf8_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ v ] =>
+    Definition from_utf8_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.read (|
@@ -110,7 +110,7 @@ Module str.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_utf8_mut : M.IsFunction "core::str::converts::from_utf8_mut" from_utf8_mut.
@@ -122,22 +122,22 @@ Module str.
         unsafe { mem::transmute(v) }
     }
     *)
-    Definition from_utf8_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ v ] =>
+    Definition from_utf8_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
               [
-                Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
-                Ty.apply (Ty.path "&") [ Ty.path "str" ]
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
               ]
             |),
             [ M.read (| v |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_utf8_unchecked :
@@ -152,13 +152,13 @@ Module str.
         unsafe { &mut *(v as *mut [u8] as *mut str) }
     }
     *)
-    Definition from_utf8_unchecked_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ v ] =>
+    Definition from_utf8_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_utf8_unchecked_mut :

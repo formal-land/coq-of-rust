@@ -24,9 +24,9 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Definition Self : Ty.t := Ty.path "derive::Centimeters".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -37,7 +37,7 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
           (M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "derive::Centimeters", 0 |)
           |))))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -52,9 +52,9 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Definition Self : Ty.t := Ty.path "derive::Centimeters".
   
   (* PartialOrd *)
-  Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -71,7 +71,7 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "derive::Centimeters", 0 |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -94,9 +94,9 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   Definition Self : Ty.t := Ty.path "derive::Inches".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -116,7 +116,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -137,9 +137,9 @@ Module Impl_derive_Inches.
           Centimeters(inches as f64 * 2.54)
       }
   *)
-  Definition to_centimeters (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition to_centimeters (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -164,7 +164,7 @@ Module Impl_derive_Inches.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_to_centimeters :
@@ -206,9 +206,9 @@ fn main() {
     println!("One foot is {} than one meter.", cmp);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _one_second := M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer 1 ] |) in
@@ -338,7 +338,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "derive::main" main.

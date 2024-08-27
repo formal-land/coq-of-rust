@@ -33,9 +33,9 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
   Definition Self : Ty.t := Ty.path "call_builder_delegate::CallBuilderDelegateTest".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "call_builder_delegate::CallBuilderDelegateTest"
@@ -46,7 +46,7 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -65,15 +65,15 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
           Self { value }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ value ] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         Value.StructRecord
           "call_builder_delegate::CallBuilderDelegateTest"
           [ ("value", M.read (| value |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -97,15 +97,15 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
           None
       }
   *)
-  Definition delegate (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; code_hash; selector ] =>
+  Definition delegate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; code_hash; selector ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let code_hash := M.alloc (| code_hash |) in
         let selector := M.alloc (| selector |) in
         Value.StructTuple "core::option::Option::None" []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_delegate : M.IsAssociatedFunction Self "delegate" delegate.
@@ -122,15 +122,15 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
           0
       }
   *)
-  Definition invoke (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; code_hash; selector ] =>
+  Definition invoke (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; code_hash; selector ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let code_hash := M.alloc (| code_hash |) in
         let selector := M.alloc (| selector |) in
         Value.Integer 0))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.

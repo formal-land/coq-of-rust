@@ -12,9 +12,9 @@ fn checked_division(dividend: i32, divisor: i32) -> Option<i32> {
     }
 }
 *)
-Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ dividend; divisor ] =>
+Definition checked_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ dividend; divisor ] =>
     ltac:(M.monadic
       (let dividend := M.alloc (| dividend |) in
       let divisor := M.alloc (| divisor |) in
@@ -38,7 +38,7 @@ Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_checked_division : M.IsFunction "option::checked_division" checked_division.
@@ -54,9 +54,9 @@ fn try_division(dividend: i32, divisor: i32) {
     }
 }
 *)
-Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ dividend; divisor ] =>
+Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ dividend; divisor ] =>
     ltac:(M.monadic
       (let dividend := M.alloc (| dividend |) in
       let divisor := M.alloc (| divisor |) in
@@ -193,7 +193,7 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_try_division : M.IsFunction "option::try_division" try_division.
@@ -220,9 +220,9 @@ fn main() {
     println!("{:?} unwraps to {:?}", none, none.unwrap());
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -373,7 +373,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "option::main" main.

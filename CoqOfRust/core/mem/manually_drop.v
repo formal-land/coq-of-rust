@@ -6,13 +6,14 @@ Module mem.
     (* StructRecord
       {
         name := "ManuallyDrop";
+        const_params := [];
         ty_params := [ "T" ];
         fields := [ ("value", T) ];
       } *)
     
     Module Impl_core_marker_Copy_where_core_marker_Copy_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -25,13 +26,13 @@ Module mem.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       (* Clone *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -49,7 +50,7 @@ Module mem.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -63,13 +64,13 @@ Module mem.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       (* Debug *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -94,7 +95,7 @@ Module mem.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -108,13 +109,13 @@ Module mem.
     
     Module Impl_core_default_Default_where_core_default_Default_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       (* Default *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::mem::manually_drop::ManuallyDrop"
@@ -125,7 +126,7 @@ Module mem.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -139,7 +140,7 @@ Module mem.
     
     Module Impl_core_marker_StructuralPartialEq_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -152,13 +153,13 @@ Module mem.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       (* PartialEq *)
-      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -177,7 +178,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -191,7 +192,7 @@ Module mem.
     
     Module Impl_core_marker_StructuralEq_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -204,13 +205,18 @@ Module mem.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -219,7 +225,7 @@ Module mem.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -234,13 +240,13 @@ Module mem.
     
     Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       (* PartialOrd *)
-      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -259,7 +265,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -273,13 +279,13 @@ Module mem.
     
     Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       (* Ord *)
-      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -298,7 +304,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -312,13 +318,13 @@ Module mem.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       (* Hash *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -333,7 +339,7 @@ Module mem.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -347,23 +353,23 @@ Module mem.
     
     Module Impl_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       (*
           pub const fn new(value: T) -> ManuallyDrop<T> {
               ManuallyDrop { value }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ value ] =>
+        match ε, τ, α with
+        | [ host ], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             Value.StructRecord
               "core::mem::manually_drop::ManuallyDrop"
               [ ("value", M.read (| value |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -375,10 +381,10 @@ Module mem.
               slot.value
           }
       *)
-      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ slot ] =>
+        match ε, τ, α with
+        | [ host ], [], [ slot ] =>
           ltac:(M.monadic
             (let slot := M.alloc (| slot |) in
             M.read (|
@@ -388,7 +394,7 @@ Module mem.
                 "value"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -402,10 +408,10 @@ Module mem.
               unsafe { ptr::read(&slot.value) }
           }
       *)
-      Definition take (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition take (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ slot ] =>
+        match ε, τ, α with
+        | [], [], [ slot ] =>
           ltac:(M.monadic
             (let slot := M.alloc (| slot |) in
             M.call_closure (|
@@ -418,7 +424,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_take :
@@ -432,10 +438,10 @@ Module mem.
               unsafe { ptr::drop_in_place(&mut slot.value) }
           }
       *)
-      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ slot ] =>
+        match ε, τ, α with
+        | [], [], [ slot ] =>
           ltac:(M.monadic
             (let slot := M.alloc (| slot |) in
             M.call_closure (|
@@ -448,7 +454,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_drop :
@@ -459,7 +465,7 @@ Module mem.
     
     Module Impl_core_ops_deref_Deref_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       (*     type Target = T; *)
       Definition _Target (T : Ty.t) : Ty.t := T.
@@ -469,10 +475,10 @@ Module mem.
               &self.value
           }
       *)
-      Definition deref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -480,7 +486,7 @@ Module mem.
               "core::mem::manually_drop::ManuallyDrop",
               "value"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -495,17 +501,17 @@ Module mem.
     
     Module Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
       
       (*
           fn deref_mut(&mut self) -> &mut T {
               &mut self.value
           }
       *)
-      Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -513,7 +519,7 @@ Module mem.
               "core::mem::manually_drop::ManuallyDrop",
               "value"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

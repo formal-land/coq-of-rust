@@ -7,9 +7,9 @@ fn compare_prints<T: Debug + Display>(t: &T) {
     println!("Display: `{}`", t);
 }
 *)
-Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ T ], [ t ] =>
+Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ T ], [ t ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
@@ -90,7 +90,7 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_compare_prints :
@@ -102,9 +102,9 @@ fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
     println!("u: `{:?}`", u);
 }
 *)
-Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ T; U ], [ t; u ] =>
+Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ T; U ], [ t; u ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       let u := M.alloc (| u |) in
@@ -185,7 +185,7 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_compare_types : M.IsFunction "generics_multiple_bounds::compare_types" compare_types.
@@ -203,9 +203,9 @@ fn main() {
     compare_types(&array, &vec);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ string := M.copy (| Value.String "words" |) in
@@ -273,7 +273,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_multiple_bounds::main" main.

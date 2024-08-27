@@ -16,9 +16,9 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Definition Self : Ty.t := Ty.path "generics_bounds::Rectangle".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -51,7 +51,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -78,9 +78,9 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
           self.length * self.height
       }
   *)
-  Definition area (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition area (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         BinOp.Wrap.mul
@@ -99,7 +99,7 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
               "height"
             |)
           |))))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -115,9 +115,9 @@ fn print_debug<T: Debug>(t: &T) {
     println!("{:?}", t);
 }
 *)
-Definition print_debug (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ T ], [ t ] =>
+Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ T ], [ t ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
@@ -160,7 +160,7 @@ Definition print_debug (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_print_debug : M.IsFunction "generics_bounds::print_debug" print_debug.
@@ -170,16 +170,16 @@ fn area<T: HasArea>(t: &T) -> f64 {
     t.area()
 }
 *)
-Definition area (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ T ], [ t ] =>
+Definition area (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ T ], [ t ] =>
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.call_closure (|
         M.get_trait_method (| "generics_bounds::HasArea", T, [], "area", [] |),
         [ M.read (| t |) ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_area : M.IsFunction "generics_bounds::area" area.
@@ -204,9 +204,9 @@ fn main() {
     // | Error: Does not implement either `Debug` or `HasArea`.
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ rectangle :=
@@ -289,7 +289,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_bounds::main" main.

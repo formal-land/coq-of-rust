@@ -12,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_traits::Borrowed".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -25,7 +25,7 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_traits::Borrowed".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -35,6 +35,6 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_traits::main" main.

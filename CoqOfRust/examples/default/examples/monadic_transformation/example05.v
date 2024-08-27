@@ -17,16 +17,16 @@ Module Impl_example05_Foo.
           self.0 + 1
       }
   *)
-  Definition plus1 (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition plus1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         BinOp.Wrap.add
           Integer.U32
           (M.read (| M.SubPointer.get_struct_tuple_field (| self, "example05::Foo", 0 |) |))
           (Value.Integer 1)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_plus1 : M.IsAssociatedFunction Self "plus1" plus1.
@@ -38,9 +38,9 @@ fn main() {
     foo.plus1();
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ foo := M.alloc (| Value.StructTuple "example05::Foo" [ Value.Integer 0 ] |) in
@@ -53,7 +53,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "example05::main" main.

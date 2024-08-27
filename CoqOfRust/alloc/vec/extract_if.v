@@ -6,10 +6,12 @@ Module vec.
     (* StructRecord
       {
         name := "ExtractIf";
+        const_params := [];
         ty_params := [ "T"; "F"; "A" ];
         fields :=
           [
-            ("vec", Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ]);
+            ("vec",
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]);
             ("idx", Ty.path "usize");
             ("del", Ty.path "usize");
             ("old_len", Ty.path "usize");
@@ -19,13 +21,13 @@ Module vec.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_fmt_Debug_F_where_core_fmt_Debug_A_where_core_alloc_Allocator_A_where_core_ops_function_FnMut_F_Tuple_ref_mut_T__for_alloc_vec_extract_if_ExtractIf_T_F_A.
       Definition Self (T F A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::extract_if::ExtractIf") [ T; F; A ].
+        Ty.apply (Ty.path "alloc::vec::extract_if::ExtractIf") [] [ T; F; A ].
       
       (* Debug *)
-      Definition fmt (T F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T F A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F A in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -82,7 +84,7 @@ Module vec.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -96,22 +98,27 @@ Module vec.
     
     Module Impl_alloc_vec_extract_if_ExtractIf_T_F_A.
       Definition Self (T F A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::extract_if::ExtractIf") [ T; F; A ].
+        Ty.apply (Ty.path "alloc::vec::extract_if::ExtractIf") [] [ T; F; A ].
       
       (*
           pub fn allocator(&self) -> &A {
               self.vec.allocator()
           }
       *)
-      Definition allocator (T F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition allocator
+          (T F A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T F A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "allocator",
                 []
               |),
@@ -125,7 +132,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_allocator :
@@ -135,7 +142,7 @@ Module vec.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_where_core_ops_function_FnMut_F_Tuple_ref_mut_T__for_alloc_vec_extract_if_ExtractIf_T_F_A.
       Definition Self (T F A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::extract_if::ExtractIf") [ T; F; A ].
+        Ty.apply (Ty.path "alloc::vec::extract_if::ExtractIf") [] [ T; F; A ].
       
       (*     type Item = T; *)
       Definition _Item (T F A : Ty.t) : Ty.t := T.
@@ -165,10 +172,10 @@ Module vec.
               }
           }
       *)
-      Definition next (T F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T F A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -224,7 +231,7 @@ Module vec.
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                             "as_mut_ptr",
                                             []
                                           |),
@@ -254,7 +261,7 @@ Module vec.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                        [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                                         "call_mut",
                                         []
                                       |),
@@ -417,7 +424,7 @@ Module vec.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -425,10 +432,15 @@ Module vec.
               (0, Some(self.old_len - self.idx))
           }
       *)
-      Definition size_hint (T F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint
+          (T F A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T F A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple
@@ -455,7 +467,7 @@ Module vec.
                       |))
                   ]
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -474,7 +486,7 @@ Module vec.
     
     Module Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_where_core_ops_function_FnMut_F_Tuple_ref_mut_T__for_alloc_vec_extract_if_ExtractIf_T_F_A.
       Definition Self (T F A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::extract_if::ExtractIf") [ T; F; A ].
+        Ty.apply (Ty.path "alloc::vec::extract_if::ExtractIf") [] [ T; F; A ].
       
       (*
           fn drop(&mut self) {
@@ -496,10 +508,10 @@ Module vec.
               }
           }
       *)
-      Definition drop (T F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T F A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -546,7 +558,7 @@ Module vec.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "as_mut_ptr",
                                 []
                               |),
@@ -565,7 +577,7 @@ Module vec.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [ T ],
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 "add",
                                 []
                               |),
@@ -585,7 +597,7 @@ Module vec.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [ T ],
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 "sub",
                                 []
                               |),
@@ -624,7 +636,7 @@ Module vec.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [ T ],
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 "copy_to",
                                 []
                               |),
@@ -639,7 +651,7 @@ Module vec.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "set_len",
                       []
                     |),
@@ -672,7 +684,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

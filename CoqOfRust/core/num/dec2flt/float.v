@@ -98,9 +98,9 @@ Module num.
                 v as _
             }
         *)
-        Definition from_u64 (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ v ] =>
+        Definition from_u64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ v ] =>
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.read (|
@@ -158,7 +158,7 @@ Module num.
                   |) in
                 M.alloc (| M.rust_cast (M.read (| v |)) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -166,16 +166,16 @@ Module num.
                 f32::from_bits((v & 0xFFFFFFFF) as u32)
             }
         *)
-        Definition from_u64_bits (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ v ] =>
+        Definition from_u64_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ v ] =>
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.call_closure (|
                 M.get_associated_function (| Ty.path "f32", "from_bits", [] |),
                 [ M.rust_cast (BinOp.Pure.bit_and (M.read (| v |)) (Value.Integer 4294967295)) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -186,9 +186,9 @@ Module num.
                 TABLE[exponent & 15]
             }
         *)
-        Definition pow10_fast_path (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ exponent ] =>
+        Definition pow10_fast_path (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ exponent ] =>
             ltac:(M.monadic
               (let exponent := M.alloc (| exponent |) in
               M.read (|
@@ -197,7 +197,7 @@ Module num.
                   M.alloc (| BinOp.Pure.bit_and (M.read (| exponent |)) (Value.Integer 15) |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -212,9 +212,9 @@ Module num.
                 (mantissa as u64, exponent, sign)
             }
         *)
-        Definition integer_decode (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition integer_decode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -297,7 +297,7 @@ Module num.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -305,16 +305,16 @@ Module num.
                 self.classify()
             }
         *)
-        Definition classify (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition classify (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (| Ty.path "f32", "classify", [] |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -441,9 +441,9 @@ Module num.
                 v as _
             }
         *)
-        Definition from_u64 (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ v ] =>
+        Definition from_u64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ v ] =>
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.read (|
@@ -501,7 +501,7 @@ Module num.
                   |) in
                 M.alloc (| M.rust_cast (M.read (| v |)) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -509,16 +509,16 @@ Module num.
                 f64::from_bits(v)
             }
         *)
-        Definition from_u64_bits (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ v ] =>
+        Definition from_u64_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ v ] =>
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.call_closure (|
                 M.get_associated_function (| Ty.path "f64", "from_bits", [] |),
                 [ M.read (| v |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -530,9 +530,9 @@ Module num.
                 TABLE[exponent & 31]
             }
         *)
-        Definition pow10_fast_path (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ exponent ] =>
+        Definition pow10_fast_path (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ exponent ] =>
             ltac:(M.monadic
               (let exponent := M.alloc (| exponent |) in
               M.read (|
@@ -541,7 +541,7 @@ Module num.
                   M.alloc (| BinOp.Pure.bit_and (M.read (| exponent |)) (Value.Integer 31) |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -559,9 +559,9 @@ Module num.
                 (mantissa, exponent, sign)
             }
         *)
-        Definition integer_decode (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition integer_decode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -646,7 +646,7 @@ Module num.
                   Value.Tuple [ M.read (| mantissa |); M.read (| exponent |); M.read (| sign |) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -654,16 +654,16 @@ Module num.
                 self.classify()
             }
         *)
-        Definition classify (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition classify (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (| Ty.path "f64", "classify", [] |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

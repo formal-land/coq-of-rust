@@ -12,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_updated_incrementer_AccountId.
   Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -25,7 +25,7 @@ End Impl_core_default_Default_for_updated_incrementer_AccountId.
 Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
   Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -66,7 +66,7 @@ Enum Error
 Module Impl_updated_incrementer_Env.
   Definition Self : Ty.t := Ty.path "updated_incrementer::Env".
   
-  Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
+  Parameter set_code_hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_set_code_hash :
     M.IsAssociatedFunction Self "set_code_hash" set_code_hash.
@@ -83,27 +83,27 @@ End Impl_updated_incrementer_Env.
 Module Impl_updated_incrementer_Incrementer.
   Definition Self : Ty.t := Ty.path "updated_incrementer::Incrementer".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter inc : (list Ty.t) -> (list Value.t) -> M.
+  Parameter inc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   
-  Parameter set_code : (list Ty.t) -> (list Value.t) -> M.
+  Parameter set_code : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.
 End Impl_updated_incrementer_Incrementer.

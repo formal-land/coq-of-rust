@@ -22,12 +22,12 @@ Module my.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "struct_visibility::my::ClosedBox") [] [ T ].
     
-    Parameter new : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+    Parameter new : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
   End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "struct_visibility::main" main.

@@ -28,9 +28,9 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
   Definition Self : Ty.t := Ty.path "hash_map_alternate_or_custom_key_types::Account".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -79,7 +79,7 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
               ]
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -105,9 +105,13 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self : Ty.t := Ty.path "hash_map_alternate_or_custom_key_types::Account".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -123,7 +127,7 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -139,9 +143,9 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self : Ty.t := Ty.path "hash_map_alternate_or_custom_key_types::Account".
   
   (* Hash *)
-  Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ __H ], [ self; state ] =>
+  Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ __H ], [ self; state ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
@@ -186,7 +190,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -238,9 +242,9 @@ fn try_logon<'a>(accounts: &Accounts<'a>, username: &'a str, password: &'a str) 
     }
 }
 *)
-Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ accounts; username; password ] =>
+Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ accounts; username; password ] =>
     ltac:(M.monadic
       (let accounts := M.alloc (| accounts |) in
       let username := M.alloc (| username |) in
@@ -528,7 +532,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_try_logon :
@@ -555,9 +559,9 @@ fn main() {
     try_logon(&accounts, "j.everyman", "password123");
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ accounts :=
@@ -638,7 +642,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "hash_map_alternate_or_custom_key_types::main" main.

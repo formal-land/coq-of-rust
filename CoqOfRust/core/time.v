@@ -20,6 +20,7 @@ Module time.
   (* StructTuple
     {
       name := "Nanoseconds";
+      const_params := [];
       ty_params := [];
       fields := [ Ty.path "u32" ];
     } *)
@@ -28,9 +29,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Nanoseconds".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -39,7 +40,7 @@ Module time.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -76,9 +77,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Nanoseconds".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -97,7 +98,7 @@ Module time.
                 0
               |)
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -123,9 +124,13 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Nanoseconds".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -134,7 +139,7 @@ Module time.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -150,9 +155,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Nanoseconds".
     
     (* PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -177,7 +182,7 @@ Module time.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -192,9 +197,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Nanoseconds".
     
     (* Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -213,7 +218,7 @@ Module time.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -228,9 +233,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Nanoseconds".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -245,7 +250,7 @@ Module time.
               M.read (| state |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -265,10 +270,11 @@ Module time.
             unsafe { Nanoseconds(0) }
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] => ltac:(M.monadic (Value.StructTuple "core::time::Nanoseconds" [ Value.Integer 0 ]))
-      | _, _ => M.impossible
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic (Value.StructTuple "core::time::Nanoseconds" [ Value.Integer 0 ]))
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -282,6 +288,7 @@ Module time.
   (* StructRecord
     {
       name := "Duration";
+      const_params := [];
       ty_params := [];
       fields := [ ("secs", Ty.path "u64"); ("nanos", Ty.path "core::time::Nanoseconds") ];
     } *)
@@ -290,9 +297,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -308,7 +315,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -345,9 +352,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -390,7 +397,7 @@ Module time.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -416,9 +423,13 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -434,7 +445,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -450,9 +461,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (* PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -521,7 +532,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -536,9 +547,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (* Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -595,7 +606,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -610,9 +621,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -651,7 +662,7 @@ Module time.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -666,9 +677,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "core::time::Duration"
@@ -696,7 +707,7 @@ Module time.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -814,9 +825,9 @@ Module time.
             Duration { secs, nanos: unsafe { Nanoseconds(nanos) } }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ secs; nanos ] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ secs; nanos ] =>
         ltac:(M.monadic
           (let secs := M.alloc (| secs |) in
           let nanos := M.alloc (| nanos |) in
@@ -894,7 +905,7 @@ Module time.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -904,16 +915,16 @@ Module time.
             Duration::new(secs, 0)
         }
     *)
-    Definition from_secs (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ secs ] =>
+    Definition from_secs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ secs ] =>
         ltac:(M.monadic
           (let secs := M.alloc (| secs |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::time::Duration", "new", [] |),
             [ M.read (| secs |); Value.Integer 0 ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_secs : M.IsAssociatedFunction Self "from_secs" from_secs.
@@ -923,9 +934,9 @@ Module time.
             Duration::new(millis / MILLIS_PER_SEC, ((millis % MILLIS_PER_SEC) as u32) * NANOS_PER_MILLI)
         }
     *)
-    Definition from_millis (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ millis ] =>
+    Definition from_millis (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ millis ] =>
         ltac:(M.monadic
           (let millis := M.alloc (| millis |) in
           M.call_closure (|
@@ -945,7 +956,7 @@ Module time.
                 (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_millis : M.IsAssociatedFunction Self "from_millis" from_millis.
@@ -955,9 +966,9 @@ Module time.
             Duration::new(micros / MICROS_PER_SEC, ((micros % MICROS_PER_SEC) as u32) * NANOS_PER_MICRO)
         }
     *)
-    Definition from_micros (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ micros ] =>
+    Definition from_micros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ micros ] =>
         ltac:(M.monadic
           (let micros := M.alloc (| micros |) in
           M.call_closure (|
@@ -977,7 +988,7 @@ Module time.
                 (M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_micros : M.IsAssociatedFunction Self "from_micros" from_micros.
@@ -987,9 +998,9 @@ Module time.
             Duration::new(nanos / (NANOS_PER_SEC as u64), (nanos % (NANOS_PER_SEC as u64)) as u32)
         }
     *)
-    Definition from_nanos (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ nanos ] =>
+    Definition from_nanos (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ nanos ] =>
         ltac:(M.monadic
           (let nanos := M.alloc (| nanos |) in
           M.call_closure (|
@@ -1006,7 +1017,7 @@ Module time.
                   (M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_nanos : M.IsAssociatedFunction Self "from_nanos" from_nanos.
@@ -1016,9 +1027,9 @@ Module time.
             self.secs == 0 && self.nanos.0 == 0
         }
     *)
-    Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           LogicalOp.and (|
@@ -1046,7 +1057,7 @@ Module time.
                 |))
                 (Value.Integer 0)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_zero : M.IsAssociatedFunction Self "is_zero" is_zero.
@@ -1056,9 +1067,9 @@ Module time.
             self.secs
         }
     *)
-    Definition as_secs (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_secs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1068,7 +1079,7 @@ Module time.
               "secs"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_secs : M.IsAssociatedFunction Self "as_secs" as_secs.
@@ -1078,9 +1089,9 @@ Module time.
             self.nanos.0 / NANOS_PER_MILLI
         }
     *)
-    Definition subsec_millis (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition subsec_millis (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.div
@@ -1097,7 +1108,7 @@ Module time.
               |)
             |))
             (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_subsec_millis :
@@ -1108,9 +1119,9 @@ Module time.
             self.nanos.0 / NANOS_PER_MICRO
         }
     *)
-    Definition subsec_micros (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition subsec_micros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.div
@@ -1127,7 +1138,7 @@ Module time.
               |)
             |))
             (M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_subsec_micros :
@@ -1138,9 +1149,9 @@ Module time.
             self.nanos.0
         }
     *)
-    Definition subsec_nanos (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition subsec_nanos (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1154,7 +1165,7 @@ Module time.
               0
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_subsec_nanos : M.IsAssociatedFunction Self "subsec_nanos" subsec_nanos.
@@ -1164,9 +1175,9 @@ Module time.
             self.secs as u128 * MILLIS_PER_SEC as u128 + (self.nanos.0 / NANOS_PER_MILLI) as u128
         }
     *)
-    Definition as_millis (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_millis (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add
@@ -1197,7 +1208,7 @@ Module time.
                   |)
                 |))
                 (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_millis : M.IsAssociatedFunction Self "as_millis" as_millis.
@@ -1207,9 +1218,9 @@ Module time.
             self.secs as u128 * MICROS_PER_SEC as u128 + (self.nanos.0 / NANOS_PER_MICRO) as u128
         }
     *)
-    Definition as_micros (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_micros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add
@@ -1240,7 +1251,7 @@ Module time.
                   |)
                 |))
                 (M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |))))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_micros : M.IsAssociatedFunction Self "as_micros" as_micros.
@@ -1250,9 +1261,9 @@ Module time.
             self.secs as u128 * NANOS_PER_SEC as u128 + self.nanos.0 as u128
         }
     *)
-    Definition as_nanos (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_nanos (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add
@@ -1280,7 +1291,7 @@ Module time.
                   0
                 |)
               |)))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_nanos : M.IsAssociatedFunction Self "as_nanos" as_nanos.
@@ -1290,9 +1301,9 @@ Module time.
             if let Some(res) = self.checked_sub(other) { res } else { other.checked_sub(self).unwrap() }
         }
     *)
-    Definition abs_diff (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition abs_diff (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1328,6 +1339,7 @@ Module time.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
+                            []
                             [ Ty.path "core::time::Duration" ],
                           "unwrap",
                           []
@@ -1347,7 +1359,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
@@ -1371,9 +1383,9 @@ Module time.
             }
         }
     *)
-    Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition checked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -1589,7 +1601,7 @@ Module time.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -1602,9 +1614,9 @@ Module time.
             }
         }
     *)
-    Definition saturating_add (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition saturating_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -1634,7 +1646,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_saturating_add :
@@ -1658,9 +1670,9 @@ Module time.
             }
         }
     *)
-    Definition checked_sub (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition checked_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -1917,7 +1929,7 @@ Module time.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
@@ -1930,9 +1942,9 @@ Module time.
             }
         }
     *)
-    Definition saturating_sub (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition saturating_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -1962,7 +1974,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_saturating_sub :
@@ -1983,9 +1995,9 @@ Module time.
             None
         }
     *)
-    Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -2168,7 +2180,7 @@ Module time.
                 M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -2181,9 +2193,9 @@ Module time.
             }
         }
     *)
-    Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -2213,7 +2225,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_saturating_mul :
@@ -2233,9 +2245,9 @@ Module time.
             }
         }
     *)
-    Definition checked_div (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition checked_div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -2429,7 +2441,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
@@ -2439,9 +2451,9 @@ Module time.
             (self.secs as f64) + (self.nanos.0 as f64) / (NANOS_PER_SEC as f64)
         }
     *)
-    Definition as_secs_f64 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_secs_f64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add
@@ -2469,7 +2481,7 @@ Module time.
                   |)
                 |)))
               (M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_secs_f64 : M.IsAssociatedFunction Self "as_secs_f64" as_secs_f64.
@@ -2479,9 +2491,9 @@ Module time.
             (self.secs as f32) + (self.nanos.0 as f32) / (NANOS_PER_SEC as f32)
         }
     *)
-    Definition as_secs_f32 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_secs_f32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add
@@ -2509,7 +2521,7 @@ Module time.
                   |)
                 |)))
               (M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_secs_f32 : M.IsAssociatedFunction Self "as_secs_f32" as_secs_f32.
@@ -2522,9 +2534,9 @@ Module time.
             }
         }
     *)
-    Definition from_secs_f64 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ secs ] =>
+    Definition from_secs_f64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ secs ] =>
         ltac:(M.monadic
           (let secs := M.alloc (| secs |) in
           M.read (|
@@ -2577,7 +2589,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_secs_f64 :
@@ -2591,9 +2603,9 @@ Module time.
             }
         }
     *)
-    Definition from_secs_f32 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ secs ] =>
+    Definition from_secs_f32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ secs ] =>
         ltac:(M.monadic
           (let secs := M.alloc (| secs |) in
           M.read (|
@@ -2646,7 +2658,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_secs_f32 :
@@ -2657,9 +2669,9 @@ Module time.
             Duration::from_secs_f64(rhs * self.as_secs_f64())
         }
     *)
-    Definition mul_f64 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition mul_f64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -2675,7 +2687,7 @@ Module time.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_mul_f64 : M.IsAssociatedFunction Self "mul_f64" mul_f64.
@@ -2685,9 +2697,9 @@ Module time.
             Duration::from_secs_f32(rhs * self.as_secs_f32())
         }
     *)
-    Definition mul_f32 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition mul_f32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -2703,7 +2715,7 @@ Module time.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_mul_f32 : M.IsAssociatedFunction Self "mul_f32" mul_f32.
@@ -2713,9 +2725,9 @@ Module time.
             Duration::from_secs_f64(self.as_secs_f64() / rhs)
         }
     *)
-    Definition div_f64 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition div_f64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -2731,7 +2743,7 @@ Module time.
                 (M.read (| rhs |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_div_f64 : M.IsAssociatedFunction Self "div_f64" div_f64.
@@ -2741,9 +2753,9 @@ Module time.
             Duration::from_secs_f32(self.as_secs_f32() / rhs)
         }
     *)
-    Definition div_f32 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition div_f32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -2759,7 +2771,7 @@ Module time.
                 (M.read (| rhs |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_div_f32 : M.IsAssociatedFunction Self "div_f32" div_f32.
@@ -2769,9 +2781,9 @@ Module time.
             self.as_secs_f64() / rhs.as_secs_f64()
         }
     *)
-    Definition div_duration_f64 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition div_duration_f64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -2785,7 +2797,7 @@ Module time.
               M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f64", [] |),
               [ rhs ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_div_duration_f64 :
@@ -2796,9 +2808,9 @@ Module time.
             self.as_secs_f32() / rhs.as_secs_f32()
         }
     *)
-    Definition div_duration_f32 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition div_duration_f32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -2812,7 +2824,7 @@ Module time.
               M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f32", [] |),
               [ rhs ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_div_duration_f32 :
@@ -2829,9 +2841,9 @@ Module time.
             )
         }
     *)
-    Definition try_from_secs_f32 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ secs ] =>
+    Definition try_from_secs_f32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ secs ] =>
         ltac:(M.monadic
           (let secs := M.alloc (| secs |) in
           M.catch_return (|
@@ -3393,7 +3405,7 @@ Module time.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_from_secs_f32 :
@@ -3411,9 +3423,9 @@ Module time.
             )
         }
     *)
-    Definition try_from_secs_f64 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ secs ] =>
+    Definition try_from_secs_f64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ secs ] =>
         ltac:(M.monadic
           (let secs := M.alloc (| secs |) in
           M.catch_return (|
@@ -3975,7 +3987,7 @@ Module time.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_from_secs_f64 :
@@ -3993,15 +4005,15 @@ Module time.
             self.checked_add(rhs).expect("overflow when adding durations")
         }
     *)
-    Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::time::Duration" ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               "expect",
               []
             |),
@@ -4013,7 +4025,7 @@ Module time.
               M.read (| Value.String "overflow when adding durations" |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4032,9 +4044,9 @@ Module time.
             *self = *self + rhs;
         }
     *)
-    Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -4055,7 +4067,7 @@ Module time.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4077,15 +4089,15 @@ Module time.
             self.checked_sub(rhs).expect("overflow when subtracting durations")
         }
     *)
-    Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::time::Duration" ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               "expect",
               []
             |),
@@ -4097,7 +4109,7 @@ Module time.
               M.read (| Value.String "overflow when subtracting durations" |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4116,9 +4128,9 @@ Module time.
             *self = *self - rhs;
         }
     *)
-    Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -4139,7 +4151,7 @@ Module time.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4161,15 +4173,15 @@ Module time.
             self.checked_mul(rhs).expect("overflow when multiplying duration by scalar")
         }
     *)
-    Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::time::Duration" ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               "expect",
               []
             |),
@@ -4181,7 +4193,7 @@ Module time.
               M.read (| Value.String "overflow when multiplying duration by scalar" |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4203,9 +4215,9 @@ Module time.
             rhs * self
         }
     *)
-    Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -4219,7 +4231,7 @@ Module time.
             |),
             [ M.read (| rhs |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4238,9 +4250,9 @@ Module time.
             *self = *self * rhs;
         }
     *)
-    Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -4261,7 +4273,7 @@ Module time.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4283,15 +4295,15 @@ Module time.
             self.checked_div(rhs).expect("divide by zero error when dividing duration by scalar")
         }
     *)
-    Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::time::Duration" ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               "expect",
               []
             |),
@@ -4303,7 +4315,7 @@ Module time.
               M.read (| Value.String "divide by zero error when dividing duration by scalar" |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4322,9 +4334,9 @@ Module time.
             *self = *self / rhs;
         }
     *)
-    Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; rhs ] =>
+    Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
@@ -4345,7 +4357,7 @@ Module time.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4364,9 +4376,9 @@ Module time.
             sum_durations!(iter)
         }
     *)
-    Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I ], [ iter ] =>
+    Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.read (|
@@ -4431,6 +4443,7 @@ Module time.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "u64" ],
                                               "expect",
                                               []
@@ -4513,6 +4526,7 @@ Module time.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
+                                                              []
                                                               [ Ty.path "u64" ],
                                                             "expect",
                                                             []
@@ -4585,7 +4599,7 @@ Module time.
                 total_secs,
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     "expect",
                     []
                   |),
@@ -4620,7 +4634,7 @@ Module time.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4639,9 +4653,9 @@ Module time.
             sum_durations!(iter)
         }
     *)
-    Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I ], [ iter ] =>
+    Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.read (|
@@ -4706,6 +4720,7 @@ Module time.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "u64" ],
                                               "expect",
                                               []
@@ -4788,6 +4803,7 @@ Module time.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
+                                                              []
                                                               [ Ty.path "u64" ],
                                                             "expect",
                                                             []
@@ -4860,7 +4876,7 @@ Module time.
                 total_secs,
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     "expect",
                     []
                   |),
@@ -4895,7 +4911,7 @@ Module time.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4903,7 +4919,7 @@ Module time.
         "core::iter::traits::accum::Sum"
         Self
         (* Trait polymorphic types *)
-        [ (* A *) Ty.apply (Ty.path "&") [ Ty.path "core::time::Duration" ] ]
+        [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "core::time::Duration" ] ]
         (* Instance *) [ ("sum", InstanceField.Method sum) ].
   End Impl_core_iter_traits_accum_Sum_ref__core_time_Duration_for_core_time_Duration.
   
@@ -5099,9 +5115,9 @@ Module time.
             }
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -5373,7 +5389,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5387,6 +5403,7 @@ Module time.
   (* StructRecord
     {
       name := "TryFromFloatSecsError";
+      const_params := [];
       ty_params := [];
       fields := [ ("kind", Ty.path "core::time::TryFromFloatSecsErrorKind") ];
     } *)
@@ -5395,9 +5412,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsError".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -5422,7 +5439,7 @@ Module time.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5437,9 +5454,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsError".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -5463,7 +5480,7 @@ Module time.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5489,9 +5506,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsError".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -5516,7 +5533,7 @@ Module time.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5542,9 +5559,13 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsError".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5553,7 +5574,7 @@ Module time.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5580,9 +5601,9 @@ Module time.
             }
         }
     *)
-    Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5613,7 +5634,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_description : M.IsAssociatedFunction Self "description" description.
@@ -5627,9 +5648,9 @@ Module time.
             self.description().fmt(f)
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -5647,7 +5668,7 @@ Module time.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5661,6 +5682,7 @@ Module time.
   (*
   Enum TryFromFloatSecsErrorKind
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -5682,9 +5704,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsErrorKind".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -5719,7 +5741,7 @@ Module time.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5734,9 +5756,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsErrorKind".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5768,7 +5790,7 @@ Module time.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5794,9 +5816,9 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsErrorKind".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -5823,7 +5845,7 @@ Module time.
               |) in
             M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5849,13 +5871,17 @@ Module time.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsErrorKind".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

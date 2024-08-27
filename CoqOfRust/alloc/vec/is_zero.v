@@ -14,9 +14,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -49,7 +49,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -68,9 +68,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -103,7 +103,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -122,9 +122,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -157,7 +157,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -176,9 +176,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -211,7 +211,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -230,9 +230,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -265,7 +265,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -284,9 +284,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -319,7 +319,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -338,9 +338,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -373,7 +373,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -392,9 +392,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -427,7 +427,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -446,9 +446,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -481,7 +481,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -500,9 +500,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -535,7 +535,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -554,9 +554,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -589,7 +589,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -608,9 +608,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -643,7 +643,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -662,9 +662,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -697,7 +697,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -716,9 +716,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -751,7 +751,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -770,9 +770,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -810,7 +810,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -829,9 +829,9 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -869,7 +869,7 @@ Module vec.
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -881,24 +881,24 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_f64.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_pointer_const_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
       
       (*
           fn is_zero(&self) -> bool {
               ( *self).is_null()
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "is_null", [] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "is_null", [] |),
               [ M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -911,24 +911,24 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_pointer_const_T.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_pointer_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
       
       (*
           fn is_zero(&self) -> bool {
               ( *self).is_null()
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "is_null", [] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "is_null", [] |),
               [ M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -940,8 +940,8 @@ Module vec.
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero T)) ].
     End Impl_alloc_vec_is_zero_IsZero_for_pointer_mut_T.
     
-    Module Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_T_for_array_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+    Module Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_T_for_array_N_T.
+      Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
       
       (*
           fn is_zero(&self) -> bool {
@@ -955,10 +955,16 @@ Module vec.
               N <= 16 && self.iter().all(IsZero::is_zero)
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
@@ -969,16 +975,16 @@ Module vec.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                     [],
                     "all",
-                    [ Ty.function [ Ty.apply (Ty.path "&") [ T ] ] (Ty.path "bool") ]
+                    [ Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool") ]
                   |),
                   [
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ T ],
+                          Ty.apply (Ty.path "slice") [] [ T ],
                           "iter",
                           []
                         |),
@@ -989,17 +995,17 @@ Module vec.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (T : Ty.t),
+        forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self T)
+          (Self N T)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("is_zero", InstanceField.Method (is_zero T)) ].
-    End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_T_for_array_T.
+          (* Instance *) [ ("is_zero", InstanceField.Method (is_zero N T)) ].
+    End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_T_for_array_N_T.
     
     Module Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_A_where_alloc_vec_is_zero_IsZero_B_where_alloc_vec_is_zero_IsZero_C_where_alloc_vec_is_zero_IsZero_D_where_alloc_vec_is_zero_IsZero_E_where_alloc_vec_is_zero_IsZero_F_where_alloc_vec_is_zero_IsZero_G_where_alloc_vec_is_zero_IsZero_H_for_Tuple_A_B_C_D_E_F_G_H_.
       Definition Self (A B C D E F G H : Ty.t) : Ty.t := Ty.tuple [ A; B; C; D; E; F; G; H ].
@@ -1015,10 +1021,15 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (A B C D E F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero
+          (A B C D E F G H : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self A B C D E F G H in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1150,7 +1161,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1176,10 +1187,15 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (B C D E F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero
+          (B C D E F G H : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self B C D E F G H in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1296,7 +1312,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1322,10 +1338,15 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (C D E F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero
+          (C D E F G H : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self C D E F G H in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1427,7 +1448,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1453,10 +1474,15 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (D E F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero
+          (D E F G H : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self D E F G H in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1543,7 +1569,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1569,10 +1595,15 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (E F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero
+          (E F G H : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self E F G H in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1644,7 +1675,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1670,10 +1701,10 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (F G H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self F G H in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1730,7 +1761,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1756,10 +1787,10 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (G H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self G H in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1801,7 +1832,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1827,10 +1858,10 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self H in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1857,7 +1888,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1871,28 +1902,28 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_where_core_marker_Sized_T_for_core_option_Option_ref__T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ T ] ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ].
       
       (*
           fn is_zero(&self) -> bool {
               self.is_none()
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ T ] ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1908,30 +1939,33 @@ Module vec.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::option::Option")
-          [ Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ] ].
+          []
+          [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ] ].
       
       (*
           fn is_zero(&self) -> bool {
               self.is_none()
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [ Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ] ],
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1945,29 +1979,30 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroU8" ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU8" ].
       
       (*
                   fn is_zero(&self) -> bool {
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::num::nonzero::NonZeroU8" ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1980,29 +2015,30 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroU16" ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU16" ].
       
       (*
                   fn is_zero(&self) -> bool {
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::num::nonzero::NonZeroU16" ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2015,29 +2051,30 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroU32" ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU32" ].
       
       (*
                   fn is_zero(&self) -> bool {
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::num::nonzero::NonZeroU32" ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2050,29 +2087,30 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroU64" ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU64" ].
       
       (*
                   fn is_zero(&self) -> bool {
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::num::nonzero::NonZeroU64" ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2085,29 +2123,30 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroU128" ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU128" ].
       
       (*
                   fn is_zero(&self) -> bool {
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::num::nonzero::NonZeroU128" ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2120,29 +2159,30 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroI8" ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI8" ].
       
       (*
                   fn is_zero(&self) -> bool {
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::num::nonzero::NonZeroI8" ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2155,29 +2195,30 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroI16" ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI16" ].
       
       (*
                   fn is_zero(&self) -> bool {
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::num::nonzero::NonZeroI16" ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2190,29 +2231,30 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroI32" ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI32" ].
       
       (*
                   fn is_zero(&self) -> bool {
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::num::nonzero::NonZeroI32" ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2225,29 +2267,30 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroI64" ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI64" ].
       
       (*
                   fn is_zero(&self) -> bool {
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::num::nonzero::NonZeroI64" ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2260,29 +2303,30 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroI128" ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI128" ].
       
       (*
                   fn is_zero(&self) -> bool {
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::num::nonzero::NonZeroI128" ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2295,29 +2339,30 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroUsize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroUsize" ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroUsize" ].
       
       (*
                   fn is_zero(&self) -> bool {
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::num::nonzero::NonZeroUsize" ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2330,29 +2375,30 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroIsize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroIsize" ].
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroIsize" ].
       
       (*
                   fn is_zero(&self) -> bool {
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::num::nonzero::NonZeroIsize" ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2364,7 +2410,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroIsize.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u8.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2375,9 +2421,9 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2385,7 +2431,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                     "is_none",
                     []
                   |),
@@ -2393,7 +2439,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2405,7 +2451,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u8.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u16.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "u16" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2416,9 +2462,9 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2426,7 +2472,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u16" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                     "is_none",
                     []
                   |),
@@ -2434,7 +2480,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2446,7 +2492,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u16.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u32.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2457,9 +2503,9 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2467,7 +2513,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                     "is_none",
                     []
                   |),
@@ -2475,7 +2521,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2487,7 +2533,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u32.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u64.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2498,9 +2544,9 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2508,7 +2554,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     "is_none",
                     []
                   |),
@@ -2516,7 +2562,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2528,7 +2574,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u64.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u128.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2539,9 +2585,9 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2549,7 +2595,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                     "is_none",
                     []
                   |),
@@ -2557,7 +2603,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2569,7 +2615,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u128.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i8.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "i8" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2580,9 +2626,9 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2590,7 +2636,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i8" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
                     "is_none",
                     []
                   |),
@@ -2598,7 +2644,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2610,7 +2656,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i8.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i16.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "i16" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2621,9 +2667,9 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2631,7 +2677,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i16" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
                     "is_none",
                     []
                   |),
@@ -2639,7 +2685,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2651,7 +2697,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i16.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i32.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2662,9 +2708,9 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2672,7 +2718,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                     "is_none",
                     []
                   |),
@@ -2680,7 +2726,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2692,7 +2738,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i32.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i64.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "i64" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2703,9 +2749,9 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2713,7 +2759,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i64" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
                     "is_none",
                     []
                   |),
@@ -2721,7 +2767,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2733,7 +2779,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i64.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i128.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "i128" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2744,9 +2790,9 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2754,7 +2800,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "i128" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
                     "is_none",
                     []
                   |),
@@ -2762,7 +2808,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2774,7 +2820,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i128.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_usize.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2785,9 +2831,9 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2795,7 +2841,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                     "is_none",
                     []
                   |),
@@ -2803,7 +2849,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2815,7 +2861,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_usize.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_isize.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "isize" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2826,9 +2872,9 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2836,7 +2882,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "isize" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
                     "is_none",
                     []
                   |),
@@ -2844,7 +2890,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2856,17 +2902,18 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_isize.
     
     Module Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_T_for_core_num_wrapping_Wrapping_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::num::wrapping::Wrapping") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ].
       
       (*
           fn is_zero(&self) -> bool {
               self.0.is_zero()
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2879,7 +2926,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2893,17 +2940,17 @@ Module vec.
     
     Module Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (*
           fn is_zero(&self) -> bool {
               self.0.is_zero()
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2916,7 +2963,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2929,7 +2976,7 @@ Module vec.
     End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_T_for_core_num_saturating_Saturating_T.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_bool.
-      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [ Ty.path "bool" ].
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2941,9 +2988,9 @@ Module vec.
                       raw == 0
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2952,14 +2999,17 @@ Module vec.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::transmute",
-                      [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "bool" ]; Ty.path "u8" ]
+                      [
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ];
+                        Ty.path "u8"
+                      ]
                     |),
                     [ M.read (| M.read (| self |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer 0) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2974,7 +3024,8 @@ Module vec.
       Definition Self : Ty.t :=
         Ty.apply
           (Ty.path "core::option::Option")
-          [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "bool" ] ].
+          []
+          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2986,9 +3037,9 @@ Module vec.
                       raw == 0
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3000,7 +3051,8 @@ Module vec.
                       [
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "bool" ] ];
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ] ];
                         Ty.path "u8"
                       ]
                     |),
@@ -3009,7 +3061,7 @@ Module vec.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer 0) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3024,10 +3076,12 @@ Module vec.
       Definition Self : Ty.t :=
         Ty.apply
           (Ty.path "core::option::Option")
+          []
           [
             Ty.apply
               (Ty.path "core::option::Option")
-              [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "bool" ] ]
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ] ]
           ].
       
       (*
@@ -3040,9 +3094,9 @@ Module vec.
                       raw == 0
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3054,10 +3108,12 @@ Module vec.
                       [
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
-                              [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "bool" ] ]
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ] ]
                           ];
                         Ty.path "u8"
                       ]
@@ -3067,7 +3123,7 @@ Module vec.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer 0) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

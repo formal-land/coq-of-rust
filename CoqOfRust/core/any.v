@@ -13,17 +13,17 @@ Module any.
             TypeId::of::<T>()
         }
     *)
-    Definition type_id (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition type_id (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ T ] |),
             []
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -43,9 +43,9 @@ Module any.
             f.debug_struct("Any").finish_non_exhaustive()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -68,7 +68,7 @@ Module any.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -88,9 +88,9 @@ Module any.
             f.debug_struct("Any").finish_non_exhaustive()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -113,7 +113,7 @@ Module any.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -138,9 +138,9 @@ Module any.
             f.debug_struct("Any").finish_non_exhaustive()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -163,7 +163,7 @@ Module any.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -189,9 +189,9 @@ Module any.
             t == concrete
         }
     *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition is (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -228,7 +228,7 @@ Module any.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -245,9 +245,9 @@ Module any.
             }
         }
     *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -288,7 +288,7 @@ Module any.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -305,9 +305,9 @@ Module any.
             }
         }
     *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -348,7 +348,7 @@ Module any.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -360,9 +360,9 @@ Module any.
             unsafe { &*(self as *const dyn Any as *const T) }
         }
     *)
-    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_ref_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -421,7 +421,7 @@ Module any.
                 |))
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_ref_unchecked :
@@ -434,9 +434,9 @@ Module any.
             unsafe { &mut *(self as *mut dyn Any as *mut T) }
         }
     *)
-    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_mut_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -495,7 +495,7 @@ Module any.
                 |))
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_mut_unchecked :
@@ -511,16 +511,16 @@ Module any.
             <dyn Any>::is::<T>(self)
         }
     *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition is (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -530,9 +530,9 @@ Module any.
             <dyn Any>::downcast_ref::<T>(self)
         }
     *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -543,7 +543,7 @@ Module any.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -553,9 +553,9 @@ Module any.
             <dyn Any>::downcast_mut::<T>(self)
         }
     *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -566,7 +566,7 @@ Module any.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -577,9 +577,9 @@ Module any.
             unsafe { <dyn Any>::downcast_ref_unchecked::<T>(self) }
         }
     *)
-    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_ref_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -590,7 +590,7 @@ Module any.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_ref_unchecked :
@@ -602,9 +602,9 @@ Module any.
             unsafe { <dyn Any>::downcast_mut_unchecked::<T>(self) }
         }
     *)
-    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_mut_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -615,7 +615,7 @@ Module any.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_mut_unchecked :
@@ -636,16 +636,16 @@ Module any.
             <dyn Any>::is::<T>(self)
         }
     *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition is (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -655,9 +655,9 @@ Module any.
             <dyn Any>::downcast_ref::<T>(self)
         }
     *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -668,7 +668,7 @@ Module any.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -678,9 +678,9 @@ Module any.
             <dyn Any>::downcast_mut::<T>(self)
         }
     *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -691,7 +691,7 @@ Module any.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -702,9 +702,9 @@ Module any.
             unsafe { <dyn Any>::downcast_ref_unchecked::<T>(self) }
         }
     *)
-    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_ref_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -715,7 +715,7 @@ Module any.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_ref_unchecked :
@@ -727,9 +727,9 @@ Module any.
             unsafe { <dyn Any>::downcast_mut_unchecked::<T>(self) }
         }
     *)
-    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_mut_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -740,7 +740,7 @@ Module any.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_mut_unchecked :
@@ -750,6 +750,7 @@ Module any.
   (* StructRecord
     {
       name := "TypeId";
+      const_params := [];
       ty_params := [];
       fields := [ ("t", Ty.path "u128") ];
     } *)
@@ -758,9 +759,9 @@ Module any.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -769,7 +770,7 @@ Module any.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -795,9 +796,9 @@ Module any.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -822,7 +823,7 @@ Module any.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -848,9 +849,13 @@ Module any.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -859,7 +864,7 @@ Module any.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -875,9 +880,9 @@ Module any.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
     
     (* PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -902,7 +907,7 @@ Module any.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -917,9 +922,9 @@ Module any.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
     
     (* Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -938,7 +943,7 @@ Module any.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -957,9 +962,9 @@ Module any.
             self.t == other.t
         }
     *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -974,7 +979,7 @@ Module any.
                 "t"
               |)
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -994,9 +999,9 @@ Module any.
             TypeId { t }
         }
     *)
-    Definition of (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [] =>
+    Definition of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ t :=
@@ -1005,7 +1010,7 @@ Module any.
               |) in
             M.alloc (| Value.StructRecord "core::any::TypeId" [ ("t", M.read (| t |)) ] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_of : M.IsAssociatedFunction Self "of" of.
@@ -1031,9 +1036,9 @@ Module any.
             (self.t as u64).hash(state);
         }
     *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -1059,7 +1064,7 @@ Module any.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1075,12 +1080,12 @@ Module any.
       intrinsics::type_name::<T>()
   }
   *)
-  Definition type_name (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [] =>
+  Definition type_name (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::type_name", [ T ] |), [] |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_type_name : M.IsFunction "core::any::type_name" type_name.
@@ -1090,13 +1095,13 @@ Module any.
       type_name::<T>()
   }
   *)
-  Definition type_name_of_val (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ _val ] =>
+  Definition type_name_of_val (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ _val ] =>
       ltac:(M.monadic
         (let _val := M.alloc (| _val |) in
         M.call_closure (| M.get_function (| "core::any::type_name", [ T ] |), [] |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_type_name_of_val : M.IsFunction "core::any::type_name_of_val" type_name_of_val.

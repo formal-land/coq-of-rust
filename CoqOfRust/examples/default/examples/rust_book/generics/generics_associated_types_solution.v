@@ -26,9 +26,9 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
           (&self.0 == number_1) && (&self.1 == number_2)
       }
   *)
-  Definition contains (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; number_1; number_2 ] =>
+  Definition contains (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; number_1; number_2 ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let number_1 := M.alloc (| number_1 |) in
@@ -74,7 +74,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
               ]
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -82,9 +82,9 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
           self.0
       }
   *)
-  Definition first (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -94,7 +94,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
             0
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -102,9 +102,9 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
           self.1
       }
   *)
-  Definition last (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -114,7 +114,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
             1
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -122,9 +122,9 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
           self.0
       }
   *)
-  Definition a (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition a (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -134,7 +134,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
             0
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -158,9 +158,9 @@ fn difference<C: Contains>(container: &C) -> i32 {
     container.last() - container.first()
 }
 *)
-Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ C ], [ container ] =>
+Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ C ], [ container ] =>
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
       BinOp.Wrap.sub
@@ -185,7 +185,7 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
           |),
           [ M.read (| container |) ]
         |))))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_difference :
@@ -196,16 +196,16 @@ fn get_a<C: Contains>(container: &C) -> C::A {
     container.a()
 }
 *)
-Definition get_a (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ C ], [ container ] =>
+Definition get_a (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ C ], [ container ] =>
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
       M.call_closure (|
         M.get_trait_method (| "generics_associated_types_solution::Contains", C, [], "a", [] |),
         [ M.read (| container |) ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_get_a : M.IsFunction "generics_associated_types_solution::get_a" get_a.
@@ -229,9 +229,9 @@ fn main() {
     println!("The difference is: {}", difference(&container));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ number_1 := M.alloc (| Value.Integer 3 |) in
@@ -471,7 +471,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_associated_types_solution::main" main.

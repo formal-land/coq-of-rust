@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom Result :
-  forall ( : Ty.t) (T : Ty.t),
+  forall (T : Ty.t),
   (Ty.apply (Ty.path "boxing_errors::Result") [] [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
@@ -27,9 +27,9 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -37,7 +37,7 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "EmptyVec" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -52,13 +52,13 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
   Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructTuple "boxing_errors::EmptyVec" []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -77,9 +77,9 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
           write!(f, "invalid first item to double")
       }
   *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -99,7 +99,7 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -128,9 +128,9 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
         })
 }
 *)
-Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ vec ] =>
+Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ vec ] =>
     ltac:(M.monadic
       (let vec := M.alloc (| vec |) in
       M.call_closure (|
@@ -378,7 +378,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                 end))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_double_first : M.IsFunction "boxing_errors::double_first" double_first.
@@ -391,9 +391,9 @@ fn print(result: Result<i32>) {
     }
 }
 *)
-Definition print (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ result ] =>
+Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ result ] =>
     ltac:(M.monadic
       (let result := M.alloc (| result |) in
       M.read (|
@@ -507,7 +507,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_print : M.IsFunction "boxing_errors::print" print.
@@ -523,9 +523,9 @@ fn main() {
     print(double_first(strings));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ numbers :=
@@ -664,7 +664,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "boxing_errors::main" main.

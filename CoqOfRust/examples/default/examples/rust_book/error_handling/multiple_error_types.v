@@ -7,9 +7,9 @@ fn double_first(vec: Vec<&str>) -> i32 {
     2 * first.parse::<i32>().unwrap() // Generate error 2
 }
 *)
-Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ vec ] =>
+Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ vec ] =>
     ltac:(M.monadic
       (let vec := M.alloc (| vec |) in
       M.read (|
@@ -75,7 +75,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
             |))
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_double_first : M.IsFunction "multiple_error_types::double_first" double_first.
@@ -95,9 +95,9 @@ fn main() {
     // Error 2: the element doesn't parse to a number
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ numbers :=
@@ -341,7 +341,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "multiple_error_types::main" main.

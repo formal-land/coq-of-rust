@@ -7,9 +7,9 @@ fn analyze_slice(slice: &[i32]) {
     println!("the slice has {} elements", slice.len());
 }
 *)
-Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ slice ] =>
+Definition analyze_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ slice ] =>
     ltac:(M.monadic
       (let slice := M.alloc (| slice |) in
       M.read (|
@@ -111,7 +111,7 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_analyze_slice : M.IsFunction "arrays_and_slices::analyze_slice" analyze_slice.
@@ -165,9 +165,9 @@ fn main() {
     //println!("{}", xs[5]);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ xs :=
@@ -859,7 +859,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "arrays_and_slices::main" main.

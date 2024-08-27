@@ -6,9 +6,14 @@ Module iter.
     Module double_ended.
       (* Trait *)
       Module DoubleEndedIterator.
-        Definition advance_back_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition advance_back_by
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -22,7 +27,7 @@ Module iter.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [],
                                 "into_iter",
                                 []
@@ -48,6 +53,7 @@ Module iter.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "usize" ],
                                               [],
                                               "next",
@@ -88,6 +94,7 @@ Module iter.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
+                                                                  []
                                                                   [ Ty.associated ],
                                                                 "is_none",
                                                                 []
@@ -152,7 +159,7 @@ Module iter.
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_advance_back_by :
@@ -160,9 +167,14 @@ Module iter.
             "core::iter::traits::double_ended::DoubleEndedIterator"
             "advance_back_by"
             advance_back_by.
-        Definition nth_back (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition nth_back
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -182,6 +194,7 @@ Module iter.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize"
                                           ],
                                         "is_err",
@@ -234,7 +247,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_nth_back :
@@ -242,9 +255,14 @@ Module iter.
             "core::iter::traits::double_ended::DoubleEndedIterator"
             "nth_back"
             nth_back.
-        Definition try_rfold (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+        Definition try_rfold
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -386,7 +404,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_try_rfold :
@@ -394,9 +412,9 @@ Module iter.
             "core::iter::traits::double_ended::DoubleEndedIterator"
             "try_rfold"
             try_rfold.
-        Definition rfold (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B; F ], [ self; init; f ] =>
+        Definition rfold (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ B; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -464,14 +482,14 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_rfold :
           M.IsProvidedMethod "core::iter::traits::double_ended::DoubleEndedIterator" "rfold" rfold.
-        Definition rfind (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ P ], [ self; predicate ] =>
+        Definition rfind (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ P ], [ self; predicate ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
@@ -479,6 +497,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::ops::control_flow::ControlFlow")
+                    []
                     [ Ty.associated; Ty.tuple [] ],
                   "break_value",
                   []
@@ -495,6 +514,7 @@ Module iter.
                         Ty.associated;
                         Ty.apply
                           (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
                           [ Ty.associated; Ty.tuple [] ]
                       ]
                     |),
@@ -509,7 +529,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_rfind :
@@ -517,17 +537,17 @@ Module iter.
       End DoubleEndedIterator.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_marker_Sized_I_for_ref_mut_I.
-        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ I ].
+        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ I ].
         
         (*
             fn next_back(&mut self) -> Option<I::Item> {
                 ( **self).next_back()
             }
         *)
-        Definition next_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -540,7 +560,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -548,10 +568,15 @@ Module iter.
                 ( **self).advance_back_by(n)
             }
         *)
-        Definition advance_back_by (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_back_by
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -565,7 +590,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -573,10 +598,10 @@ Module iter.
                 ( **self).nth_back(n)
             }
         *)
-        Definition nth_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth_back (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -590,7 +615,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -601,10 +626,10 @@ Module iter.
                 self.spec_rfold(init, f)
             }
         *)
-        Definition rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -612,14 +637,14 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIteratorRefSpec",
-                  Ty.apply (Ty.path "&mut") [ I ],
+                  Ty.apply (Ty.path "&mut") [] [ I ],
                   [],
                   "spec_rfold",
                   [ B; F ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -631,10 +656,10 @@ Module iter.
                 self.spec_try_rfold(init, f)
             }
         *)
-        Definition try_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_rfold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -642,14 +667,14 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIteratorRefSpec",
-                  Ty.apply (Ty.path "&mut") [ I ],
+                  Ty.apply (Ty.path "&mut") [] [ I ],
                   [],
                   "spec_try_rfold",
                   [ B; F; R ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -672,7 +697,7 @@ Module iter.
       (* Empty module 'DoubleEndedIteratorRefSpec' *)
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIteratorRefSpec_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_marker_Sized_I_for_ref_mut_I.
-        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ I ].
+        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ I ].
         
         (*
             default fn spec_rfold<B, F>(self, init: B, mut f: F) -> B
@@ -686,10 +711,15 @@ Module iter.
                 accum
             }
         *)
-        Definition spec_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_rfold
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -757,7 +787,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -773,10 +803,15 @@ Module iter.
                 try { accum }
             }
         *)
-        Definition spec_try_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_try_rfold
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -798,7 +833,7 @@ Module iter.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::iter::traits::double_ended::DoubleEndedIterator",
-                                          Ty.apply (Ty.path "&mut") [ I ],
+                                          Ty.apply (Ty.path "&mut") [] [ I ],
                                           [],
                                           "next_back",
                                           []
@@ -918,7 +953,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -935,7 +970,7 @@ Module iter.
       End Impl_core_iter_traits_double_ended_DoubleEndedIteratorRefSpec_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_marker_Sized_I_for_ref_mut_I.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIteratorRefSpec_where_core_iter_traits_double_ended_DoubleEndedIterator_I_for_ref_mut_I.
-        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ I ].
+        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ I ].
         
         (*
                 fn $fold<AAA, FFF>(mut self, init: AAA, fold: FFF) -> AAA
@@ -947,10 +982,15 @@ Module iter.
                     self.$try_fold(init, NeverShortCircuit::wrap_mut_2(fold)).0
                 }
         *)
-        Definition spec_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_rfold
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ AAA; FFF ], [ self; init; fold ] =>
+          match ε, τ, α with
+          | [], [ AAA; FFF ], [ self; init; fold ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -961,13 +1001,13 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::double_ended::DoubleEndedIteratorRefSpec",
-                        Ty.apply (Ty.path "&mut") [ I ],
+                        Ty.apply (Ty.path "&mut") [] [ I ],
                         [],
                         "spec_try_rfold",
                         [
                           AAA;
                           Ty.associated;
-                          Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ AAA ]
+                          Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ]
                         ]
                       |),
                       [
@@ -975,7 +1015,7 @@ Module iter.
                         M.read (| init |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ AAA ],
+                            Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ],
                             "wrap_mut_2",
                             [ AAA; Ty.associated; FFF ]
                           |),
@@ -988,7 +1028,7 @@ Module iter.
                   0
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1000,10 +1040,15 @@ Module iter.
                 ( **self).try_rfold(init, f)
             }
         *)
-        Definition spec_try_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_try_rfold
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -1018,7 +1063,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

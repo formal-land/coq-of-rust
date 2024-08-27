@@ -23,7 +23,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_generics_traits_DoubleDrop_T_for_U.
   Definition Self (T U : Ty.t) : Ty.t := U.
   
-  Parameter double_drop : forall (T U : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter double_drop : forall (T U : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (T U : Ty.t),
@@ -34,6 +34,6 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
       (* Instance *) [ ("double_drop", InstanceField.Method (double_drop T U)) ].
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "generics_traits::main" main.

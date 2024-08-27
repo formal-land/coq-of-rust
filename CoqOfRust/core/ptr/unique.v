@@ -6,16 +6,17 @@ Module ptr.
     (* StructRecord
       {
         name := "Unique";
+        const_params := [];
         ty_params := [ "T" ];
         fields :=
           [
-            ("pointer", Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ]);
-            ("_marker", Ty.apply (Ty.path "core::marker::PhantomData") [ T ])
+            ("pointer", Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]);
+            ("_marker", Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ])
           ];
       } *)
     
     Module Impl_core_marker_Send_where_core_marker_Send_T_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -27,7 +28,7 @@ Module ptr.
     End Impl_core_marker_Send_where_core_marker_Send_T_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
     
     Module Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -39,7 +40,7 @@ Module ptr.
     End Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
     
     Module Impl_core_ptr_unique_Unique_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
       (*
           pub const fn dangling() -> Self {
@@ -47,10 +48,10 @@ Module ptr.
               Unique { pointer: NonNull::dangling(), _marker: PhantomData }
           }
       *)
-      Definition dangling (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition dangling (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::ptr::unique::Unique"
@@ -58,7 +59,7 @@ Module ptr.
                 ("pointer",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "dangling",
                       []
                     |),
@@ -66,7 +67,7 @@ Module ptr.
                   |));
                 ("_marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_dangling :
@@ -78,10 +79,15 @@ Module ptr.
               unsafe { Unique { pointer: NonNull::new_unchecked(ptr), _marker: PhantomData } }
           }
       *)
-      Definition new_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ ptr ] =>
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             Value.StructRecord
@@ -90,7 +96,7 @@ Module ptr.
                 ("pointer",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "new_unchecked",
                       []
                     |),
@@ -98,7 +104,7 @@ Module ptr.
                   |));
                 ("_marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -114,10 +120,10 @@ Module ptr.
               }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ ptr ] =>
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.read (|
@@ -130,7 +136,7 @@ Module ptr.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                               "new",
                               []
                             |),
@@ -162,7 +168,7 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -174,15 +180,15 @@ Module ptr.
               self.pointer.as_ptr()
           }
       *)
-      Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "as_ptr",
                 []
               |),
@@ -196,7 +202,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr :
@@ -210,15 +216,15 @@ Module ptr.
               unsafe { self.pointer.as_ref() }
           }
       *)
-      Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "as_ref",
                 []
               |),
@@ -230,7 +236,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ref :
@@ -244,15 +250,15 @@ Module ptr.
               unsafe { self.pointer.as_mut() }
           }
       *)
-      Definition as_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "as_mut",
                 []
               |),
@@ -264,7 +270,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_mut :
@@ -278,29 +284,29 @@ Module ptr.
               unsafe { Unique::new_unchecked(self.pointer.cast().as_ptr()) }
           }
       *)
-      Definition cast (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cast (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ U ], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [ U ], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::unique::Unique") [ U ],
+                Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ U ],
                 "new_unchecked",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ U ],
                     "as_ptr",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                         "cast",
                         [ U ]
                       |),
@@ -318,7 +324,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_cast :
@@ -328,21 +334,21 @@ Module ptr.
     
     
     Module Impl_core_clone_Clone_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
       (*
           fn clone(&self) -> Self {
               *self
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -355,7 +361,7 @@ Module ptr.
     End Impl_core_clone_Clone_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
     
     Module Impl_core_marker_Copy_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -367,7 +373,8 @@ Module ptr.
     End Impl_core_marker_Copy_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
     
     Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_marker_Unsize_T_U_core_ptr_unique_Unique_U_for_core_ptr_unique_Unique_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -375,12 +382,13 @@ Module ptr.
           "core::ops::unsize::CoerceUnsized"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::ptr::unique::Unique") [ U ] ]
+          [ (* T *) Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_marker_Unsize_T_U_core_ptr_unique_Unique_U_for_core_ptr_unique_Unique_T.
     
     Module Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_marker_Unsize_T_U_core_ptr_unique_Unique_U_for_core_ptr_unique_Unique_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -388,29 +396,29 @@ Module ptr.
           "core::ops::unsize::DispatchFromDyn"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::ptr::unique::Unique") [ U ] ]
+          [ (* T *) Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_marker_Unsize_T_U_core_ptr_unique_Unique_U_for_core_ptr_unique_Unique_T.
     
     Module Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               fmt::Pointer::fmt(&self.as_ptr(), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::fmt::Pointer",
-                Ty.apply (Ty.path "*mut") [ T ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
                 "fmt",
                 []
@@ -419,7 +427,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+                      Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -429,7 +437,7 @@ Module ptr.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -442,24 +450,24 @@ Module ptr.
     End Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
     
     Module Impl_core_fmt_Pointer_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               fmt::Pointer::fmt(&self.as_ptr(), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::fmt::Pointer",
-                Ty.apply (Ty.path "*mut") [ T ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
                 "fmt",
                 []
@@ -468,7 +476,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+                      Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -478,7 +486,7 @@ Module ptr.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -491,24 +499,24 @@ Module ptr.
     End Impl_core_fmt_Pointer_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
     
     Module Impl_core_convert_From_where_core_marker_Sized_T_ref_mut_T_for_core_ptr_unique_Unique_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
       (*
           fn from(reference: &mut T) -> Self {
               Self::from(NonNull::from(reference))
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ reference ] =>
+        match ε, τ, α with
+        | [], [], [ reference ] =>
           ltac:(M.monadic
             (let reference := M.alloc (| reference |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::convert::From",
-                Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
-                [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ],
+                Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
+                [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
                 "from",
                 []
               |),
@@ -516,8 +524,8 @@ Module ptr.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::convert::From",
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                    [ Ty.apply (Ty.path "&mut") [ T ] ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                     "from",
                     []
                   |),
@@ -525,7 +533,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -533,22 +541,22 @@ Module ptr.
         M.IsTraitInstance
           "core::convert::From"
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&mut") [ T ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&mut") [] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_marker_Sized_T_ref_mut_T_for_core_ptr_unique_Unique_T.
     
     Module Impl_core_convert_From_where_core_marker_Sized_T_core_ptr_non_null_NonNull_T_for_core_ptr_unique_Unique_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
       (*
           fn from(pointer: NonNull<T>) -> Self {
               Unique { pointer, _marker: PhantomData }
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ pointer ] =>
+        match ε, τ, α with
+        | [], [], [ pointer ] =>
           ltac:(M.monadic
             (let pointer := M.alloc (| pointer |) in
             Value.StructRecord
@@ -557,7 +565,7 @@ Module ptr.
                 ("pointer", M.read (| pointer |));
                 ("_marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -566,7 +574,7 @@ Module ptr.
           "core::convert::From"
           (Self T)
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+          [ (* T *) Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_marker_Sized_T_core_ptr_non_null_NonNull_T_for_core_ptr_unique_Unique_T.
   End unique.

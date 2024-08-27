@@ -2,18 +2,18 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom AliasedResult :
-  forall ( : Ty.t) (T : Ty.t),
+  forall (T : Ty.t),
   (Ty.apply (Ty.path "aliases_for_result::AliasedResult") [] [ T ]) =
     (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "core::num::error::ParseIntError" ]).
 
-Parameter multiply : (list Ty.t) -> (list Value.t) -> M.
+Parameter multiply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_multiply : M.IsFunction "aliases_for_result::multiply" multiply.
 
-Parameter print : (list Ty.t) -> (list Value.t) -> M.
+Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_print : M.IsFunction "aliases_for_result::print" print.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "aliases_for_result::main" main.

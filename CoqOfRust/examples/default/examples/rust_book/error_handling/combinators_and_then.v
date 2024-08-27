@@ -31,9 +31,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Definition Self : Ty.t := Ty.path "combinators_and_then::Food".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -66,7 +66,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -107,9 +107,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Definition Self : Ty.t := Ty.path "combinators_and_then::Day".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -141,7 +141,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -160,9 +160,9 @@ fn have_ingredients(food: Food) -> Option<Food> {
     }
 }
 *)
-Definition have_ingredients (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ food ] =>
+Definition have_ingredients (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ food ] =>
     ltac:(M.monadic
       (let food := M.alloc (| food |) in
       M.read (|
@@ -181,7 +181,7 @@ Definition have_ingredients (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_have_ingredients :
@@ -195,9 +195,9 @@ fn have_recipe(food: Food) -> Option<Food> {
     }
 }
 *)
-Definition have_recipe (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ food ] =>
+Definition have_recipe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ food ] =>
     ltac:(M.monadic
       (let food := M.alloc (| food |) in
       M.read (|
@@ -216,7 +216,7 @@ Definition have_recipe (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_have_recipe : M.IsFunction "combinators_and_then::have_recipe" have_recipe.
@@ -232,9 +232,9 @@ fn cookable_v1(food: Food) -> Option<Food> {
     }
 }
 *)
-Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ food ] =>
+Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ food ] =>
     ltac:(M.monadic
       (let food := M.alloc (| food |) in
       M.read (|
@@ -284,7 +284,7 @@ Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_cookable_v1 : M.IsFunction "combinators_and_then::cookable_v1" cookable_v1.
@@ -294,9 +294,9 @@ fn cookable_v2(food: Food) -> Option<Food> {
     have_recipe(food).and_then(have_ingredients)
 }
 *)
-Definition cookable_v2 (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ food ] =>
+Definition cookable_v2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ food ] =>
     ltac:(M.monadic
       (let food := M.alloc (| food |) in
       M.call_closure (|
@@ -321,7 +321,7 @@ Definition cookable_v2 (τ : list Ty.t) (α : list Value.t) : M :=
           M.get_function (| "combinators_and_then::have_ingredients", [] |)
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_cookable_v2 : M.IsFunction "combinators_and_then::cookable_v2" cookable_v2.
@@ -334,9 +334,9 @@ fn eat(food: Food, day: Day) {
     }
 }
 *)
-Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ food; day ] =>
+Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ food; day ] =>
     ltac:(M.monadic
       (let food := M.alloc (| food |) in
       let day := M.alloc (| day |) in
@@ -455,7 +455,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_eat : M.IsFunction "combinators_and_then::eat" eat.
@@ -469,9 +469,9 @@ fn main() {
     eat(sushi, Day::Wednesday);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         M.match_operator (|
@@ -526,7 +526,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "combinators_and_then::main" main.

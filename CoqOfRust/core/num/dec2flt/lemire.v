@@ -95,9 +95,9 @@ Module num.
           BiasedFp { f: mantissa, e: power2 }
       }
       *)
-      Definition compute_float (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ q; w ] =>
+      Definition compute_float (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ q; w ] =>
           ltac:(M.monadic
             (let q := M.alloc (| q |) in
             let w := M.alloc (| w |) in
@@ -645,7 +645,7 @@ Module num.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_compute_float :
@@ -656,9 +656,9 @@ Module num.
           (q.wrapping_mul(152_170 + 65536) >> 16) + 63
       }
       *)
-      Definition power (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ q ] =>
+      Definition power (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ q ] =>
           ltac:(M.monadic
             (let q := M.alloc (| q |) in
             BinOp.Wrap.add
@@ -673,7 +673,7 @@ Module num.
                 |))
                 (Value.Integer 16))
               (Value.Integer 63)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_power : M.IsFunction "core::num::dec2flt::lemire::power" power.
@@ -684,9 +684,9 @@ Module num.
           (r as u64, (r >> 64) as u64)
       }
       *)
-      Definition full_multiplication (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ a; b ] =>
+      Definition full_multiplication (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ a; b ] =>
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
@@ -706,7 +706,7 @@ Module num.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_full_multiplication :
@@ -748,9 +748,9 @@ Module num.
           (first_lo, first_hi)
       }
       *)
-      Definition compute_product_approx (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ q; w; precision ] =>
+      Definition compute_product_approx (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ q; w; precision ] =>
           ltac:(M.monadic
             (let q := M.alloc (| q |) in
             let w := M.alloc (| w |) in
@@ -1070,7 +1070,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_compute_product_approx :

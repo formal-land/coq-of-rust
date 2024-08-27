@@ -6,9 +6,9 @@ fn order(b1: bool, b2: bool, b3: bool, b4: bool) -> bool {
     b1 && b2 && b3 && b4
 }
 *)
-Definition order (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ b1; b2; b3; b4 ] =>
+Definition order (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ b1; b2; b3; b4 ] =>
     ltac:(M.monadic
       (let b1 := M.alloc (| b1 |) in
       let b2 := M.alloc (| b2 |) in
@@ -21,7 +21,7 @@ Definition order (τ : list Ty.t) (α : list Value.t) : M :=
         |),
         ltac:(M.monadic (M.read (| b4 |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_order : M.IsFunction "if_let::order" order.
@@ -60,9 +60,9 @@ fn extract_value(container: Container) -> i32 {
     }
 }
 *)
-Definition extract_value (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ container ] =>
+Definition extract_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ container ] =>
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
       M.read (|
@@ -107,7 +107,7 @@ Definition extract_value (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_extract_value : M.IsFunction "if_let::extract_value" extract_value.
@@ -144,9 +144,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ x :=
@@ -419,7 +419,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "if_let::main" main.

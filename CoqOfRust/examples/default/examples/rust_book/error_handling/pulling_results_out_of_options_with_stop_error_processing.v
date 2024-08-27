@@ -8,9 +8,9 @@ fn double_first(vec: Vec<&str>) -> Result<Option<i32>, ParseIntError> {
     opt.map_or(Ok(None), |r| r.map(Some))
 }
 *)
-Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ vec ] =>
+Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ vec ] =>
     ltac:(M.monadic
       (let vec := M.alloc (| vec |) in
       M.read (|
@@ -212,7 +212,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
           |)
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_double_first :
@@ -231,9 +231,9 @@ fn main() {
     println!("The first doubled is {:?}", double_first(strings));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ numbers :=
@@ -519,7 +519,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main :

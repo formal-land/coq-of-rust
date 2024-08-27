@@ -18,10 +18,10 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     Ty.apply (Ty.path "mapping_integration_tests::Mapping") [] [ K; V ].
   
   (* Default *)
-  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match τ, α with
-    | [], [] =>
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "mapping_integration_tests::Mapping"
@@ -49,7 +49,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -70,7 +70,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
@@ -81,7 +81,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -92,7 +92,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -103,7 +103,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter new : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new :
     forall (K V : Ty.t),
@@ -114,7 +114,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
@@ -125,7 +125,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
@@ -136,7 +136,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -155,9 +155,9 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "mapping_integration_tests::AccountId"
@@ -167,7 +167,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -182,9 +182,9 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -193,7 +193,7 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -229,9 +229,9 @@ Module Impl_mapping_integration_tests_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition caller (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -241,7 +241,7 @@ Module Impl_mapping_integration_tests_Env.
             "caller"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -266,9 +266,9 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::Mappings".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "mapping_integration_tests::Mappings"
@@ -288,7 +288,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -307,7 +307,7 @@ Module Impl_mapping_integration_tests_Mappings.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -316,7 +316,7 @@ Module Impl_mapping_integration_tests_Mappings.
           unimplemented!()
       }
   *)
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
@@ -326,9 +326,9 @@ Module Impl_mapping_integration_tests_Mappings.
           Self { balances }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ balances :=
@@ -353,7 +353,7 @@ Module Impl_mapping_integration_tests_Mappings.
               [ ("balances", M.read (| balances |)) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -364,9 +364,9 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.get(&caller)
       }
   *)
-  Definition get_balance (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get_balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -413,7 +413,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_get_balance : M.IsAssociatedFunction Self "get_balance" get_balance.
@@ -424,9 +424,9 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.insert(caller, value)
       }
   *)
-  Definition insert_balance (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; value ] =>
+  Definition insert_balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
@@ -475,7 +475,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_insert_balance :
@@ -487,9 +487,9 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.size(caller)
       }
   *)
-  Definition size_balance (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition size_balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -536,7 +536,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_size_balance : M.IsAssociatedFunction Self "size_balance" size_balance.
@@ -547,9 +547,9 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.contains(&caller)
       }
   *)
-  Definition contains_balance (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition contains_balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -596,7 +596,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_contains_balance :
@@ -608,9 +608,9 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.remove(caller);
       }
   *)
-  Definition remove_balance (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition remove_balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -659,7 +659,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_remove_balance :
@@ -671,9 +671,9 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.take(caller)
       }
   *)
-  Definition take_balance (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition take_balance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -720,7 +720,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_take_balance : M.IsAssociatedFunction Self "take_balance" take_balance.

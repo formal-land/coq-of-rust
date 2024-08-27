@@ -16,14 +16,14 @@ Module borrow.
             self
         }
     *)
-    Definition borrow (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -43,14 +43,14 @@ Module borrow.
             self
         }
     *)
-    Definition borrow_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -63,21 +63,21 @@ Module borrow.
   End Impl_core_borrow_BorrowMut_where_core_marker_Sized_T_T_for_T.
   
   Module Impl_core_borrow_Borrow_where_core_marker_Sized_T_T_for_ref__T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     (*
         fn borrow(&self) -> &T {
             &**self
         }
     *)
-    Definition borrow (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -90,21 +90,21 @@ Module borrow.
   End Impl_core_borrow_Borrow_where_core_marker_Sized_T_T_for_ref__T.
   
   Module Impl_core_borrow_Borrow_where_core_marker_Sized_T_T_for_ref_mut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
     
     (*
         fn borrow(&self) -> &T {
             &**self
         }
     *)
-    Definition borrow (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -117,21 +117,21 @@ Module borrow.
   End Impl_core_borrow_Borrow_where_core_marker_Sized_T_T_for_ref_mut_T.
   
   Module Impl_core_borrow_BorrowMut_where_core_marker_Sized_T_T_for_ref_mut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
     
     (*
         fn borrow_mut(&mut self) -> &mut T {
             &mut **self
         }
     *)
-    Definition borrow_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

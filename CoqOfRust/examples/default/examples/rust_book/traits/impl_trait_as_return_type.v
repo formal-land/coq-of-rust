@@ -9,9 +9,13 @@ fn combine_vecs_explicit_return_type(
     v.into_iter().chain(u.into_iter()).cycle()
 }
 *)
-Definition combine_vecs_explicit_return_type (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ v; u ] =>
+Definition combine_vecs_explicit_return_type
+    (ε : list Value.t)
+    (τ : list Ty.t)
+    (α : list Value.t)
+    : M :=
+  match ε, τ, α with
+  | [], [], [ v; u ] =>
     ltac:(M.monadic
       (let v := M.alloc (| v |) in
       let u := M.alloc (| u |) in
@@ -83,7 +87,7 @@ Definition combine_vecs_explicit_return_type (τ : list Ty.t) (α : list Value.t
           |)
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_combine_vecs_explicit_return_type :
@@ -96,9 +100,9 @@ fn combine_vecs(v: Vec<i32>, u: Vec<i32>) -> impl Iterator<Item = i32> {
     v.into_iter().chain(u.into_iter()).cycle()
 }
 *)
-Definition combine_vecs (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ v; u ] =>
+Definition combine_vecs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ v; u ] =>
     ltac:(M.monadic
       (let v := M.alloc (| v |) in
       let u := M.alloc (| u |) in
@@ -170,7 +174,7 @@ Definition combine_vecs (τ : list Ty.t) (α : list Value.t) : M :=
           |)
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_combine_vecs : M.IsFunction "impl_trait_as_return_type::combine_vecs" combine_vecs.
@@ -192,9 +196,9 @@ fn main() {
     println!("all done");
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ v1 :=
@@ -764,7 +768,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "impl_trait_as_return_type::main" main.

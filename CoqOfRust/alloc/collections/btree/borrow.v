@@ -7,18 +7,22 @@ Module collections.
       (* StructRecord
         {
           name := "DormantMutRef";
+          const_params := [];
           ty_params := [ "T" ];
           fields :=
             [
-              ("ptr", Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ]);
+              ("ptr", Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]);
               ("_marker",
-                Ty.apply (Ty.path "core::marker::PhantomData") [ Ty.apply (Ty.path "&mut") [ T ] ])
+                Ty.apply
+                  (Ty.path "core::marker::PhantomData")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ T ] ])
             ];
         } *)
       
       Module Impl_core_marker_Sync_where_core_marker_Sync_ref_mut_T_for_alloc_collections_btree_borrow_DormantMutRef_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::borrow::DormantMutRef") [ T ].
+          Ty.apply (Ty.path "alloc::collections::btree::borrow::DormantMutRef") [] [ T ].
         
         Axiom Implements :
           forall (T : Ty.t),
@@ -31,7 +35,7 @@ Module collections.
       
       Module Impl_core_marker_Send_where_core_marker_Send_ref_mut_T_for_alloc_collections_btree_borrow_DormantMutRef_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::borrow::DormantMutRef") [ T ].
+          Ty.apply (Ty.path "alloc::collections::btree::borrow::DormantMutRef") [] [ T ].
         
         Axiom Implements :
           forall (T : Ty.t),
@@ -44,7 +48,7 @@ Module collections.
       
       Module Impl_alloc_collections_btree_borrow_DormantMutRef_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::borrow::DormantMutRef") [ T ].
+          Ty.apply (Ty.path "alloc::collections::btree::borrow::DormantMutRef") [] [ T ].
         
         (*
             pub fn new(t: &'a mut T) -> (&'a mut T, Self) {
@@ -55,10 +59,10 @@ Module collections.
                 (new_ref, Self { ptr, _marker: PhantomData })
             }
         *)
-        Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ t ] =>
+          match ε, τ, α with
+          | [], [], [ t ] =>
             ltac:(M.monadic
               (let t := M.alloc (| t |) in
               M.read (|
@@ -67,8 +71,8 @@ Module collections.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::convert::From",
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                        [ Ty.apply (Ty.path "&mut") [ T ] ],
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                         "from",
                         []
                       |),
@@ -79,7 +83,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                         "as_ptr",
                         []
                       |),
@@ -99,7 +103,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -112,15 +116,15 @@ Module collections.
                 unsafe { &mut *self.ptr.as_ptr() }
             }
         *)
-        Definition awaken (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition awaken (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
                   []
                 |),
@@ -134,7 +138,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_awaken :
@@ -147,15 +151,15 @@ Module collections.
                 unsafe { &mut *self.ptr.as_ptr() }
             }
         *)
-        Definition reborrow (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition reborrow (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
                   []
                 |),
@@ -169,7 +173,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_reborrow :
@@ -182,15 +186,20 @@ Module collections.
                 unsafe { &*self.ptr.as_ptr() }
             }
         *)
-        Definition reborrow_shared (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition reborrow_shared
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
                   []
                 |),
@@ -204,7 +213,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_reborrow_shared :

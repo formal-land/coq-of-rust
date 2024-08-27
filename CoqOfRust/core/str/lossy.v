@@ -6,11 +6,13 @@ Module str.
     (* StructRecord
       {
         name := "Utf8Chunk";
+        const_params := [];
         ty_params := [];
         fields :=
           [
-            ("valid", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
-            ("invalid", Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ])
+            ("valid", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]);
+            ("invalid",
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
           ];
       } *)
     
@@ -18,9 +20,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunk".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -30,7 +32,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
                       "clone",
                       []
@@ -47,7 +49,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       [],
                       "clone",
                       []
@@ -61,7 +63,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -76,9 +78,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunk".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -111,7 +113,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -137,9 +139,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunk".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -147,8 +149,8 @@ Module str.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
-                  Ty.apply (Ty.path "&") [ Ty.path "str" ],
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   "eq",
                   []
                 |),
@@ -169,8 +171,9 @@ Module str.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
-                    Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
-                    [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ],
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                    ],
                     "eq",
                     []
                   |),
@@ -188,7 +191,7 @@ Module str.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -214,9 +217,13 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunk".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -232,7 +239,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -252,9 +259,9 @@ Module str.
               self.valid
           }
       *)
-      Definition valid (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition valid (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -264,7 +271,7 @@ Module str.
                 "valid"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_valid : M.IsAssociatedFunction Self "valid" valid.
@@ -274,9 +281,9 @@ Module str.
               self.invalid
           }
       *)
-      Definition invalid (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition invalid (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -286,7 +293,7 @@ Module str.
                 "invalid"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_invalid : M.IsAssociatedFunction Self "invalid" invalid.
@@ -295,8 +302,9 @@ Module str.
     (* StructTuple
       {
         name := "Debug";
+        const_params := [];
         ty_params := [];
-        fields := [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ];
+        fields := [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ];
       } *)
     
     Module Impl_core_fmt_Debug_for_core_str_lossy_Debug.
@@ -335,9 +343,9 @@ Module str.
               f.write_char('"')
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -352,6 +360,7 @@ Module str.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -390,10 +399,12 @@ Module str.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -637,6 +648,7 @@ Module str.
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "core::result::Result")
+                                                                                            []
                                                                                             [
                                                                                               Ty.tuple
                                                                                                 [];
@@ -668,6 +680,7 @@ Module str.
                                                                                                     Ty.apply
                                                                                                       (Ty.path
                                                                                                         "core::ops::range::Range")
+                                                                                                      []
                                                                                                       [
                                                                                                         Ty.path
                                                                                                           "usize"
@@ -724,6 +737,7 @@ Module str.
                                                                                                       Ty.apply
                                                                                                         (Ty.path
                                                                                                           "core::result::Result")
+                                                                                                        []
                                                                                                         [
                                                                                                           Ty.tuple
                                                                                                             [];
@@ -734,6 +748,7 @@ Module str.
                                                                                                         Ty.apply
                                                                                                           (Ty.path
                                                                                                             "core::result::Result")
+                                                                                                          []
                                                                                                           [
                                                                                                             Ty.path
                                                                                                               "core::convert::Infallible";
@@ -860,6 +875,7 @@ Module str.
                                                                                                                     Ty.apply
                                                                                                                       (Ty.path
                                                                                                                         "core::result::Result")
+                                                                                                                      []
                                                                                                                       [
                                                                                                                         Ty.tuple
                                                                                                                           [];
@@ -918,6 +934,7 @@ Module str.
                                                                                                                                 Ty.apply
                                                                                                                                   (Ty.path
                                                                                                                                     "core::result::Result")
+                                                                                                                                  []
                                                                                                                                   [
                                                                                                                                     Ty.tuple
                                                                                                                                       [];
@@ -928,6 +945,7 @@ Module str.
                                                                                                                                   Ty.apply
                                                                                                                                     (Ty.path
                                                                                                                                       "core::result::Result")
+                                                                                                                                    []
                                                                                                                                     [
                                                                                                                                       Ty.path
                                                                                                                                         "core::convert::Infallible";
@@ -1025,6 +1043,7 @@ Module str.
                                                         "core::ops::try_trait::Try",
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
+                                                          []
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
                                                         [],
@@ -1048,6 +1067,7 @@ Module str.
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "core::ops::range::RangeFrom")
+                                                                    []
                                                                     [ Ty.path "usize" ]
                                                                 ],
                                                                 "index",
@@ -1085,6 +1105,7 @@ Module str.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.tuple [];
                                                                         Ty.path "core::fmt::Error"
@@ -1093,6 +1114,7 @@ Module str.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "core::convert::Infallible";
@@ -1129,9 +1151,11 @@ Module str.
                                                       "core::iter::traits::collect::IntoIterator",
                                                       Ty.apply
                                                         (Ty.path "&")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "slice")
+                                                            []
                                                             [ Ty.path "u8" ]
                                                         ],
                                                       [],
@@ -1165,6 +1189,7 @@ Module str.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::slice::iter::Iter")
+                                                                      []
                                                                       [ Ty.path "u8" ],
                                                                     [],
                                                                     "next",
@@ -1205,6 +1230,7 @@ Module str.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.tuple [];
                                                                                   Ty.path
@@ -1335,6 +1361,7 @@ Module str.
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "core::result::Result")
+                                                                                            []
                                                                                             [
                                                                                               Ty.tuple
                                                                                                 [];
@@ -1345,6 +1372,7 @@ Module str.
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "core::result::Result")
+                                                                                              []
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "core::convert::Infallible";
@@ -1405,7 +1433,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1419,18 +1447,20 @@ Module str.
     (* StructRecord
       {
         name := "Utf8Chunks";
+        const_params := [];
         ty_params := [];
         fields :=
-          [ ("source", Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]) ];
+          [ ("source", Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+          ];
       } *)
     
     Module Impl_core_clone_Clone_for_core_str_lossy_Utf8Chunks.
       Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunks".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -1440,7 +1470,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       [],
                       "clone",
                       []
@@ -1454,7 +1484,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1473,13 +1503,13 @@ Module str.
               Self { source: bytes }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ bytes ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ bytes ] =>
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
             Value.StructRecord "core::str::lossy::Utf8Chunks" [ ("source", M.read (| bytes |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1489,9 +1519,9 @@ Module str.
               Debug(self.source)
           }
       *)
-      Definition debug (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -1505,7 +1535,7 @@ Module str.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_debug : M.IsAssociatedFunction Self "debug" debug.
@@ -1612,9 +1642,9 @@ Module str.
               })
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -1631,7 +1661,7 @@ Module str.
                                 (M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "is_empty",
                                       []
                                     |),
@@ -1675,7 +1705,7 @@ Module str.
                                         (M.read (| i |))
                                         (M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "len",
                                             []
                                           |),
@@ -1699,7 +1729,7 @@ Module str.
                                   M.copy (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "get_unchecked",
                                         [ Ty.path "usize" ]
                                       |),
@@ -2245,7 +2275,7 @@ Module str.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "split_at_unchecked",
                           []
                         |),
@@ -2281,7 +2311,7 @@ Module str.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "split_at_unchecked",
                                   []
                                 |),
@@ -2320,7 +2350,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2350,9 +2380,9 @@ Module str.
               f.debug_struct("Utf8Chunks").field("source", &self.debug()).finish()
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -2397,7 +2427,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

@@ -8,16 +8,16 @@ Module alloc.
         (mem::size_of::<T>(), mem::align_of::<T>())
     }
     *)
-    Definition size_align (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [] =>
+    Definition size_align (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [] =>
         ltac:(M.monadic
           (Value.Tuple
             [
               M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |);
               M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_size_align : M.IsFunction "core::alloc::layout::size_align" size_align.
@@ -25,6 +25,7 @@ Module alloc.
     (* StructRecord
       {
         name := "Layout";
+        const_params := [];
         ty_params := [];
         fields :=
           [ ("size", Ty.path "usize"); ("align", Ty.path "core::ptr::alignment::Alignment") ];
@@ -45,9 +46,9 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -63,7 +64,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -78,9 +79,9 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -113,7 +114,7 @@ Module alloc.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -139,9 +140,9 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -184,7 +185,7 @@ Module alloc.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -210,9 +211,13 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -228,7 +233,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -244,9 +249,9 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -291,7 +296,7 @@ Module alloc.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -315,9 +320,9 @@ Module alloc.
               Layout::from_size_alignment(size, unsafe { Alignment::new_unchecked(align) })
           }
       *)
-      Definition from_size_align (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ size; align ] =>
+      Definition from_size_align (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ size; align ] =>
           ltac:(M.monadic
             (let size := M.alloc (| size |) in
             let align := M.alloc (| align |) in
@@ -381,7 +386,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_size_align :
@@ -406,9 +411,9 @@ Module alloc.
               isize::MAX as usize - (align.as_usize() - 1)
           }
       *)
-      Definition max_size_for_align (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ align ] =>
+      Definition max_size_for_align (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ align ] =>
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             BinOp.Wrap.sub
@@ -425,7 +430,7 @@ Module alloc.
                   [ M.read (| align |) ]
                 |))
                 (Value.Integer 1))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_max_size_for_align :
@@ -441,9 +446,9 @@ Module alloc.
               Ok(Layout { size, align })
           }
       *)
-      Definition from_size_alignment (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ size; align ] =>
+      Definition from_size_alignment (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ size; align ] =>
           ltac:(M.monadic
             (let size := M.alloc (| size |) in
             let align := M.alloc (| align |) in
@@ -497,7 +502,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_size_alignment :
@@ -509,9 +514,13 @@ Module alloc.
               unsafe { Layout { size, align: Alignment::new_unchecked(align) } }
           }
       *)
-      Definition from_size_align_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ size; align ] =>
+      Definition from_size_align_unchecked
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [ host ], [], [ size; align ] =>
           ltac:(M.monadic
             (let size := M.alloc (| size |) in
             let align := M.alloc (| align |) in
@@ -529,7 +538,7 @@ Module alloc.
                     [ M.read (| align |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_size_align_unchecked :
@@ -540,9 +549,9 @@ Module alloc.
               self.size
           }
       *)
-      Definition size (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -552,7 +561,7 @@ Module alloc.
                 "size"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_size : M.IsAssociatedFunction Self "size" size.
@@ -562,9 +571,9 @@ Module alloc.
               self.align.as_usize()
           }
       *)
-      Definition align (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition align (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -583,7 +592,7 @@ Module alloc.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_align : M.IsAssociatedFunction Self "align" align.
@@ -597,9 +606,9 @@ Module alloc.
               unsafe { Layout::from_size_align_unchecked(size, align) }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [ T ], [] =>
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
@@ -629,7 +638,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -641,9 +650,9 @@ Module alloc.
               unsafe { Layout::from_size_align_unchecked(size, align) }
           }
       *)
-      Definition for_value (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ t ] =>
+      Definition for_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [ T ], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             M.read (|
@@ -681,7 +690,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_for_value : M.IsAssociatedFunction Self "for_value" for_value.
@@ -694,9 +703,9 @@ Module alloc.
               unsafe { Layout::from_size_align_unchecked(size, align) }
           }
       *)
-      Definition for_value_raw (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ t ] =>
+      Definition for_value_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [ T ], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             M.read (|
@@ -734,7 +743,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_for_value_raw :
@@ -746,14 +755,14 @@ Module alloc.
               unsafe { NonNull::new_unchecked(crate::ptr::invalid_mut::<u8>(self.align())) }
           }
       *)
-      Definition dangling (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition dangling (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                 "new_unchecked",
                 []
               |),
@@ -773,7 +782,7 @@ Module alloc.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_dangling : M.IsAssociatedFunction Self "dangling" dangling.
@@ -783,9 +792,9 @@ Module alloc.
               Layout::from_size_align(self.size(), cmp::max(self.align(), align))
           }
       *)
-      Definition align_to (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; align ] =>
+      Definition align_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; align ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
@@ -816,7 +825,7 @@ Module alloc.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_align_to : M.IsAssociatedFunction Self "align_to" align_to.
@@ -848,9 +857,9 @@ Module alloc.
               len_rounded_up.wrapping_sub(len)
           }
       *)
-      Definition padding_needed_for (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; align ] =>
+      Definition padding_needed_for (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; align ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
@@ -892,7 +901,7 @@ Module alloc.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_padding_needed_for :
@@ -911,9 +920,9 @@ Module alloc.
               unsafe { Layout::from_size_align_unchecked(new_size, self.align()) }
           }
       *)
-      Definition pad_to_align (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition pad_to_align (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -973,7 +982,7 @@ Module alloc.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pad_to_align :
@@ -993,9 +1002,9 @@ Module alloc.
               Ok((layout, padded_size))
           }
       *)
-      Definition repeat (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition repeat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -1042,6 +1051,7 @@ Module alloc.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [ Ty.path "usize"; Ty.path "core::alloc::layout::LayoutError" ],
                               [],
                               "branch",
@@ -1050,7 +1060,7 @@ Module alloc.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "ok_or",
                                   [ Ty.path "core::alloc::layout::LayoutError" ]
                                 |),
@@ -1088,6 +1098,7 @@ Module alloc.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.tuple
                                                 [
@@ -1099,6 +1110,7 @@ Module alloc.
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.path "core::convert::Infallible";
                                                 Ty.path "core::alloc::layout::LayoutError"
@@ -1135,6 +1147,7 @@ Module alloc.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [
                                   Ty.path "core::alloc::layout::Layout";
                                   Ty.path "core::alloc::layout::LayoutError"
@@ -1183,6 +1196,7 @@ Module alloc.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.tuple
                                                 [
@@ -1194,6 +1208,7 @@ Module alloc.
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.path "core::convert::Infallible";
                                                 Ty.path "core::alloc::layout::LayoutError"
@@ -1228,7 +1243,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_repeat : M.IsAssociatedFunction Self "repeat" repeat.
@@ -1246,9 +1261,9 @@ Module alloc.
               Ok((layout, offset))
           }
       *)
-      Definition extend (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; next ] =>
+      Definition extend (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; next ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let next := M.alloc (| next |) in
@@ -1310,6 +1325,7 @@ Module alloc.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [ Ty.path "usize"; Ty.path "core::alloc::layout::LayoutError" ],
                               [],
                               "branch",
@@ -1318,7 +1334,7 @@ Module alloc.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "ok_or",
                                   [ Ty.path "core::alloc::layout::LayoutError" ]
                                 |),
@@ -1366,6 +1382,7 @@ Module alloc.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.tuple
                                                 [
@@ -1377,6 +1394,7 @@ Module alloc.
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.path "core::convert::Infallible";
                                                 Ty.path "core::alloc::layout::LayoutError"
@@ -1413,6 +1431,7 @@ Module alloc.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [ Ty.path "usize"; Ty.path "core::alloc::layout::LayoutError" ],
                               [],
                               "branch",
@@ -1421,7 +1440,7 @@ Module alloc.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "ok_or",
                                   [ Ty.path "core::alloc::layout::LayoutError" ]
                                 |),
@@ -1469,6 +1488,7 @@ Module alloc.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.tuple
                                                 [
@@ -1480,6 +1500,7 @@ Module alloc.
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.path "core::convert::Infallible";
                                                 Ty.path "core::alloc::layout::LayoutError"
@@ -1516,6 +1537,7 @@ Module alloc.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [
                                   Ty.path "core::alloc::layout::Layout";
                                   Ty.path "core::alloc::layout::LayoutError"
@@ -1555,6 +1577,7 @@ Module alloc.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.tuple
                                                 [
@@ -1566,6 +1589,7 @@ Module alloc.
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.path "core::convert::Infallible";
                                                 Ty.path "core::alloc::layout::LayoutError"
@@ -1600,7 +1624,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
@@ -1612,9 +1636,9 @@ Module alloc.
               Layout::from_size_alignment(size, self.align)
           }
       *)
-      Definition repeat_packed (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition repeat_packed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -1630,6 +1654,7 @@ Module alloc.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [ Ty.path "usize"; Ty.path "core::alloc::layout::LayoutError" ],
                               [],
                               "branch",
@@ -1638,7 +1663,7 @@ Module alloc.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "ok_or",
                                   [ Ty.path "core::alloc::layout::LayoutError" ]
                                 |),
@@ -1686,6 +1711,7 @@ Module alloc.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::alloc::layout::Layout";
                                               Ty.path "core::alloc::layout::LayoutError"
@@ -1693,6 +1719,7 @@ Module alloc.
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.path "core::convert::Infallible";
                                                 Ty.path "core::alloc::layout::LayoutError"
@@ -1741,7 +1768,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_repeat_packed :
@@ -1754,9 +1781,9 @@ Module alloc.
               Layout::from_size_alignment(new_size, self.align)
           }
       *)
-      Definition extend_packed (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; next ] =>
+      Definition extend_packed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; next ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let next := M.alloc (| next |) in
@@ -1772,6 +1799,7 @@ Module alloc.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [ Ty.path "usize"; Ty.path "core::alloc::layout::LayoutError" ],
                               [],
                               "branch",
@@ -1780,7 +1808,7 @@ Module alloc.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "ok_or",
                                   [ Ty.path "core::alloc::layout::LayoutError" ]
                                 |),
@@ -1835,6 +1863,7 @@ Module alloc.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::alloc::layout::Layout";
                                               Ty.path "core::alloc::layout::LayoutError"
@@ -1842,6 +1871,7 @@ Module alloc.
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.path "core::convert::Infallible";
                                                 Ty.path "core::alloc::layout::LayoutError"
@@ -1890,7 +1920,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_extend_packed :
@@ -1930,9 +1960,9 @@ Module alloc.
               }
           }
       *)
-      Definition array (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ n ] =>
+      Definition array (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [ T ], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.catch_return (|
@@ -1959,7 +1989,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_array : M.IsAssociatedFunction Self "array" array.
@@ -1971,6 +2001,7 @@ Module alloc.
     (* StructTuple
       {
         name := "LayoutError";
+        const_params := [];
         ty_params := [];
         fields := [];
       } *)
@@ -1979,13 +2010,13 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::LayoutError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::alloc::layout::LayoutError" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2011,14 +2042,14 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::LayoutError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             Value.Bool true))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2044,13 +2075,17 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::LayoutError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2066,9 +2101,9 @@ Module alloc.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::LayoutError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -2076,7 +2111,7 @@ Module alloc.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
               [ M.read (| f |); M.read (| Value.String "LayoutError" |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2106,9 +2141,9 @@ Module alloc.
               f.write_str("invalid parameters to Layout::from_size_align")
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -2119,7 +2154,7 @@ Module alloc.
                 M.read (| Value.String "invalid parameters to Layout::from_size_align" |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

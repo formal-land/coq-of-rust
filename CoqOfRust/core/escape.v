@@ -9,10 +9,17 @@ Module escape.
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::option::Option")
+              []
               [
                 Ty.apply
                   (Ty.path "&")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "core::ascii::ascii_char::AsciiChar" ] ]
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer 16 ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  ]
               ],
             "unwrap",
             []
@@ -20,7 +27,7 @@ Module escape.
           [
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ],
                 "as_ascii",
                 []
               |),
@@ -60,9 +67,9 @@ Module escape.
   }
   "
   *)
-  Definition escape_ascii_into (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ output; byte ] =>
+  Definition escape_ascii_into (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ output; byte ] =>
       ltac:(M.monadic
         (let output := M.alloc (| output |) in
         let byte := M.alloc (| byte |) in
@@ -256,7 +263,7 @@ Module escape.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_escape_ascii_into :
@@ -268,9 +275,9 @@ Module escape.
             ([ascii::Char::ReverseSolidus, a, ascii::Char::Null, ascii::Char::Null], 2)
         }
     *)
-    Definition backslash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ a ] =>
+    Definition backslash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ a ] =>
         ltac:(M.monadic
           (let a := M.alloc (| a |) in
           Value.Tuple
@@ -284,7 +291,7 @@ Module escape.
                 ];
               Value.Integer 2
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_backslash : M.IsFunction "core::escape::escape_ascii_into::backslash" backslash.
@@ -311,9 +318,9 @@ Module escape.
       (start as u8)..10
   }
   *)
-  Definition escape_unicode_into (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ output; ch ] =>
+  Definition escape_unicode_into (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ output; ch ] =>
       ltac:(M.monadic
         (let output := M.alloc (| output |) in
         let ch := M.alloc (| ch |) in
@@ -432,7 +439,7 @@ Module escape.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "slice") [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                   "copy_from_slice",
                   []
                 |),
@@ -440,8 +447,11 @@ Module escape.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::index::IndexMut",
-                      Ty.apply (Ty.path "slice") [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                       "index_mut",
                       []
                     |),
@@ -451,8 +461,10 @@ Module escape.
                           "core::ops::index::IndexMut",
                           Ty.apply
                             (Ty.path "array")
+                            [ Value.Integer 10 ]
                             [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "usize" ] ],
+                          [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ]
+                          ],
                           "index_mut",
                           []
                         |),
@@ -482,7 +494,7 @@ Module escape.
               [ ("start", M.rust_cast (M.read (| start |))); ("end_", Value.Integer 10) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_escape_unicode_into :
@@ -497,10 +509,16 @@ Module escape.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "&")
-                      [ Ty.apply (Ty.path "array") [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer 3 ]
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                       ]
                   ],
                 "unwrap",
@@ -509,7 +527,7 @@ Module escape.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u8" ],
                     "as_ascii",
                     []
                   |),
@@ -523,21 +541,25 @@ Module escape.
   (* StructRecord
     {
       name := "EscapeIterInner";
+      const_params := [ "N" ];
       ty_params := [];
       fields :=
         [
-          ("data", Ty.apply (Ty.path "array") [ Ty.path "core::ascii::ascii_char::AsciiChar" ]);
-          ("alive", Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ])
+          ("data",
+            Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]);
+          ("alive", Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ])
         ];
     } *)
   
-  Module Impl_core_clone_Clone_for_core_escape_EscapeIterInner.
-    Definition Self : Ty.t := Ty.path "core::escape::EscapeIterInner".
+  Module Impl_core_clone_Clone_for_core_escape_EscapeIterInner_N.
+    Definition Self (N : Value.t) : Ty.t :=
+      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [].
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self N in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -547,7 +569,10 @@ Module escape.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "array") [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                    Ty.apply
+                      (Ty.path "array")
+                      [ N ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                     [],
                     "clone",
                     []
@@ -564,7 +589,7 @@ Module escape.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
                     [],
                     "clone",
                     []
@@ -578,24 +603,27 @@ Module escape.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
+      forall (N : Value.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (Self N)
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("clone", InstanceField.Method clone) ].
-  End Impl_core_clone_Clone_for_core_escape_EscapeIterInner.
+        (* Instance *) [ ("clone", InstanceField.Method (clone N)) ].
+  End Impl_core_clone_Clone_for_core_escape_EscapeIterInner_N.
   
-  Module Impl_core_fmt_Debug_for_core_escape_EscapeIterInner.
-    Definition Self : Ty.t := Ty.path "core::escape::EscapeIterInner".
+  Module Impl_core_fmt_Debug_for_core_escape_EscapeIterInner_N.
+    Definition Self (N : Value.t) : Ty.t :=
+      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [].
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self N in
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -628,19 +656,21 @@ Module escape.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
+      forall (N : Value.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (Self N)
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-  End Impl_core_fmt_Debug_for_core_escape_EscapeIterInner.
+        (* Instance *) [ ("fmt", InstanceField.Method (fmt N)) ].
+  End Impl_core_fmt_Debug_for_core_escape_EscapeIterInner_N.
   
-  Module Impl_core_escape_EscapeIterInner.
-    Definition Self : Ty.t := Ty.path "core::escape::EscapeIterInner".
+  Module Impl_core_escape_EscapeIterInner_N.
+    Definition Self (N : Value.t) : Ty.t :=
+      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [].
     
     (*
         pub fn new(data: [ascii::Char; N], alive: Range<u8>) -> Self {
@@ -649,9 +679,10 @@ Module escape.
             Self { data, alive }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ data; alive ] =>
+    Definition new (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self N in
+      match ε, τ, α with
+      | [], [], [ data; alive ] =>
         ltac:(M.monadic
           (let data := M.alloc (| data |) in
           let alive := M.alloc (| alive |) in
@@ -750,6 +781,7 @@ Module escape.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::Range")
+                                                            []
                                                             [ Ty.path "u8" ]
                                                         ]
                                                       |),
@@ -776,10 +808,12 @@ Module escape.
                 [ ("data", M.read (| data |)); ("alive", M.read (| alive |)) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Axiom AssociatedFunction_new :
+      forall (N : Value.t),
+      M.IsAssociatedFunction (Self N) "new" (new N).
     
     (*
         pub fn from_array<const M: usize>(array: [ascii::Char; M]) -> Self {
@@ -790,9 +824,10 @@ Module escape.
             Self::new(data, 0..M as u8)
         }
     *)
-    Definition from_array (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ array ] =>
+    Definition from_array (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self N in
+      match ε, τ, α with
+      | [ M_ ], [], [ array ] =>
         ltac:(M.monadic
           (let array := M.alloc (| array |) in
           M.read (|
@@ -805,7 +840,7 @@ Module escape.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                     "copy_from_slice",
                     []
                   |),
@@ -813,8 +848,11 @@ Module escape.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::index::IndexMut",
-                        Ty.apply (Ty.path "array") [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                        [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                        Ty.apply
+                          (Ty.path "array")
+                          [ N ]
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                        [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                         "index_mut",
                         []
                       |),
@@ -834,7 +872,11 @@ Module escape.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "new", [] |),
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
+                  "new",
+                  []
+                |),
                 [
                   M.read (| data |);
                   Value.StructRecord
@@ -849,26 +891,29 @@ Module escape.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
-    Axiom AssociatedFunction_from_array : M.IsAssociatedFunction Self "from_array" from_array.
+    Axiom AssociatedFunction_from_array :
+      forall (N : Value.t),
+      M.IsAssociatedFunction (Self N) "from_array" (from_array N).
     
     (*
         pub fn as_ascii(&self) -> &[ascii::Char] {
             &self.data[usize::from(self.alive.start)..usize::from(self.alive.end)]
         }
     *)
-    Definition as_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_ascii (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self N in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::index::Index",
-              Ty.apply (Ty.path "array") [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-              [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+              Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
               "index",
               []
             |),
@@ -930,31 +975,34 @@ Module escape.
                 ]
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
-    Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
+    Axiom AssociatedFunction_as_ascii :
+      forall (N : Value.t),
+      M.IsAssociatedFunction (Self N) "as_ascii" (as_ascii N).
     
     (*
         pub fn as_str(&self) -> &str {
             self.as_ascii().as_str()
         }
     *)
-    Definition as_str (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_str (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self N in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+              Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
               "as_str",
               []
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.path "core::escape::EscapeIterInner",
+                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
                   "as_ascii",
                   []
                 |),
@@ -962,19 +1010,22 @@ Module escape.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
-    Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+    Axiom AssociatedFunction_as_str :
+      forall (N : Value.t),
+      M.IsAssociatedFunction (Self N) "as_str" (as_str N).
     
     (*
         pub fn len(&self) -> usize {
             usize::from(self.alive.end - self.alive.start)
         }
     *)
-    Definition len (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition len (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self N in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1012,24 +1063,27 @@ Module escape.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
-    Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+    Axiom AssociatedFunction_len :
+      forall (N : Value.t),
+      M.IsAssociatedFunction (Self N) "len" (len N).
     
     (*
         pub fn next(&mut self) -> Option<u8> {
             self.alive.next().map(|i| self.data[usize::from(i)].to_u8())
         }
     *)
-    Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition next (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self N in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
               "map",
               [ Ty.path "u8"; Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.path "u8") ]
             |),
@@ -1037,7 +1091,7 @@ Module escape.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
                   [],
                   "next",
                   []
@@ -1097,24 +1151,27 @@ Module escape.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
-    Axiom AssociatedFunction_next : M.IsAssociatedFunction Self "next" next.
+    Axiom AssociatedFunction_next :
+      forall (N : Value.t),
+      M.IsAssociatedFunction (Self N) "next" (next N).
     
     (*
         pub fn next_back(&mut self) -> Option<u8> {
             self.alive.next_back().map(|i| self.data[usize::from(i)].to_u8())
         }
     *)
-    Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition next_back (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self N in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
               "map",
               [ Ty.path "u8"; Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.path "u8") ]
             |),
@@ -1122,7 +1179,7 @@ Module escape.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
-                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
                   [],
                   "next_back",
                   []
@@ -1182,26 +1239,29 @@ Module escape.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
-    Axiom AssociatedFunction_next_back : M.IsAssociatedFunction Self "next_back" next_back.
+    Axiom AssociatedFunction_next_back :
+      forall (N : Value.t),
+      M.IsAssociatedFunction (Self N) "next_back" (next_back N).
     
     (*
         pub fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
             self.alive.advance_by(n)
         }
     *)
-    Definition advance_by (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; n ] =>
+    Definition advance_by (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self N in
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
-              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ],
+              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
               [],
               "advance_by",
               []
@@ -1215,26 +1275,34 @@ Module escape.
               M.read (| n |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
-    Axiom AssociatedFunction_advance_by : M.IsAssociatedFunction Self "advance_by" advance_by.
+    Axiom AssociatedFunction_advance_by :
+      forall (N : Value.t),
+      M.IsAssociatedFunction (Self N) "advance_by" (advance_by N).
     
     (*
         pub fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
             self.alive.advance_back_by(n)
         }
     *)
-    Definition advance_back_by (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; n ] =>
+    Definition advance_back_by
+        (N : Value.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N in
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
-              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u8" ],
+              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
               [],
               "advance_back_by",
               []
@@ -1248,10 +1316,11 @@ Module escape.
               M.read (| n |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_advance_back_by :
-      M.IsAssociatedFunction Self "advance_back_by" advance_back_by.
-  End Impl_core_escape_EscapeIterInner.
+      forall (N : Value.t),
+      M.IsAssociatedFunction (Self N) "advance_back_by" (advance_back_by N).
+  End Impl_core_escape_EscapeIterInner_N.
 End escape.

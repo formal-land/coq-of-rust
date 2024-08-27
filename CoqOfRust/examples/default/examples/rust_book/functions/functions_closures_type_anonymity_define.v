@@ -12,8 +12,11 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] => ltac:(M.monadic (Value.Tuple []))
+  | _, _, _ => M.impossible
+  end.
 
 Axiom Function_main : M.IsFunction "functions_closures_type_anonymity_define::main" main.
 
@@ -26,9 +29,9 @@ Module main.
           f();
       }
   *)
-  Definition apply (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ F ], [ f ] =>
+  Definition apply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ F ], [ f ] =>
       ltac:(M.monadic
         (let f := M.alloc (| f |) in
         M.read (|
@@ -47,7 +50,7 @@ Module main.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_apply : M.IsFunction "functions_closures_type_anonymity_define::main::apply" apply.

@@ -49,8 +49,11 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   Definition _SomeType : Ty.t := Ty.path "traits_parms::SomeOtherType".
   
   (*     fn some_fn() {} *)
-  Definition some_fn (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+  Definition some_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] => ltac:(M.monadic (Value.Tuple []))
+    | _, _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance

@@ -13,9 +13,9 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "call_runtime::AccountId"
@@ -25,7 +25,7 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -40,9 +40,9 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -51,7 +51,7 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -100,7 +100,7 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
           unimplemented!()
       }
   *)
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -163,10 +163,10 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeCaller".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] => ltac:(M.monadic (Value.StructTuple "call_runtime::RuntimeCaller" []))
-    | _, _ => M.impossible
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "call_runtime::RuntimeCaller" []))
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -197,9 +197,9 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -207,7 +207,7 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "CallRuntimeFailed" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -233,14 +233,14 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         Value.Bool true))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -266,13 +266,17 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -316,9 +320,9 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
           }
       }
   *)
-  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ e ] =>
+  Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ e ] =>
       ltac:(M.monadic
         (let e := M.alloc (| e |) in
         M.read (|
@@ -348,7 +352,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -367,7 +371,7 @@ Module Impl_call_runtime_Env.
           unimplemented!()
       }
   *)
-  Parameter call_runtime : (list Ty.t) -> (list Value.t) -> M.
+  Parameter call_runtime : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_call_runtime : M.IsAssociatedFunction Self "call_runtime" call_runtime.
 End Impl_call_runtime_Env.
@@ -380,7 +384,7 @@ Module Impl_call_runtime_RuntimeCaller.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -389,16 +393,16 @@ Module Impl_call_runtime_RuntimeCaller.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "call_runtime::RuntimeCaller", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -408,9 +412,9 @@ Module Impl_call_runtime_RuntimeCaller.
           Default::default()
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_trait_method (|
@@ -422,7 +426,7 @@ Module Impl_call_runtime_RuntimeCaller.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -441,9 +445,9 @@ Module Impl_call_runtime_RuntimeCaller.
               .map_err(Into::into)
       }
   *)
-  Definition transfer_through_runtime (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; receiver; value ] =>
+  Definition transfer_through_runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; receiver; value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let receiver := M.alloc (| receiver |) in
@@ -518,7 +522,7 @@ Module Impl_call_runtime_RuntimeCaller.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_transfer_through_runtime :
@@ -529,9 +533,9 @@ Module Impl_call_runtime_RuntimeCaller.
           self.env().call_runtime(&()).map_err(Into::into)
       }
   *)
-  Definition call_nonexistent_extrinsic (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition call_nonexistent_extrinsic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
@@ -578,7 +582,7 @@ Module Impl_call_runtime_RuntimeCaller.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_call_nonexistent_extrinsic :

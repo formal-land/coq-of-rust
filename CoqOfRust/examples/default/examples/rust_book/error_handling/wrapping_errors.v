@@ -26,9 +26,9 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -77,7 +77,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -89,7 +89,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
-  forall ( : Ty.t) (T : Ty.t),
+  forall (T : Ty.t),
   (Ty.apply (Ty.path "wrapping_errors::Result") [] [ T ]) =
     (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "wrapping_errors::DoubleError" ]).
 
@@ -106,9 +106,9 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
           }
       }
   *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -187,7 +187,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -212,9 +212,9 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
           }
       }
   *)
-  Definition source (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition source (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -242,7 +242,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -261,13 +261,13 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
           DoubleError::Parse(err)
       }
   *)
-  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ err ] =>
+  Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ err ] =>
       ltac:(M.monadic
         (let err := M.alloc (| err |) in
         Value.StructTuple "wrapping_errors::DoubleError::Parse" [ M.read (| err |) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -288,9 +288,9 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
     Ok(2 * parsed)
 }
 *)
-Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ vec ] =>
+Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ vec ] =>
     ltac:(M.monadic
       (let vec := M.alloc (| vec |) in
       M.catch_return (|
@@ -501,7 +501,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_double_first : M.IsFunction "wrapping_errors::double_first" double_first.
@@ -519,9 +519,9 @@ fn print(result: Result<i32>) {
     }
 }
 *)
-Definition print (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ result ] =>
+Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ result ] =>
     ltac:(M.monadic
       (let result := M.alloc (| result |) in
       M.read (|
@@ -707,7 +707,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_print : M.IsFunction "wrapping_errors::print" print.
@@ -723,9 +723,9 @@ fn main() {
     print(double_first(strings));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ numbers :=
@@ -864,7 +864,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "wrapping_errors::main" main.

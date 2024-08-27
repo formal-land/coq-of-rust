@@ -7,19 +7,20 @@ Module iter.
       (* StructRecord
         {
           name := "Cloned";
+          const_params := [];
           ty_params := [ "I" ];
           fields := [ ("it", I) ];
         } *)
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_I_for_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
         
         (* Clone *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -37,7 +38,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -51,13 +52,13 @@ Module iter.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
         
         (* Debug *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -82,7 +83,7 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -96,23 +97,23 @@ Module iter.
       
       Module Impl_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
         
         (*
             pub(in crate::iter) fn new(it: I) -> Cloned<I> {
                 Cloned { it }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ it ] =>
+          match ε, τ, α with
+          | [], [], [ it ] =>
             ltac:(M.monadic
               (let it := M.alloc (| it |) in
               Value.StructRecord
                 "core::iter::adapters::cloned::Cloned"
                 [ ("it", M.read (| it |)) ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -125,9 +126,9 @@ Module iter.
           move |acc, elt| f(acc, elt.clone())
       }
       *)
-      Definition clone_try_fold (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T; Acc; R; impl_FnMut_Acc__T__arrow_R ], [ f ] =>
+      Definition clone_try_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T; Acc; R; impl_FnMut_Acc__T__arrow_R ], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
             M.closure
@@ -179,7 +180,7 @@ Module iter.
                     |)
                   | _ => M.impossible (||)
                   end))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_clone_try_fold :
@@ -191,7 +192,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_T_for_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
         
         (*     type Item = T; *)
         Definition _Item (I T : Ty.t) : Ty.t := T.
@@ -201,15 +202,15 @@ Module iter.
                 self.it.next().cloned()
             }
         *)
-        Definition next (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ T ] ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                   "cloned",
                   []
                 |),
@@ -232,7 +233,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -240,10 +241,15 @@ Module iter.
                 self.it.size_hint()
             }
         *)
-        Definition size_hint (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint
+            (I T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -262,7 +268,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -275,10 +281,15 @@ Module iter.
                 self.it.try_fold(init, clone_try_fold(f))
             }
         *)
-        Definition try_fold (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold
+            (I T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I T in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -307,7 +318,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -318,10 +329,10 @@ Module iter.
                 self.it.map(T::clone).fold(init, f)
             }
         *)
-        Definition fold (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I T in
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -331,7 +342,8 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply
                     (Ty.path "core::iter::adapters::map::Map")
-                    [ I; Ty.function [ Ty.apply (Ty.path "&") [ T ] ] T ],
+                    []
+                    [ I; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ],
                   [],
                   "fold",
                   [ Acc; F ]
@@ -343,7 +355,7 @@ Module iter.
                       I,
                       [],
                       "map",
-                      [ T; Ty.function [ Ty.apply (Ty.path "&") [ T ] ] T ]
+                      [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ]
                     |),
                     [
                       M.read (|
@@ -360,7 +372,7 @@ Module iter.
                   M.read (| f |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -373,10 +385,15 @@ Module iter.
                 unsafe { try_get_unchecked(&mut self.it, idx).clone() }
             }
         *)
-        Definition __iterator_get_unchecked (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition __iterator_get_unchecked
+            (I T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I T in
-          match τ, α with
-          | [], [ self; idx ] =>
+          match ε, τ, α with
+          | [], [], [ self; idx ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let idx := M.alloc (| idx |) in
@@ -396,7 +413,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -418,22 +435,27 @@ Module iter.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_clone_Clone_T_for_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
         
         (*
             fn next_back(&mut self) -> Option<T> {
                 self.it.next_back().cloned()
             }
         *)
-        Definition next_back (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back
+            (I T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ T ] ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                   "cloned",
                   []
                 |),
@@ -456,7 +478,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -469,10 +491,15 @@ Module iter.
                 self.it.try_rfold(init, clone_try_fold(f))
             }
         *)
-        Definition try_rfold (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_rfold
+            (I T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I T in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -501,7 +528,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -512,10 +539,10 @@ Module iter.
                 self.it.map(T::clone).rfold(init, f)
             }
         *)
-        Definition rfold (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfold (I T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I T in
-          match τ, α with
-          | [ Acc; F ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -525,7 +552,8 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply
                     (Ty.path "core::iter::adapters::map::Map")
-                    [ I; Ty.function [ Ty.apply (Ty.path "&") [ T ] ] T ],
+                    []
+                    [ I; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ],
                   [],
                   "rfold",
                   [ Acc; F ]
@@ -537,7 +565,7 @@ Module iter.
                       I,
                       [],
                       "map",
-                      [ T; Ty.function [ Ty.apply (Ty.path "&") [ T ] ] T ]
+                      [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ]
                     |),
                     [
                       M.read (|
@@ -554,7 +582,7 @@ Module iter.
                   M.read (| f |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -573,17 +601,17 @@ Module iter.
       
       Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_clone_Clone_T_for_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
         
         (*
             fn len(&self) -> usize {
                 self.it.len()
             }
         *)
-        Definition len (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (I T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -602,7 +630,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -610,10 +638,15 @@ Module iter.
                 self.it.is_empty()
             }
         *)
-        Definition is_empty (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_empty
+            (I T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -632,7 +665,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -650,7 +683,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_clone_Clone_T_for_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
         
         Axiom Implements :
           forall (I T : Ty.t),
@@ -663,7 +696,7 @@ Module iter.
       
       Module Impl_core_iter_adapters_zip_TrustedRandomAccess_where_core_iter_adapters_zip_TrustedRandomAccess_I_for_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -676,7 +709,7 @@ Module iter.
       
       Module Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_I_for_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
         
         (*     const MAY_HAVE_SIDE_EFFECT: bool = true; *)
         (* Ty.path "bool" *)
@@ -697,7 +730,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_where_core_clone_Clone_T_for_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
         
         Axiom Implements :
           forall (I T : Ty.t),
@@ -710,7 +743,7 @@ Module iter.
       
       Module Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_where_core_iter_traits_unchecked_iterator_UncheckedIterator_I_where_core_clone_Clone_T_for_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
         
         (*
             unsafe fn next_unchecked(&mut self) -> T {
@@ -720,10 +753,15 @@ Module iter.
                 item.clone()
             }
         *)
-        Definition next_unchecked (I T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_unchecked
+            (I T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -753,7 +791,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -767,21 +805,21 @@ Module iter.
       
       Module Impl_core_default_Default_where_core_default_Default_I_for_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ].
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
         
         (*
             fn default() -> Self {
                 Self::new(Default::default())
             }
         *)
-        Definition default (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition default (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [] =>
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ],
+                  Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ],
                   "new",
                   []
                 |),
@@ -792,7 +830,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

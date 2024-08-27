@@ -6,9 +6,9 @@ fn increase(number: i32) {
     println!("{}", number + 1);
 }
 *)
-Definition increase (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ number ] =>
+Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ number ] =>
     ltac:(M.monadic
       (let number := M.alloc (| number |) in
       M.read (|
@@ -58,7 +58,7 @@ Definition increase (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_increase : M.IsFunction "program_arguments_parsing::increase" increase.
@@ -68,9 +68,9 @@ fn decrease(number: i32) {
     println!("{}", number - 1);
 }
 *)
-Definition decrease (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ number ] =>
+Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ number ] =>
     ltac:(M.monadic
       (let number := M.alloc (| number |) in
       M.read (|
@@ -120,7 +120,7 @@ Definition decrease (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_decrease : M.IsFunction "program_arguments_parsing::decrease" decrease.
@@ -136,9 +136,9 @@ match_args {{increase|decrease}} <integer>
     );
 }
 *)
-Definition help (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition help (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -174,7 +174,7 @@ match_args {increase|decrease} <integer>
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_help : M.IsFunction "program_arguments_parsing::help" help.
@@ -224,9 +224,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.catch_return (|
         ltac:(M.monadic
@@ -631,7 +631,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "program_arguments_parsing::main" main.

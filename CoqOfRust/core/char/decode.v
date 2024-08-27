@@ -6,20 +6,21 @@ Module char.
     (* StructRecord
       {
         name := "DecodeUtf16";
+        const_params := [];
         ty_params := [ "I" ];
         fields :=
-          [ ("iter", I); ("buf", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u16" ]) ];
+          [ ("iter", I); ("buf", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ]) ];
       } *)
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_for_core_char_decode_DecodeUtf16_I.
       Definition Self (I : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [ I ].
+        Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [] [ I ].
       
       (* Clone *)
-      Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -40,7 +41,7 @@ Module char.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "u16" ],
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                       [],
                       "clone",
                       []
@@ -54,7 +55,7 @@ Module char.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -68,13 +69,13 @@ Module char.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_for_core_char_decode_DecodeUtf16_I.
       Definition Self (I : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [ I ].
+        Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [] [ I ].
       
       (* Debug *)
-      Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -107,7 +108,7 @@ Module char.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -122,6 +123,7 @@ Module char.
     (* StructRecord
       {
         name := "DecodeUtf16Error";
+        const_params := [];
         ty_params := [];
         fields := [ ("code", Ty.path "u16") ];
       } *)
@@ -130,9 +132,9 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::decode::DecodeUtf16Error".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -157,7 +159,7 @@ Module char.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -172,9 +174,9 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::decode::DecodeUtf16Error".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -192,7 +194,7 @@ Module char.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -218,9 +220,13 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::decode::DecodeUtf16Error".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -229,7 +235,7 @@ Module char.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -256,9 +262,9 @@ Module char.
       Definition Self : Ty.t := Ty.path "core::char::decode::DecodeUtf16Error".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -277,7 +283,7 @@ Module char.
                   "code"
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -293,9 +299,9 @@ Module char.
         DecodeUtf16 { iter: iter.into_iter(), buf: None }
     }
     *)
-    Definition decode_utf16 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I ], [ iter ] =>
+    Definition decode_utf16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           Value.StructRecord
@@ -314,19 +320,20 @@ Module char.
                 |));
               ("buf", Value.StructTuple "core::option::Option::None" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_decode_utf16 : M.IsFunction "core::char::decode::decode_utf16" decode_utf16.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_char_decode_DecodeUtf16_I.
       Definition Self (I : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [ I ].
+        Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [] [ I ].
       
       (*     type Item = Result<char, DecodeUtf16Error>; *)
       Definition _Item (I : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::result::Result")
+          []
           [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ].
       
       (*
@@ -362,10 +369,10 @@ Module char.
               }
           }
       *)
-      Definition next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -377,7 +384,7 @@ Module char.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "u16" ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                               "take",
                               []
                             |),
@@ -409,7 +416,10 @@ Module char.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::try_trait::Try",
-                                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "u16" ],
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "u16" ],
                                       [],
                                       "branch",
                                       []
@@ -453,9 +463,11 @@ Module char.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.path "char";
                                                           Ty.path
@@ -465,6 +477,7 @@ Module char.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [ Ty.path "core::convert::Infallible" ]
                                                   ],
                                                   "from_residual",
@@ -720,7 +733,7 @@ Module char.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -756,10 +769,10 @@ Module char.
               (low, high)
           }
       *)
-      Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -844,10 +857,12 @@ Module char.
                                         "core::cmp::PartialEq",
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "usize" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                         "eq",
@@ -906,7 +921,10 @@ Module char.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
                                       "and_then",
                                       [
                                         Ty.path "usize";
@@ -914,6 +932,7 @@ Module char.
                                           [ Ty.tuple [ Ty.path "usize" ] ]
                                           (Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "usize" ])
                                       ]
                                     |),
@@ -951,7 +970,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -970,7 +989,7 @@ Module char.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_marker_FusedIterator_I_for_core_char_decode_DecodeUtf16_I.
       Definition Self (I : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [ I ].
+        Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [] [ I ].
       
       Axiom Implements :
         forall (I : Ty.t),
@@ -989,9 +1008,9 @@ Module char.
               self.code
           }
       *)
-      Definition unpaired_surrogate (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition unpaired_surrogate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1001,7 +1020,7 @@ Module char.
                 "code"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unpaired_surrogate :
@@ -1016,9 +1035,9 @@ Module char.
               write!(f, "unpaired surrogate found: {:x}", self.code)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1059,7 +1078,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1078,13 +1097,13 @@ Module char.
               "unpaired surrogate found"
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| Value.String "unpaired surrogate found" |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

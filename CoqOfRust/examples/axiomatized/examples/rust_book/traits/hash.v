@@ -14,7 +14,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_hash_Hash_for_hash_Person.
   Definition Self : Ty.t := Ty.path "hash::Person".
   
-  Parameter hash : (list Ty.t) -> (list Value.t) -> M.
+  Parameter hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -24,10 +24,10 @@ Module Impl_core_hash_Hash_for_hash_Person.
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_core_hash_Hash_for_hash_Person.
 
-Parameter calculate_hash : (list Ty.t) -> (list Value.t) -> M.
+Parameter calculate_hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_calculate_hash : M.IsFunction "hash::calculate_hash" calculate_hash.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "hash::main" main.

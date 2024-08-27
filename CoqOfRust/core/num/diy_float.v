@@ -6,6 +6,7 @@ Module num.
     (* StructRecord
       {
         name := "Fp";
+        const_params := [];
         ty_params := [];
         fields := [ ("f", Ty.path "u64"); ("e", Ty.path "i16") ];
       } *)
@@ -25,9 +26,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::diy_float::Fp".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -43,7 +44,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -58,9 +59,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::diy_float::Fp".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -93,7 +94,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -124,9 +125,9 @@ Module num.
               Fp { f, e }
           }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -245,7 +246,7 @@ Module num.
                   [ ("f", M.read (| f |)); ("e", M.read (| e |)) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_mul : M.IsAssociatedFunction Self "mul" mul.
@@ -282,9 +283,9 @@ Module num.
               Fp { f, e }
           }
       *)
-      Definition normalize (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition normalize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -543,7 +544,7 @@ Module num.
                   [ ("f", M.read (| f |)); ("e", M.read (| e |)) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_normalize : M.IsAssociatedFunction Self "normalize" normalize.
@@ -557,9 +558,9 @@ Module num.
               Fp { f: self.f << edelta, e }
           }
       *)
-      Definition normalize_to (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; e ] =>
+      Definition normalize_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; e ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let e := M.alloc (| e |) in
@@ -699,7 +700,7 @@ Module num.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_normalize_to :

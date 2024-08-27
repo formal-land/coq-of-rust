@@ -28,7 +28,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Definition Self : Ty.t := Ty.path "operator_overloading::FooBar".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -49,7 +49,7 @@ End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Definition Self : Ty.t := Ty.path "operator_overloading::BarFoo".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -64,7 +64,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
   
   Definition _Output : Ty.t := Ty.path "operator_overloading::FooBar".
   
-  Parameter add : (list Ty.t) -> (list Value.t) -> M.
+  Parameter add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -79,7 +79,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
   
   Definition _Output : Ty.t := Ty.path "operator_overloading::BarFoo".
   
-  Parameter add : (list Ty.t) -> (list Value.t) -> M.
+  Parameter add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -89,6 +89,6 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
       (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
 End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "operator_overloading::main" main.

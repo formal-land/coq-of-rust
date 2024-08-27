@@ -18,9 +18,9 @@ Module net.
                   Self::checked_mul( *self, other.try_into().ok()?)
               }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -36,7 +36,7 @@ Module net.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                               [],
                               "branch",
                               []
@@ -46,6 +46,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   "ok",
                                   []
@@ -85,10 +86,12 @@ Module net.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u8" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -116,7 +119,7 @@ Module net.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -124,9 +127,9 @@ Module net.
                   Self::checked_add( *self, other.try_into().ok()?)
               }
       *)
-      Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -142,7 +145,7 @@ Module net.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                               [],
                               "branch",
                               []
@@ -152,6 +155,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   "ok",
                                   []
@@ -191,10 +195,12 @@ Module net.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u8" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -222,7 +228,7 @@ Module net.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -250,9 +256,9 @@ Module net.
                   Self::checked_mul( *self, other.try_into().ok()?)
               }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -268,7 +274,7 @@ Module net.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "u16" ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                               [],
                               "branch",
                               []
@@ -278,6 +284,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   "ok",
                                   []
@@ -317,10 +324,12 @@ Module net.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u16" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -348,7 +357,7 @@ Module net.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -356,9 +365,9 @@ Module net.
                   Self::checked_add( *self, other.try_into().ok()?)
               }
       *)
-      Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -374,7 +383,7 @@ Module net.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "u16" ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                               [],
                               "branch",
                               []
@@ -384,6 +393,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   "ok",
                                   []
@@ -423,10 +433,12 @@ Module net.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u16" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -454,7 +466,7 @@ Module net.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -482,9 +494,9 @@ Module net.
                   Self::checked_mul( *self, other.try_into().ok()?)
               }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -500,7 +512,7 @@ Module net.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                               [],
                               "branch",
                               []
@@ -510,6 +522,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "u32"; Ty.path "core::convert::Infallible" ],
                                   "ok",
                                   []
@@ -549,10 +562,12 @@ Module net.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u32" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -580,7 +595,7 @@ Module net.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -588,9 +603,9 @@ Module net.
                   Self::checked_add( *self, other.try_into().ok()?)
               }
       *)
-      Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -606,7 +621,7 @@ Module net.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                               [],
                               "branch",
                               []
@@ -616,6 +631,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "u32"; Ty.path "core::convert::Infallible" ],
                                   "ok",
                                   []
@@ -655,10 +671,12 @@ Module net.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u32" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -686,7 +704,7 @@ Module net.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -705,9 +723,11 @@ Module net.
     (* StructRecord
       {
         name := "Parser";
+        const_params := [];
         ty_params := [];
         fields :=
-          [ ("state", Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]) ];
+          [ ("state", Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+          ];
       } *)
     
     Module Impl_core_net_parser_Parser.
@@ -718,13 +738,13 @@ Module net.
               Parser { state: input }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ input ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ input ] =>
           ltac:(M.monadic
             (let input := M.alloc (| input |) in
             Value.StructRecord "core::net::parser::Parser" [ ("state", M.read (| input |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -742,9 +762,9 @@ Module net.
               result
           }
       *)
-      Definition read_atomically (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T; F ], [ self; inner ] =>
+      Definition read_atomically (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T; F ], [ self; inner ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let inner := M.alloc (| inner |) in
@@ -765,7 +785,7 @@ Module net.
                       F,
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                       ],
                       "call_once",
                       []
@@ -784,7 +804,7 @@ Module net.
                             (M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ T ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                   "is_none",
                                   []
                                 |),
@@ -808,7 +828,7 @@ Module net.
                 |) in
               result
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_atomically :
@@ -823,9 +843,9 @@ Module net.
               if self.state.is_empty() { result } else { None }.ok_or(AddrParseError(kind))
           }
       *)
-      Definition parse_with (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T; F ], [ self; inner; kind ] =>
+      Definition parse_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T; F ], [ self; inner; kind ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let inner := M.alloc (| inner |) in
@@ -839,7 +859,7 @@ Module net.
                       F,
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                       ],
                       "call_once",
                       []
@@ -850,7 +870,7 @@ Module net.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ T ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     "ok_or",
                     [ Ty.path "core::net::parser::AddrParseError" ]
                   |),
@@ -866,7 +886,7 @@ Module net.
                                   (M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "is_empty",
                                         []
                                       |),
@@ -898,7 +918,7 @@ Module net.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_parse_with : M.IsAssociatedFunction Self "parse_with" parse_with.
@@ -908,28 +928,29 @@ Module net.
               self.state.first().map(|&b| char::from(b))
           }
       *)
-      Definition peek_char (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition peek_char (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
-                  [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                 "map",
                 [
                   Ty.path "char";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
                     (Ty.path "char")
                 ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "first",
                     []
                   |),
@@ -971,7 +992,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_peek_char : M.IsAssociatedFunction Self "peek_char" peek_char.
@@ -984,20 +1005,21 @@ Module net.
               })
           }
       *)
-      Definition read_char (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition read_char (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.tuple
                       [
-                        Ty.apply (Ty.path "&") [ Ty.path "u8" ];
-                        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u8" ];
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       ]
                   ],
                 "map",
@@ -1009,8 +1031,11 @@ Module net.
                         [
                           Ty.tuple
                             [
-                              Ty.apply (Ty.path "&") [ Ty.path "u8" ];
-                              Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                              Ty.apply (Ty.path "&") [] [ Ty.path "u8" ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                             ]
                         ]
                     ]
@@ -1020,7 +1045,7 @@ Module net.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "split_first",
                     []
                   |),
@@ -1078,7 +1103,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_char : M.IsAssociatedFunction Self "read_char" read_char.
@@ -1090,9 +1115,9 @@ Module net.
               })
           }
       *)
-      Definition read_given_char (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; target ] =>
+      Definition read_given_char (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; target ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let target := M.alloc (| target |) in
@@ -1103,9 +1128,11 @@ Module net.
                 [
                   Ty.tuple [];
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
-                    (Ty.apply (Ty.path "core::option::Option") [ Ty.tuple [] ])
+                    (Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ])
                 ]
               |),
               [
@@ -1123,13 +1150,16 @@ Module net.
                                 (let p := M.copy (| γ |) in
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "char" ],
+                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                                     "and_then",
                                     [
                                       Ty.tuple [];
                                       Ty.function
                                         [ Ty.tuple [ Ty.path "char" ] ]
-                                        (Ty.apply (Ty.path "core::option::Option") [ Ty.tuple [] ])
+                                        (Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.tuple [] ])
                                     ]
                                   |),
                                   [
@@ -1197,7 +1227,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_given_char :
@@ -1216,9 +1246,9 @@ Module net.
               })
           }
       *)
-      Definition read_separator (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T; F ], [ self; sep; index; inner ] =>
+      Definition read_separator (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T; F ], [ self; sep; index; inner ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let sep := M.alloc (| sep |) in
@@ -1231,9 +1261,11 @@ Module net.
                 [
                   T;
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
-                    (Ty.apply (Ty.path "core::option::Option") [ T ])
+                    (Ty.apply (Ty.path "core::option::Option") [] [ T ])
                 ]
               |),
               [
@@ -1276,6 +1308,7 @@ Module net.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
+                                                        []
                                                         [ Ty.tuple [] ],
                                                       [],
                                                       "branch",
@@ -1312,11 +1345,13 @@ Module net.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
+                                                                    []
                                                                     [ T ],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::option::Option")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible"
@@ -1357,6 +1392,7 @@ Module net.
                                             [
                                               Ty.apply
                                                 (Ty.path "&mut")
+                                                []
                                                 [ Ty.path "core::net::parser::Parser" ]
                                             ]
                                         ],
@@ -1373,7 +1409,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_separator :
@@ -1412,9 +1448,9 @@ Module net.
               })
           }
       *)
-      Definition read_number (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ self; radix; max_digits; allow_zero_prefix ] =>
+      Definition read_number (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ self; radix; max_digits; allow_zero_prefix ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let radix := M.alloc (| radix |) in
@@ -1427,9 +1463,11 @@ Module net.
                 [
                   T;
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
-                    (Ty.apply (Ty.path "core::option::Option") [ T ])
+                    (Ty.apply (Ty.path "core::option::Option") [] [ T ])
                 ]
               |),
               [
@@ -1460,10 +1498,12 @@ Module net.
                                           "core::cmp::PartialEq",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "char" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "char" ]
                                           ],
                                           "eq",
@@ -1510,6 +1550,7 @@ Module net.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "&mut")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "core::net::parser::Parser"
@@ -1518,6 +1559,7 @@ Module net.
                                                             ]
                                                             (Ty.apply
                                                               (Ty.path "core::option::Option")
+                                                              []
                                                               [ Ty.path "u32" ])
                                                         ]
                                                       |),
@@ -1550,6 +1592,7 @@ Module net.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "core::option::Option")
+                                                                                        []
                                                                                         [
                                                                                           Ty.path
                                                                                             "char"
@@ -1599,6 +1642,7 @@ Module net.
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "core::option::Option")
+                                                                                                    []
                                                                                                     [
                                                                                                       Ty.path
                                                                                                         "u32"
@@ -1607,6 +1651,7 @@ Module net.
                                                                                                     Ty.apply
                                                                                                       (Ty.path
                                                                                                         "core::option::Option")
+                                                                                                      []
                                                                                                       [
                                                                                                         Ty.path
                                                                                                           "core::convert::Infallible"
@@ -1669,6 +1714,7 @@ Module net.
                                                               "core::ops::try_trait::Try",
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
+                                                                []
                                                                 [ T ],
                                                               [],
                                                               "branch",
@@ -1708,11 +1754,13 @@ Module net.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::option::Option")
+                                                                            []
                                                                             [ T ],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::option::Option")
+                                                                              []
                                                                               [
                                                                                 Ty.path
                                                                                   "core::convert::Infallible"
@@ -1752,6 +1800,7 @@ Module net.
                                                               "core::ops::try_trait::Try",
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
+                                                                []
                                                                 [ T ],
                                                               [],
                                                               "branch",
@@ -1791,11 +1840,13 @@ Module net.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::option::Option")
+                                                                            []
                                                                             [ T ],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::option::Option")
+                                                                              []
                                                                               [
                                                                                 Ty.path
                                                                                   "core::convert::Infallible"
@@ -1973,7 +2024,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_number : M.IsAssociatedFunction Self "read_number" read_number.
@@ -1995,9 +2046,9 @@ Module net.
               })
           }
       *)
-      Definition read_ipv4_addr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition read_ipv4_addr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2007,10 +2058,13 @@ Module net.
                 [
                   Ty.path "core::net::ip_addr::Ipv4Addr";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ])
                 ]
               |),
@@ -2039,9 +2093,11 @@ Module net.
                                               Ty.apply
                                                 (Ty.path
                                                   "core::iter::adapters::enumerate::Enumerate")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::slice::iter::IterMut")
+                                                    []
                                                     [ Ty.path "u8" ]
                                                 ],
                                               [],
@@ -2054,6 +2110,7 @@ Module net.
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
                                                     (Ty.path "core::slice::iter::IterMut")
+                                                    []
                                                     [ Ty.path "u8" ],
                                                   [],
                                                   "enumerate",
@@ -2062,7 +2119,10 @@ Module net.
                                                 [
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "iter_mut",
                                                       []
                                                     |),
@@ -2088,10 +2148,12 @@ Module net.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::iter::adapters::enumerate::Enumerate")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::slice::iter::IterMut")
+                                                                  []
                                                                   [ Ty.path "u8" ]
                                                               ],
                                                             [],
@@ -2146,6 +2208,7 @@ Module net.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::option::Option")
+                                                                            []
                                                                             [ Ty.path "u8" ],
                                                                           [],
                                                                           "branch",
@@ -2166,6 +2229,7 @@ Module net.
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "&mut")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "core::net::parser::Parser"
@@ -2175,6 +2239,7 @@ Module net.
                                                                                   (Ty.apply
                                                                                     (Ty.path
                                                                                       "core::option::Option")
+                                                                                    []
                                                                                     [ Ty.path "u8"
                                                                                     ])
                                                                               ]
@@ -2257,6 +2322,7 @@ Module net.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "core::option::Option")
+                                                                                        []
                                                                                         [
                                                                                           Ty.path
                                                                                             "core::net::ip_addr::Ipv4Addr"
@@ -2265,6 +2331,7 @@ Module net.
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "core::option::Option")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "core::convert::Infallible"
@@ -2312,7 +2379,10 @@ Module net.
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::convert::Into",
-                                            Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer 4 ]
+                                              [ Ty.path "u8" ],
                                             [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                                             "into",
                                             []
@@ -2328,7 +2398,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_ipv4_addr :
@@ -2401,9 +2471,9 @@ Module net.
               })
           }
       *)
-      Definition read_ipv6_addr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition read_ipv6_addr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2413,10 +2483,13 @@ Module net.
                 [
                   Ty.path "core::net::ip_addr::Ipv6Addr";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ])
                 ]
               |),
@@ -2483,6 +2556,7 @@ Module net.
                                                                     "core::convert::Into",
                                                                     Ty.apply
                                                                       (Ty.path "array")
+                                                                      [ Value.Integer 8 ]
                                                                       [ Ty.path "u16" ],
                                                                     [
                                                                       Ty.path
@@ -2537,6 +2611,7 @@ Module net.
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [ Ty.tuple [] ],
                                                     [],
                                                     "branch",
@@ -2573,6 +2648,7 @@ Module net.
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "core::net::ip_addr::Ipv6Addr"
@@ -2580,6 +2656,7 @@ Module net.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "core::convert::Infallible"
@@ -2614,6 +2691,7 @@ Module net.
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [ Ty.tuple [] ],
                                                     [],
                                                     "branch",
@@ -2650,6 +2728,7 @@ Module net.
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "core::net::ip_addr::Ipv6Addr"
@@ -2657,6 +2736,7 @@ Module net.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "core::convert::Infallible"
@@ -2707,10 +2787,14 @@ Module net.
                                                   M.call_closure (|
                                                     M.get_trait_method (|
                                                       "core::ops::index::IndexMut",
-                                                      Ty.apply (Ty.path "array") [ Ty.path "u16" ],
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer 7 ]
+                                                        [ Ty.path "u16" ],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::ops::range::RangeTo")
+                                                          []
                                                           [ Ty.path "usize" ]
                                                       ],
                                                       "index_mut",
@@ -2740,6 +2824,7 @@ Module net.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "slice")
+                                                            []
                                                             [ Ty.path "u16" ],
                                                           "copy_from_slice",
                                                           []
@@ -2750,11 +2835,13 @@ Module net.
                                                               "core::ops::index::IndexMut",
                                                               Ty.apply
                                                                 (Ty.path "array")
+                                                                [ Value.Integer 8 ]
                                                                 [ Ty.path "u16" ],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::ops::range::Range")
+                                                                  []
                                                                   [ Ty.path "usize" ]
                                                               ],
                                                               "index_mut",
@@ -2779,11 +2866,13 @@ Module net.
                                                               "core::ops::index::Index",
                                                               Ty.apply
                                                                 (Ty.path "array")
+                                                                [ Value.Integer 7 ]
                                                                 [ Ty.path "u16" ],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::ops::range::RangeTo")
+                                                                  []
                                                                   [ Ty.path "usize" ]
                                                               ],
                                                               "index",
@@ -2808,6 +2897,7 @@ Module net.
                                                             "core::convert::Into",
                                                             Ty.apply
                                                               (Ty.path "array")
+                                                              [ Value.Integer 8 ]
                                                               [ Ty.path "u16" ],
                                                             [ Ty.path "core::net::ip_addr::Ipv6Addr"
                                                             ],
@@ -2829,7 +2919,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_ipv6_addr :
@@ -2840,20 +2930,24 @@ Module net.
               self.read_ipv4_addr().map(IpAddr::V4).or_else(move || self.read_ipv6_addr().map(IpAddr::V6))
           }
       *)
-      Definition read_ip_addr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition read_ip_addr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::net::ip_addr::IpAddr" ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "core::net::ip_addr::IpAddr" ],
                 "or_else",
                 [
                   Ty.function
                     [ Ty.tuple [] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::ip_addr::IpAddr" ])
                 ]
               |),
@@ -2862,6 +2956,7 @@ Module net.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                     "map",
                     [
@@ -2897,6 +2992,7 @@ Module net.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                                     "map",
                                     [
@@ -2924,7 +3020,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_ip_addr :
@@ -2938,9 +3034,9 @@ Module net.
               })
           }
       *)
-      Definition read_port (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition read_port (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2950,9 +3046,11 @@ Module net.
                 [
                   Ty.path "u16";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
-                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u16" ])
+                    (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ])
                 ]
               |),
               [
@@ -2977,6 +3075,7 @@ Module net.
                                             "core::ops::try_trait::Try",
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.tuple [] ],
                                             [],
                                             "branch",
@@ -3013,10 +3112,12 @@ Module net.
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [ Ty.path "u16" ],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [ Ty.path "core::convert::Infallible" ]
                                                         ],
                                                         "from_residual",
@@ -3062,7 +3163,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_port : M.IsAssociatedFunction Self "read_port" read_port.
@@ -3075,9 +3176,9 @@ Module net.
               })
           }
       *)
-      Definition read_scope_id (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition read_scope_id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -3087,9 +3188,11 @@ Module net.
                 [
                   Ty.path "u32";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
-                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ])
+                    (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ])
                 ]
               |),
               [
@@ -3114,6 +3217,7 @@ Module net.
                                             "core::ops::try_trait::Try",
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.tuple [] ],
                                             [],
                                             "branch",
@@ -3150,10 +3254,12 @@ Module net.
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [ Ty.path "u32" ],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [ Ty.path "core::convert::Infallible" ]
                                                         ],
                                                         "from_residual",
@@ -3199,7 +3305,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_scope_id :
@@ -3214,9 +3320,9 @@ Module net.
               })
           }
       *)
-      Definition read_socket_addr_v4 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition read_socket_addr_v4 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -3226,10 +3332,13 @@ Module net.
                 [
                   Ty.path "core::net::socket_addr::SocketAddrV4";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::socket_addr::SocketAddrV4" ])
                 ]
               |),
@@ -3256,6 +3365,7 @@ Module net.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                                               [],
                                               "branch",
@@ -3292,6 +3402,7 @@ Module net.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "core::net::socket_addr::SocketAddrV4"
@@ -3299,6 +3410,7 @@ Module net.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
+                                                              []
                                                               [ Ty.path "core::convert::Infallible"
                                                               ]
                                                           ],
@@ -3333,6 +3445,7 @@ Module net.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "u16" ],
                                               [],
                                               "branch",
@@ -3369,6 +3482,7 @@ Module net.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "core::net::socket_addr::SocketAddrV4"
@@ -3376,6 +3490,7 @@ Module net.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
+                                                              []
                                                               [ Ty.path "core::convert::Infallible"
                                                               ]
                                                           ],
@@ -3422,7 +3537,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_socket_addr_v4 :
@@ -3441,9 +3556,9 @@ Module net.
               })
           }
       *)
-      Definition read_socket_addr_v6 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition read_socket_addr_v6 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -3453,10 +3568,13 @@ Module net.
                 [
                   Ty.path "core::net::socket_addr::SocketAddrV6";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::socket_addr::SocketAddrV6" ])
                 ]
               |),
@@ -3482,6 +3600,7 @@ Module net.
                                             "core::ops::try_trait::Try",
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.tuple [] ],
                                             [],
                                             "branch",
@@ -3518,6 +3637,7 @@ Module net.
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "core::net::socket_addr::SocketAddrV6"
@@ -3525,6 +3645,7 @@ Module net.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [ Ty.path "core::convert::Infallible" ]
                                                         ],
                                                         "from_residual",
@@ -3557,6 +3678,7 @@ Module net.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                                               [],
                                               "branch",
@@ -3593,6 +3715,7 @@ Module net.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "core::net::socket_addr::SocketAddrV6"
@@ -3600,6 +3723,7 @@ Module net.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
+                                                              []
                                                               [ Ty.path "core::convert::Infallible"
                                                               ]
                                                           ],
@@ -3631,6 +3755,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u32" ],
                                           "unwrap_or",
                                           []
@@ -3656,6 +3781,7 @@ Module net.
                                             "core::ops::try_trait::Try",
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.tuple [] ],
                                             [],
                                             "branch",
@@ -3692,6 +3818,7 @@ Module net.
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "core::net::socket_addr::SocketAddrV6"
@@ -3699,6 +3826,7 @@ Module net.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [ Ty.path "core::convert::Infallible" ]
                                                         ],
                                                         "from_residual",
@@ -3731,6 +3859,7 @@ Module net.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "u16" ],
                                               [],
                                               "branch",
@@ -3767,6 +3896,7 @@ Module net.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "core::net::socket_addr::SocketAddrV6"
@@ -3774,6 +3904,7 @@ Module net.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
+                                                              []
                                                               [ Ty.path "core::convert::Infallible"
                                                               ]
                                                           ],
@@ -3825,7 +3956,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_socket_addr_v6 :
@@ -3838,15 +3969,16 @@ Module net.
                   .or_else(|| self.read_socket_addr_v6().map(SocketAddr::V6))
           }
       *)
-      Definition read_socket_addr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition read_socket_addr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "core::net::socket_addr::SocketAddr" ],
                 "or_else",
                 [
@@ -3854,6 +3986,7 @@ Module net.
                     [ Ty.tuple [] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::socket_addr::SocketAddr" ])
                 ]
               |),
@@ -3862,6 +3995,7 @@ Module net.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
                     "map",
                     [
@@ -3897,6 +4031,7 @@ Module net.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
                                     "map",
                                     [
@@ -3925,7 +4060,7 @@ Module net.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_socket_addr :
@@ -3940,9 +4075,9 @@ Module net.
               Parser::new(b).parse_with(|p| p.read_ip_addr(), AddrKind::Ip)
           }
       *)
-      Definition parse_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ b ] =>
+      Definition parse_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.call_closure (|
@@ -3952,10 +4087,13 @@ Module net.
                 [
                   Ty.path "core::net::ip_addr::IpAddr";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::ip_addr::IpAddr" ])
                 ]
               |),
@@ -3992,7 +4130,7 @@ Module net.
                 Value.StructTuple "core::net::parser::AddrKind::Ip" []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
@@ -4009,9 +4147,9 @@ Module net.
               Self::parse_ascii(s.as_bytes())
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.call_closure (|
@@ -4027,7 +4165,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4052,9 +4190,9 @@ Module net.
               }
           }
       *)
-      Definition parse_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ b ] =>
+      Definition parse_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.read (|
@@ -4069,7 +4207,7 @@ Module net.
                             BinOp.Pure.gt
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "len",
                                   []
                                 |),
@@ -4102,11 +4240,13 @@ Module net.
                                     [
                                       Ty.apply
                                         (Ty.path "&mut")
+                                        []
                                         [ Ty.path "core::net::parser::Parser" ]
                                     ]
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.path "core::net::ip_addr::Ipv4Addr" ])
                             ]
                           |),
@@ -4151,7 +4291,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
@@ -4168,9 +4308,9 @@ Module net.
               Self::parse_ascii(s.as_bytes())
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.call_closure (|
@@ -4186,7 +4326,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4206,9 +4346,9 @@ Module net.
               Parser::new(b).parse_with(|p| p.read_ipv6_addr(), AddrKind::Ipv6)
           }
       *)
-      Definition parse_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ b ] =>
+      Definition parse_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.call_closure (|
@@ -4218,10 +4358,13 @@ Module net.
                 [
                   Ty.path "core::net::ip_addr::Ipv6Addr";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ])
                 ]
               |),
@@ -4258,7 +4401,7 @@ Module net.
                 Value.StructTuple "core::net::parser::AddrKind::Ipv6" []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
@@ -4275,9 +4418,9 @@ Module net.
               Self::parse_ascii(s.as_bytes())
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.call_closure (|
@@ -4293,7 +4436,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4313,9 +4456,9 @@ Module net.
               Parser::new(b).parse_with(|p| p.read_socket_addr_v4(), AddrKind::SocketV4)
           }
       *)
-      Definition parse_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ b ] =>
+      Definition parse_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.call_closure (|
@@ -4325,10 +4468,13 @@ Module net.
                 [
                   Ty.path "core::net::socket_addr::SocketAddrV4";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::socket_addr::SocketAddrV4" ])
                 ]
               |),
@@ -4365,7 +4511,7 @@ Module net.
                 Value.StructTuple "core::net::parser::AddrKind::SocketV4" []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
@@ -4382,9 +4528,9 @@ Module net.
               Self::parse_ascii(s.as_bytes())
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.call_closure (|
@@ -4400,7 +4546,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4420,9 +4566,9 @@ Module net.
               Parser::new(b).parse_with(|p| p.read_socket_addr_v6(), AddrKind::SocketV6)
           }
       *)
-      Definition parse_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ b ] =>
+      Definition parse_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.call_closure (|
@@ -4432,10 +4578,13 @@ Module net.
                 [
                   Ty.path "core::net::socket_addr::SocketAddrV6";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::socket_addr::SocketAddrV6" ])
                 ]
               |),
@@ -4472,7 +4621,7 @@ Module net.
                 Value.StructTuple "core::net::parser::AddrKind::SocketV6" []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
@@ -4489,9 +4638,9 @@ Module net.
               Self::parse_ascii(s.as_bytes())
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.call_closure (|
@@ -4507,7 +4656,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4527,9 +4676,9 @@ Module net.
               Parser::new(b).parse_with(|p| p.read_socket_addr(), AddrKind::Socket)
           }
       *)
-      Definition parse_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ b ] =>
+      Definition parse_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.call_closure (|
@@ -4539,10 +4688,13 @@ Module net.
                 [
                   Ty.path "core::net::socket_addr::SocketAddr";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ Ty.path "core::net::parser::Parser" ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::net::socket_addr::SocketAddr" ])
                 ]
               |),
@@ -4579,7 +4731,7 @@ Module net.
                 Value.StructTuple "core::net::parser::AddrKind::Socket" []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
@@ -4596,9 +4748,9 @@ Module net.
               Self::parse_ascii(s.as_bytes())
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ s ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.call_closure (|
@@ -4614,7 +4766,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4629,6 +4781,7 @@ Module net.
     (*
     Enum AddrKind
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -4670,9 +4823,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrKind".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4722,7 +4875,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4737,9 +4890,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrKind".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -4779,7 +4932,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4805,9 +4958,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrKind".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4834,7 +4987,7 @@ Module net.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4860,13 +5013,17 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrKind".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4881,6 +5038,7 @@ Module net.
     (* StructTuple
       {
         name := "AddrParseError";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "core::net::parser::AddrKind" ];
       } *)
@@ -4889,9 +5047,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrParseError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4915,7 +5073,7 @@ Module net.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4930,9 +5088,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrParseError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4955,7 +5113,7 @@ Module net.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4981,9 +5139,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrParseError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5008,7 +5166,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5034,9 +5192,13 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrParseError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5045,7 +5207,7 @@ Module net.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5065,9 +5227,9 @@ Module net.
               fmt.write_str(self.description())
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -5087,7 +5249,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5113,9 +5275,9 @@ Module net.
               }
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5157,7 +5319,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

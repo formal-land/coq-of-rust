@@ -13,9 +13,9 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
   Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "conditional_compilation::AccountId"
@@ -25,7 +25,7 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -40,9 +40,9 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
   Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -51,7 +51,7 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -135,9 +135,9 @@ Module Impl_conditional_compilation_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition caller (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -147,7 +147,7 @@ Module Impl_conditional_compilation_Env.
             "caller"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -157,7 +157,7 @@ Module Impl_conditional_compilation_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   
@@ -166,7 +166,7 @@ Module Impl_conditional_compilation_Env.
           unimplemented!()
       }
   *)
-  Parameter block_number : (list Ty.t) -> (list Value.t) -> M.
+  Parameter block_number : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_block_number : M.IsAssociatedFunction Self "block_number" block_number.
 End Impl_conditional_compilation_Env.
@@ -187,7 +187,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -196,9 +196,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
@@ -209,7 +209,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -221,9 +221,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
@@ -240,7 +240,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -250,15 +250,15 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           Self { value }
       }
   *)
-  Definition new_foo (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ value ] =>
+  Definition new_foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
           [ ("value", M.read (| value |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new_foo : M.IsAssociatedFunction Self "new_foo" new_foo.
@@ -268,15 +268,15 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           Self { value }
       }
   *)
-  Definition new_bar (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ value ] =>
+  Definition new_bar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
           [ ("value", M.read (| value |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new_bar : M.IsAssociatedFunction Self "new_bar" new_bar.
@@ -286,15 +286,15 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           Self { value }
       }
   *)
-  Definition new_foo_bar (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ value ] =>
+  Definition new_foo_bar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
           [ ("value", M.read (| value |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new_foo_bar : M.IsAssociatedFunction Self "new_foo_bar" new_foo_bar.
@@ -309,9 +309,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           }));
       }
   *)
-  Definition inherent_flip_foo (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition inherent_flip_foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -394,7 +394,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_inherent_flip_foo :
@@ -412,9 +412,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           }));
       }
   *)
-  Definition inherent_flip_bar (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition inherent_flip_bar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -520,7 +520,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_inherent_flip_bar :
@@ -535,9 +535,9 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
           self.value = !self.value;
       }
   *)
-  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition flip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -559,7 +559,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -567,9 +567,9 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
           self.value
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -579,7 +579,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
             "value"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   (*
@@ -592,9 +592,9 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
           self.value = value;
       }
   *)
-  Definition push_foo (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; value ] =>
+  Definition push_foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
@@ -661,7 +661,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :

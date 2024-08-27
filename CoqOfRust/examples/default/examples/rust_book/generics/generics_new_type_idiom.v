@@ -25,9 +25,9 @@ Module Impl_generics_new_type_idiom_Years.
           Days(self.0 * 365)
       }
   *)
-  Definition to_days (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition to_days (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructTuple
@@ -44,7 +44,7 @@ Module Impl_generics_new_type_idiom_Years.
               |))
               (Value.Integer 365)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_to_days : M.IsAssociatedFunction Self "to_days" to_days.
@@ -58,9 +58,9 @@ Module Impl_generics_new_type_idiom_Days.
           Years(self.0 / 365)
       }
   *)
-  Definition to_years (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition to_years (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructTuple
@@ -77,7 +77,7 @@ Module Impl_generics_new_type_idiom_Days.
               |))
               (Value.Integer 365)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_to_years : M.IsAssociatedFunction Self "to_years" to_years.
@@ -88,9 +88,9 @@ fn old_enough(age: &Years) -> bool {
     age.0 >= 18
 }
 *)
-Definition old_enough (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ age ] =>
+Definition old_enough (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ age ] =>
     ltac:(M.monadic
       (let age := M.alloc (| age |) in
       BinOp.Pure.ge
@@ -102,7 +102,7 @@ Definition old_enough (τ : list Ty.t) (α : list Value.t) : M :=
           |)
         |))
         (Value.Integer 18)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_old_enough : M.IsFunction "generics_new_type_idiom::old_enough" old_enough.
@@ -116,9 +116,9 @@ fn main() {
     // println!("Old enough {}", old_enough(&age_days));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ age :=
@@ -243,7 +243,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_new_type_idiom::main" main.

@@ -6,31 +6,34 @@ Module vec.
     (* StructRecord
       {
         name := "Drain";
+        const_params := [];
         ty_params := [ "T"; "A" ];
         fields :=
           [
             ("tail_start", Ty.path "usize");
             ("tail_len", Ty.path "usize");
-            ("iter", Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]);
+            ("iter", Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]);
             ("vec",
               Ty.apply
                 (Ty.path "core::ptr::non_null::NonNull")
-                [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ])
+                []
+                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ])
           ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_tuple("Drain").field(&self.iter.as_slice()).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -63,7 +66,7 @@ Module vec.
                       (M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                             "as_slice",
                             []
                           |),
@@ -80,7 +83,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -93,22 +96,23 @@ Module vec.
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
     
     Module Impl_alloc_vec_drain_Drain_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ].
       
       (*
           pub fn as_slice(&self) -> &[T] {
               self.iter.as_slice()
           }
       *)
-      Definition as_slice (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_slice (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 "as_slice",
                 []
               |),
@@ -120,7 +124,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_slice :
@@ -132,15 +136,15 @@ Module vec.
               unsafe { self.vec.as_ref().allocator() }
           }
       *)
-      Definition allocator (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition allocator (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "allocator",
                 []
               |),
@@ -149,7 +153,8 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                     "as_ref",
                     []
                   |),
@@ -163,7 +168,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_allocator :
@@ -220,10 +225,10 @@ Module vec.
               }
           }
       *)
-      Definition keep_rest (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition keep_rest (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -233,7 +238,8 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                        [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ] ],
+                        []
+                        [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ] ],
                       "new",
                       []
                     |),
@@ -246,7 +252,8 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
-                        [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                        []
+                        [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                       "as_mut",
                       []
                     |),
@@ -257,7 +264,8 @@ Module vec.
                             "core::ops::deref::DerefMut",
                             Ty.apply
                               (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                              [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ] ],
+                              []
+                              [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ] ],
                             [],
                             "deref_mut",
                             []
@@ -274,7 +282,7 @@ Module vec.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "len",
                       []
                     |),
@@ -289,7 +297,8 @@ Module vec.
                         "core::ops::deref::Deref",
                         Ty.apply
                           (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ] ],
                         [],
                         "deref",
                         []
@@ -305,7 +314,7 @@ Module vec.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::exact_size::ExactSizeIterator",
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       [],
                       "len",
                       []
@@ -317,7 +326,8 @@ Module vec.
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                              [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ] ],
+                              []
+                              [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ] ],
                             [],
                             "deref",
                             []
@@ -333,11 +343,15 @@ Module vec.
               let~ unyielded_ptr :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "as_ptr", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "as_ptr",
+                      []
+                    |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                           "as_slice",
                           []
                         |),
@@ -348,7 +362,8 @@ Module vec.
                                 "core::ops::deref::Deref",
                                 Ty.apply
                                   (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                  [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ] ],
                                 [],
                                 "deref",
                                 []
@@ -383,14 +398,14 @@ Module vec.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [ T ],
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 "add",
                                 []
                               |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                     "as_mut_ptr",
                                     []
                                   |),
@@ -460,14 +475,14 @@ Module vec.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*const") [ T ],
+                                        Ty.apply (Ty.path "*const") [] [ T ],
                                         "add",
                                         []
                                       |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                             "as_ptr",
                                             []
                                           |),
@@ -481,7 +496,7 @@ Module vec.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [ T ],
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
                                         "add",
                                         []
                                       |),
@@ -502,9 +517,11 @@ Module vec.
                                                 "core::ops::deref::Deref",
                                                 Ty.apply
                                                   (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::drain::Drain")
+                                                      []
                                                       [ T; A ]
                                                   ],
                                                 [],
@@ -531,7 +548,7 @@ Module vec.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "set_len",
                       []
                     |),
@@ -550,7 +567,8 @@ Module vec.
                                 "core::ops::deref::Deref",
                                 Ty.apply
                                   (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                  [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ] ],
                                 [],
                                 "deref",
                                 []
@@ -566,7 +584,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_keep_rest :
@@ -575,28 +593,29 @@ Module vec.
     End Impl_alloc_vec_drain_Drain_T_A.
     
     Module Impl_core_convert_AsRef_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_drain_Drain_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ].
       
       (*
           fn as_ref(&self) -> &[T] {
               self.as_slice()
           }
       *)
-      Definition as_ref (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ref (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
                 "as_slice",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -604,12 +623,13 @@ Module vec.
         M.IsTraitInstance
           "core::convert::AsRef"
           (Self T A)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [ T ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T A)) ].
     End Impl_core_convert_AsRef_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_drain_Drain_T_A.
     
     Module Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_marker_Sync_A_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -621,7 +641,8 @@ Module vec.
     End Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_marker_Sync_A_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
     
     Module Impl_core_marker_Send_where_core_marker_Send_T_where_core_marker_Send_A_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -633,7 +654,8 @@ Module vec.
     End Impl_core_marker_Send_where_core_marker_Send_T_where_core_marker_Send_A_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ].
       
       (*     type Item = T; *)
       Definition _Item (T A : Ty.t) : Ty.t := T.
@@ -643,23 +665,23 @@ Module vec.
               self.iter.next().map(|elt| unsafe { ptr::read(elt as *const _) })
           }
       *)
-      Definition next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ T ] ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 "map",
-                [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ] T ]
+                [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ]
               |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                     [],
                     "next",
                     []
@@ -693,7 +715,7 @@ Module vec.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -701,16 +723,16 @@ Module vec.
               self.iter.size_hint()
           }
       *)
-      Definition size_hint (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
                 "size_hint",
                 []
@@ -723,7 +745,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -741,30 +763,31 @@ Module vec.
     End Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ].
       
       (*
           fn next_back(&mut self) -> Option<T> {
               self.iter.next_back().map(|elt| unsafe { ptr::read(elt as *const _) })
           }
       *)
-      Definition next_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ T ] ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 "map",
-                [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ] T ]
+                [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ]
               |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::double_ended::DoubleEndedIterator",
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                     [],
                     "next_back",
                     []
@@ -798,7 +821,7 @@ Module vec.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -811,7 +834,8 @@ Module vec.
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
     
     Module Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ].
       
       (*
           fn drop(&mut self) {
@@ -880,10 +904,10 @@ Module vec.
               }
           }
       *)
-      Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -894,7 +918,7 @@ Module vec.
                       M.call_closure (|
                         M.get_function (|
                           "core::mem::take",
-                          [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ]
+                          [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                         |),
                         [
                           M.SubPointer.get_struct_record_field (|
@@ -910,7 +934,7 @@ Module vec.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::exact_size::ExactSizeIterator",
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                           [],
                           "len",
                           []
@@ -947,7 +971,8 @@ Module vec.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
-                                              [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                                              []
+                                              [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                                             "as_mut",
                                             []
                                           |),
@@ -958,7 +983,7 @@ Module vec.
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                             "len",
                                             []
                                           |),
@@ -969,7 +994,7 @@ Module vec.
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                             "set_len",
                                             []
                                           |),
@@ -995,7 +1020,7 @@ Module vec.
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                             "truncate",
                                             []
                                           |),
@@ -1049,14 +1074,14 @@ Module vec.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ T ],
+                          Ty.apply (Ty.path "slice") [] [ T ],
                           "as_ptr",
                           []
                         |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                               "as_slice",
                               []
                             |),
@@ -1069,7 +1094,7 @@ Module vec.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "as_mut_ptr",
                           []
                         |),
@@ -1078,7 +1103,8 @@ Module vec.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                                []
+                                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                               "as_mut",
                               []
                             |),
@@ -1091,7 +1117,7 @@ Module vec.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "*const") [ T ],
+                          Ty.apply (Ty.path "*const") [] [ T ],
                           "sub_ptr",
                           []
                         |),
@@ -1108,7 +1134,7 @@ Module vec.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [ T ],
+                              Ty.apply (Ty.path "*mut") [] [ T ],
                               "add",
                               []
                             |),
@@ -1123,7 +1149,7 @@ Module vec.
                       M.call_closure (|
                         M.get_function (|
                           "core::ptr::drop_in_place",
-                          [ Ty.apply (Ty.path "slice") [ T ] ]
+                          [ Ty.apply (Ty.path "slice") [] [ T ] ]
                         |),
                         [ M.read (| to_drop |) ]
                       |)
@@ -1131,7 +1157,7 @@ Module vec.
                   M.alloc (| Value.Tuple [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1144,23 +1170,24 @@ Module vec.
     End Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ].
       
       (*
           fn is_empty(&self) -> bool {
               self.iter.is_empty()
           }
       *)
-      Definition is_empty (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::exact_size::ExactSizeIterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
                 "is_empty",
                 []
@@ -1173,7 +1200,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1186,7 +1213,8 @@ Module vec.
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
     
     Module Impl_core_iter_traits_marker_TrustedLen_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -1198,7 +1226,8 @@ Module vec.
     End Impl_core_iter_traits_marker_TrustedLen_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_alloc_Allocator_A_for_alloc_vec_drain_Drain_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),

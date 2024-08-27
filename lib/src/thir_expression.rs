@@ -1231,13 +1231,23 @@ fn compile_block<'a>(
     compile_stmts(env, generics, thir, &block.stmts, block.expr)
 }
 
-pub(crate) fn compile_const(const_: &Const) -> Rc<Expr> {
+pub(crate) fn compile_const(env: &Env, const_: &Const) -> Rc<Expr> {
     match &const_.kind() {
         ConstKind::Param(param) => Expr::local_var(param.name.as_str()),
         ConstKind::Infer(_) => Expr::local_var("InferConst"),
         ConstKind::Bound(_, _) => Expr::local_var("BoundConst"),
         ConstKind::Placeholder(_) => Expr::local_var("PlaceholderConst"),
-        ConstKind::Unevaluated(_) => Expr::local_var("UnevaluatedConst"),
+        ConstKind::Unevaluated(unevaluated_const) => {
+            // We do not know yet how to handle this kind of constant. We return something that
+            // type-check for now.
+            let path = compile_def_id(env, unevaluated_const.def);
+
+            Rc::new(Expr::Call {
+                func: Expr::local_var("M.unevaluated_const"),
+                args: vec![Rc::new(Expr::GetConst(path))],
+                kind: CallKind::Pure,
+            })
+        }
         ConstKind::Value(value) => {
             // @TODO: for next version of the rustc API we will be able to make a translation
             // according to the type of value, for booleans or negative integers.

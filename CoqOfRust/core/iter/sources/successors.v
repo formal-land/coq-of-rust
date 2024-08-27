@@ -15,16 +15,16 @@ Module iter.
           Successors { next: first, succ }
       }
       *)
-      Definition successors (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T; F ], [ first; succ ] =>
+      Definition successors (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T; F ], [ first; succ ] =>
           ltac:(M.monadic
             (let first := M.alloc (| first |) in
             let succ := M.alloc (| succ |) in
             Value.StructRecord
               "core::iter::sources::successors::Successors"
               [ ("next", M.read (| first |)); ("succ", M.read (| succ |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_successors :
@@ -33,19 +33,20 @@ Module iter.
       (* StructRecord
         {
           name := "Successors";
+          const_params := [];
           ty_params := [ "T"; "F" ];
-          fields := [ ("next", Ty.apply (Ty.path "core::option::Option") [ T ]); ("succ", F) ];
+          fields := [ ("next", Ty.apply (Ty.path "core::option::Option") [] [ T ]); ("succ", F) ];
         } *)
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_F_for_core_iter_sources_successors_Successors_T_F.
         Definition Self (T F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::successors::Successors") [ T; F ].
+          Ty.apply (Ty.path "core::iter::sources::successors::Successors") [] [ T; F ].
         
         (* Clone *)
-        Definition clone (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -55,7 +56,7 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::clone::Clone",
-                        Ty.apply (Ty.path "core::option::Option") [ T ],
+                        Ty.apply (Ty.path "core::option::Option") [] [ T ],
                         [],
                         "clone",
                         []
@@ -80,7 +81,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -94,7 +95,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_F_Tuple_ref__T__for_core_iter_sources_successors_Successors_T_F.
         Definition Self (T F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::successors::Successors") [ T; F ].
+          Ty.apply (Ty.path "core::iter::sources::successors::Successors") [] [ T; F ].
         
         (*     type Item = T; *)
         Definition _Item (T F : Ty.t) : Ty.t := T.
@@ -106,10 +107,10 @@ Module iter.
                 Some(item)
             }
         *)
-        Definition next (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -122,7 +123,7 @@ Module iter.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
-                                Ty.apply (Ty.path "core::option::Option") [ T ],
+                                Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                 [],
                                 "branch",
                                 []
@@ -130,7 +131,7 @@ Module iter.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::option::Option") [ T ],
+                                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                     "take",
                                     []
                                   |),
@@ -162,10 +163,11 @@ Module iter.
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
-                                            Ty.apply (Ty.path "core::option::Option") [ T ],
+                                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
@@ -201,7 +203,7 @@ Module iter.
                           M.get_trait_method (|
                             "core::ops::function::FnMut",
                             F,
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                             "call_mut",
                             []
                           |),
@@ -220,7 +222,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -228,10 +230,15 @@ Module iter.
                 if self.next.is_some() { (1, None) } else { (0, Some(0)) }
             }
         *)
-        Definition size_hint (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint
+            (T F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -245,7 +252,7 @@ Module iter.
                             (M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ T ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                   "is_some",
                                   []
                                 |),
@@ -276,7 +283,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -295,7 +302,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_F_Tuple_ref__T__for_core_iter_sources_successors_Successors_T_F.
         Definition Self (T F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::successors::Successors") [ T; F ].
+          Ty.apply (Ty.path "core::iter::sources::successors::Successors") [] [ T; F ].
         
         Axiom Implements :
           forall (T F : Ty.t),
@@ -308,17 +315,17 @@ Module iter.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_iter_sources_successors_Successors_T_F.
         Definition Self (T F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::successors::Successors") [ T; F ].
+          Ty.apply (Ty.path "core::iter::sources::successors::Successors") [] [ T; F ].
         
         (*
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 f.debug_struct("Successors").field("next", &self.next).finish()
             }
         *)
-        Definition fmt (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T F in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -358,7 +365,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

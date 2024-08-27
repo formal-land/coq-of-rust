@@ -6,10 +6,11 @@ fn some_number() -> Option<u32> {
     Some(42)
 }
 *)
-Definition some_number (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::Some" [ Value.Integer 42 ]))
-  | _, _ => M.impossible
+Definition some_number (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
+    ltac:(M.monadic (Value.StructTuple "core::option::Option::Some" [ Value.Integer 42 ]))
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_some_number :
@@ -28,9 +29,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         M.match_operator (|
@@ -142,7 +143,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "match_binding_destructure_enum_variants::main" main.

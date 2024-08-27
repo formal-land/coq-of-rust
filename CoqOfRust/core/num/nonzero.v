@@ -6,6 +6,7 @@ Module num.
     (* StructTuple
       {
         name := "NonZeroU8";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "u8" ];
       } *)
@@ -25,9 +26,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU8".
       
       (*             Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -36,7 +37,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -62,9 +63,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU8".
       
       (*             Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -73,7 +78,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -100,9 +105,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU8".
       
       (*             PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -121,7 +126,7 @@ Module num.
                   0
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -136,9 +141,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU8".
       
       (*             Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -157,7 +162,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -172,9 +177,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU8".
       
       (*             PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -199,7 +204,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -214,9 +219,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU8".
       
       (*             Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -231,7 +236,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -257,9 +262,9 @@ Module num.
                           }
                       }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -329,7 +334,7 @@ Module num.
                 |) in
               M.alloc (| Value.StructTuple "core::num::nonzero::NonZeroU8" [ M.read (| n |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -345,9 +350,9 @@ Module num.
                           }
                       }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -370,7 +375,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -380,15 +385,15 @@ Module num.
                           self.0
                       }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroU8", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -398,9 +403,9 @@ Module num.
                           unsafe { intrinsics::ctlz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -417,7 +422,7 @@ Module num.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -429,9 +434,9 @@ Module num.
                           unsafe { intrinsics::cttz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -448,7 +453,7 @@ Module num.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -469,9 +474,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -525,7 +530,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -542,9 +547,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_add(other)) }
                       }
       *)
-      Definition saturating_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -571,7 +576,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_add :
@@ -583,9 +588,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_add(other)) }
                       }
       *)
-      Definition unchecked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -612,7 +617,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_add :
@@ -629,9 +634,13 @@ Module num.
                           }
                       }
       *)
-      Definition checked_next_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_next_power_of_two
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -687,7 +696,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_next_power_of_two :
@@ -698,9 +707,9 @@ Module num.
                           Self::BITS - 1 - self.leading_zeros()
                       }
       *)
-      Definition ilog2 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ilog2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub
@@ -717,7 +726,7 @@ Module num.
                 |),
                 [ M.read (| self |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
@@ -727,9 +736,9 @@ Module num.
                           super::int_log10::$Int(self.0)
                       }
       *)
-      Definition ilog10 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ilog10 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -740,7 +749,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
@@ -754,9 +763,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().midpoint(rhs.get())) }
                       }
       *)
-      Definition midpoint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition midpoint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -790,7 +799,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -810,9 +819,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -873,7 +882,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -891,9 +900,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_mul(other.get())) }
                       }
       *)
-      Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -927,7 +936,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -939,9 +948,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_mul(other.get())) }
                       }
       *)
-      Definition unchecked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -975,7 +984,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -997,9 +1006,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1053,7 +1062,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -1071,9 +1080,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_pow(other)) }
                       }
       *)
-      Definition saturating_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1100,7 +1109,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -1115,9 +1124,9 @@ Module num.
                           intrinsics::ctpop(self.get()) < 2
                       }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.lt
@@ -1135,7 +1144,7 @@ Module num.
                 ]
               |))
               (Value.Integer 2)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -1150,6 +1159,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroU8" ],
                   "unwrap",
                   []
@@ -1179,6 +1189,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroU8" ],
                   "unwrap",
                   []
@@ -1213,15 +1224,15 @@ Module num.
                           nonzero.0
                       }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ nonzero ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroU8", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1245,9 +1256,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -1277,7 +1288,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1303,9 +1314,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -1328,7 +1339,7 @@ Module num.
                   (M.read (| rhs |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1354,9 +1365,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -1379,7 +1390,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1399,9 +1410,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -1422,7 +1433,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1441,9 +1452,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -1464,7 +1475,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1483,9 +1494,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1505,7 +1516,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1524,9 +1535,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1546,7 +1557,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1565,9 +1576,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1587,7 +1598,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1606,9 +1617,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1628,7 +1639,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1647,9 +1658,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1669,7 +1680,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1688,9 +1699,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1710,7 +1721,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1724,6 +1735,7 @@ Module num.
     (* StructTuple
       {
         name := "NonZeroU16";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "u16" ];
       } *)
@@ -1743,9 +1755,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU16".
       
       (*             Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1754,7 +1766,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1780,9 +1792,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU16".
       
       (*             Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1791,7 +1807,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1818,9 +1834,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU16".
       
       (*             PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1839,7 +1855,7 @@ Module num.
                   0
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1854,9 +1870,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU16".
       
       (*             Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1875,7 +1891,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1890,9 +1906,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU16".
       
       (*             PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1917,7 +1933,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1932,9 +1948,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU16".
       
       (*             Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1949,7 +1965,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1975,9 +1991,9 @@ Module num.
                           }
                       }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -2047,7 +2063,7 @@ Module num.
                 |) in
               M.alloc (| Value.StructTuple "core::num::nonzero::NonZeroU16" [ M.read (| n |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -2063,9 +2079,9 @@ Module num.
                           }
                       }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -2088,7 +2104,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -2098,15 +2114,15 @@ Module num.
                           self.0
                       }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroU16", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -2116,9 +2132,9 @@ Module num.
                           unsafe { intrinsics::ctlz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -2135,7 +2151,7 @@ Module num.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -2147,9 +2163,9 @@ Module num.
                           unsafe { intrinsics::cttz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -2166,7 +2182,7 @@ Module num.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -2187,9 +2203,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2243,7 +2259,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -2260,9 +2276,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_add(other)) }
                       }
       *)
-      Definition saturating_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2289,7 +2305,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_add :
@@ -2301,9 +2317,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_add(other)) }
                       }
       *)
-      Definition unchecked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2330,7 +2346,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_add :
@@ -2347,9 +2363,13 @@ Module num.
                           }
                       }
       *)
-      Definition checked_next_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_next_power_of_two
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2405,7 +2425,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_next_power_of_two :
@@ -2416,9 +2436,9 @@ Module num.
                           Self::BITS - 1 - self.leading_zeros()
                       }
       *)
-      Definition ilog2 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ilog2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub
@@ -2435,7 +2455,7 @@ Module num.
                 |),
                 [ M.read (| self |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
@@ -2445,9 +2465,9 @@ Module num.
                           super::int_log10::$Int(self.0)
                       }
       *)
-      Definition ilog10 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ilog10 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2462,7 +2482,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
@@ -2476,9 +2496,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().midpoint(rhs.get())) }
                       }
       *)
-      Definition midpoint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition midpoint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -2512,7 +2532,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -2532,9 +2552,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2595,7 +2615,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -2613,9 +2633,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_mul(other.get())) }
                       }
       *)
-      Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2649,7 +2669,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -2661,9 +2681,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_mul(other.get())) }
                       }
       *)
-      Definition unchecked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2697,7 +2717,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -2719,9 +2739,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2775,7 +2795,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -2793,9 +2813,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_pow(other)) }
                       }
       *)
-      Definition saturating_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2822,7 +2842,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -2837,9 +2857,9 @@ Module num.
                           intrinsics::ctpop(self.get()) < 2
                       }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.lt
@@ -2857,7 +2877,7 @@ Module num.
                 ]
               |))
               (Value.Integer 2)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -2872,6 +2892,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroU16" ],
                   "unwrap",
                   []
@@ -2901,6 +2922,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroU16" ],
                   "unwrap",
                   []
@@ -2935,15 +2957,15 @@ Module num.
                           nonzero.0
                       }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ nonzero ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroU16", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2967,9 +2989,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -2999,7 +3021,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3025,9 +3047,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -3050,7 +3072,7 @@ Module num.
                   (M.read (| rhs |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3076,9 +3098,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -3101,7 +3123,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3121,9 +3143,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -3144,7 +3166,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3163,9 +3185,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -3186,7 +3208,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3205,9 +3227,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -3227,7 +3249,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3246,9 +3268,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -3268,7 +3290,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3287,9 +3309,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -3309,7 +3331,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3328,9 +3350,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -3350,7 +3372,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3369,9 +3391,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -3391,7 +3413,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3410,9 +3432,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -3432,7 +3454,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3446,6 +3468,7 @@ Module num.
     (* StructTuple
       {
         name := "NonZeroU32";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "u32" ];
       } *)
@@ -3465,9 +3488,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU32".
       
       (*             Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3476,7 +3499,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3502,9 +3525,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU32".
       
       (*             Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3513,7 +3540,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3540,9 +3567,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU32".
       
       (*             PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3561,7 +3588,7 @@ Module num.
                   0
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3576,9 +3603,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU32".
       
       (*             Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3597,7 +3624,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3612,9 +3639,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU32".
       
       (*             PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3639,7 +3666,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3654,9 +3681,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU32".
       
       (*             Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -3671,7 +3698,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3697,9 +3724,9 @@ Module num.
                           }
                       }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -3769,7 +3796,7 @@ Module num.
                 |) in
               M.alloc (| Value.StructTuple "core::num::nonzero::NonZeroU32" [ M.read (| n |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -3785,9 +3812,9 @@ Module num.
                           }
                       }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -3810,7 +3837,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -3820,15 +3847,15 @@ Module num.
                           self.0
                       }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroU32", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -3838,9 +3865,9 @@ Module num.
                           unsafe { intrinsics::ctlz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3861,7 +3888,7 @@ Module num.
                   |)
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -3873,9 +3900,9 @@ Module num.
                           unsafe { intrinsics::cttz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3896,7 +3923,7 @@ Module num.
                   |)
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -3917,9 +3944,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3973,7 +4000,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -3990,9 +4017,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_add(other)) }
                       }
       *)
-      Definition saturating_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4019,7 +4046,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_add :
@@ -4031,9 +4058,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_add(other)) }
                       }
       *)
-      Definition unchecked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4060,7 +4087,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_add :
@@ -4077,9 +4104,13 @@ Module num.
                           }
                       }
       *)
-      Definition checked_next_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_next_power_of_two
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -4135,7 +4166,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_next_power_of_two :
@@ -4146,9 +4177,9 @@ Module num.
                           Self::BITS - 1 - self.leading_zeros()
                       }
       *)
-      Definition ilog2 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ilog2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub
@@ -4165,7 +4196,7 @@ Module num.
                 |),
                 [ M.read (| self |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
@@ -4175,9 +4206,9 @@ Module num.
                           super::int_log10::$Int(self.0)
                       }
       *)
-      Definition ilog10 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ilog10 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -4192,7 +4223,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
@@ -4206,9 +4237,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().midpoint(rhs.get())) }
                       }
       *)
-      Definition midpoint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition midpoint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -4242,7 +4273,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -4262,9 +4293,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4325,7 +4356,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -4343,9 +4374,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_mul(other.get())) }
                       }
       *)
-      Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4379,7 +4410,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -4391,9 +4422,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_mul(other.get())) }
                       }
       *)
-      Definition unchecked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4427,7 +4458,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -4449,9 +4480,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4505,7 +4536,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -4523,9 +4554,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_pow(other)) }
                       }
       *)
-      Definition saturating_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4552,7 +4583,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -4567,9 +4598,9 @@ Module num.
                           intrinsics::ctpop(self.get()) < 2
                       }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.lt
@@ -4587,7 +4618,7 @@ Module num.
                 ]
               |))
               (Value.Integer 2)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -4602,6 +4633,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroU32" ],
                   "unwrap",
                   []
@@ -4631,6 +4663,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroU32" ],
                   "unwrap",
                   []
@@ -4665,15 +4698,15 @@ Module num.
                           nonzero.0
                       }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ nonzero ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroU32", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4697,9 +4730,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -4729,7 +4762,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4755,9 +4788,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -4780,7 +4813,7 @@ Module num.
                   (M.read (| rhs |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4806,9 +4839,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -4831,7 +4864,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4851,9 +4884,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -4874,7 +4907,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4893,9 +4926,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -4916,7 +4949,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4935,9 +4968,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4957,7 +4990,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4976,9 +5009,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4998,7 +5031,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5017,9 +5050,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5039,7 +5072,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5058,9 +5091,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5080,7 +5113,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5099,9 +5132,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5121,7 +5154,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5140,9 +5173,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5162,7 +5195,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5176,6 +5209,7 @@ Module num.
     (* StructTuple
       {
         name := "NonZeroU64";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "u64" ];
       } *)
@@ -5195,9 +5229,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU64".
       
       (*             Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5206,7 +5240,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5232,9 +5266,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU64".
       
       (*             Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5243,7 +5281,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5270,9 +5308,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU64".
       
       (*             PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5291,7 +5329,7 @@ Module num.
                   0
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5306,9 +5344,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU64".
       
       (*             Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5327,7 +5365,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5342,9 +5380,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU64".
       
       (*             PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5369,7 +5407,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5384,9 +5422,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU64".
       
       (*             Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -5401,7 +5439,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5427,9 +5465,9 @@ Module num.
                           }
                       }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -5499,7 +5537,7 @@ Module num.
                 |) in
               M.alloc (| Value.StructTuple "core::num::nonzero::NonZeroU64" [ M.read (| n |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -5515,9 +5553,9 @@ Module num.
                           }
                       }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -5540,7 +5578,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -5550,15 +5588,15 @@ Module num.
                           self.0
                       }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroU64", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -5568,9 +5606,9 @@ Module num.
                           unsafe { intrinsics::ctlz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -5587,7 +5625,7 @@ Module num.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -5599,9 +5637,9 @@ Module num.
                           unsafe { intrinsics::cttz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -5618,7 +5656,7 @@ Module num.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -5639,9 +5677,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5695,7 +5733,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -5712,9 +5750,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_add(other)) }
                       }
       *)
-      Definition saturating_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5741,7 +5779,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_add :
@@ -5753,9 +5791,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_add(other)) }
                       }
       *)
-      Definition unchecked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5782,7 +5820,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_add :
@@ -5799,9 +5837,13 @@ Module num.
                           }
                       }
       *)
-      Definition checked_next_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_next_power_of_two
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5857,7 +5899,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_next_power_of_two :
@@ -5868,9 +5910,9 @@ Module num.
                           Self::BITS - 1 - self.leading_zeros()
                       }
       *)
-      Definition ilog2 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ilog2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub
@@ -5887,7 +5929,7 @@ Module num.
                 |),
                 [ M.read (| self |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
@@ -5897,9 +5939,9 @@ Module num.
                           super::int_log10::$Int(self.0)
                       }
       *)
-      Definition ilog10 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ilog10 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5914,7 +5956,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
@@ -5928,9 +5970,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().midpoint(rhs.get())) }
                       }
       *)
-      Definition midpoint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition midpoint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -5964,7 +6006,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -5984,9 +6026,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6047,7 +6089,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -6065,9 +6107,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_mul(other.get())) }
                       }
       *)
-      Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6101,7 +6143,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -6113,9 +6155,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_mul(other.get())) }
                       }
       *)
-      Definition unchecked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6149,7 +6191,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -6171,9 +6213,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6227,7 +6269,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -6245,9 +6287,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_pow(other)) }
                       }
       *)
-      Definition saturating_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6274,7 +6316,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -6289,9 +6331,9 @@ Module num.
                           intrinsics::ctpop(self.get()) < 2
                       }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.lt
@@ -6309,7 +6351,7 @@ Module num.
                 ]
               |))
               (Value.Integer 2)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -6324,6 +6366,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroU64" ],
                   "unwrap",
                   []
@@ -6353,6 +6396,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroU64" ],
                   "unwrap",
                   []
@@ -6387,15 +6431,15 @@ Module num.
                           nonzero.0
                       }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ nonzero ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroU64", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6419,9 +6463,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -6451,7 +6495,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6477,9 +6521,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -6502,7 +6546,7 @@ Module num.
                   (M.read (| rhs |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6528,9 +6572,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -6553,7 +6597,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6573,9 +6617,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -6596,7 +6640,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6615,9 +6659,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -6638,7 +6682,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6657,9 +6701,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6679,7 +6723,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6698,9 +6742,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6720,7 +6764,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6739,9 +6783,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6761,7 +6805,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6780,9 +6824,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6802,7 +6846,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6821,9 +6865,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6843,7 +6887,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6862,9 +6906,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6884,7 +6928,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6898,6 +6942,7 @@ Module num.
     (* StructTuple
       {
         name := "NonZeroU128";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "u128" ];
       } *)
@@ -6917,9 +6962,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU128".
       
       (*             Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -6928,7 +6973,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6954,9 +6999,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU128".
       
       (*             Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -6965,7 +7014,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6992,9 +7041,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU128".
       
       (*             PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7013,7 +7062,7 @@ Module num.
                   0
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7028,9 +7077,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU128".
       
       (*             Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7049,7 +7098,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7064,9 +7113,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU128".
       
       (*             PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7091,7 +7140,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7106,9 +7155,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU128".
       
       (*             Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -7123,7 +7172,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7149,9 +7198,9 @@ Module num.
                           }
                       }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -7221,7 +7270,7 @@ Module num.
                 |) in
               M.alloc (| Value.StructTuple "core::num::nonzero::NonZeroU128" [ M.read (| n |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -7237,9 +7286,9 @@ Module num.
                           }
                       }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -7262,7 +7311,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -7272,15 +7321,15 @@ Module num.
                           self.0
                       }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroU128", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -7290,9 +7339,9 @@ Module num.
                           unsafe { intrinsics::ctlz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -7309,7 +7358,7 @@ Module num.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -7321,9 +7370,9 @@ Module num.
                           unsafe { intrinsics::cttz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -7340,7 +7389,7 @@ Module num.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -7361,9 +7410,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7417,7 +7466,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -7434,9 +7483,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_add(other)) }
                       }
       *)
-      Definition saturating_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7463,7 +7512,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_add :
@@ -7475,9 +7524,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_add(other)) }
                       }
       *)
-      Definition unchecked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7504,7 +7553,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_add :
@@ -7521,9 +7570,13 @@ Module num.
                           }
                       }
       *)
-      Definition checked_next_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_next_power_of_two
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -7579,7 +7632,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_next_power_of_two :
@@ -7590,9 +7643,9 @@ Module num.
                           Self::BITS - 1 - self.leading_zeros()
                       }
       *)
-      Definition ilog2 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ilog2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub
@@ -7609,7 +7662,7 @@ Module num.
                 |),
                 [ M.read (| self |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
@@ -7619,9 +7672,9 @@ Module num.
                           super::int_log10::$Int(self.0)
                       }
       *)
-      Definition ilog10 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ilog10 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -7636,7 +7689,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
@@ -7650,9 +7703,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().midpoint(rhs.get())) }
                       }
       *)
-      Definition midpoint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition midpoint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -7686,7 +7739,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -7706,9 +7759,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7769,7 +7822,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -7787,9 +7840,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_mul(other.get())) }
                       }
       *)
-      Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7823,7 +7876,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -7835,9 +7888,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_mul(other.get())) }
                       }
       *)
-      Definition unchecked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7871,7 +7924,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -7893,9 +7946,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7949,7 +8002,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -7967,9 +8020,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_pow(other)) }
                       }
       *)
-      Definition saturating_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7996,7 +8049,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -8011,9 +8064,9 @@ Module num.
                           intrinsics::ctpop(self.get()) < 2
                       }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.lt
@@ -8031,7 +8084,7 @@ Module num.
                 ]
               |))
               (Value.Integer 2)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -8046,6 +8099,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroU128" ],
                   "unwrap",
                   []
@@ -8075,6 +8129,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroU128" ],
                   "unwrap",
                   []
@@ -8109,9 +8164,9 @@ Module num.
                           nonzero.0
                       }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ nonzero ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.read (|
@@ -8121,7 +8176,7 @@ Module num.
                 0
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8145,9 +8200,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8177,7 +8232,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8203,9 +8258,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8228,7 +8283,7 @@ Module num.
                   (M.read (| rhs |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8254,9 +8309,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8279,7 +8334,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8299,9 +8354,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8322,7 +8377,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8341,9 +8396,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -8364,7 +8419,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8383,9 +8438,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -8405,7 +8460,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8424,9 +8479,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -8446,7 +8501,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8465,9 +8520,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -8487,7 +8542,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8506,9 +8561,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -8528,7 +8583,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8547,9 +8602,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -8569,7 +8624,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8588,9 +8643,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -8610,7 +8665,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8624,6 +8679,7 @@ Module num.
     (* StructTuple
       {
         name := "NonZeroUsize";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "usize" ];
       } *)
@@ -8643,9 +8699,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroUsize".
       
       (*             Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -8654,7 +8710,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8680,9 +8736,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroUsize".
       
       (*             Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -8691,7 +8751,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8718,9 +8778,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroUsize".
       
       (*             PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8739,7 +8799,7 @@ Module num.
                   0
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8754,9 +8814,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroUsize".
       
       (*             Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8775,7 +8835,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8790,9 +8850,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroUsize".
       
       (*             PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8817,7 +8877,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8832,9 +8892,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroUsize".
       
       (*             Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -8849,7 +8909,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8875,9 +8935,9 @@ Module num.
                           }
                       }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -8947,7 +9007,7 @@ Module num.
                 |) in
               M.alloc (| Value.StructTuple "core::num::nonzero::NonZeroUsize" [ M.read (| n |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -8963,9 +9023,9 @@ Module num.
                           }
                       }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -8989,7 +9049,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -8999,15 +9059,15 @@ Module num.
                           self.0
                       }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroUsize", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -9017,9 +9077,9 @@ Module num.
                           unsafe { intrinsics::ctlz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -9036,7 +9096,7 @@ Module num.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -9048,9 +9108,9 @@ Module num.
                           unsafe { intrinsics::cttz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -9067,7 +9127,7 @@ Module num.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -9088,9 +9148,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9144,7 +9204,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -9161,9 +9221,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_add(other)) }
                       }
       *)
-      Definition saturating_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9190,7 +9250,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_add :
@@ -9202,9 +9262,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_add(other)) }
                       }
       *)
-      Definition unchecked_add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9231,7 +9291,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_add :
@@ -9248,9 +9308,13 @@ Module num.
                           }
                       }
       *)
-      Definition checked_next_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_next_power_of_two
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -9306,7 +9370,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_next_power_of_two :
@@ -9317,9 +9381,9 @@ Module num.
                           Self::BITS - 1 - self.leading_zeros()
                       }
       *)
-      Definition ilog2 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ilog2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub
@@ -9336,7 +9400,7 @@ Module num.
                 |),
                 [ M.read (| self |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
@@ -9346,9 +9410,9 @@ Module num.
                           super::int_log10::$Int(self.0)
                       }
       *)
-      Definition ilog10 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ilog10 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -9363,7 +9427,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
@@ -9377,9 +9441,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().midpoint(rhs.get())) }
                       }
       *)
-      Definition midpoint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition midpoint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -9413,7 +9477,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -9433,9 +9497,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9496,7 +9560,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -9514,9 +9578,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_mul(other.get())) }
                       }
       *)
-      Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9550,7 +9614,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -9562,9 +9626,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_mul(other.get())) }
                       }
       *)
-      Definition unchecked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9598,7 +9662,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -9620,9 +9684,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9676,7 +9740,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -9694,9 +9758,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_pow(other)) }
                       }
       *)
-      Definition saturating_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9723,7 +9787,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -9738,9 +9802,9 @@ Module num.
                           intrinsics::ctpop(self.get()) < 2
                       }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.lt
@@ -9758,7 +9822,7 @@ Module num.
                 ]
               |))
               (Value.Integer 2)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -9773,6 +9837,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroUsize" ],
                   "unwrap",
                   []
@@ -9802,6 +9867,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroUsize" ],
                   "unwrap",
                   []
@@ -9836,9 +9902,9 @@ Module num.
                           nonzero.0
                       }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ nonzero ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.read (|
@@ -9848,7 +9914,7 @@ Module num.
                 0
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9872,9 +9938,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -9904,7 +9970,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9930,9 +9996,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -9955,7 +10021,7 @@ Module num.
                   (M.read (| rhs |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9981,9 +10047,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -10006,7 +10072,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10026,9 +10092,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -10049,7 +10115,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10068,9 +10134,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -10091,7 +10157,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10110,9 +10176,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -10132,7 +10198,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10151,9 +10217,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -10173,7 +10239,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10192,9 +10258,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -10214,7 +10280,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10233,9 +10299,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -10255,7 +10321,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10274,9 +10340,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -10296,7 +10362,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10315,9 +10381,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -10337,7 +10403,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10351,6 +10417,7 @@ Module num.
     (* StructTuple
       {
         name := "NonZeroI8";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "i8" ];
       } *)
@@ -10370,9 +10437,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI8".
       
       (*             Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -10381,7 +10448,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10407,9 +10474,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI8".
       
       (*             Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -10418,7 +10489,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10445,9 +10516,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI8".
       
       (*             PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10466,7 +10537,7 @@ Module num.
                   0
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10481,9 +10552,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI8".
       
       (*             Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10502,7 +10573,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10517,9 +10588,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI8".
       
       (*             PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10544,7 +10615,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10559,9 +10630,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI8".
       
       (*             Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -10576,7 +10647,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10602,9 +10673,9 @@ Module num.
                           }
                       }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -10674,7 +10745,7 @@ Module num.
                 |) in
               M.alloc (| Value.StructTuple "core::num::nonzero::NonZeroI8" [ M.read (| n |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -10690,9 +10761,9 @@ Module num.
                           }
                       }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -10715,7 +10786,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -10725,15 +10796,15 @@ Module num.
                           self.0
                       }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroI8", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -10743,9 +10814,9 @@ Module num.
                           unsafe { intrinsics::ctlz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -10762,7 +10833,7 @@ Module num.
                     |))
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -10774,9 +10845,9 @@ Module num.
                           unsafe { intrinsics::cttz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -10793,7 +10864,7 @@ Module num.
                     |))
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -10804,9 +10875,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().abs()) }
                       }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -10831,7 +10902,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -10846,9 +10917,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -10900,7 +10971,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
@@ -10915,9 +10986,9 @@ Module num.
                           )
                       }
       *)
-      Definition overflowing_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition overflowing_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -10961,7 +11032,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_overflowing_abs :
@@ -10973,9 +11044,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_abs()) }
                       }
       *)
-      Definition saturating_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition saturating_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -11000,7 +11071,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_abs :
@@ -11012,9 +11083,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().wrapping_abs()) }
                       }
       *)
-      Definition wrapping_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wrapping_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -11039,7 +11110,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrapping_abs :
@@ -11051,9 +11122,9 @@ Module num.
                           unsafe { $Uty::new_unchecked(self.get().unsigned_abs()) }
                       }
       *)
-      Definition unsigned_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition unsigned_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -11078,7 +11149,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unsigned_abs :
@@ -11089,9 +11160,9 @@ Module num.
                           self.get().is_positive()
                       }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -11107,7 +11178,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -11117,9 +11188,9 @@ Module num.
                           self.get().is_negative()
                       }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -11135,7 +11206,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -11149,9 +11220,9 @@ Module num.
                           None
                       }
       *)
-      Definition checked_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -11212,7 +11283,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
@@ -11224,9 +11295,9 @@ Module num.
                           ((unsafe { $Ty::new_unchecked(result) }), overflow)
                       }
       *)
-      Definition overflowing_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition overflowing_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -11270,7 +11341,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_overflowing_neg :
@@ -11284,9 +11355,9 @@ Module num.
                           $Ty::MAX
                       }
       *)
-      Definition saturating_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition saturating_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -11325,7 +11396,7 @@ Module num.
                   M.get_constant (| "core::num::nonzero::MAX" |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_neg :
@@ -11338,9 +11409,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(result) }
                       }
       *)
-      Definition wrapping_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wrapping_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -11371,7 +11442,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrapping_neg :
@@ -11392,9 +11463,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11455,7 +11526,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -11473,9 +11544,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_mul(other.get())) }
                       }
       *)
-      Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11509,7 +11580,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -11521,9 +11592,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_mul(other.get())) }
                       }
       *)
-      Definition unchecked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11557,7 +11628,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -11579,9 +11650,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11635,7 +11706,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -11653,9 +11724,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_pow(other)) }
                       }
       *)
-      Definition saturating_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11682,7 +11753,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -11697,6 +11768,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroI8" ],
                   "unwrap",
                   []
@@ -11726,6 +11798,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroI8" ],
                   "unwrap",
                   []
@@ -11760,15 +11833,15 @@ Module num.
                           nonzero.0
                       }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ nonzero ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroI8", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11792,9 +11865,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -11824,7 +11897,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11850,9 +11923,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -11875,7 +11948,7 @@ Module num.
                   (M.read (| rhs |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11901,9 +11974,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -11926,7 +11999,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11946,9 +12019,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -11969,7 +12042,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11988,9 +12061,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -12011,7 +12084,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12030,9 +12103,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -12052,7 +12125,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12071,9 +12144,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -12093,7 +12166,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12112,9 +12185,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -12134,7 +12207,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12153,9 +12226,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -12175,7 +12248,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12194,9 +12267,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -12216,7 +12289,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12235,9 +12308,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -12257,7 +12330,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12271,6 +12344,7 @@ Module num.
     (* StructTuple
       {
         name := "NonZeroI16";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "i16" ];
       } *)
@@ -12290,9 +12364,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI16".
       
       (*             Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -12301,7 +12375,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12327,9 +12401,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI16".
       
       (*             Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -12338,7 +12416,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12365,9 +12443,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI16".
       
       (*             PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12386,7 +12464,7 @@ Module num.
                   0
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12401,9 +12479,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI16".
       
       (*             Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12422,7 +12500,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12437,9 +12515,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI16".
       
       (*             PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12464,7 +12542,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12479,9 +12557,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI16".
       
       (*             Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -12496,7 +12574,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12522,9 +12600,9 @@ Module num.
                           }
                       }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -12594,7 +12672,7 @@ Module num.
                 |) in
               M.alloc (| Value.StructTuple "core::num::nonzero::NonZeroI16" [ M.read (| n |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -12610,9 +12688,9 @@ Module num.
                           }
                       }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -12635,7 +12713,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -12645,15 +12723,15 @@ Module num.
                           self.0
                       }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroI16", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -12663,9 +12741,9 @@ Module num.
                           unsafe { intrinsics::ctlz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -12682,7 +12760,7 @@ Module num.
                     |))
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -12694,9 +12772,9 @@ Module num.
                           unsafe { intrinsics::cttz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -12713,7 +12791,7 @@ Module num.
                     |))
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -12724,9 +12802,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().abs()) }
                       }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -12751,7 +12829,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -12766,9 +12844,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -12820,7 +12898,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
@@ -12835,9 +12913,9 @@ Module num.
                           )
                       }
       *)
-      Definition overflowing_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition overflowing_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -12881,7 +12959,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_overflowing_abs :
@@ -12893,9 +12971,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_abs()) }
                       }
       *)
-      Definition saturating_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition saturating_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -12920,7 +12998,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_abs :
@@ -12932,9 +13010,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().wrapping_abs()) }
                       }
       *)
-      Definition wrapping_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wrapping_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -12959,7 +13037,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrapping_abs :
@@ -12971,9 +13049,9 @@ Module num.
                           unsafe { $Uty::new_unchecked(self.get().unsigned_abs()) }
                       }
       *)
-      Definition unsigned_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition unsigned_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -12998,7 +13076,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unsigned_abs :
@@ -13009,9 +13087,9 @@ Module num.
                           self.get().is_positive()
                       }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -13027,7 +13105,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -13037,9 +13115,9 @@ Module num.
                           self.get().is_negative()
                       }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -13055,7 +13133,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -13069,9 +13147,9 @@ Module num.
                           None
                       }
       *)
-      Definition checked_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -13132,7 +13210,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
@@ -13144,9 +13222,9 @@ Module num.
                           ((unsafe { $Ty::new_unchecked(result) }), overflow)
                       }
       *)
-      Definition overflowing_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition overflowing_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -13190,7 +13268,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_overflowing_neg :
@@ -13204,9 +13282,9 @@ Module num.
                           $Ty::MAX
                       }
       *)
-      Definition saturating_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition saturating_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -13245,7 +13323,7 @@ Module num.
                   M.get_constant (| "core::num::nonzero::MAX" |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_neg :
@@ -13258,9 +13336,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(result) }
                       }
       *)
-      Definition wrapping_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wrapping_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -13291,7 +13369,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrapping_neg :
@@ -13312,9 +13390,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13375,7 +13453,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -13393,9 +13471,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_mul(other.get())) }
                       }
       *)
-      Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13429,7 +13507,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -13441,9 +13519,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_mul(other.get())) }
                       }
       *)
-      Definition unchecked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13477,7 +13555,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -13499,9 +13577,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13555,7 +13633,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -13573,9 +13651,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_pow(other)) }
                       }
       *)
-      Definition saturating_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13602,7 +13680,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -13617,6 +13695,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroI16" ],
                   "unwrap",
                   []
@@ -13646,6 +13725,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroI16" ],
                   "unwrap",
                   []
@@ -13680,15 +13760,15 @@ Module num.
                           nonzero.0
                       }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ nonzero ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroI16", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13712,9 +13792,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -13744,7 +13824,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13770,9 +13850,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -13795,7 +13875,7 @@ Module num.
                   (M.read (| rhs |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13821,9 +13901,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -13846,7 +13926,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13866,9 +13946,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -13889,7 +13969,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13908,9 +13988,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -13931,7 +14011,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13950,9 +14030,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -13972,7 +14052,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13991,9 +14071,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -14013,7 +14093,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14032,9 +14112,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -14054,7 +14134,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14073,9 +14153,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -14095,7 +14175,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14114,9 +14194,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -14136,7 +14216,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14155,9 +14235,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -14177,7 +14257,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14191,6 +14271,7 @@ Module num.
     (* StructTuple
       {
         name := "NonZeroI32";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "i32" ];
       } *)
@@ -14210,9 +14291,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI32".
       
       (*             Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -14221,7 +14302,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14247,9 +14328,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI32".
       
       (*             Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -14258,7 +14343,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14285,9 +14370,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI32".
       
       (*             PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14306,7 +14391,7 @@ Module num.
                   0
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14321,9 +14406,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI32".
       
       (*             Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14342,7 +14427,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14357,9 +14442,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI32".
       
       (*             PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14384,7 +14469,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14399,9 +14484,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI32".
       
       (*             Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -14416,7 +14501,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14442,9 +14527,9 @@ Module num.
                           }
                       }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -14514,7 +14599,7 @@ Module num.
                 |) in
               M.alloc (| Value.StructTuple "core::num::nonzero::NonZeroI32" [ M.read (| n |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -14530,9 +14615,9 @@ Module num.
                           }
                       }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -14555,7 +14640,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -14565,15 +14650,15 @@ Module num.
                           self.0
                       }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroI32", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -14583,9 +14668,9 @@ Module num.
                           unsafe { intrinsics::ctlz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -14606,7 +14691,7 @@ Module num.
                   |)
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -14618,9 +14703,9 @@ Module num.
                           unsafe { intrinsics::cttz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -14641,7 +14726,7 @@ Module num.
                   |)
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -14652,9 +14737,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().abs()) }
                       }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -14679,7 +14764,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -14694,9 +14779,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -14748,7 +14833,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
@@ -14763,9 +14848,9 @@ Module num.
                           )
                       }
       *)
-      Definition overflowing_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition overflowing_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -14809,7 +14894,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_overflowing_abs :
@@ -14821,9 +14906,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_abs()) }
                       }
       *)
-      Definition saturating_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition saturating_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -14848,7 +14933,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_abs :
@@ -14860,9 +14945,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().wrapping_abs()) }
                       }
       *)
-      Definition wrapping_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wrapping_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -14887,7 +14972,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrapping_abs :
@@ -14899,9 +14984,9 @@ Module num.
                           unsafe { $Uty::new_unchecked(self.get().unsigned_abs()) }
                       }
       *)
-      Definition unsigned_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition unsigned_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -14926,7 +15011,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unsigned_abs :
@@ -14937,9 +15022,9 @@ Module num.
                           self.get().is_positive()
                       }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -14955,7 +15040,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -14965,9 +15050,9 @@ Module num.
                           self.get().is_negative()
                       }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -14983,7 +15068,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -14997,9 +15082,9 @@ Module num.
                           None
                       }
       *)
-      Definition checked_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -15060,7 +15145,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
@@ -15072,9 +15157,9 @@ Module num.
                           ((unsafe { $Ty::new_unchecked(result) }), overflow)
                       }
       *)
-      Definition overflowing_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition overflowing_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -15118,7 +15203,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_overflowing_neg :
@@ -15132,9 +15217,9 @@ Module num.
                           $Ty::MAX
                       }
       *)
-      Definition saturating_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition saturating_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -15173,7 +15258,7 @@ Module num.
                   M.get_constant (| "core::num::nonzero::MAX" |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_neg :
@@ -15186,9 +15271,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(result) }
                       }
       *)
-      Definition wrapping_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wrapping_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -15219,7 +15304,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrapping_neg :
@@ -15240,9 +15325,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -15303,7 +15388,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -15321,9 +15406,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_mul(other.get())) }
                       }
       *)
-      Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -15357,7 +15442,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -15369,9 +15454,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_mul(other.get())) }
                       }
       *)
-      Definition unchecked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -15405,7 +15490,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -15427,9 +15512,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -15483,7 +15568,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -15501,9 +15586,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_pow(other)) }
                       }
       *)
-      Definition saturating_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -15530,7 +15615,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -15545,6 +15630,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroI32" ],
                   "unwrap",
                   []
@@ -15574,6 +15660,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroI32" ],
                   "unwrap",
                   []
@@ -15608,15 +15695,15 @@ Module num.
                           nonzero.0
                       }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ nonzero ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroI32", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -15640,9 +15727,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -15672,7 +15759,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -15698,9 +15785,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -15723,7 +15810,7 @@ Module num.
                   (M.read (| rhs |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -15749,9 +15836,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -15774,7 +15861,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -15794,9 +15881,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -15817,7 +15904,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -15836,9 +15923,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -15859,7 +15946,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -15878,9 +15965,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -15900,7 +15987,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -15919,9 +16006,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -15941,7 +16028,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -15960,9 +16047,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -15982,7 +16069,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16001,9 +16088,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -16023,7 +16110,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16042,9 +16129,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -16064,7 +16151,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16083,9 +16170,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -16105,7 +16192,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16119,6 +16206,7 @@ Module num.
     (* StructTuple
       {
         name := "NonZeroI64";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "i64" ];
       } *)
@@ -16138,9 +16226,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI64".
       
       (*             Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -16149,7 +16237,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16175,9 +16263,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI64".
       
       (*             Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -16186,7 +16278,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16213,9 +16305,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI64".
       
       (*             PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -16234,7 +16326,7 @@ Module num.
                   0
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16249,9 +16341,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI64".
       
       (*             Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -16270,7 +16362,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16285,9 +16377,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI64".
       
       (*             PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -16312,7 +16404,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16327,9 +16419,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI64".
       
       (*             Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -16344,7 +16436,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -16370,9 +16462,9 @@ Module num.
                           }
                       }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -16442,7 +16534,7 @@ Module num.
                 |) in
               M.alloc (| Value.StructTuple "core::num::nonzero::NonZeroI64" [ M.read (| n |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -16458,9 +16550,9 @@ Module num.
                           }
                       }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -16483,7 +16575,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -16493,15 +16585,15 @@ Module num.
                           self.0
                       }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroI64", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -16511,9 +16603,9 @@ Module num.
                           unsafe { intrinsics::ctlz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -16530,7 +16622,7 @@ Module num.
                     |))
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -16542,9 +16634,9 @@ Module num.
                           unsafe { intrinsics::cttz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -16561,7 +16653,7 @@ Module num.
                     |))
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -16572,9 +16664,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().abs()) }
                       }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16599,7 +16691,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -16614,9 +16706,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -16668,7 +16760,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
@@ -16683,9 +16775,9 @@ Module num.
                           )
                       }
       *)
-      Definition overflowing_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition overflowing_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -16729,7 +16821,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_overflowing_abs :
@@ -16741,9 +16833,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_abs()) }
                       }
       *)
-      Definition saturating_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition saturating_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16768,7 +16860,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_abs :
@@ -16780,9 +16872,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().wrapping_abs()) }
                       }
       *)
-      Definition wrapping_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wrapping_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16807,7 +16899,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrapping_abs :
@@ -16819,9 +16911,9 @@ Module num.
                           unsafe { $Uty::new_unchecked(self.get().unsigned_abs()) }
                       }
       *)
-      Definition unsigned_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition unsigned_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16846,7 +16938,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unsigned_abs :
@@ -16857,9 +16949,9 @@ Module num.
                           self.get().is_positive()
                       }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16875,7 +16967,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -16885,9 +16977,9 @@ Module num.
                           self.get().is_negative()
                       }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16903,7 +16995,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -16917,9 +17009,9 @@ Module num.
                           None
                       }
       *)
-      Definition checked_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -16980,7 +17072,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
@@ -16992,9 +17084,9 @@ Module num.
                           ((unsafe { $Ty::new_unchecked(result) }), overflow)
                       }
       *)
-      Definition overflowing_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition overflowing_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -17038,7 +17130,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_overflowing_neg :
@@ -17052,9 +17144,9 @@ Module num.
                           $Ty::MAX
                       }
       *)
-      Definition saturating_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition saturating_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -17093,7 +17185,7 @@ Module num.
                   M.get_constant (| "core::num::nonzero::MAX" |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_neg :
@@ -17106,9 +17198,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(result) }
                       }
       *)
-      Definition wrapping_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wrapping_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -17139,7 +17231,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrapping_neg :
@@ -17160,9 +17252,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -17223,7 +17315,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -17241,9 +17333,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_mul(other.get())) }
                       }
       *)
-      Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -17277,7 +17369,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -17289,9 +17381,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_mul(other.get())) }
                       }
       *)
-      Definition unchecked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -17325,7 +17417,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -17347,9 +17439,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -17403,7 +17495,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -17421,9 +17513,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_pow(other)) }
                       }
       *)
-      Definition saturating_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -17450,7 +17542,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -17465,6 +17557,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroI64" ],
                   "unwrap",
                   []
@@ -17494,6 +17587,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroI64" ],
                   "unwrap",
                   []
@@ -17528,15 +17622,15 @@ Module num.
                           nonzero.0
                       }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ nonzero ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| nonzero, "core::num::nonzero::NonZeroI64", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -17560,9 +17654,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -17592,7 +17686,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -17618,9 +17712,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -17643,7 +17737,7 @@ Module num.
                   (M.read (| rhs |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -17669,9 +17763,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -17694,7 +17788,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -17714,9 +17808,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -17737,7 +17831,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -17756,9 +17850,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -17779,7 +17873,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -17798,9 +17892,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -17820,7 +17914,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -17839,9 +17933,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -17861,7 +17955,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -17880,9 +17974,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -17902,7 +17996,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -17921,9 +18015,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -17943,7 +18037,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -17962,9 +18056,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -17984,7 +18078,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -18003,9 +18097,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -18025,7 +18119,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -18039,6 +18133,7 @@ Module num.
     (* StructTuple
       {
         name := "NonZeroI128";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "i128" ];
       } *)
@@ -18058,9 +18153,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI128".
       
       (*             Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -18069,7 +18164,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -18095,9 +18190,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI128".
       
       (*             Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -18106,7 +18205,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -18133,9 +18232,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI128".
       
       (*             PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -18154,7 +18253,7 @@ Module num.
                   0
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -18169,9 +18268,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI128".
       
       (*             Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -18190,7 +18289,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -18205,9 +18304,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI128".
       
       (*             PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -18232,7 +18331,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -18247,9 +18346,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI128".
       
       (*             Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -18264,7 +18363,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -18290,9 +18389,9 @@ Module num.
                           }
                       }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -18362,7 +18461,7 @@ Module num.
                 |) in
               M.alloc (| Value.StructTuple "core::num::nonzero::NonZeroI128" [ M.read (| n |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -18378,9 +18477,9 @@ Module num.
                           }
                       }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -18403,7 +18502,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -18413,15 +18512,15 @@ Module num.
                           self.0
                       }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroI128", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -18431,9 +18530,9 @@ Module num.
                           unsafe { intrinsics::ctlz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -18450,7 +18549,7 @@ Module num.
                     |))
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -18462,9 +18561,9 @@ Module num.
                           unsafe { intrinsics::cttz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -18481,7 +18580,7 @@ Module num.
                     |))
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -18492,9 +18591,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().abs()) }
                       }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18519,7 +18618,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -18534,9 +18633,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -18588,7 +18687,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
@@ -18603,9 +18702,9 @@ Module num.
                           )
                       }
       *)
-      Definition overflowing_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition overflowing_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -18649,7 +18748,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_overflowing_abs :
@@ -18661,9 +18760,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_abs()) }
                       }
       *)
-      Definition saturating_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition saturating_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18688,7 +18787,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_abs :
@@ -18700,9 +18799,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().wrapping_abs()) }
                       }
       *)
-      Definition wrapping_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wrapping_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18727,7 +18826,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrapping_abs :
@@ -18739,9 +18838,9 @@ Module num.
                           unsafe { $Uty::new_unchecked(self.get().unsigned_abs()) }
                       }
       *)
-      Definition unsigned_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition unsigned_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18766,7 +18865,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unsigned_abs :
@@ -18777,9 +18876,9 @@ Module num.
                           self.get().is_positive()
                       }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18795,7 +18894,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -18805,9 +18904,9 @@ Module num.
                           self.get().is_negative()
                       }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18823,7 +18922,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -18837,9 +18936,9 @@ Module num.
                           None
                       }
       *)
-      Definition checked_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -18900,7 +18999,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
@@ -18912,9 +19011,9 @@ Module num.
                           ((unsafe { $Ty::new_unchecked(result) }), overflow)
                       }
       *)
-      Definition overflowing_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition overflowing_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -18958,7 +19057,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_overflowing_neg :
@@ -18972,9 +19071,9 @@ Module num.
                           $Ty::MAX
                       }
       *)
-      Definition saturating_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition saturating_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -19013,7 +19112,7 @@ Module num.
                   M.get_constant (| "core::num::nonzero::MAX" |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_neg :
@@ -19026,9 +19125,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(result) }
                       }
       *)
-      Definition wrapping_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wrapping_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -19059,7 +19158,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrapping_neg :
@@ -19080,9 +19179,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -19143,7 +19242,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -19161,9 +19260,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_mul(other.get())) }
                       }
       *)
-      Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -19197,7 +19296,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -19209,9 +19308,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_mul(other.get())) }
                       }
       *)
-      Definition unchecked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -19245,7 +19344,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -19267,9 +19366,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -19323,7 +19422,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -19341,9 +19440,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_pow(other)) }
                       }
       *)
-      Definition saturating_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -19370,7 +19469,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -19385,6 +19484,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroI128" ],
                   "unwrap",
                   []
@@ -19414,6 +19514,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroI128" ],
                   "unwrap",
                   []
@@ -19448,9 +19549,9 @@ Module num.
                           nonzero.0
                       }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ nonzero ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.read (|
@@ -19460,7 +19561,7 @@ Module num.
                 0
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -19484,9 +19585,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -19516,7 +19617,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -19542,9 +19643,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -19567,7 +19668,7 @@ Module num.
                   (M.read (| rhs |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -19593,9 +19694,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -19618,7 +19719,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -19638,9 +19739,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -19661,7 +19762,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -19680,9 +19781,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -19703,7 +19804,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -19722,9 +19823,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -19744,7 +19845,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -19763,9 +19864,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -19785,7 +19886,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -19804,9 +19905,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -19826,7 +19927,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -19845,9 +19946,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -19867,7 +19968,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -19886,9 +19987,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -19908,7 +20009,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -19927,9 +20028,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -19949,7 +20050,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -19963,6 +20064,7 @@ Module num.
     (* StructTuple
       {
         name := "NonZeroIsize";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "isize" ];
       } *)
@@ -19982,9 +20084,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroIsize".
       
       (*             Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -19993,7 +20095,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -20019,9 +20121,13 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroIsize".
       
       (*             Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -20030,7 +20136,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -20057,9 +20163,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroIsize".
       
       (*             PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -20078,7 +20184,7 @@ Module num.
                   0
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -20093,9 +20199,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroIsize".
       
       (*             Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -20114,7 +20220,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -20129,9 +20235,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroIsize".
       
       (*             PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -20156,7 +20262,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -20171,9 +20277,9 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroIsize".
       
       (*             Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -20188,7 +20294,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -20214,9 +20320,9 @@ Module num.
                           }
                       }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -20286,7 +20392,7 @@ Module num.
                 |) in
               M.alloc (| Value.StructTuple "core::num::nonzero::NonZeroIsize" [ M.read (| n |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -20302,9 +20408,9 @@ Module num.
                           }
                       }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ n ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
@@ -20328,7 +20434,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -20338,15 +20444,15 @@ Module num.
                           self.0
                       }
       *)
-      Definition get (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "core::num::nonzero::NonZeroIsize", 0 |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -20356,9 +20462,9 @@ Module num.
                           unsafe { intrinsics::ctlz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -20375,7 +20481,7 @@ Module num.
                     |))
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -20387,9 +20493,9 @@ Module num.
                           unsafe { intrinsics::cttz_nonzero(self.0 as $Uint) as u32 }
                       }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -20406,7 +20512,7 @@ Module num.
                     |))
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -20417,9 +20523,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().abs()) }
                       }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20444,7 +20550,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -20459,9 +20565,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -20513,7 +20619,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
@@ -20528,9 +20634,9 @@ Module num.
                           )
                       }
       *)
-      Definition overflowing_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition overflowing_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -20574,7 +20680,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_overflowing_abs :
@@ -20586,9 +20692,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_abs()) }
                       }
       *)
-      Definition saturating_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition saturating_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20613,7 +20719,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_abs :
@@ -20625,9 +20731,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().wrapping_abs()) }
                       }
       *)
-      Definition wrapping_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wrapping_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20652,7 +20758,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrapping_abs :
@@ -20664,9 +20770,9 @@ Module num.
                           unsafe { $Uty::new_unchecked(self.get().unsigned_abs()) }
                       }
       *)
-      Definition unsigned_abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition unsigned_abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20691,7 +20797,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unsigned_abs :
@@ -20702,9 +20808,9 @@ Module num.
                           self.get().is_positive()
                       }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20720,7 +20826,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -20730,9 +20836,9 @@ Module num.
                           self.get().is_negative()
                       }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20748,7 +20854,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -20762,9 +20868,9 @@ Module num.
                           None
                       }
       *)
-      Definition checked_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition checked_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -20829,7 +20935,7 @@ Module num.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
@@ -20841,9 +20947,9 @@ Module num.
                           ((unsafe { $Ty::new_unchecked(result) }), overflow)
                       }
       *)
-      Definition overflowing_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition overflowing_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -20887,7 +20993,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_overflowing_neg :
@@ -20901,9 +21007,9 @@ Module num.
                           $Ty::MAX
                       }
       *)
-      Definition saturating_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition saturating_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -20942,7 +21048,7 @@ Module num.
                   M.get_constant (| "core::num::nonzero::MAX" |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_neg :
@@ -20955,9 +21061,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(result) }
                       }
       *)
-      Definition wrapping_neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition wrapping_neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -20988,7 +21094,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrapping_neg :
@@ -21009,9 +21115,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -21072,7 +21178,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -21090,9 +21196,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_mul(other.get())) }
                       }
       *)
-      Definition saturating_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -21126,7 +21232,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_mul :
@@ -21138,9 +21244,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().unchecked_mul(other.get())) }
                       }
       *)
-      Definition unchecked_mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -21174,7 +21280,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_unchecked_mul :
@@ -21196,9 +21302,9 @@ Module num.
                           }
                       }
       *)
-      Definition checked_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition checked_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -21252,7 +21358,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
@@ -21270,9 +21376,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().saturating_pow(other)) }
                       }
       *)
-      Definition saturating_pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition saturating_pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -21299,7 +21405,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_saturating_pow :
@@ -21314,6 +21420,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroIsize" ],
                   "unwrap",
                   []
@@ -21343,6 +21450,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
+                    []
                     [ Ty.path "core::num::nonzero::NonZeroIsize" ],
                   "unwrap",
                   []
@@ -21377,9 +21485,9 @@ Module num.
                           nonzero.0
                       }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ nonzero ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ nonzero ] =>
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.read (|
@@ -21389,7 +21497,7 @@ Module num.
                 0
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21413,9 +21521,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -21445,7 +21553,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21471,9 +21579,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get() | rhs) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -21496,7 +21604,7 @@ Module num.
                   (M.read (| rhs |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21522,9 +21630,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self | rhs.get()) }
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -21547,7 +21655,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21567,9 +21675,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -21590,7 +21698,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21609,9 +21717,9 @@ Module num.
                           *self = *self | rhs;
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; rhs ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
@@ -21632,7 +21740,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21651,9 +21759,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -21673,7 +21781,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21692,9 +21800,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -21714,7 +21822,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21733,9 +21841,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -21755,7 +21863,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21774,9 +21882,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -21796,7 +21904,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21815,9 +21923,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -21837,7 +21945,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21856,9 +21964,9 @@ Module num.
                           self.get().fmt(f)
                       }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -21878,7 +21986,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21903,9 +22011,9 @@ Module num.
                           })
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.catch_return (|
@@ -21914,6 +22022,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroU8" ],
                     "ok_or",
                     [ Ty.path "core::num::error::ParseIntError" ]
@@ -21934,6 +22043,7 @@ Module num.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ],
                                   [],
                                   "branch",
@@ -21969,6 +22079,7 @@ Module num.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::num::nonzero::NonZeroU8";
                                                   Ty.path "core::num::error::ParseIntError"
@@ -21976,6 +22087,7 @@ Module num.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -22011,7 +22123,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -22037,9 +22149,9 @@ Module num.
                           })
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.catch_return (|
@@ -22048,6 +22160,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroU16" ],
                     "ok_or",
                     [ Ty.path "core::num::error::ParseIntError" ]
@@ -22068,6 +22181,7 @@ Module num.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "u16"; Ty.path "core::num::error::ParseIntError" ],
                                   [],
                                   "branch",
@@ -22103,6 +22217,7 @@ Module num.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::num::nonzero::NonZeroU16";
                                                   Ty.path "core::num::error::ParseIntError"
@@ -22110,6 +22225,7 @@ Module num.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -22145,7 +22261,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -22171,9 +22287,9 @@ Module num.
                           })
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.catch_return (|
@@ -22182,6 +22298,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroU32" ],
                     "ok_or",
                     [ Ty.path "core::num::error::ParseIntError" ]
@@ -22202,6 +22319,7 @@ Module num.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ],
                                   [],
                                   "branch",
@@ -22237,6 +22355,7 @@ Module num.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::num::nonzero::NonZeroU32";
                                                   Ty.path "core::num::error::ParseIntError"
@@ -22244,6 +22363,7 @@ Module num.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -22279,7 +22399,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -22305,9 +22425,9 @@ Module num.
                           })
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.catch_return (|
@@ -22316,6 +22436,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroU64" ],
                     "ok_or",
                     [ Ty.path "core::num::error::ParseIntError" ]
@@ -22336,6 +22457,7 @@ Module num.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "u64"; Ty.path "core::num::error::ParseIntError" ],
                                   [],
                                   "branch",
@@ -22371,6 +22493,7 @@ Module num.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::num::nonzero::NonZeroU64";
                                                   Ty.path "core::num::error::ParseIntError"
@@ -22378,6 +22501,7 @@ Module num.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -22413,7 +22537,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -22439,9 +22563,9 @@ Module num.
                           })
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.catch_return (|
@@ -22450,6 +22574,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroU128" ],
                     "ok_or",
                     [ Ty.path "core::num::error::ParseIntError" ]
@@ -22470,6 +22595,7 @@ Module num.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "u128"; Ty.path "core::num::error::ParseIntError" ],
                                   [],
                                   "branch",
@@ -22505,6 +22631,7 @@ Module num.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::num::nonzero::NonZeroU128";
                                                   Ty.path "core::num::error::ParseIntError"
@@ -22512,6 +22639,7 @@ Module num.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -22547,7 +22675,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -22573,9 +22701,9 @@ Module num.
                           })
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.catch_return (|
@@ -22584,6 +22712,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroUsize" ],
                     "ok_or",
                     [ Ty.path "core::num::error::ParseIntError" ]
@@ -22604,6 +22733,7 @@ Module num.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "usize"; Ty.path "core::num::error::ParseIntError" ],
                                   [],
                                   "branch",
@@ -22639,6 +22769,7 @@ Module num.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::num::nonzero::NonZeroUsize";
                                                   Ty.path "core::num::error::ParseIntError"
@@ -22646,6 +22777,7 @@ Module num.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -22681,7 +22813,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -22707,9 +22839,9 @@ Module num.
                           })
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.catch_return (|
@@ -22718,6 +22850,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroI8" ],
                     "ok_or",
                     [ Ty.path "core::num::error::ParseIntError" ]
@@ -22738,6 +22871,7 @@ Module num.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "i8"; Ty.path "core::num::error::ParseIntError" ],
                                   [],
                                   "branch",
@@ -22773,6 +22907,7 @@ Module num.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::num::nonzero::NonZeroI8";
                                                   Ty.path "core::num::error::ParseIntError"
@@ -22780,6 +22915,7 @@ Module num.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -22815,7 +22951,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -22841,9 +22977,9 @@ Module num.
                           })
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.catch_return (|
@@ -22852,6 +22988,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroI16" ],
                     "ok_or",
                     [ Ty.path "core::num::error::ParseIntError" ]
@@ -22872,6 +23009,7 @@ Module num.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "i16"; Ty.path "core::num::error::ParseIntError" ],
                                   [],
                                   "branch",
@@ -22907,6 +23045,7 @@ Module num.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::num::nonzero::NonZeroI16";
                                                   Ty.path "core::num::error::ParseIntError"
@@ -22914,6 +23053,7 @@ Module num.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -22949,7 +23089,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -22975,9 +23115,9 @@ Module num.
                           })
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.catch_return (|
@@ -22986,6 +23126,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroI32" ],
                     "ok_or",
                     [ Ty.path "core::num::error::ParseIntError" ]
@@ -23006,6 +23147,7 @@ Module num.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                                   [],
                                   "branch",
@@ -23041,6 +23183,7 @@ Module num.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::num::nonzero::NonZeroI32";
                                                   Ty.path "core::num::error::ParseIntError"
@@ -23048,6 +23191,7 @@ Module num.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -23083,7 +23227,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23109,9 +23253,9 @@ Module num.
                           })
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.catch_return (|
@@ -23120,6 +23264,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroI64" ],
                     "ok_or",
                     [ Ty.path "core::num::error::ParseIntError" ]
@@ -23140,6 +23285,7 @@ Module num.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "i64"; Ty.path "core::num::error::ParseIntError" ],
                                   [],
                                   "branch",
@@ -23175,6 +23321,7 @@ Module num.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::num::nonzero::NonZeroI64";
                                                   Ty.path "core::num::error::ParseIntError"
@@ -23182,6 +23329,7 @@ Module num.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -23217,7 +23365,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23243,9 +23391,9 @@ Module num.
                           })
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.catch_return (|
@@ -23254,6 +23402,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroI128" ],
                     "ok_or",
                     [ Ty.path "core::num::error::ParseIntError" ]
@@ -23274,6 +23423,7 @@ Module num.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "i128"; Ty.path "core::num::error::ParseIntError" ],
                                   [],
                                   "branch",
@@ -23309,6 +23459,7 @@ Module num.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::num::nonzero::NonZeroI128";
                                                   Ty.path "core::num::error::ParseIntError"
@@ -23316,6 +23467,7 @@ Module num.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -23351,7 +23503,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23377,9 +23529,9 @@ Module num.
                           })
                   }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ src ] =>
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.catch_return (|
@@ -23388,6 +23540,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroIsize" ],
                     "ok_or",
                     [ Ty.path "core::num::error::ParseIntError" ]
@@ -23408,6 +23561,7 @@ Module num.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.path "isize"; Ty.path "core::num::error::ParseIntError" ],
                                   [],
                                   "branch",
@@ -23443,6 +23597,7 @@ Module num.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::num::nonzero::NonZeroIsize";
                                                   Ty.path "core::num::error::ParseIntError"
@@ -23450,6 +23605,7 @@ Module num.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -23485,7 +23641,7 @@ Module num.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23522,9 +23678,9 @@ Module num.
                           unsafe { crate::intrinsics::unchecked_div(self, other.get()) }
                       }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -23542,7 +23698,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23567,9 +23723,9 @@ Module num.
                           unsafe { crate::intrinsics::unchecked_rem(self, other.get()) }
                       }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -23587,7 +23743,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23612,9 +23768,9 @@ Module num.
                           unsafe { crate::intrinsics::unchecked_div(self, other.get()) }
                       }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -23632,7 +23788,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23657,9 +23813,9 @@ Module num.
                           unsafe { crate::intrinsics::unchecked_rem(self, other.get()) }
                       }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -23677,7 +23833,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23702,9 +23858,9 @@ Module num.
                           unsafe { crate::intrinsics::unchecked_div(self, other.get()) }
                       }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -23722,7 +23878,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23747,9 +23903,9 @@ Module num.
                           unsafe { crate::intrinsics::unchecked_rem(self, other.get()) }
                       }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -23767,7 +23923,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23792,9 +23948,9 @@ Module num.
                           unsafe { crate::intrinsics::unchecked_div(self, other.get()) }
                       }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -23812,7 +23968,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23837,9 +23993,9 @@ Module num.
                           unsafe { crate::intrinsics::unchecked_rem(self, other.get()) }
                       }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -23857,7 +24013,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23882,9 +24038,9 @@ Module num.
                           unsafe { crate::intrinsics::unchecked_div(self, other.get()) }
                       }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -23902,7 +24058,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23927,9 +24083,9 @@ Module num.
                           unsafe { crate::intrinsics::unchecked_rem(self, other.get()) }
                       }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -23947,7 +24103,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -23972,9 +24128,9 @@ Module num.
                           unsafe { crate::intrinsics::unchecked_div(self, other.get()) }
                       }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -23992,7 +24148,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -24017,9 +24173,9 @@ Module num.
                           unsafe { crate::intrinsics::unchecked_rem(self, other.get()) }
                       }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -24037,7 +24193,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -24068,9 +24224,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().neg()) }
                       }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -24095,7 +24251,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -24120,9 +24276,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().neg()) }
                       }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -24147,7 +24303,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -24172,9 +24328,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().neg()) }
                       }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -24199,7 +24355,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -24224,9 +24380,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().neg()) }
                       }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -24251,7 +24407,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -24276,9 +24432,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().neg()) }
                       }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -24303,7 +24459,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -24328,9 +24484,9 @@ Module num.
                           unsafe { $Ty::new_unchecked(self.get().neg()) }
                       }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -24355,7 +24511,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

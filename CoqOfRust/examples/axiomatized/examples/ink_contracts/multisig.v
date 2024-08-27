@@ -16,7 +16,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_multisig_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [] [ K; V ].
   
-  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (K V : Ty.t),
@@ -30,37 +30,37 @@ End Impl_core_default_Default_where_core_default_Default_K_where_core_default_De
 Module Impl_multisig_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [] [ K; V ].
   
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "size" (size K V).
   
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -78,7 +78,7 @@ End Impl_multisig_Mapping_K_V.
 Module Impl_core_default_Default_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -91,7 +91,7 @@ End Impl_core_default_Default_for_multisig_AccountId.
 Module Impl_core_fmt_Debug_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -104,7 +104,7 @@ End Impl_core_fmt_Debug_for_multisig_AccountId.
 Module Impl_core_clone_Clone_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -135,7 +135,7 @@ End Impl_core_marker_StructuralPartialEq_for_multisig_AccountId.
 Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -159,7 +159,7 @@ End Impl_core_marker_StructuralEq_for_multisig_AccountId.
 Module Impl_core_cmp_Eq_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_receiver_is_total_eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -173,7 +173,7 @@ End Impl_core_cmp_Eq_for_multisig_AccountId.
 Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  Parameter partial_cmp : (list Ty.t) -> (list Value.t) -> M.
+  Parameter partial_cmp : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -186,7 +186,7 @@ End Impl_core_cmp_PartialOrd_for_multisig_AccountId.
 Module Impl_core_cmp_Ord_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
-  Parameter cmp : (list Ty.t) -> (list Value.t) -> M.
+  Parameter cmp : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -244,7 +244,7 @@ Enum ConfirmationStatus
 Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
   Definition Self : Ty.t := Ty.path "multisig::ConfirmationStatus".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -281,7 +281,7 @@ End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
 Module Impl_core_default_Default_for_multisig_Transaction.
   Definition Self : Ty.t := Ty.path "multisig::Transaction".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -310,7 +310,7 @@ Enum Error
 Module Impl_core_clone_Clone_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -341,7 +341,7 @@ End Impl_core_marker_StructuralPartialEq_for_multisig_Error.
 Module Impl_core_cmp_PartialEq_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
   
-  Parameter eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -365,7 +365,7 @@ End Impl_core_marker_StructuralEq_for_multisig_Error.
 Module Impl_core_cmp_Eq_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
   
-  Parameter assert_receiver_is_total_eq : (list Ty.t) -> (list Value.t) -> M.
+  Parameter assert_receiver_is_total_eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -395,7 +395,7 @@ End Impl_core_cmp_Eq_for_multisig_Error.
 Module Impl_core_default_Default_for_multisig_Transactions.
   Definition Self : Ty.t := Ty.path "multisig::Transactions".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -547,20 +547,20 @@ Enum Event
 Module Impl_multisig_Env.
   Definition Self : Ty.t := Ty.path "multisig::Env".
   
-  Parameter caller : (list Ty.t) -> (list Value.t) -> M.
+  Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   
-  Parameter transferred_value : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transferred_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transferred_value :
     M.IsAssociatedFunction Self "transferred_value" transferred_value.
   
-  Parameter account_id : (list Ty.t) -> (list Value.t) -> M.
+  Parameter account_id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_account_id : M.IsAssociatedFunction Self "account_id" account_id.
 End Impl_multisig_Env.
@@ -599,7 +599,7 @@ End Impl_multisig_Env.
 Module Impl_core_default_Default_for_multisig_Multisig.
   Definition Self : Ty.t := Ty.path "multisig::Multisig".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -609,7 +609,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_multisig_Multisig.
 
-Parameter ensure_requirement_is_valid : (list Ty.t) -> (list Value.t) -> M.
+Parameter ensure_requirement_is_valid : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_ensure_requirement_is_valid :
   M.IsFunction "multisig::ensure_requirement_is_valid" ensure_requirement_is_valid.
@@ -617,110 +617,110 @@ Axiom Function_ensure_requirement_is_valid :
 Module Impl_multisig_Multisig.
   Definition Self : Ty.t := Ty.path "multisig::Multisig".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter ensure_confirmed : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ensure_confirmed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_confirmed :
     M.IsAssociatedFunction Self "ensure_confirmed" ensure_confirmed.
   
-  Parameter ensure_transaction_exists : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ensure_transaction_exists : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_transaction_exists :
     M.IsAssociatedFunction Self "ensure_transaction_exists" ensure_transaction_exists.
   
-  Parameter ensure_owner : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ensure_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_owner : M.IsAssociatedFunction Self "ensure_owner" ensure_owner.
   
-  Parameter ensure_caller_is_owner : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ensure_caller_is_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_caller_is_owner :
     M.IsAssociatedFunction Self "ensure_caller_is_owner" ensure_caller_is_owner.
   
-  Parameter ensure_from_wallet : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ensure_from_wallet : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_from_wallet :
     M.IsAssociatedFunction Self "ensure_from_wallet" ensure_from_wallet.
   
-  Parameter ensure_no_owner : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ensure_no_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_no_owner :
     M.IsAssociatedFunction Self "ensure_no_owner" ensure_no_owner.
   
-  Parameter add_owner : (list Ty.t) -> (list Value.t) -> M.
+  Parameter add_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_add_owner : M.IsAssociatedFunction Self "add_owner" add_owner.
   
-  Parameter owner_index : (list Ty.t) -> (list Value.t) -> M.
+  Parameter owner_index : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_owner_index : M.IsAssociatedFunction Self "owner_index" owner_index.
   
-  Parameter clean_owner_confirmations : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clean_owner_confirmations : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_clean_owner_confirmations :
     M.IsAssociatedFunction Self "clean_owner_confirmations" clean_owner_confirmations.
   
-  Parameter remove_owner : (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove_owner : M.IsAssociatedFunction Self "remove_owner" remove_owner.
   
-  Parameter replace_owner : (list Ty.t) -> (list Value.t) -> M.
+  Parameter replace_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_replace_owner :
     M.IsAssociatedFunction Self "replace_owner" replace_owner.
   
-  Parameter change_requirement : (list Ty.t) -> (list Value.t) -> M.
+  Parameter change_requirement : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_change_requirement :
     M.IsAssociatedFunction Self "change_requirement" change_requirement.
   
-  Parameter confirm_by_caller : (list Ty.t) -> (list Value.t) -> M.
+  Parameter confirm_by_caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_confirm_by_caller :
     M.IsAssociatedFunction Self "confirm_by_caller" confirm_by_caller.
   
-  Parameter submit_transaction : (list Ty.t) -> (list Value.t) -> M.
+  Parameter submit_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_submit_transaction :
     M.IsAssociatedFunction Self "submit_transaction" submit_transaction.
   
-  Parameter take_transaction : (list Ty.t) -> (list Value.t) -> M.
+  Parameter take_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take_transaction :
     M.IsAssociatedFunction Self "take_transaction" take_transaction.
   
-  Parameter cancel_transaction : (list Ty.t) -> (list Value.t) -> M.
+  Parameter cancel_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_cancel_transaction :
     M.IsAssociatedFunction Self "cancel_transaction" cancel_transaction.
   
-  Parameter confirm_transaction : (list Ty.t) -> (list Value.t) -> M.
+  Parameter confirm_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_confirm_transaction :
     M.IsAssociatedFunction Self "confirm_transaction" confirm_transaction.
   
-  Parameter revoke_confirmation : (list Ty.t) -> (list Value.t) -> M.
+  Parameter revoke_confirmation : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_revoke_confirmation :
     M.IsAssociatedFunction Self "revoke_confirmation" revoke_confirmation.
   
-  Parameter invoke_transaction : (list Ty.t) -> (list Value.t) -> M.
+  Parameter invoke_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_invoke_transaction :
     M.IsAssociatedFunction Self "invoke_transaction" invoke_transaction.
   
-  Parameter eval_transaction : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eval_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_eval_transaction :
     M.IsAssociatedFunction Self "eval_transaction" eval_transaction.

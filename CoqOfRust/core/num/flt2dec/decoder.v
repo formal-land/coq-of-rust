@@ -7,6 +7,7 @@ Module num.
       (* StructRecord
         {
           name := "Decoded";
+          const_params := [];
           ty_params := [];
           fields :=
             [
@@ -33,9 +34,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::Decoded".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -58,7 +59,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -73,9 +74,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::Decoded".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -132,7 +133,7 @@ Module num.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -158,9 +159,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::Decoded".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -251,7 +252,7 @@ Module num.
                       |)
                     |))))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -277,9 +278,13 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::Decoded".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -302,7 +307,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -317,6 +322,7 @@ Module num.
       (*
       Enum FullDecoded
       {
+        const_params := [];
         ty_params := [];
         variants :=
           [
@@ -359,9 +365,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::FullDecoded".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -370,7 +376,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -385,9 +391,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::FullDecoded".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -476,7 +482,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -502,9 +508,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::FullDecoded".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -576,7 +582,7 @@ Module num.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -602,9 +608,13 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::FullDecoded".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -613,7 +623,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -636,10 +646,11 @@ Module num.
                 f32::MIN_POSITIVE
             }
         *)
-        Definition min_pos_norm_value (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::f32::MIN_POSITIVE" |) |)))
-          | _, _ => M.impossible
+        Definition min_pos_norm_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
+            ltac:(M.monadic (M.read (| M.get_constant (| "core::f32::MIN_POSITIVE" |) |)))
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -658,10 +669,11 @@ Module num.
                 f64::MIN_POSITIVE
             }
         *)
-        Definition min_pos_norm_value (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::f64::MIN_POSITIVE" |) |)))
-          | _, _ => M.impossible
+        Definition min_pos_norm_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
+            ltac:(M.monadic (M.read (| M.get_constant (| "core::f64::MIN_POSITIVE" |) |)))
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -713,9 +725,9 @@ Module num.
           (sign < 0, decoded)
       }
       *)
-      Definition decode (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ v ] =>
+      Definition decode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
@@ -917,7 +929,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_decode : M.IsFunction "core::num::flt2dec::decoder::decode" decode.

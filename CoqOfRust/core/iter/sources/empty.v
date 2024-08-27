@@ -9,14 +9,14 @@ Module iter.
           Empty(marker::PhantomData)
       }
       *)
-      Definition empty (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [] =>
+      Definition empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [ T ], [] =>
           ltac:(M.monadic
             (Value.StructTuple
               "core::iter::sources::empty::Empty"
               [ Value.StructTuple "core::marker::PhantomData" [] ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_empty : M.IsFunction "core::iter::sources::empty::empty" empty.
@@ -24,23 +24,24 @@ Module iter.
       (* StructTuple
         {
           name := "Empty";
+          const_params := [];
           ty_params := [ "T" ];
-          fields := [ Ty.apply (Ty.path "core::marker::PhantomData") [ Ty.function [] T ] ];
+          fields := [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ Ty.function [] T ] ];
         } *)
       
       Module Impl_core_fmt_Debug_for_core_iter_sources_empty_Empty_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ].
         
         (*
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 f.debug_struct("Empty").finish()
             }
         *)
-        Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -63,7 +64,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -77,7 +78,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_for_core_iter_sources_empty_Empty_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ].
         
         (*     type Item = T; *)
         Definition _Item (T : Ty.t) : Ty.t := T.
@@ -87,14 +88,14 @@ Module iter.
                 None
             }
         *)
-        Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple "core::option::Option::None" []))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -102,10 +103,10 @@ Module iter.
                 (0, Some(0))
             }
         *)
-        Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.Tuple
@@ -113,7 +114,7 @@ Module iter.
                   Value.Integer 0;
                   Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -132,21 +133,21 @@ Module iter.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_iter_sources_empty_Empty_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ].
         
         (*
             fn next_back(&mut self) -> Option<T> {
                 None
             }
         *)
-        Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple "core::option::Option::None" []))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -160,21 +161,21 @@ Module iter.
       
       Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_iter_sources_empty_Empty_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ].
         
         (*
             fn len(&self) -> usize {
                 0
             }
         *)
-        Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.Integer 0))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -188,7 +189,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_TrustedLen_for_core_iter_sources_empty_Empty_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ].
         
         Axiom Implements :
           forall (T : Ty.t),
@@ -201,7 +202,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_FusedIterator_for_core_iter_sources_empty_Empty_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ].
         
         Axiom Implements :
           forall (T : Ty.t),
@@ -214,23 +215,23 @@ Module iter.
       
       Module Impl_core_clone_Clone_for_core_iter_sources_empty_Empty_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ].
         
         (*
             fn clone(&self) -> Empty<T> {
                 Empty(marker::PhantomData)
             }
         *)
-        Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple
                 "core::iter::sources::empty::Empty"
                 [ Value.StructTuple "core::marker::PhantomData" [] ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -244,22 +245,22 @@ Module iter.
       
       Module Impl_core_default_Default_for_core_iter_sources_empty_Empty_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ].
         
         (*
             fn default() -> Empty<T> {
                 Empty(marker::PhantomData)
             }
         *)
-        Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [] =>
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructTuple
                 "core::iter::sources::empty::Empty"
                 [ Value.StructTuple "core::marker::PhantomData" [] ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

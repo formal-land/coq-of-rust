@@ -12,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_default_Default_for_conditional_compilation_AccountId.
   Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -25,7 +25,7 @@ End Impl_core_default_Default_for_conditional_compilation_AccountId.
 Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
   Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -103,15 +103,15 @@ Enum Event
 Module Impl_conditional_compilation_Env.
   Definition Self : Ty.t := Ty.path "conditional_compilation::Env".
   
-  Parameter caller : (list Ty.t) -> (list Value.t) -> M.
+  Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   
-  Parameter block_number : (list Ty.t) -> (list Value.t) -> M.
+  Parameter block_number : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_block_number : M.IsAssociatedFunction Self "block_number" block_number.
 End Impl_conditional_compilation_Env.
@@ -127,36 +127,36 @@ End Impl_conditional_compilation_Env.
 Module Impl_conditional_compilation_ConditionalCompilation.
   Definition Self : Ty.t := Ty.path "conditional_compilation::ConditionalCompilation".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter new_foo : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new_foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new_foo : M.IsAssociatedFunction Self "new_foo" new_foo.
   
-  Parameter new_bar : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new_bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new_bar : M.IsAssociatedFunction Self "new_bar" new_bar.
   
-  Parameter new_foo_bar : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new_foo_bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new_foo_bar : M.IsAssociatedFunction Self "new_foo_bar" new_foo_bar.
   
-  Parameter inherent_flip_foo : (list Ty.t) -> (list Value.t) -> M.
+  Parameter inherent_flip_foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_inherent_flip_foo :
     M.IsAssociatedFunction Self "inherent_flip_foo" inherent_flip_foo.
   
-  Parameter inherent_flip_bar : (list Ty.t) -> (list Value.t) -> M.
+  Parameter inherent_flip_bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_inherent_flip_bar :
     M.IsAssociatedFunction Self "inherent_flip_bar" inherent_flip_bar.
@@ -165,11 +165,11 @@ End Impl_conditional_compilation_ConditionalCompilation.
 Module Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.
   Definition Self : Ty.t := Ty.path "conditional_compilation::ConditionalCompilation".
   
-  Parameter flip : (list Ty.t) -> (list Value.t) -> M.
+  Parameter flip : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter get : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter push_foo : (list Ty.t) -> (list Value.t) -> M.
+  Parameter push_foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance

@@ -9,12 +9,13 @@ Module iter.
     (* StructRecord
       {
         name := "GenericShunt";
+        const_params := [];
         ty_params := [ "I"; "R" ];
         fields :=
           [
             ("iter", I);
             ("residual",
-              Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "core::option::Option") [ R ] ])
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::option::Option") [] [ R ] ])
           ];
       } *)
     
@@ -34,9 +35,9 @@ Module iter.
         }
     }
     *)
-    Definition try_process (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I; T; R; F; U ], [ iter; f ] =>
+    Definition try_process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I; T; R; F; U ], [ iter; f ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           let f := M.alloc (| f |) in
@@ -54,7 +55,9 @@ Module iter.
                   M.get_trait_method (|
                     "core::ops::function::FnMut",
                     F,
-                    [ Ty.tuple [ Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [ I; R ] ]
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ] ]
                     ],
                     "call_mut",
                     []
@@ -104,14 +107,14 @@ Module iter.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_try_process : M.IsFunction "core::iter::adapters::try_process" try_process.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_GenericShunt_I_R.
       Definition Self (I R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [ I; R ].
+        Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ].
       
       (*     type Item = <I::Item as Try>::Output; *)
       Definition _Item (I R : Ty.t) : Ty.t := Ty.associated.
@@ -121,16 +124,17 @@ Module iter.
               self.try_for_each(ControlFlow::Break).break_value()
           }
       *)
-      Definition next (I R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (I R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I R in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::ops::control_flow::ControlFlow")
+                  []
                   [ Ty.associated; Ty.tuple [] ],
                 "break_value",
                 []
@@ -139,7 +143,7 @@ Module iter.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [ I; R ],
+                    Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ],
                     [],
                     "try_for_each",
                     [
@@ -147,9 +151,11 @@ Module iter.
                         [ Ty.associated ]
                         (Ty.apply
                           (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
                           [ Ty.associated; Ty.tuple [] ]);
                       Ty.apply
                         (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
                         [ Ty.associated; Ty.tuple [] ]
                     ]
                   |),
@@ -160,7 +166,7 @@ Module iter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -173,10 +179,10 @@ Module iter.
               }
           }
       *)
-      Definition size_hint (I R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (I R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I R in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -190,7 +196,7 @@ Module iter.
                           (M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [ R ],
+                                Ty.apply (Ty.path "core::option::Option") [] [ R ],
                                 "is_some",
                                 []
                               |),
@@ -246,7 +252,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -266,17 +272,17 @@ Module iter.
                   .into_try()
           }
       *)
-      Definition try_fold (I R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_fold (I R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I R in
-        match τ, α with
-        | [ B; F; T ], [ self; init; f ] =>
+        match ε, τ, α with
+        | [], [ B; F; T ], [ self; init; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let init := M.alloc (| init |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ T; Ty.associated ],
+                Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; Ty.associated ],
                 "into_try",
                 []
               |),
@@ -291,8 +297,8 @@ Module iter.
                       B;
                       Ty.function
                         [ Ty.tuple [ B; Ty.associated ] ]
-                        (Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ T; B ]);
-                      Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ T; B ]
+                        (Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; B ]);
+                      Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; B ]
                     ]
                   |),
                   [
@@ -349,6 +355,7 @@ Module iter.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "core::ops::control_flow::ControlFlow")
+                                                              []
                                                               [ T; Ty.associated ],
                                                             "from_try",
                                                             []
@@ -423,7 +430,7 @@ Module iter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -436,10 +443,10 @@ Module iter.
                   self.$try_fold(init, NeverShortCircuit::wrap_mut_2(fold)).0
               }
       *)
-      Definition fold (I R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fold (I R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I R in
-        match τ, α with
-        | [ AAA; FFF ], [ self; init; fold ] =>
+        match ε, τ, α with
+        | [], [ AAA; FFF ], [ self; init; fold ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let init := M.alloc (| init |) in
@@ -450,13 +457,13 @@ Module iter.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
-                      Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [ I; R ],
+                      Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ],
                       [],
                       "try_fold",
                       [
                         AAA;
                         Ty.associated;
-                        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ AAA ]
+                        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ]
                       ]
                     |),
                     [
@@ -464,7 +471,7 @@ Module iter.
                       M.read (| init |);
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ AAA ],
+                          Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ],
                           "wrap_mut_2",
                           [ AAA; Ty.associated; FFF ]
                         |),
@@ -477,7 +484,7 @@ Module iter.
                 0
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -498,7 +505,7 @@ Module iter.
     
     Module Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_for_core_iter_adapters_GenericShunt_I_R.
       Definition Self (I R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [ I; R ].
+        Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ].
       
       (*     type Source = I::Source; *)
       Definition _Source (I R : Ty.t) : Ty.t := Ty.associated.
@@ -509,10 +516,10 @@ Module iter.
               unsafe { SourceIter::as_inner(&mut self.iter) }
           }
       *)
-      Definition as_inner (I R : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_inner (I R : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I R in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -525,7 +532,7 @@ Module iter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -543,10 +550,13 @@ Module iter.
     
     Module Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_GenericShunt_I_R.
       Definition Self (I R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [ I; R ].
+        Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ].
       
       (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
-      (* Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+      (* Ty.apply
+        (Ty.path "core::option::Option")
+        []
+        [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
       Definition value_EXPAND_BY (I R : Ty.t) : Value.t :=
         let Self : Ty.t := Self I R in
         M.run
@@ -554,7 +564,10 @@ Module iter.
             (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
       
       (*     const MERGE_BY: Option<NonZeroUsize> = I::MERGE_BY; *)
-      (* Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+      (* Ty.apply
+        (Ty.path "core::option::Option")
+        []
+        [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
       Definition value_MERGE_BY (I R : Ty.t) : Value.t :=
         let Self : Ty.t := Self I R in
         M.run
