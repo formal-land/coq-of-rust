@@ -11,17 +11,6 @@ Module instantiation_loops.
         [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex"; Ty.path "u16" ];
     } *)
   
-  Module Impl_core_marker_StructuralEq_for_move_bytecode_verifier_instantiation_loops_Node.
-    Definition Self : Ty.t := Ty.path "move_bytecode_verifier::instantiation_loops::Node".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_bytecode_verifier_instantiation_loops_Node.
-  
   Module Impl_core_cmp_Eq_for_move_bytecode_verifier_instantiation_loops_Node.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::instantiation_loops::Node".
     
@@ -1137,58 +1126,66 @@ Module instantiation_loops.
                         |)
                       |) in
                     let~ msg :=
-                      M.copy (|
-                        let~ res :=
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_function (| "alloc::fmt::format", [] |),
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::Arguments",
-                                    "new_v1",
-                                    []
-                                  |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| Value.String "edges with constructors: [" |);
-                                            M.read (| Value.String "], nodes: [" |);
-                                            M.read (| Value.String "]" |)
-                                          ]
-                                      |));
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [ Ty.path "alloc::string::String" ]
-                                              |),
-                                              [ msg_edges ]
-                                            |);
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [ Ty.path "alloc::string::String" ]
-                                              |),
-                                              [ msg_nodes ]
-                                            |)
-                                          ]
-                                      |))
-                                  ]
-                                |)
-                              ]
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::hint::must_use",
+                            [ Ty.path "alloc::string::String" ]
+                          |),
+                          [
+                            M.read (|
+                              let~ res :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (| "alloc::fmt::format", [] |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_v1",
+                                          []
+                                        |),
+                                        [
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (|
+                                                  Value.String "edges with constructors: ["
+                                                |);
+                                                M.read (| Value.String "], nodes: [" |);
+                                                M.read (| Value.String "]" |)
+                                              ]
+                                          |);
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.path "alloc::string::String" ]
+                                                  |),
+                                                  [ msg_edges ]
+                                                |);
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.path "alloc::string::String" ]
+                                                  |),
+                                                  [ msg_nodes ]
+                                                |)
+                                              ]
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |) in
+                              res
                             |)
-                          |) in
-                        res
+                          ]
+                        |)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -3634,62 +3631,72 @@ Module instantiation_loops.
                       |) in
                     let def_idx := M.alloc (| γ1_0 |) in
                     let param_idx := M.alloc (| γ1_1 |) in
-                    let~ res :=
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_function (| "alloc::fmt::format", [] |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_v1",
-                                []
-                              |),
-                              [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "f" |); M.read (| Value.String "#" |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (|
+                          "core::hint::must_use",
+                          [ Ty.path "alloc::string::String" ]
+                        |),
+                        [
+                          M.read (|
+                            let~ res :=
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_function (| "alloc::fmt::format", [] |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_v1",
+                                        []
+                                      |),
                                       [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
+                                        M.alloc (|
+                                          Value.Array
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::FunctionDefinitionIndex"
-                                                ]
+                                              M.read (| Value.String "f" |);
+                                              M.read (| Value.String "#" |)
                                             ]
-                                          |),
-                                          [ def_idx ]
                                         |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                          |),
-                                          [ param_idx ]
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                      ]
+                                                  ]
+                                                |),
+                                                [ def_idx ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
+                                                |),
+                                                [ param_idx ]
+                                              |)
+                                            ]
                                         |)
                                       ]
-                                  |))
-                              ]
-                            |)
-                          ]
-                        |)
-                      |) in
-                    res))
+                                    |)
+                                  ]
+                                |)
+                              |) in
+                            res
+                          |)
+                        ]
+                      |)
+                    |)))
               ]
             |)
           |)))
@@ -3852,78 +3859,86 @@ Module instantiation_loops.
                                 0
                               |) in
                             let ty := M.alloc (| γ1_0 |) in
-                            let~ res :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (| "alloc::fmt::format", [] |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_function (|
+                                  "core::hint::must_use",
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [
+                                  M.read (|
+                                    let~ res :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "alloc::fmt::format", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
                                               [
-                                                M.read (| Value.String "" |);
-                                                M.read (| Value.String " --" |);
-                                                M.read (| Value.String "--> " |)
-                                              ]
-                                          |));
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [ node_1 ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_debug",
+                                                M.alloc (|
+                                                  Value.Array
                                                     [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::SignatureToken"
-                                                            ]
-                                                        ]
+                                                      M.read (| Value.String "" |);
+                                                      M.read (| Value.String " --" |);
+                                                      M.read (| Value.String "--> " |)
                                                     ]
-                                                  |),
-                                                  [ ty ]
                                                 |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [ node_2 ]
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |),
+                                                        [ node_1 ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_debug",
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::SignatureToken"
+                                                                  ]
+                                                              ]
+                                                          ]
+                                                        |),
+                                                        [ ty ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |),
+                                                        [ node_2 ]
+                                                      |)
+                                                    ]
                                                 |)
                                               ]
-                                          |))
-                                      ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            res));
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    res
+                                  |)
+                                ]
+                              |)
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -3932,56 +3947,64 @@ Module instantiation_loops.
                                 γ,
                                 "move_bytecode_verifier::instantiation_loops::Edge::Identity"
                               |) in
-                            let~ res :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (| "alloc::fmt::format", [] |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_function (|
+                                  "core::hint::must_use",
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [
+                                  M.read (|
+                                    let~ res :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "alloc::fmt::format", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
                                               [
-                                                M.read (| Value.String "" |);
-                                                M.read (| Value.String " ----> " |)
-                                              ]
-                                          |));
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [ node_1 ]
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (| Value.String "" |);
+                                                      M.read (| Value.String " ----> " |)
+                                                    ]
                                                 |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [ node_2 ]
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |),
+                                                        [ node_1 ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |),
+                                                        [ node_2 ]
+                                                      |)
+                                                    ]
                                                 |)
                                               ]
-                                          |))
-                                      ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            res))
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    res
+                                  |)
+                                ]
+                              |)
+                            |)))
                       ]
                     |)))
               ]

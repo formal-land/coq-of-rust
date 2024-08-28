@@ -45,15 +45,13 @@ Module u256.
             [
               M.read (| f |);
               M.read (| Value.String "U256FromStrError" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::u256::U256FromStrError",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "move_core_types::u256::U256FromStrError",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -204,7 +202,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -214,7 +212,7 @@ Module u256.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -224,7 +222,7 @@ Module u256.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -236,17 +234,6 @@ Module u256.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_u256_U256CastErrorKind.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_u256_U256CastErrorKind.
-    Definition Self : Ty.t := Ty.path "move_core_types::u256::U256CastErrorKind".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_u256_U256CastErrorKind.
   
   Module Impl_core_cmp_Eq_for_move_core_types_u256_U256CastErrorKind.
     Definition Self : Ty.t := Ty.path "move_core_types::u256::U256CastErrorKind".
@@ -317,7 +304,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -330,7 +317,7 @@ Module u256.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
@@ -377,23 +364,19 @@ Module u256.
               M.read (| f |);
               M.read (| Value.String "U256CastError" |);
               M.read (| Value.String "kind" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::u256::U256CastError",
+                "kind"
+              |);
+              M.read (| Value.String "val" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::u256::U256CastError",
-                  "kind"
-                |));
-              M.read (| Value.String "val" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::u256::U256CastError",
-                    "val"
-                  |)
-                |))
+                  "val"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -533,64 +516,67 @@ Module u256.
                 |)
               |) in
             let~ err_str :=
-              M.copy (|
-                let~ res :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (| "alloc::fmt::format", [] |),
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_v1",
-                            []
-                          |),
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Cast failed. " |);
-                                    M.read (| Value.String " too large for " |);
-                                    M.read (| Value.String "." |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "move_core_types::u256::U256" ]
-                                      |),
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+                  [
+                    M.read (|
+                      let~ res :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "alloc::fmt::format", [] |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    Value.Array
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_core_types::u256::U256CastError",
-                                          "val"
+                                        M.read (| Value.String "Cast failed. " |);
+                                        M.read (| Value.String " too large for " |);
+                                        M.read (| Value.String "." |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "move_core_types::u256::U256" ]
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "move_core_types::u256::U256CastError",
+                                              "val"
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                          |),
+                                          [ type_str ]
                                         |)
                                       ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                      |),
-                                      [ type_str ]
-                                    |)
-                                  ]
-                              |))
-                          ]
-                        |)
-                      ]
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |)
+                        |) in
+                      res
                     |)
-                  |) in
-                res
+                  ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -600,24 +586,20 @@ Module u256.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "alloc::string::String" ]
-                                |),
-                                [ err_str ]
-                              |)
-                            ]
-                        |))
+                      M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "alloc::string::String" ]
+                              |),
+                              [ err_str ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -696,29 +678,26 @@ Module u256.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "uint::uint::FromStrRadixErr" ]
-                            |),
-                            [
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.read (| self |),
-                                "move_core_types::u256::U256FromStrError",
-                                0
-                              |)
-                            ]
-                          |)
-                        ]
-                    |))
+                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "uint::uint::FromStrRadixErr" ]
+                          |),
+                          [
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.read (| self |),
+                              "move_core_types::u256::U256FromStrError",
+                              0
+                            |)
+                          ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
@@ -787,15 +766,13 @@ Module u256.
             [
               M.read (| f |);
               M.read (| Value.String "U256" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::u256::U256",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "move_core_types::u256::U256",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -861,17 +838,6 @@ Module u256.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_u256_U256.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_u256_U256.
-    Definition Self : Ty.t := Ty.path "move_core_types::u256::U256".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_u256_U256.
   
   Module Impl_core_cmp_Eq_for_move_core_types_u256_U256.
     Definition Self : Ty.t := Ty.path "move_core_types::u256::U256".
@@ -2458,7 +2424,7 @@ Module u256.
                   "from_little_endian",
                   []
                 |),
-                [ (* Unsize *) M.pointer_coercion (M.read (| slice |)) ]
+                [ M.read (| slice |) ]
               |)
             ]))
       | _, _, _ => M.impossible
@@ -2495,7 +2461,7 @@ Module u256.
                       "move_core_types::u256::U256",
                       0
                     |);
-                    (* Unsize *) M.pointer_coercion bytes
+                    bytes
                   ]
                 |)
               |) in
@@ -3149,12 +3115,9 @@ Module u256.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "Fatal! Downcast failed" |) ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "Fatal! Downcast failed" |) ]
+                                |)
                               ]
                             |)
                           ]
@@ -3921,18 +3884,16 @@ Module u256.
             |),
             [
               Value.StructTuple "num_bigint::bigint::Sign::Plus" [];
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "move_core_types::u256::U256",
-                      "to_le_bytes",
-                      []
-                    |),
-                    [ M.read (| M.read (| n |) |) ]
-                  |)
-                |))
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "move_core_types::u256::U256",
+                    "to_le_bytes",
+                    []
+                  |),
+                  [ M.read (| M.read (| n |) |) ]
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -3966,49 +3927,52 @@ Module u256.
           (let n := M.alloc (| n |) in
           M.read (|
             let~ num_str :=
-              M.copy (|
-                let~ res :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (| "alloc::fmt::format", [] |),
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_v1",
-                            []
-                          |),
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_upper_hex",
-                                        [ Ty.path "primitive_types::U256" ]
-                                      |),
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+                  [
+                    M.read (|
+                      let~ res :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "alloc::fmt::format", [] |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                                [
+                                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                                  M.alloc (|
+                                    Value.Array
                                       [
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          M.read (| n |),
-                                          "move_core_types::u256::U256",
-                                          0
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_upper_hex",
+                                            [ Ty.path "primitive_types::U256" ]
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              M.read (| n |),
+                                              "move_core_types::u256::U256",
+                                              0
+                                            |)
+                                          ]
                                         |)
                                       ]
-                                    |)
-                                  ]
-                              |))
-                          ]
-                        |)
-                      ]
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |)
+                        |) in
+                      res
                     |)
-                  |) in
-                res
+                  ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -4515,7 +4479,7 @@ Module u256.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "rand_core::RngCore", R, [], "fill_bytes", [] |),
-                  [ M.read (| rng |); (* Unsize *) M.pointer_coercion dest ]
+                  [ M.read (| rng |); dest ]
                 |)
               |) in
             M.alloc (|
@@ -4610,31 +4574,25 @@ Module u256.
               M.read (| f |);
               M.read (| Value.String "UniformU256" |);
               M.read (| Value.String "low" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::u256::UniformU256",
-                  "low"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::u256::UniformU256",
+                "low"
+              |);
               M.read (| Value.String "range" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::u256::UniformU256",
+                "range"
+              |);
+              M.read (| Value.String "z" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::u256::UniformU256",
-                  "range"
-                |));
-              M.read (| Value.String "z" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::u256::UniformU256",
-                    "z"
-                  |)
-                |))
+                  "z"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -4748,17 +4706,6 @@ Module u256.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_u256_UniformU256.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_u256_UniformU256.
-    Definition Self : Ty.t := Ty.path "move_core_types::u256::UniformU256".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_u256_UniformU256.
   
   Module Impl_core_cmp_Eq_for_move_core_types_u256_UniformU256.
     Definition Self : Ty.t := Ty.path "move_core_types::u256::UniformU256".
@@ -4890,16 +4837,14 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "Uniform::new called with `low >= high`"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "Uniform::new called with `low >= high`"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -5043,17 +4988,15 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "Uniform::new_inclusive called with `low > high`"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "Uniform::new_inclusive called with `low > high`"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -5507,17 +5450,14 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "UniformSampler::sample_single: low >= high"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "UniformSampler::sample_single: low >= high"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -5673,17 +5613,15 @@ Module u256.
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String
-                                                  "UniformSampler::sample_single_inclusive: low > high"
-                                              |)
-                                            ]
-                                        |))
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "UniformSampler::sample_single_inclusive: low > high"
+                                            |)
+                                          ]
+                                      |)
                                     ]
                                   |)
                                 ]

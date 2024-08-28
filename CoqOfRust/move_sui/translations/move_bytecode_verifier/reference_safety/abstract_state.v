@@ -103,11 +103,7 @@ Module reference_safety.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Reference" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Reference" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -141,18 +137,6 @@ Module reference_safety.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
-    
-    Module Impl_core_marker_StructuralEq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
-      Definition Self : Ty.t :=
-        Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
     
     Module Impl_core_cmp_Eq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
       Definition Self : Ty.t :=
@@ -210,7 +194,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -223,7 +207,7 @@ Module reference_safety.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -238,7 +222,7 @@ Module reference_safety.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -268,12 +252,20 @@ Module reference_safety.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "move_borrow_graph::references::RefID",
-                                    [ Ty.path "move_borrow_graph::references::RefID" ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_borrow_graph::references::RefID" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_borrow_graph::references::RefID" ]
+                                    ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -582,11 +574,7 @@ Module reference_safety.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Local" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Local" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -606,11 +594,7 @@ Module reference_safety.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Global" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Global" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -630,11 +614,7 @@ Module reference_safety.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Field" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Field" |); __self_0 ]
                         |)
                       |)))
                 ]
@@ -650,18 +630,6 @@ Module reference_safety.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
-    
-    Module Impl_core_marker_StructuralEq_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
-      Definition Self : Ty.t :=
-        Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
     
     Module Impl_core_cmp_Eq_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
       Definition Self : Ty.t :=
@@ -721,7 +689,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -731,7 +699,7 @@ Module reference_safety.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -745,7 +713,7 @@ Module reference_safety.
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                    [ __self_tag; __arg1_tag ]
+                    [ __self_discr; __arg1_discr ]
                   |)
                 |),
                 [
@@ -906,7 +874,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -916,7 +884,7 @@ Module reference_safety.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -928,7 +896,7 @@ Module reference_safety.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -955,9 +923,16 @@ Module reference_safety.
                                 |) in
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.read (| M.read (| __self_0 |) |))
-                                  (M.read (| M.read (| __arg1_0 |) |))
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                    "eq",
+                                    []
+                                  |),
+                                  [ __self_0; __arg1_0 ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -983,16 +958,26 @@ Module reference_safety.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path
-                                      "move_binary_format::file_format::StructDefinitionIndex",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_binary_format::file_format::StructDefinitionIndex"
+                                      ],
                                     [
-                                      Ty.path
-                                        "move_binary_format::file_format::StructDefinitionIndex"
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::StructDefinitionIndex"
+                                        ]
                                     ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -1019,12 +1004,24 @@ Module reference_safety.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "move_binary_format::file_format::FieldHandleIndex",
-                                    [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::FieldHandleIndex"
+                                      ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::FieldHandleIndex"
+                                        ]
+                                    ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -1066,7 +1063,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1076,7 +1073,7 @@ Module reference_safety.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1196,7 +1193,7 @@ Module reference_safety.
                             "partial_cmp",
                             []
                           |),
-                          [ __self_tag; __arg1_tag ]
+                          [ __self_discr; __arg1_discr ]
                         |)
                       |)))
                 ]
@@ -1262,26 +1259,20 @@ Module reference_safety.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "local#" |) ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                          |),
-                                          [ i ]
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (| Value.Array [ M.read (| Value.String "local#" |) ] |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                        |),
+                                        [ i ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -1313,34 +1304,28 @@ Module reference_safety.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "resource@" |) ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::StructDefinitionIndex"
-                                                ]
-                                            ]
-                                          |),
-                                          [ i ]
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (| Value.Array [ M.read (| Value.String "resource@" |) ] |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructDefinitionIndex"
+                                              ]
+                                          ]
+                                        |),
+                                        [ i ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -1372,34 +1357,28 @@ Module reference_safety.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "field#" |) ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::FieldHandleIndex"
-                                                ]
-                                            ]
-                                          |),
-                                          [ i ]
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (| Value.Array [ M.read (| Value.String "field#" |) ] |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FieldHandleIndex"
+                                              ]
+                                          ]
+                                        |),
+                                        [ i ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -1602,39 +1581,31 @@ Module reference_safety.
                 M.read (| f |);
                 M.read (| Value.String "AbstractState" |);
                 M.read (| Value.String "current_function" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                    "current_function"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                  "current_function"
+                |);
                 M.read (| Value.String "locals" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                    "locals"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                  "locals"
+                |);
                 M.read (| Value.String "borrow_graph" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                  "borrow_graph"
+                |);
+                M.read (| Value.String "next_id" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                    "borrow_graph"
-                  |));
-                M.read (| Value.String "next_id" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                      "next_id"
-                    |)
-                  |))
+                    "next_id"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -1807,18 +1778,6 @@ Module reference_safety.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.
-    
-    Module Impl_core_marker_StructuralEq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.
-      Definition Self : Ty.t :=
-        Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.
     
     Module Impl_core_cmp_Eq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.
       Definition Self : Ty.t :=
@@ -4308,48 +4267,52 @@ Module reference_safety.
                                           []
                                       ]
                                     |);
-                                    M.read (|
-                                      let~ res :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_function (| "alloc::fmt::format", [] |),
-                                            [
+                                    M.call_closure (|
+                                      M.get_function (|
+                                        "core::hint::must_use",
+                                        [ Ty.path "alloc::string::String" ]
+                                      |),
+                                      [
+                                        M.read (|
+                                          let~ res :=
+                                            M.alloc (|
                                               M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::Arguments",
-                                                  "new_v1",
-                                                  []
-                                                |),
+                                                M.get_function (| "alloc::fmt::format", [] |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:305 (none)"
-                                                          |)
-                                                        ]
-                                                    |));
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "none",
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::Arguments",
+                                                      "new_v1",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.read (|
+                                                              Value.String
+                                                                "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:305 (none)"
+                                                            |)
+                                                          ]
+                                                      |);
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "none",
+                                                            []
+                                                          |),
                                                           []
-                                                        |),
-                                                        []
+                                                        |)
                                                       |)
-                                                    |))
+                                                    ]
+                                                  |)
                                                 ]
                                               |)
-                                            ]
-                                          |)
-                                        |) in
-                                      res
+                                            |) in
+                                          res
+                                        |)
+                                      ]
                                     |)
                                   ]
                                 |)
@@ -4377,29 +4340,25 @@ Module reference_safety.
                                                 []
                                               |),
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array [ M.read (| Value.String "" |) ]
-                                                  |));
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::errors::PartialVMError"
-                                                            ]
-                                                          |),
-                                                          [ err ]
-                                                        |)
-                                                      ]
-                                                  |))
+                                                M.alloc (|
+                                                  Value.Array [ M.read (| Value.String "" |) ]
+                                                |);
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_debug",
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ]
+                                                        |),
+                                                        [ err ]
+                                                      |)
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]
@@ -4681,48 +4640,56 @@ Module reference_safety.
                                                   []
                                               ]
                                             |);
-                                            M.read (|
-                                              let~ res :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_function (| "alloc::fmt::format", [] |),
-                                                    [
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "core::hint::must_use",
+                                                [ Ty.path "alloc::string::String" ]
+                                              |),
+                                              [
+                                                M.read (|
+                                                  let~ res :=
+                                                    M.alloc (|
                                                       M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::Arguments",
-                                                          "new_v1",
+                                                        M.get_function (|
+                                                          "alloc::fmt::format",
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:325 (none)"
-                                                                  |)
-                                                                ]
-                                                            |));
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "none",
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::Arguments",
+                                                              "new_v1",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:325 (none)"
+                                                                    |)
+                                                                  ]
+                                                              |);
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "none",
+                                                                    []
+                                                                  |),
                                                                   []
-                                                                |),
-                                                                []
+                                                                |)
                                                               |)
-                                                            |))
+                                                            ]
+                                                          |)
                                                         ]
                                                       |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              res
+                                                    |) in
+                                                  res
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -4755,31 +4722,27 @@ Module reference_safety.
                                                             []
                                                           |),
                                                           [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
-                                                              |));
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [ M.read (| Value.String "" |) ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_debug",
+                                                                      [
                                                                         Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"
-                                                                        ]
-                                                                      |),
-                                                                      [ err ]
-                                                                    |)
-                                                                  ]
-                                                              |))
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
+                                                                    |),
+                                                                    [ err ]
+                                                                  |)
+                                                                ]
+                                                            |)
                                                           ]
                                                         |)
                                                       ]
@@ -5023,48 +4986,56 @@ Module reference_safety.
                                                   []
                                               ]
                                             |);
-                                            M.read (|
-                                              let~ res :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_function (| "alloc::fmt::format", [] |),
-                                                    [
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "core::hint::must_use",
+                                                [ Ty.path "alloc::string::String" ]
+                                              |),
+                                              [
+                                                M.read (|
+                                                  let~ res :=
+                                                    M.alloc (|
                                                       M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::Arguments",
-                                                          "new_v1",
+                                                        M.get_function (|
+                                                          "alloc::fmt::format",
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:344 (none)"
-                                                                  |)
-                                                                ]
-                                                            |));
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "none",
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::Arguments",
+                                                              "new_v1",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:344 (none)"
+                                                                    |)
+                                                                  ]
+                                                              |);
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "none",
+                                                                    []
+                                                                  |),
                                                                   []
-                                                                |),
-                                                                []
+                                                                |)
                                                               |)
-                                                            |))
+                                                            ]
+                                                          |)
                                                         ]
                                                       |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              res
+                                                    |) in
+                                                  res
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -5097,31 +5068,27 @@ Module reference_safety.
                                                             []
                                                           |),
                                                           [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
-                                                              |));
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [ M.read (| Value.String "" |) ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_debug",
+                                                                      [
                                                                         Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"
-                                                                        ]
-                                                                      |),
-                                                                      [ err ]
-                                                                    |)
-                                                                  ]
-                                                              |))
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ]
+                                                                    |),
+                                                                    [ err ]
+                                                                  |)
+                                                                ]
+                                                            |)
                                                           ]
                                                         |)
                                                       ]
@@ -6476,48 +6443,52 @@ Module reference_safety.
                                             []
                                         ]
                                       |);
-                                      M.read (|
-                                        let~ res :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
-                                              [
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "core::hint::must_use",
+                                          [ Ty.path "alloc::string::String" ]
+                                        |),
+                                        [
+                                          M.read (|
+                                            let~ res :=
+                                              M.alloc (|
                                                 M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::Arguments",
-                                                    "new_v1",
-                                                    []
-                                                  |),
+                                                  M.get_function (| "alloc::fmt::format", [] |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:486 (none)"
-                                                            |)
-                                                          ]
-                                                      |));
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "none",
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::Arguments",
+                                                        "new_v1",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (|
+                                                                Value.String
+                                                                  "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:486 (none)"
+                                                              |)
+                                                            ]
+                                                        |);
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "none",
+                                                              []
+                                                            |),
                                                             []
-                                                          |),
-                                                          []
+                                                          |)
                                                         |)
-                                                      |))
+                                                      ]
+                                                    |)
                                                   ]
                                                 |)
-                                              ]
-                                            |)
-                                          |) in
-                                        res
+                                              |) in
+                                            res
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -6545,29 +6516,25 @@ Module reference_safety.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |));
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_debug",
-                                                              [
-                                                                Ty.path
-                                                                  "move_binary_format::errors::PartialVMError"
-                                                              ]
-                                                            |),
-                                                            [ err ]
-                                                          |)
-                                                        ]
-                                                    |))
+                                                  M.alloc (|
+                                                    Value.Array [ M.read (| Value.String "" |) ]
+                                                  |);
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_debug",
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
+                                                          |),
+                                                          [ err ]
+                                                        |)
+                                                      ]
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -6750,48 +6717,52 @@ Module reference_safety.
                                             []
                                         ]
                                       |);
-                                      M.read (|
-                                        let~ res :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
-                                              [
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "core::hint::must_use",
+                                          [ Ty.path "alloc::string::String" ]
+                                        |),
+                                        [
+                                          M.read (|
+                                            let~ res :=
+                                              M.alloc (|
                                                 M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::Arguments",
-                                                    "new_v1",
-                                                    []
-                                                  |),
+                                                  M.get_function (| "alloc::fmt::format", [] |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:500 (none)"
-                                                            |)
-                                                          ]
-                                                      |));
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "none",
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::Arguments",
+                                                        "new_v1",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (|
+                                                                Value.String
+                                                                  "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:500 (none)"
+                                                              |)
+                                                            ]
+                                                        |);
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "none",
+                                                              []
+                                                            |),
                                                             []
-                                                          |),
-                                                          []
+                                                          |)
                                                         |)
-                                                      |))
+                                                      ]
+                                                    |)
                                                   ]
                                                 |)
-                                              ]
-                                            |)
-                                          |) in
-                                        res
+                                              |) in
+                                            res
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -6819,29 +6790,25 @@ Module reference_safety.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |));
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_debug",
-                                                              [
-                                                                Ty.path
-                                                                  "move_binary_format::errors::PartialVMError"
-                                                              ]
-                                                            |),
-                                                            [ err ]
-                                                          |)
-                                                        ]
-                                                    |))
+                                                  M.alloc (|
+                                                    Value.Array [ M.read (| Value.String "" |) ]
+                                                  |);
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_debug",
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
+                                                          |),
+                                                          [ err ]
+                                                        |)
+                                                      ]
+                                                  |)
                                                 ]
                                               |)
                                             ]

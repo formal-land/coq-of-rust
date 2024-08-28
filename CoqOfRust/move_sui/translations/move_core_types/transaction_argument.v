@@ -340,7 +340,7 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -354,7 +354,7 @@ Module transaction_argument.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -575,17 +575,6 @@ Module transaction_argument.
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_transaction_argument_TransactionArgument.
   
-  Module Impl_core_marker_StructuralEq_for_move_core_types_transaction_argument_TransactionArgument.
-    Definition Self : Ty.t := Ty.path "move_core_types::transaction_argument::TransactionArgument".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_transaction_argument_TransactionArgument.
-  
   Module Impl_core_cmp_Eq_for_move_core_types_transaction_argument_TransactionArgument.
     Definition Self : Ty.t := Ty.path "move_core_types::transaction_argument::TransactionArgument".
     
@@ -701,7 +690,7 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -711,7 +700,7 @@ Module transaction_argument.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -723,7 +712,7 @@ Module transaction_argument.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -750,9 +739,16 @@ Module transaction_argument.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -775,9 +771,16 @@ Module transaction_argument.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -800,9 +803,16 @@ Module transaction_argument.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -828,12 +838,20 @@ Module transaction_argument.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::account_address::AccountAddress",
-                                  [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::account_address::AccountAddress" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -861,19 +879,29 @@ Module transaction_argument.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
+                                    (Ty.path "&")
                                     []
-                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                    ],
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
+                                      (Ty.path "&")
                                       []
-                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                      ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -897,9 +925,16 @@ Module transaction_argument.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -922,9 +957,16 @@ Module transaction_argument.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -947,9 +989,16 @@ Module transaction_argument.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -975,12 +1024,20 @@ Module transaction_argument.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::u256::U256",
-                                  [ Ty.path "move_core_types::u256::U256" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::u256::U256" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::u256::U256" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -1433,30 +1490,24 @@ Module transaction_argument.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "{U8: " |);
-                                      M.read (| Value.String "}" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                        |),
-                                        [ value ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "{U8: " |); M.read (| Value.String "}" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                      |),
+                                      [ value ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1488,30 +1539,26 @@ Module transaction_argument.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "{U64: " |);
-                                      M.read (| Value.String "}" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                        |),
-                                        [ value ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "{U64: " |);
+                                    M.read (| Value.String "}" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                      |),
+                                      [ value ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1543,30 +1590,26 @@ Module transaction_argument.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "{U128: " |);
-                                      M.read (| Value.String "}" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
-                                        |),
-                                        [ value ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "{U128: " |);
+                                    M.read (| Value.String "}" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
+                                      |),
+                                      [ value ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1598,30 +1641,26 @@ Module transaction_argument.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "{BOOL: " |);
-                                      M.read (| Value.String "}" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ]
-                                        |),
-                                        [ boolean ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "{BOOL: " |);
+                                    M.read (| Value.String "}" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ]
+                                      |),
+                                      [ boolean ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1653,38 +1692,34 @@ Module transaction_argument.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "{ADDRESS: " |);
-                                      M.read (| Value.String "}" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_core_types::account_address::AccountAddress"
-                                              ]
-                                          ]
-                                        |),
-                                        [ address ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "{ADDRESS: " |);
+                                    M.read (| Value.String "}" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::account_address::AccountAddress"
+                                            ]
+                                        ]
+                                      |),
+                                      [ address ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1716,53 +1751,47 @@ Module transaction_argument.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "{U8Vector: 0x" |);
-                                      M.read (| Value.String "}" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "alloc::string::String" ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_function (|
-                                                "hex::encode",
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "alloc::vec::Vec")
-                                                        []
-                                                        [
-                                                          Ty.path "u8";
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ]
-                                                    ]
-                                                ]
-                                              |),
-                                              [ M.read (| vector |) ]
-                                            |)
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "{U8Vector: 0x" |);
+                                    M.read (| Value.String "}" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "alloc::string::String" ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "hex::encode",
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ]
+                                              ]
+                                            |),
+                                            [ M.read (| vector |) ]
                                           |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1794,30 +1823,26 @@ Module transaction_argument.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "{U16: " |);
-                                      M.read (| Value.String "}" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                        |),
-                                        [ value ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "{U16: " |);
+                                    M.read (| Value.String "}" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
+                                      |),
+                                      [ value ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1849,30 +1874,26 @@ Module transaction_argument.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "{U32: " |);
-                                      M.read (| Value.String "}" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
-                                        |),
-                                        [ value ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "{U32: " |);
+                                    M.read (| Value.String "}" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
+                                      |),
+                                      [ value ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1904,35 +1925,31 @@ Module transaction_argument.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "{U256: " |);
-                                      M.read (| Value.String "}" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "move_core_types::u256::U256" ]
-                                          ]
-                                        |),
-                                        [ value ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "{U256: " |);
+                                    M.read (| Value.String "}" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "move_core_types::u256::U256" ]
+                                        ]
+                                      |),
+                                      [ value ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -2428,62 +2445,69 @@ Module transaction_argument.
                                                                                         ]
                                                                                       |),
                                                                                       [
-                                                                                        M.read (|
-                                                                                          let~
-                                                                                                res :=
-                                                                                            M.alloc (|
-                                                                                              M.call_closure (|
-                                                                                                M.get_function (|
-                                                                                                  "alloc::fmt::format",
-                                                                                                  []
-                                                                                                |),
-                                                                                                [
+                                                                                        M.call_closure (|
+                                                                                          M.get_function (|
+                                                                                            "core::hint::must_use",
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "alloc::string::String"
+                                                                                            ]
+                                                                                          |),
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              let~
+                                                                                                    res :=
+                                                                                                M.alloc (|
                                                                                                   M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::Arguments",
-                                                                                                      "new_v1",
+                                                                                                    M.get_function (|
+                                                                                                      "alloc::fmt::format",
                                                                                                       []
                                                                                                     |),
                                                                                                     [
-                                                                                                      (* Unsize *)
-                                                                                                      M.pointer_coercion
-                                                                                                        (M.alloc (|
-                                                                                                          Value.Array
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                Value.String
-                                                                                                                  "unexpected value in bytes: "
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                        |));
-                                                                                                      (* Unsize *)
-                                                                                                      M.pointer_coercion
-                                                                                                        (M.alloc (|
-                                                                                                          Value.Array
-                                                                                                            [
-                                                                                                              M.call_closure (|
-                                                                                                                M.get_associated_function (|
-                                                                                                                  Ty.path
-                                                                                                                    "core::fmt::rt::Argument",
-                                                                                                                  "new_debug",
-                                                                                                                  [
+                                                                                                      M.call_closure (|
+                                                                                                        M.get_associated_function (|
+                                                                                                          Ty.path
+                                                                                                            "core::fmt::Arguments",
+                                                                                                          "new_v1",
+                                                                                                          []
+                                                                                                        |),
+                                                                                                        [
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
+                                                                                                                M.read (|
+                                                                                                                  Value.String
+                                                                                                                    "unexpected value in bytes: "
+                                                                                                                |)
+                                                                                                              ]
+                                                                                                          |);
+                                                                                                          M.alloc (|
+                                                                                                            Value.Array
+                                                                                                              [
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
                                                                                                                     Ty.path
-                                                                                                                      "move_core_types::runtime_value::MoveValue"
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    "new_debug",
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "move_core_types::runtime_value::MoveValue"
+                                                                                                                    ]
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    mv
                                                                                                                   ]
-                                                                                                                |),
-                                                                                                                [
-                                                                                                                  mv
-                                                                                                                ]
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                        |))
+                                                                                                                |)
+                                                                                                              ]
+                                                                                                          |)
+                                                                                                        ]
+                                                                                                      |)
                                                                                                     ]
                                                                                                   |)
-                                                                                                ]
-                                                                                              |)
-                                                                                            |) in
-                                                                                          res
+                                                                                                |) in
+                                                                                              res
+                                                                                            |)
+                                                                                          ]
                                                                                         |)
                                                                                       ]
                                                                                     |)
@@ -2604,58 +2628,63 @@ Module transaction_argument.
                                                       [ Ty.path "alloc::string::String" ]
                                                     |),
                                                     [
-                                                      M.read (|
-                                                        let~ res :=
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "alloc::fmt::format",
-                                                                []
-                                                              |),
-                                                              [
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::hint::must_use",
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            let~ res :=
+                                                              M.alloc (|
                                                                 M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path "core::fmt::Arguments",
-                                                                    "new_v1",
+                                                                  M.get_function (|
+                                                                    "alloc::fmt::format",
                                                                     []
                                                                   |),
                                                                   [
-                                                                    (* Unsize *)
-                                                                    M.pointer_coercion
-                                                                      (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "invalid transaction argument: "
-                                                                            |)
-                                                                          ]
-                                                                      |));
-                                                                    (* Unsize *)
-                                                                    M.pointer_coercion
-                                                                      (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Argument",
-                                                                                "new_debug",
-                                                                                [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Arguments",
+                                                                        "new_v1",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "invalid transaction argument: "
+                                                                              |)
+                                                                            ]
+                                                                        |);
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
                                                                                   Ty.path
-                                                                                    "move_core_types::runtime_value::MoveValue"
-                                                                                ]
-                                                                              |),
-                                                                              [ val ]
-                                                                            |)
-                                                                          ]
-                                                                      |))
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_debug",
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_core_types::runtime_value::MoveValue"
+                                                                                  ]
+                                                                                |),
+                                                                                [ val ]
+                                                                              |)
+                                                                            ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
                                                                   ]
                                                                 |)
-                                                              ]
-                                                            |)
-                                                          |) in
-                                                        res
+                                                              |) in
+                                                            res
+                                                          |)
+                                                        ]
                                                       |)
                                                     ]
                                                   |)
@@ -3003,17 +3032,6 @@ Module transaction_argument.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_transaction_argument_VecBytes.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_transaction_argument_VecBytes.
-    Definition Self : Ty.t := Ty.path "move_core_types::transaction_argument::VecBytes".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_transaction_argument_VecBytes.
   
   Module Impl_core_cmp_Eq_for_move_core_types_transaction_argument_VecBytes.
     Definition Self : Ty.t := Ty.path "move_core_types::transaction_argument::VecBytes".

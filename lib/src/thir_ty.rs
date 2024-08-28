@@ -93,8 +93,9 @@ pub(crate) fn compile_type<'a>(
             })
         }
         TyKind::Ref(_, ty, mutbl) => CoqType::make_ref(mutbl, compile_type(env, generics, ty)),
-        // TyKind::FnPtr(binder, _) => compile_poly_fn_sig(env, generics, binder),
-        TyKind::FnPtr(_, _) => todo!("TyKind::FnPtr"),
+        TyKind::FnPtr(fn_sig, fn_header) => {
+            compile_poly_fn_sig(env, generics, &fn_sig.with(*fn_header))
+        }
         TyKind::Dynamic(existential_predicates, _, _) => {
             let traits = existential_predicates
                 .iter()

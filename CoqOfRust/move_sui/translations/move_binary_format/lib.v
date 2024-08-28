@@ -313,17 +313,6 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
 
-Module Impl_core_marker_StructuralEq_for_move_binary_format_IndexKind.
-  Definition Self : Ty.t := Ty.path "move_binary_format::IndexKind".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_move_binary_format_IndexKind.
-
 Module Impl_core_cmp_Eq_for_move_binary_format_IndexKind.
   Definition Self : Ty.t := Ty.path "move_binary_format::IndexKind".
   
@@ -361,7 +350,7 @@ Module Impl_core_hash_Hash_for_move_binary_format_IndexKind.
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -374,7 +363,7 @@ Module Impl_core_hash_Hash_for_move_binary_format_IndexKind.
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-              [ __self_tag; M.read (| state |) ]
+              [ __self_discr; M.read (| state |) ]
             |)
           |)
         |)))
@@ -400,7 +389,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -410,7 +399,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -423,7 +412,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))
@@ -460,7 +449,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_IndexKind.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -470,7 +459,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_IndexKind.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -480,7 +469,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_IndexKind.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
         |)))
     | _, _, _ => M.impossible
     end.
@@ -504,7 +493,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -514,7 +503,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -533,7 +522,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
                 "partial_cmp",
                 []
               |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))
@@ -582,31 +571,29 @@ Module Impl_move_binary_format_IndexKind.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (* Unsize *)
-        (M.pointer_coercion
-          (M.alloc (|
-            Value.Array
-              [
-                Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [];
-                Value.StructTuple "move_binary_format::IndexKind::StructHandle" [];
-                Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [];
-                Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [];
-                Value.StructTuple "move_binary_format::IndexKind::FriendDeclaration" [];
-                Value.StructTuple "move_binary_format::IndexKind::StructDefInstantiation" [];
-                Value.StructTuple "move_binary_format::IndexKind::FunctionInstantiation" [];
-                Value.StructTuple "move_binary_format::IndexKind::FieldInstantiation" [];
-                Value.StructTuple "move_binary_format::IndexKind::StructDefinition" [];
-                Value.StructTuple "move_binary_format::IndexKind::FunctionDefinition" [];
-                Value.StructTuple "move_binary_format::IndexKind::FieldDefinition" [];
-                Value.StructTuple "move_binary_format::IndexKind::Signature" [];
-                Value.StructTuple "move_binary_format::IndexKind::Identifier" [];
-                Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
-                Value.StructTuple "move_binary_format::IndexKind::LocalPool" [];
-                Value.StructTuple "move_binary_format::IndexKind::CodeDefinition" [];
-                Value.StructTuple "move_binary_format::IndexKind::TypeParameter" [];
-                Value.StructTuple "move_binary_format::IndexKind::MemberCount" []
-              ]
-          |))))
+        (M.alloc (|
+          Value.Array
+            [
+              Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [];
+              Value.StructTuple "move_binary_format::IndexKind::StructHandle" [];
+              Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [];
+              Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [];
+              Value.StructTuple "move_binary_format::IndexKind::FriendDeclaration" [];
+              Value.StructTuple "move_binary_format::IndexKind::StructDefInstantiation" [];
+              Value.StructTuple "move_binary_format::IndexKind::FunctionInstantiation" [];
+              Value.StructTuple "move_binary_format::IndexKind::FieldInstantiation" [];
+              Value.StructTuple "move_binary_format::IndexKind::StructDefinition" [];
+              Value.StructTuple "move_binary_format::IndexKind::FunctionDefinition" [];
+              Value.StructTuple "move_binary_format::IndexKind::FieldDefinition" [];
+              Value.StructTuple "move_binary_format::IndexKind::Signature" [];
+              Value.StructTuple "move_binary_format::IndexKind::Identifier" [];
+              Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
+              Value.StructTuple "move_binary_format::IndexKind::LocalPool" [];
+              Value.StructTuple "move_binary_format::IndexKind::CodeDefinition" [];
+              Value.StructTuple "move_binary_format::IndexKind::TypeParameter" [];
+              Value.StructTuple "move_binary_format::IndexKind::MemberCount" []
+            ]
+        |)))
     | _, _, _ => M.impossible
     end.
   
@@ -937,17 +924,6 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
 
-Module Impl_core_marker_StructuralEq_for_move_binary_format_SignatureTokenKind.
-  Definition Self : Ty.t := Ty.path "move_binary_format::SignatureTokenKind".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_move_binary_format_SignatureTokenKind.
-
 Module Impl_core_cmp_Eq_for_move_binary_format_SignatureTokenKind.
   Definition Self : Ty.t := Ty.path "move_binary_format::SignatureTokenKind".
   
@@ -985,7 +961,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -995,7 +971,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1008,7 +984,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))
@@ -1045,7 +1021,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_SignatureTokenKind.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1055,7 +1031,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_SignatureTokenKind.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1065,7 +1041,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_SignatureTokenKind.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
         |)))
     | _, _, _ => M.impossible
     end.
@@ -1089,7 +1065,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1099,7 +1075,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1118,7 +1094,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
                 "partial_cmp",
                 []
               |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))

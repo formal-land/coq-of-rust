@@ -207,17 +207,15 @@ Module stack_usage_verifier.
                                                       verifier;
                                                       M.read (| config |);
                                                       M.read (| block_id |);
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_bytecode_verifier::absint::FunctionContext",
-                                                            "cfg",
-                                                            []
-                                                          |),
-                                                          [ M.read (| function_context |) ]
-                                                        |))
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_bytecode_verifier::absint::FunctionContext",
+                                                          "cfg",
+                                                          []
+                                                        |),
+                                                        [ M.read (| function_context |) ]
+                                                      |)
                                                     ]
                                                   |)
                                                 ]

@@ -66,15 +66,13 @@ Module loop_summary.
             [
               M.read (| f |);
               M.read (| Value.String "NodeId" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_bytecode_verifier::loop_summary::NodeId",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "move_bytecode_verifier::loop_summary::NodeId",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -134,17 +132,6 @@ Module loop_summary.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_loop_summary_NodeId.
-  
-  Module Impl_core_marker_StructuralEq_for_move_bytecode_verifier_loop_summary_NodeId.
-    Definition Self : Ty.t := Ty.path "move_bytecode_verifier::loop_summary::NodeId".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_bytecode_verifier_loop_summary_NodeId.
   
   Module Impl_core_cmp_Eq_for_move_bytecode_verifier_loop_summary_NodeId.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::loop_summary::NodeId".

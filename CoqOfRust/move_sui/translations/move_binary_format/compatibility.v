@@ -161,17 +161,6 @@ Module compatibility.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_compatibility_Compatibility.
   
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_compatibility_Compatibility.
-    Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::Compatibility".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_compatibility_Compatibility.
-  
   Module Impl_core_cmp_Eq_for_move_binary_format_compatibility_Compatibility.
     Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::Compatibility".
     
@@ -237,57 +226,43 @@ Module compatibility.
               |) in
             let~ values :=
               M.alloc (|
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::compatibility::Compatibility",
-                            "check_struct_and_pub_function_linking"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::compatibility::Compatibility",
-                            "check_struct_layout"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::compatibility::Compatibility",
-                            "check_friend_linking"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::compatibility::Compatibility",
-                            "check_private_entry_linking"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::compatibility::Compatibility",
-                            "disallowed_new_abilities"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::compatibility::Compatibility",
-                              "disallow_change_struct_type_params"
-                            |)
-                          |))
-                      ]
-                  |))
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::compatibility::Compatibility",
+                        "check_struct_and_pub_function_linking"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::compatibility::Compatibility",
+                        "check_struct_layout"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::compatibility::Compatibility",
+                        "check_friend_linking"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::compatibility::Compatibility",
+                        "check_private_entry_linking"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::compatibility::Compatibility",
+                        "disallowed_new_abilities"
+                      |);
+                      M.alloc (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "move_binary_format::compatibility::Compatibility",
+                          "disallow_change_struct_type_params"
+                        |)
+                      |)
+                    ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -299,7 +274,7 @@ Module compatibility.
                 [
                   M.read (| f |);
                   M.read (| Value.String "Compatibility" |);
-                  (* Unsize *) M.pointer_coercion (M.read (| names |));
+                  M.read (| names |);
                   M.read (| values |)
                 ]
               |)
@@ -2841,7 +2816,7 @@ Module compatibility.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2851,7 +2826,7 @@ Module compatibility.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2864,7 +2839,7 @@ Module compatibility.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
@@ -2890,7 +2865,7 @@ Module compatibility.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2900,7 +2875,7 @@ Module compatibility.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2919,7 +2894,7 @@ Module compatibility.
                   "partial_cmp",
                   []
                 |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
@@ -2933,17 +2908,6 @@ Module compatibility.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_compatibility_InclusionCheck.
-  
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_compatibility_InclusionCheck.
-    Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::InclusionCheck".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_compatibility_InclusionCheck.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_compatibility_InclusionCheck.
     Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::InclusionCheck".
@@ -2993,7 +2957,7 @@ Module compatibility.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3003,7 +2967,7 @@ Module compatibility.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3013,7 +2977,7 @@ Module compatibility.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
           |)))
       | _, _, _ => M.impossible
       end.

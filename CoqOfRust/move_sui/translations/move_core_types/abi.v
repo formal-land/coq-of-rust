@@ -133,11 +133,7 @@ Module abi.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "TransactionScript" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "TransactionScript" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -157,11 +153,7 @@ Module abi.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "ScriptFunction" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "ScriptFunction" |); __self_0 ]
                       |)
                     |)))
               ]
@@ -189,7 +181,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -203,7 +195,7 @@ Module abi.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -267,17 +259,6 @@ Module abi.
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_abi_ScriptABI.
   
-  Module Impl_core_marker_StructuralEq_for_move_core_types_abi_ScriptABI.
-    Definition Self : Ty.t := Ty.path "move_core_types::abi::ScriptABI".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_abi_ScriptABI.
-  
   Module Impl_core_cmp_Eq_for_move_core_types_abi_ScriptABI.
     Definition Self : Ty.t := Ty.path "move_core_types::abi::ScriptABI".
     
@@ -338,7 +319,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -348,7 +329,7 @@ Module abi.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -360,7 +341,7 @@ Module abi.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -390,12 +371,20 @@ Module abi.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::abi::TransactionScriptABI",
-                                  [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::abi::TransactionScriptABI" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -422,12 +411,20 @@ Module abi.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::abi::ScriptFunctionABI",
-                                  [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::abi::ScriptFunctionABI" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -2058,47 +2055,37 @@ Module abi.
               M.read (| f |);
               M.read (| Value.String "ScriptFunctionABI" |);
               M.read (| Value.String "name" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::abi::ScriptFunctionABI",
-                  "name"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::abi::ScriptFunctionABI",
+                "name"
+              |);
               M.read (| Value.String "module_name" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::abi::ScriptFunctionABI",
-                  "module_name"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::abi::ScriptFunctionABI",
+                "module_name"
+              |);
               M.read (| Value.String "doc" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::abi::ScriptFunctionABI",
-                  "doc"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::abi::ScriptFunctionABI",
+                "doc"
+              |);
               M.read (| Value.String "ty_args" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::abi::ScriptFunctionABI",
+                "ty_args"
+              |);
+              M.read (| Value.String "args" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::abi::ScriptFunctionABI",
-                  "ty_args"
-                |));
-              M.read (| Value.String "args" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::abi::ScriptFunctionABI",
-                    "args"
-                  |)
-                |))
+                  "args"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -2242,17 +2229,6 @@ Module abi.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_abi_ScriptFunctionABI.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_abi_ScriptFunctionABI.
-    Definition Self : Ty.t := Ty.path "move_core_types::abi::ScriptFunctionABI".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_abi_ScriptFunctionABI.
   
   Module Impl_core_cmp_Eq_for_move_core_types_abi_ScriptFunctionABI.
     Definition Self : Ty.t := Ty.path "move_core_types::abi::ScriptFunctionABI".
@@ -2649,47 +2625,37 @@ Module abi.
               M.read (| f |);
               M.read (| Value.String "TransactionScriptABI" |);
               M.read (| Value.String "name" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::abi::TransactionScriptABI",
-                  "name"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::abi::TransactionScriptABI",
+                "name"
+              |);
               M.read (| Value.String "doc" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::abi::TransactionScriptABI",
-                  "doc"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::abi::TransactionScriptABI",
+                "doc"
+              |);
               M.read (| Value.String "code" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::abi::TransactionScriptABI",
-                  "code"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::abi::TransactionScriptABI",
+                "code"
+              |);
               M.read (| Value.String "ty_args" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::abi::TransactionScriptABI",
+                "ty_args"
+              |);
+              M.read (| Value.String "args" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::abi::TransactionScriptABI",
-                  "ty_args"
-                |));
-              M.read (| Value.String "args" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::abi::TransactionScriptABI",
-                    "args"
-                  |)
-                |))
+                  "args"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -2836,17 +2802,6 @@ Module abi.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_abi_TransactionScriptABI.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_abi_TransactionScriptABI.
-    Definition Self : Ty.t := Ty.path "move_core_types::abi::TransactionScriptABI".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_abi_TransactionScriptABI.
   
   Module Impl_core_cmp_Eq_for_move_core_types_abi_TransactionScriptABI.
     Definition Self : Ty.t := Ty.path "move_core_types::abi::TransactionScriptABI".
@@ -3172,23 +3127,19 @@ Module abi.
               M.read (| f |);
               M.read (| Value.String "ArgumentABI" |);
               M.read (| Value.String "name" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::abi::ArgumentABI",
+                "name"
+              |);
+              M.read (| Value.String "type_tag" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::abi::ArgumentABI",
-                  "name"
-                |));
-              M.read (| Value.String "type_tag" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::abi::ArgumentABI",
-                    "type_tag"
-                  |)
-                |))
+                  "type_tag"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -3263,17 +3214,6 @@ Module abi.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_abi_ArgumentABI.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_abi_ArgumentABI.
-    Definition Self : Ty.t := Ty.path "move_core_types::abi::ArgumentABI".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_abi_ArgumentABI.
   
   Module Impl_core_cmp_Eq_for_move_core_types_abi_ArgumentABI.
     Definition Self : Ty.t := Ty.path "move_core_types::abi::ArgumentABI".
@@ -3461,15 +3401,13 @@ Module abi.
               M.read (| f |);
               M.read (| Value.String "TypeArgumentABI" |);
               M.read (| Value.String "name" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::abi::TypeArgumentABI",
-                    "name"
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "move_core_types::abi::TypeArgumentABI",
+                  "name"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -3520,17 +3458,6 @@ Module abi.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_abi_TypeArgumentABI.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_abi_TypeArgumentABI.
-    Definition Self : Ty.t := Ty.path "move_core_types::abi::TypeArgumentABI".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_abi_TypeArgumentABI.
   
   Module Impl_core_cmp_Eq_for_move_core_types_abi_TypeArgumentABI.
     Definition Self : Ty.t := Ty.path "move_core_types::abi::TypeArgumentABI".
