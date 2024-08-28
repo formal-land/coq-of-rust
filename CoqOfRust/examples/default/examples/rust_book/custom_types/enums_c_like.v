@@ -77,28 +77,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "zero is " |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "zero is " |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [ M.alloc (| M.rust_cast (Value.Integer 0) |) ]
-                              |)
-                            ]
-                        |))
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [ M.alloc (| M.rust_cast (Value.Integer 0) |) ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -114,28 +110,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "one is " |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "one is " |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [ M.alloc (| M.rust_cast (Value.Integer 1) |) ]
-                              |)
-                            ]
-                        |))
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [ M.alloc (| M.rust_cast (Value.Integer 1) |) ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -155,61 +147,52 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "roses are #" |); M.read (| Value.String "
-" |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_lower_hex",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.rust_cast
-                                      (BinOp.Wrap.add
-                                        Integer.Isize
-                                        (M.get_constant (|
-                                          "enums_c_like::Color::Red_discriminant"
-                                        |))
-                                        (Value.Integer 0))
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Placeholder",
-                                  "new",
-                                  []
-                                |),
-                                [
-                                  Value.Integer 0;
-                                  Value.UnicodeChar 32;
-                                  Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer 8;
-                                  Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 6 ]
-                                ]
-                              |)
-                            ]
-                        |));
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "roses are #" |); M.read (| Value.String "
+" |) ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_lower_hex",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.rust_cast
+                                    (BinOp.Wrap.add
+                                      Integer.Isize
+                                      (M.get_constant (| "enums_c_like::Color::Red_discriminant" |))
+                                      (Value.Integer 0))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Placeholder",
+                                "new",
+                                []
+                              |),
+                              [
+                                Value.Integer 0;
+                                Value.UnicodeChar 32;
+                                Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                Value.Integer 8;
+                                Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 6 ]
+                              ]
+                            |)
+                          ]
+                      |);
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::UnsafeArg",
@@ -237,63 +220,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "violets are #" |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "violets are #" |); M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_lower_hex",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.rust_cast
-                                      (BinOp.Wrap.add
-                                        Integer.Isize
-                                        (M.get_constant (|
-                                          "enums_c_like::Color::Blue_discriminant"
-                                        |))
-                                        (Value.Integer 0))
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Placeholder",
-                                  "new",
-                                  []
-                                |),
-                                [
-                                  Value.Integer 0;
-                                  Value.UnicodeChar 32;
-                                  Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer 8;
-                                  Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 6 ]
-                                ]
-                              |)
-                            ]
-                        |));
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_lower_hex",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.rust_cast
+                                    (BinOp.Wrap.add
+                                      Integer.Isize
+                                      (M.get_constant (|
+                                        "enums_c_like::Color::Blue_discriminant"
+                                      |))
+                                      (Value.Integer 0))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Placeholder",
+                                "new",
+                                []
+                              |),
+                              [
+                                Value.Integer 0;
+                                Value.UnicodeChar 32;
+                                Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                Value.Integer 8;
+                                Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 6 ]
+                              ]
+                            |)
+                          ]
+                      |);
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::UnsafeArg",

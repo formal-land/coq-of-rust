@@ -30,36 +30,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer 3 ]
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
+                M.read (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
                         []
-                      |),
-                      [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Bob" |);
-                              M.read (| Value.String "Frank" |);
-                              M.read (| Value.String "Ferris" |)
-                            ]
-                        |)
-                      ]
-                    |)
-                  |))
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer 3 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      "new",
+                      []
+                    |),
+                    [
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "Bob" |);
+                            M.read (| Value.String "Frank" |);
+                            M.read (| Value.String "Ferris" |)
+                          ]
+                      |)
+                    ]
+                  |)
+                |)
               ]
             |)
           |) in
@@ -159,18 +157,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "There is a rustacean among us!
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "There is a rustacean among us!
 "
-                                                            |)
-                                                          ]
-                                                      |))
+                                                          |)
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -191,36 +187,32 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (| Value.String "Hello " |);
-                                                            M.read (| Value.String "
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (| Value.String "Hello " |);
+                                                          M.read (| Value.String "
 " |)
-                                                          ]
-                                                      |));
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_display",
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [ Ty.path "str" ]
-                                                                ]
-                                                              |),
-                                                              [ name ]
-                                                            |)
-                                                          ]
-                                                      |))
+                                                        ]
+                                                    |);
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "str" ]
+                                                              ]
+                                                            |),
+                                                            [ name ]
+                                                          |)
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]

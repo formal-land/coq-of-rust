@@ -174,31 +174,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "if: " |);
-                                        M.read (| Value.String "
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "if: " |);
+                                      M.read (| Value.String "
 " |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "i32" ]
-                                          |),
-                                          [ y ]
-                                        |)
-                                      ]
-                                  |))
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "i32" ]
+                                        |),
+                                        [ y ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -233,31 +229,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "match: " |);
-                                      M.read (| Value.String "
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "match: " |);
+                                    M.read (| Value.String "
 " |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "i32" ]
-                                        |),
-                                        [ y ]
-                                      |)
-                                    ]
-                                |))
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ y ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -299,40 +291,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "if and: " |);
-                                        M.read (| Value.String " " |);
-                                        M.read (| Value.String "
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "if and: " |);
+                                      M.read (| Value.String " " |);
+                                      M.read (| Value.String "
 " |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "i32" ]
-                                          |),
-                                          [ y ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "i32" ]
-                                          |),
-                                          [ z ]
-                                        |)
-                                      ]
-                                  |))
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "i32" ]
+                                        |),
+                                        [ y ]
+                                      |);
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "i32" ]
+                                        |),
+                                        [ z ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -372,40 +360,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "match and: " |);
-                                    M.read (| Value.String " " |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "match and: " |);
+                                  M.read (| Value.String " " |);
+                                  M.read (| Value.String "
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ y ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ z ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [ y ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [ z ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]

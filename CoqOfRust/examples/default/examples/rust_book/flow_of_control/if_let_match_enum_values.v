@@ -89,12 +89,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "a is foobar
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "a is foobar
 " |) ]
-                                  |))
+                                |)
                               ]
                             |)
                           ]
@@ -126,12 +124,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "b is foobar
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "b is foobar
 " |) ]
-                                  |))
+                                |)
                               ]
                             |)
                           ]
@@ -169,31 +165,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "c is " |);
-                                        M.read (| Value.String "
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "c is " |);
+                                      M.read (| Value.String "
 " |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "u32" ]
-                                          |),
-                                          [ value ]
-                                        |)
-                                      ]
-                                  |))
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "u32" ]
+                                        |),
+                                        [ value ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -231,12 +223,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "c is one hundred
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "c is one hundred
 " |) ]
-                                |))
+                              |)
                             ]
                           |)
                         ]

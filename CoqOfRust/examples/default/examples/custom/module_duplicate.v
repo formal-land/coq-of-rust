@@ -25,14 +25,8 @@ Module foo.
                           "new_const",
                           []
                         |),
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "foo::gre::bar
-" |) ]
-                            |))
-                        ]
+                        [ M.alloc (| Value.Array [ M.read (| Value.String "foo::gre::bar
+" |) ] |) ]
                       |)
                     ]
                   |)
@@ -69,12 +63,8 @@ Module foo.
                         "new_const",
                         []
                       |),
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (| Value.Array [ M.read (| Value.String "foo::bar
-" |) ] |))
-                      ]
+                      [ M.alloc (| Value.Array [ M.read (| Value.String "foo::bar
+" |) ] |) ]
                     |)
                   ]
                 |)

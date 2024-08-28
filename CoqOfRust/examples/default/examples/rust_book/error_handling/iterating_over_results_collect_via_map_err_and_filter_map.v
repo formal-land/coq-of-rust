@@ -28,38 +28,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer 5 ]
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
+                M.read (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
                         []
-                      |),
-                      [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "42" |);
-                              M.read (| Value.String "tofu" |);
-                              M.read (| Value.String "93" |);
-                              M.read (| Value.String "999" |);
-                              M.read (| Value.String "18" |)
-                            ]
-                        |)
-                      ]
-                    |)
-                  |))
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer 5 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      "new",
+                      []
+                    |),
+                    [
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "42" |);
+                            M.read (| Value.String "tofu" |);
+                            M.read (| Value.String "93" |);
+                            M.read (| Value.String "999" |);
+                            M.read (| Value.String "18" |)
+                          ]
+                      |)
+                    ]
+                  |)
+                |)
               ]
             |)
           |) in
@@ -327,33 +325,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "Numbers: " |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "Numbers: " |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                  ]
-                                |),
-                                [ numbers ]
-                              |)
-                            ]
-                        |))
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                ]
+                              |),
+                              [ numbers ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -369,36 +363,32 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "Errors: " |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "Errors: " |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [
-                                        Ty.path "core::num::error::ParseIntError";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ]
-                                |),
-                                [ errors ]
-                              |)
-                            ]
-                        |))
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.path "core::num::error::ParseIntError";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ]
+                              |),
+                              [ errors ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

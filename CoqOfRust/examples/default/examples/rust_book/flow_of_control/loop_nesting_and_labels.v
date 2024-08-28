@@ -43,12 +43,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array [ M.read (| Value.String "Entered the outer loop
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "Entered the outer loop
 " |) ]
-                              |))
+                            |)
                           ]
                         |)
                       ]
@@ -74,14 +72,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "Entered the inner loop
-" |)
-                                              ]
-                                          |))
+                                        M.alloc (|
+                                          Value.Array
+                                            [ M.read (| Value.String "Entered the inner loop
+" |) ]
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -106,13 +101,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "This point will never be reached
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "This point will never be reached
 " |) ]
-                              |))
+                            |)
                           ]
                         |)
                       ]
@@ -130,12 +123,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "Exited the outer loop
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "Exited the outer loop
 " |) ]
-                        |))
+                      |)
                     ]
                   |)
                 ]

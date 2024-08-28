@@ -39,56 +39,52 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "" |);
-                              M.read (| Value.String " nanoseconds + " |);
-                              M.read (| Value.String " inches = " |);
-                              M.read (| Value.String " unit?
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "" |);
+                            M.read (| Value.String " nanoseconds + " |);
+                            M.read (| Value.String " inches = " |);
+                            M.read (| Value.String " unit?
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u64" ]
-                                |),
-                                [ nanoseconds ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u64" ]
-                                |),
-                                [ inches ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u64" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    BinOp.Wrap.add
-                                      Integer.U64
-                                      (M.read (| nanoseconds |))
-                                      (M.read (| inches |))
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "u64" ]
+                              |),
+                              [ nanoseconds ]
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "u64" ]
+                              |),
+                              [ inches ]
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "u64" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  BinOp.Wrap.add
+                                    Integer.U64
+                                    (M.read (| nanoseconds |))
+                                    (M.read (| inches |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

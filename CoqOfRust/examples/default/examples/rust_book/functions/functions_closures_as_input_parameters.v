@@ -142,36 +142,28 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| Value.String "I said " |);
-                                                    M.read (| Value.String ".
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| Value.String "I said " |);
+                                                  M.read (| Value.String ".
 " |)
-                                                  ]
-                                              |));
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "str" ]
-                                                        ]
-                                                      |),
-                                                      [ greeting ]
-                                                    |)
-                                                  ]
-                                              |))
+                                                ]
+                                            |);
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      ]
+                                                    |),
+                                                    [ greeting ]
+                                                  |)
+                                                ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -202,31 +194,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| Value.String "Then I screamed " |);
-                                                    M.read (| Value.String ".
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| Value.String "Then I screamed " |);
+                                                  M.read (| Value.String ".
 " |)
-                                                  ]
-                                              |));
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [ Ty.path "alloc::string::String" ]
-                                                      |),
-                                                      [ farewell ]
-                                                    |)
-                                                  ]
-                                              |))
+                                                ]
+                                            |);
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [ Ty.path "alloc::string::String" ]
+                                                    |),
+                                                    [ farewell ]
+                                                  |)
+                                                ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -246,17 +234,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String "Now I can sleep. zzzzz
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (|
+                                                    Value.String "Now I can sleep. zzzzz
 "
-                                                    |)
-                                                  ]
-                                              |))
+                                                  |)
+                                                ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -318,40 +304,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "3 doubled: " |); M.read (| Value.String "
-" |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "functions_closures_as_input_parameters::apply_to_3",
-                                        [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
-                                        ]
-                                      |),
-                                      [ M.read (| double |) ]
-                                    |)
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "3 doubled: " |); M.read (| Value.String "
+" |) ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "functions_closures_as_input_parameters::apply_to_3",
+                                      [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") ]
+                                    |),
+                                    [ M.read (| double |) ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

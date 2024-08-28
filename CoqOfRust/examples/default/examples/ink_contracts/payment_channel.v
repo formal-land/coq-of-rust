@@ -805,7 +805,7 @@ Module Impl_payment_channel_PaymentChannel.
                   "hash",
                   []
                 |),
-                [ (* Unsize *) M.pointer_coercion pub_key; signature_account_id ]
+                [ pub_key; signature_account_id ]
               |)
             |) in
           M.alloc (|

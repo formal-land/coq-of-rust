@@ -2823,29 +2823,21 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (|
-                            Value.String
-                              "not implemented: This smart contract does not accept token transfer."
-                          |)
-                        ]
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::rt::Argument",
-                          "none",
-                          []
-                        |),
-                        []
-                      |)
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.read (|
+                          Value.String
+                            "not implemented: This smart contract does not accept token transfer."
+                        |)
+                      ]
+                  |);
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "none", [] |),
+                      []
+                    |)
+                  |)
                 ]
               |)
             ]
@@ -2894,29 +2886,21 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (|
-                            Value.String
-                              "not implemented: This smart contract does not accept batch token transfers."
-                          |)
-                        ]
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::rt::Argument",
-                          "none",
-                          []
-                        |),
-                        []
-                      |)
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.read (|
+                          Value.String
+                            "not implemented: This smart contract does not accept batch token transfers."
+                        |)
+                      ]
+                  |);
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "none", [] |),
+                      []
+                    |)
+                  |)
                 ]
               |)
             ]

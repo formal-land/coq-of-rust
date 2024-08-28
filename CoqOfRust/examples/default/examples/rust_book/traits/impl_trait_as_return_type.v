@@ -210,28 +210,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
+                M.read (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
                         []
-                      |),
-                      [
-                        M.alloc (|
-                          Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
-                        |)
-                      ]
-                    |)
-                  |))
+                        [
+                          Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      "new",
+                      []
+                    |),
+                    [
+                      M.alloc (|
+                        Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
+                      |)
+                    ]
+                  |)
+                |)
               ]
             |)
           |) in
@@ -244,24 +242,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ Ty.path "i32" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
+                M.read (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
                         []
-                      |),
-                      [ M.alloc (| Value.Array [ Value.Integer 4; Value.Integer 5 ] |) ]
-                    |)
-                  |))
+                        [
+                          Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ Ty.path "i32" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      "new",
+                      []
+                    |),
+                    [ M.alloc (| Value.Array [ Value.Integer 4; Value.Integer 5 ] |) ]
+                  |)
+                |)
               ]
             |)
           |) in
@@ -755,12 +751,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "all done
-" |) ] |))
-                    ]
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "all done
+" |) ] |) ]
                   |)
                 ]
               |)

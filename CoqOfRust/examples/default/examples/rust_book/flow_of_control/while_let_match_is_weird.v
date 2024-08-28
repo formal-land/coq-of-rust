@@ -72,14 +72,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [ M.read (| Value.String "Greater than 9, quit!
-" |)
-                                                ]
-                                            |))
+                                          M.alloc (|
+                                            Value.Array
+                                              [ M.read (| Value.String "Greater than 9, quit!
+" |) ]
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -107,31 +104,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "`i` is `" |);
-                                                  M.read (| Value.String "`. Try again.
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (| Value.String "`i` is `" |);
+                                                M.read (| Value.String "`. Try again.
 " |)
-                                                ]
-                                            |));
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_debug",
-                                                      [ Ty.path "i32" ]
-                                                    |),
-                                                    [ i ]
-                                                  |)
-                                                ]
-                                            |))
+                                              ]
+                                          |);
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_debug",
+                                                    [ Ty.path "i32" ]
+                                                  |),
+                                                  [ i ]
+                                                |)
+                                              ]
+                                          |)
                                         ]
                                       |)
                                     ]

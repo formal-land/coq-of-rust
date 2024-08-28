@@ -36,31 +36,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Tell me about " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "Tell me about " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.tuple [ Ty.path "i32"; Ty.path "i32"; Ty.path "i32" ] ]
-                                |),
-                                [ triple ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.tuple [ Ty.path "i32"; Ty.path "i32"; Ty.path "i32" ] ]
+                              |),
+                              [ triple ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -90,40 +86,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "First is `0`, `y` is " |);
-                                    M.read (| Value.String ", and `z` is " |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "First is `0`, `y` is " |);
+                                  M.read (| Value.String ", and `z` is " |);
+                                  M.read (| Value.String "
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ y ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ z ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [ y ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [ z ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -148,17 +140,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "First is `1` and the rest doesn't matter
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String "First is `1` and the rest doesn't matter
 "
-                                    |)
-                                  ]
-                              |))
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -183,17 +173,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "last is `2` and the rest doesn't matter
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String "last is `2` and the rest doesn't matter
 "
-                                    |)
-                                  ]
-                              |))
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -219,18 +207,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String
-                                        "First is `3`, last is `4`, and the rest doesn't matter
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String
+                                      "First is `3`, last is `4`, and the rest doesn't matter
 "
-                                    |)
-                                  ]
-                              |))
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -251,13 +237,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "It doesn't matter what they are
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "It doesn't matter what they are
 " |) ]
-                              |))
+                            |)
                           ]
                         |)
                       ]

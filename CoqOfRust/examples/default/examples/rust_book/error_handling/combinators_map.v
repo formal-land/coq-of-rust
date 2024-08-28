@@ -103,15 +103,13 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
           [
             M.read (| f |);
             M.read (| Value.String "Peeled" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "combinators_map::Peeled",
-                  0
-                |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "combinators_map::Peeled",
+                0
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -152,15 +150,13 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
           [
             M.read (| f |);
             M.read (| Value.String "Chopped" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "combinators_map::Chopped",
-                  0
-                |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "combinators_map::Chopped",
+                0
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -201,15 +197,13 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
           [
             M.read (| f |);
             M.read (| Value.String "Cooked" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "combinators_map::Cooked",
-                  0
-                |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "combinators_map::Cooked",
+                0
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -509,31 +503,27 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Mmm. I love " |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Mmm. I love " |);
+                                  M.read (| Value.String "
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "combinators_map::Cooked" ]
-                                      |),
-                                      [ food ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "combinators_map::Cooked" ]
+                                    |),
+                                    [ food ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -555,13 +545,10 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "Oh no! It wasn't edible.
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "Oh no! It wasn't edible.
 " |) ]
-                              |))
+                            |)
                           ]
                         |)
                       ]

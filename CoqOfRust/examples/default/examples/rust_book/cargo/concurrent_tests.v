@@ -34,12 +34,8 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             "new_const",
                             []
                           |),
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| Value.String "some
-" |) ] |))
-                          ]
+                          [ M.alloc (| Value.Array [ M.read (| Value.String "some
+" |) ] |) ]
                         |)
                       ]
                     |)
@@ -59,12 +55,8 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             "new_const",
                             []
                           |),
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| Value.String "nothing
-" |) ] |))
-                          ]
+                          [ M.alloc (| Value.Array [ M.read (| Value.String "nothing
+" |) ] |) ]
                         |)
                       ]
                     |)

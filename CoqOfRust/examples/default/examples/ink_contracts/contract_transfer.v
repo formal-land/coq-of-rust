@@ -217,31 +217,27 @@ Module Impl_contract_transfer_GiveMe.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "requested value: " |);
-                                M.read (| Value.String "
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "requested value: " |);
+                              M.read (| Value.String "
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "u128" ]
-                                  |),
-                                  [ value ]
-                                |)
-                              ]
-                          |))
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "u128" ]
+                                |),
+                                [ value ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -257,53 +253,49 @@ Module Impl_contract_transfer_GiveMe.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "contract balance: " |);
-                                M.read (| Value.String "
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "contract balance: " |);
+                              M.read (| Value.String "
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "u128" ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "contract_transfer::Env",
-                                          "balance",
-                                          []
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "contract_transfer::GiveMe",
-                                                "env",
-                                                []
-                                              |),
-                                              [ M.read (| self |) ]
-                                            |)
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "u128" ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "contract_transfer::Env",
+                                        "balance",
+                                        []
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "contract_transfer::GiveMe",
+                                              "env",
+                                              []
+                                            |),
+                                            [ M.read (| self |) ]
                                           |)
-                                        ]
-                                      |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -466,53 +458,49 @@ Module Impl_contract_transfer_GiveMe.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "received payment: " |);
-                                M.read (| Value.String "
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "received payment: " |);
+                              M.read (| Value.String "
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "u128" ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "contract_transfer::Env",
-                                          "transferred_value",
-                                          []
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "contract_transfer::GiveMe",
-                                                "env",
-                                                []
-                                              |),
-                                              [ M.read (| self |) ]
-                                            |)
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "u128" ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "contract_transfer::Env",
+                                        "transferred_value",
+                                        []
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "contract_transfer::GiveMe",
+                                              "env",
+                                              []
+                                            |),
+                                            [ M.read (| self |) ]
                                           |)
-                                        ]
-                                      |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]

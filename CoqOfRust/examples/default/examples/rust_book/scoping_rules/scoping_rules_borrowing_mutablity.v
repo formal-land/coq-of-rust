@@ -84,52 +84,48 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "I immutably borrowed " |);
-                              M.read (| Value.String " - " |);
-                              M.read (| Value.String " edition
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "I immutably borrowed " |);
+                            M.read (| Value.String " - " |);
+                            M.read (| Value.String " edition
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| book |),
-                                    "scoping_rules_borrowing_mutablity::Book",
-                                    "title"
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u32" ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| book |),
-                                    "scoping_rules_borrowing_mutablity::Book",
-                                    "year"
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| book |),
+                                  "scoping_rules_borrowing_mutablity::Book",
+                                  "title"
+                                |)
+                              ]
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "u32" ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| book |),
+                                  "scoping_rules_borrowing_mutablity::Book",
+                                  "year"
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -174,52 +170,48 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "I mutably borrowed " |);
-                              M.read (| Value.String " - " |);
-                              M.read (| Value.String " edition
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "I mutably borrowed " |);
+                            M.read (| Value.String " - " |);
+                            M.read (| Value.String " edition
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| book |),
-                                    "scoping_rules_borrowing_mutablity::Book",
-                                    "title"
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u32" ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| book |),
-                                    "scoping_rules_borrowing_mutablity::Book",
-                                    "year"
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| book |),
+                                  "scoping_rules_borrowing_mutablity::Book",
+                                  "title"
+                                |)
+                              ]
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "u32" ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| book |),
+                                  "scoping_rules_borrowing_mutablity::Book",
+                                  "year"
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

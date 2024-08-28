@@ -238,29 +238,25 @@ Module Impl_call_builder_CallBuilderTest.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "not implemented: No other `LangError` variants exist at the moment."
-                                      |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "none",
-                                      []
-                                    |),
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String
+                                        "not implemented: No other `LangError` variants exist at the moment."
+                                    |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "none",
                                     []
-                                  |)
-                                |))
+                                  |),
+                                  []
+                                |)
+                              |)
                             ]
                           |)
                         ]

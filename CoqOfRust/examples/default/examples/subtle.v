@@ -61,11 +61,9 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
           [
             M.read (| f |);
             M.read (| Value.String "Choice" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (| M.read (| self |), "subtle::Choice", 0 |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "subtle::Choice", 0 |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -3110,23 +3108,19 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
             M.read (| f |);
             M.read (| Value.String "CtOption" |);
             M.read (| Value.String "value" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_record_field (|
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "subtle::CtOption",
+              "value"
+            |);
+            M.read (| Value.String "is_some" |);
+            M.alloc (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "subtle::CtOption",
-                "value"
-              |));
-            M.read (| Value.String "is_some" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "subtle::CtOption",
-                  "is_some"
-                |)
-              |))
+                "is_some"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -3331,31 +3325,27 @@ Module Impl_subtle_CtOption_T.
                                                 []
                                               |),
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array [ M.read (| Value.String "" |) ]
-                                                  |));
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "str" ]
-                                                            ]
-                                                          |),
-                                                          [ msg ]
-                                                        |)
-                                                      ]
-                                                  |))
+                                                M.alloc (|
+                                                  Value.Array [ M.read (| Value.String "" |) ]
+                                                |);
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
+                                                          ]
+                                                        |),
+                                                        [ msg ]
+                                                      |)
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]

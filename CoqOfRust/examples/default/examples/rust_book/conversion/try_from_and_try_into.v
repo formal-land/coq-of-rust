@@ -28,15 +28,13 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
           [
             M.read (| f |);
             M.read (| Value.String "EvenNumber" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "try_from_and_try_into::EvenNumber",
-                  0
-                |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "try_from_and_try_into::EvenNumber",
+                0
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible

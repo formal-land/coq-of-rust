@@ -101,45 +101,41 @@ Module Impl_wildcard_selector_WildcardSelector.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "Wildcard selector: " |);
-                                        M.read (| Value.String ", message: " |);
-                                        M.read (| Value.String "
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "Wildcard selector: " |);
+                                      M.read (| Value.String ", message: " |);
+                                      M.read (| Value.String "
 " |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer 4 ]
-                                                [ Ty.path "u8" ]
-                                            ]
-                                          |),
-                                          [ _selector ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "alloc::string::String" ]
-                                          |),
-                                          [ _message ]
-                                        |)
-                                      ]
-                                  |))
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_debug",
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer 4 ]
+                                              [ Ty.path "u8" ]
+                                          ]
+                                        |),
+                                        [ _selector ]
+                                      |);
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "alloc::string::String" ]
+                                        |),
+                                        [ _message ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -176,31 +172,27 @@ Module Impl_wildcard_selector_WildcardSelector.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "Wildcard complement message: " |);
-                                M.read (| Value.String "
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "Wildcard complement message: " |);
+                              M.read (| Value.String "
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "alloc::string::String" ]
-                                  |),
-                                  [ _message ]
-                                |)
-                              ]
-                          |))
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [ _message ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]

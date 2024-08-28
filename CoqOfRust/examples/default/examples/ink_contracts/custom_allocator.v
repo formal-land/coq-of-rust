@@ -42,24 +42,22 @@ Module Impl_custom_allocator_CustomAllocator.
                   [ Ty.path "alloc::alloc::Global" ]
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.read (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            []
-                            [
-                              Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "bool" ];
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "new",
+                  M.read (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
                           []
-                        |),
-                        [ M.alloc (| Value.Array [ M.read (| init_value |) ] |) ]
-                      |)
-                    |))
+                          [
+                            Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "bool" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        []
+                      |),
+                      [ M.alloc (| Value.Array [ M.read (| init_value |) ] |) ]
+                    |)
+                  |)
                 ]
               |))
           ]))

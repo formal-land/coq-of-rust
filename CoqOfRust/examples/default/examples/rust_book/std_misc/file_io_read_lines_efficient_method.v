@@ -275,35 +275,31 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                               []
                                                             |),
                                                             [
-                                                              (* Unsize *)
-                                                              M.pointer_coercion
-                                                                (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (| Value.String "" |);
-                                                                      M.read (| Value.String "
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.read (| Value.String "" |);
+                                                                    M.read (| Value.String "
 " |)
-                                                                    ]
-                                                                |));
-                                                              (* Unsize *)
-                                                              M.pointer_coercion
-                                                                (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
+                                                                  ]
+                                                              |);
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
+                                                                        "new_display",
+                                                                        [
                                                                           Ty.path
-                                                                            "core::fmt::rt::Argument",
-                                                                          "new_display",
-                                                                          [
-                                                                            Ty.path
-                                                                              "alloc::string::String"
-                                                                          ]
-                                                                        |),
-                                                                        [ ip ]
-                                                                      |)
-                                                                    ]
-                                                                |))
+                                                                            "alloc::string::String"
+                                                                        ]
+                                                                      |),
+                                                                      [ ip ]
+                                                                    |)
+                                                                  ]
+                                                              |)
                                                             ]
                                                           |)
                                                         ]

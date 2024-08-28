@@ -366,40 +366,36 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Yay! On " |);
-                                    M.read (| Value.String " we get to eat " |);
-                                    M.read (| Value.String ".
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Yay! On " |);
+                                  M.read (| Value.String " we get to eat " |);
+                                  M.read (| Value.String ".
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "combinators_and_then::Day" ]
-                                      |),
-                                      [ day ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "combinators_and_then::Food" ]
-                                      |),
-                                      [ food ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "combinators_and_then::Day" ]
+                                    |),
+                                    [ day ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "combinators_and_then::Food" ]
+                                    |),
+                                    [ food ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -421,31 +417,27 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Oh no. We don't get to eat on " |);
-                                    M.read (| Value.String "?
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Oh no. We don't get to eat on " |);
+                                  M.read (| Value.String "?
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "combinators_and_then::Day" ]
-                                      |),
-                                      [ day ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "combinators_and_then::Day" ]
+                                    |),
+                                    [ day ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]

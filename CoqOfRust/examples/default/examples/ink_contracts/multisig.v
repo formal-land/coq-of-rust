@@ -184,15 +184,9 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
           [
             M.read (| f |);
             M.read (| Value.String "AccountId" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "multisig::AccountId",
-                  0
-                |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "multisig::AccountId", 0 |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible

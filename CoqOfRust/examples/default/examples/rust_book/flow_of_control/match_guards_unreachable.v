@@ -38,12 +38,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             "new_const",
                             []
                           |),
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| Value.String "Zero
-" |) ] |))
-                          ]
+                          [ M.alloc (| Value.Array [ M.read (| Value.String "Zero
+" |) ] |) ]
                         |)
                       ]
                     |)
@@ -66,12 +62,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array [ M.read (| Value.String "Greater than zero
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "Greater than zero
 " |) ]
-                              |))
+                            |)
                           ]
                         |)
                       ]

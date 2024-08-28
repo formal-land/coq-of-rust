@@ -112,31 +112,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "`color`: " |);
-                                                  M.read (| Value.String "
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (| Value.String "`color`: " |);
+                                                M.read (| Value.String "
 " |)
-                                                ]
-                                            |));
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [ color ]
-                                                  |)
-                                                ]
-                                            |))
+                                              ]
+                                          |);
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.path "alloc::string::String" ]
+                                                  |),
+                                                  [ color ]
+                                                |)
+                                              ]
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -210,31 +206,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| Value.String "`count`: " |);
-                                                    M.read (| Value.String "
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| Value.String "`count`: " |);
+                                                  M.read (| Value.String "
 " |)
-                                                  ]
-                                              |));
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [ Ty.path "i32" ]
-                                                      |),
-                                                      [ count ]
-                                                    |)
-                                                  ]
-                                              |))
+                                                ]
+                                            |);
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [ Ty.path "i32" ]
+                                                    |),
+                                                    [ count ]
+                                                  |)
+                                                ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -315,39 +307,35 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| Value.String "`movable`: " |);
-                                                    M.read (| Value.String "
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (| Value.String "`movable`: " |);
+                                                  M.read (| Value.String "
 " |)
-                                                  ]
-                                              |));
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_debug",
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "alloc::boxed::Box")
-                                                            []
-                                                            [
-                                                              Ty.path "i32";
-                                                              Ty.path "alloc::alloc::Global"
-                                                            ]
-                                                        ]
-                                                      |),
-                                                      [ movable ]
-                                                    |)
-                                                  ]
-                                              |))
+                                                ]
+                                            |);
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_debug",
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "alloc::boxed::Box")
+                                                          []
+                                                          [
+                                                            Ty.path "i32";
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ]
+                                                      ]
+                                                    |),
+                                                    [ movable ]
+                                                  |)
+                                                ]
+                                            |)
                                           ]
                                         |)
                                       ]

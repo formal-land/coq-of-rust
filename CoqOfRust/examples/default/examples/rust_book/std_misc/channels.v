@@ -244,41 +244,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  (* Unsize *)
-                                                                                  M.pointer_coercion
-                                                                                    (M.alloc (|
-                                                                                      Value.Array
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "thread "
-                                                                                          |);
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              " finished
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "thread "
+                                                                                        |);
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            " finished
 "
-                                                                                          |)
-                                                                                        ]
-                                                                                    |));
-                                                                                  (* Unsize *)
-                                                                                  M.pointer_coercion
-                                                                                    (M.alloc (|
-                                                                                      Value.Array
-                                                                                        [
-                                                                                          M.call_closure (|
-                                                                                            M.get_associated_function (|
+                                                                                        |)
+                                                                                      ]
+                                                                                  |);
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::rt::Argument",
+                                                                                            "new_display",
+                                                                                            [
                                                                                               Ty.path
-                                                                                                "core::fmt::rt::Argument",
-                                                                                              "new_display",
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "i32"
-                                                                                              ]
-                                                                                            |),
-                                                                                            [ id ]
-                                                                                          |)
-                                                                                        ]
-                                                                                    |))
+                                                                                                "i32"
+                                                                                            ]
+                                                                                          |),
+                                                                                          [ id ]
+                                                                                        |)
+                                                                                      ]
+                                                                                  |)
                                                                                 ]
                                                                               |)
                                                                             ]
@@ -588,42 +584,38 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "i32";
-                                                    Ty.path "std::sync::mpsc::RecvError"
-                                                  ];
-                                                Ty.path "alloc::alloc::Global"
-                                              ]
-                                          ]
-                                        |),
-                                        [ ids ]
-                                      |)
-                                    ]
-                                |))
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "i32";
+                                                  Ty.path "std::sync::mpsc::RecvError"
+                                                ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ]
+                                      |),
+                                      [ ids ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]

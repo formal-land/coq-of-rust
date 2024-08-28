@@ -118,26 +118,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "couldn't spawn wc: " |) ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "std::io::error::Error" ]
-                                          |),
-                                          [ why ]
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "couldn't spawn wc: " |) ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "std::io::error::Error" ]
+                                        |),
+                                        [ why ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -215,27 +211,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "couldn't write to wc stdin: " |) ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "std::io::error::Error" ]
-                                        |),
-                                        [ why ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "couldn't write to wc stdin: " |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "std::io::error::Error" ]
+                                      |),
+                                      [ why ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -258,12 +250,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "sent pangram to wc
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "sent pangram to wc
 " |) ]
-                                |))
+                              |)
                             ]
                           |)
                         ]
@@ -333,27 +323,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "couldn't read wc stdout: " |) ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "std::io::error::Error" ]
-                                      |),
-                                      [ why ]
-                                    |)
-                                  ]
-                              |))
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "couldn't read wc stdout: " |) ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "std::io::error::Error" ]
+                                    |),
+                                    [ why ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -376,27 +361,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array [ M.read (| Value.String "wc responded with:
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "wc responded with:
 " |) ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "alloc::string::String" ]
-                                      |),
-                                      [ s ]
-                                    |)
-                                  ]
-                              |))
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [ s ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]

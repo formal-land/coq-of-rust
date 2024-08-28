@@ -21,35 +21,27 @@ Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    BinOp.Wrap.add
-                                      Integer.I32
-                                      (M.read (| number |))
-                                      (Value.Integer 1)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  BinOp.Wrap.add Integer.I32 (M.read (| number |)) (Value.Integer 1)
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -83,35 +75,27 @@ Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    BinOp.Wrap.sub
-                                      Integer.I32
-                                      (M.read (| number |))
-                                      (Value.Integer 1)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  BinOp.Wrap.sub Integer.I32 (M.read (| number |)) (Value.Integer 1)
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -150,22 +134,20 @@ Definition help (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (|
-                                Value.String
-                                  "usage:
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (|
+                              Value.String
+                                "usage:
 match_args <string>
     Check whether given string is the answer.
 match_args {increase|decrease} <integer>
     Increase or decrease given integer by one.
 "
-                              |)
-                            ]
-                        |))
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -280,18 +262,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "My name is 'match_args'. Try passing some arguments!
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "My name is 'match_args'. Try passing some arguments!
 "
-                                          |)
-                                        ]
-                                    |))
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -363,13 +343,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "This is the answer!
+                                        M.alloc (|
+                                          Value.Array
+                                            [ M.read (| Value.String "This is the answer!
 " |) ]
-                                          |))
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -390,14 +368,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "This is not the answer.
-" |)
-                                              ]
-                                          |))
+                                        M.alloc (|
+                                          Value.Array
+                                            [ M.read (| Value.String "This is not the answer.
+" |) ]
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -500,18 +475,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "error: second argument not an integer
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "error: second argument not an integer
 "
-                                                            |)
-                                                          ]
-                                                      |))
+                                                          |)
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -590,17 +563,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "error: invalid command
-"
-                                                  |)
-                                                ]
-                                            |))
+                                          M.alloc (|
+                                            Value.Array
+                                              [ M.read (| Value.String "error: invalid command
+" |)
+                                              ]
+                                          |)
                                         ]
                                       |)
                                     ]
