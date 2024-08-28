@@ -70,7 +70,7 @@ impl Callbacks for ToCoq {
 
         file.write_all(index_content.as_bytes()).unwrap();
 
-        compiler.sess.abort_if_errors();
+        compiler.sess.dcx().abort_if_errors();
 
         if self.opts.in_cargo {
             Compilation::Continue

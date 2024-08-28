@@ -568,6 +568,7 @@ pub(crate) fn compile_expr<'a>(
 
                     ("UnOp.Panic.neg", CallKind::Effectful, additional_args)
                 }
+                UnOp::PtrMetadata => todo!(),
             };
             let arg = compile_expr(env, generics, thir, arg);
 
@@ -636,7 +637,10 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Comment(error_message.to_string(), Expr::tt())).alloc()
         }
         thir::ExprKind::Match {
-            scrutinee, arms, ..
+            scrutinee,
+            scrutinee_hir_id: _,
+            arms,
+            match_source: _,
         } => {
             let scrutinee = compile_expr(env, generics, thir, scrutinee);
             let arms: Vec<MatchArm> = arms
@@ -645,15 +649,7 @@ pub(crate) fn compile_expr<'a>(
                     let arm = thir.arms.get(*arm_id).unwrap();
                     let pattern = crate::thir_pattern::compile_pattern(env, &arm.pattern);
                     let if_let_guard = match &arm.guard {
-                        Some(guard) => match guard {
-                            thir::Guard::If(expr_id) => {
-                                get_if_conditions(env, generics, thir, expr_id)
-                            }
-                            thir::Guard::IfLet(pattern, expr_id) => vec![(
-                                crate::thir_pattern::compile_pattern(env, pattern),
-                                compile_expr(env, generics, thir, expr_id),
-                            )],
-                        },
+                        Some(expr_id) => get_if_conditions(env, generics, thir, expr_id),
                         None => vec![],
                     };
                     let body = compile_expr(env, generics, thir, &arm.body);
@@ -776,7 +772,7 @@ pub(crate) fn compile_expr<'a>(
             borrow_kind: _,
             arg,
         }
-        | thir::ExprKind::AddressOf { mutability: _, arg } => {
+        | thir::ExprKind::RawBorrow { mutability: _, arg } => {
             compile_expr(env, generics, thir, arg).alloc()
         }
         thir::ExprKind::Break { .. } => Rc::new(Expr::ControlFlow(LoopControlFlow::Break)),
@@ -944,7 +940,7 @@ pub(crate) fn compile_expr<'a>(
             rustc_ast::LitKind::Int(i, _) => {
                 Rc::new(Expr::Literal(Rc::new(Literal::Integer(LiteralInteger {
                     negative_sign: *neg,
-                    value: i,
+                    value: i.get(),
                 }))))
                 .alloc()
             }
@@ -956,7 +952,7 @@ pub(crate) fn compile_expr<'a>(
         thir::ExprKind::NonHirLiteral { lit, .. } => {
             Rc::new(Expr::Literal(Rc::new(Literal::Integer(LiteralInteger {
                 negative_sign: false,
-                value: lit.try_to_uint(lit.size()).unwrap(),
+                value: lit.to_uint(lit.size()),
             }))))
             .alloc()
         }
@@ -971,7 +967,7 @@ pub(crate) fn compile_expr<'a>(
                     match parent_kind {
                         DefKind::Impl { .. } => {
                             let parent_generics = env.tcx.generics_of(parent);
-                            let nb_parent_generics = parent_generics.params.len();
+                            let nb_parent_generics = parent_generics.own_params.len();
                             let parent_type =
                                 env.tcx.type_of(parent).instantiate(env.tcx, generic_args);
                             let ty = compile_type(env, generics, &parent_type);
@@ -998,7 +994,7 @@ pub(crate) fn compile_expr<'a>(
                         }
                         DefKind::Trait => {
                             let parent_generics = env.tcx.generics_of(parent);
-                            let nb_parent_generics = parent_generics.params.len();
+                            let nb_parent_generics = parent_generics.own_params.len();
                             let parent_path = compile_def_id(env, parent);
                             let self_ty_and_trait_tys = generic_args
                                 .iter()
@@ -1252,14 +1248,14 @@ pub(crate) fn compile_const(env: &Env, const_: &Const) -> Rc<Expr> {
                 kind: CallKind::Pure,
             })
         }
-        ConstKind::Value(value) => {
+        ConstKind::Value(_, value) => {
             // @TODO: for next version of the rustc API we will be able to make a translation
             // according to the type of value, for booleans or negative integers.
             match value {
                 rustc_middle::ty::ValTree::Leaf(leaf) => {
                     Rc::new(Expr::Literal(Rc::new(Literal::Integer(LiteralInteger {
                         negative_sign: false,
-                        value: leaf.try_to_uint(leaf.size()).unwrap(),
+                        value: leaf.to_uint(leaf.size()),
                     }))))
                 }
                 rustc_middle::ty::ValTree::Branch(_) => Expr::local_var("ValueBranchConst"),

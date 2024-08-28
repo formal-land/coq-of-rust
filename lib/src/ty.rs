@@ -74,22 +74,22 @@ impl CoqType {
     }
 }
 
-pub(crate) fn compile_type(
-    env: &Env,
+pub(crate) fn compile_type<'a>(
+    env: &Env<'a>,
     local_def_id: &rustc_hir::def_id::LocalDefId,
-    ty: &Ty,
+    ty: &Ty<'a>,
 ) -> Rc<CoqType> {
     let generics = env.tcx.generics_of(*local_def_id);
     let item_ctxt = rustc_hir_analysis::collect::ItemCtxt::new(env.tcx, *local_def_id);
-    let ty = &item_ctxt.to_ty(ty);
+    let ty = &item_ctxt.lower_ty(ty);
 
     crate::thir_ty::compile_type(env, generics, ty)
 }
 
-pub(crate) fn compile_fn_ret_ty(
-    env: &Env,
+pub(crate) fn compile_fn_ret_ty<'a>(
+    env: &Env<'a>,
     local_def_id: &rustc_hir::def_id::LocalDefId,
-    fn_ret_ty: &FnRetTy,
+    fn_ret_ty: &FnRetTy<'a>,
 ) -> Rc<CoqType> {
     match fn_ret_ty {
         FnRetTy::DefaultReturn(_) => CoqType::unit(),
@@ -98,10 +98,10 @@ pub(crate) fn compile_fn_ret_ty(
 }
 
 // The type of a function declaration
-pub(crate) fn compile_fn_decl(
-    env: &Env,
+pub(crate) fn compile_fn_decl<'a>(
+    env: &Env<'a>,
     local_def_id: &rustc_hir::def_id::LocalDefId,
-    fn_decl: &FnDecl,
+    fn_decl: &FnDecl<'a>,
 ) -> Rc<CoqType> {
     let ret = compile_fn_ret_ty(env, local_def_id, &fn_decl.output);
 
@@ -116,10 +116,10 @@ pub(crate) fn compile_fn_decl(
 }
 
 /// Return the type parameters on a path
-pub(crate) fn compile_path_ty_params(
-    env: &Env,
+pub(crate) fn compile_path_ty_params<'a>(
+    env: &Env<'a>,
     local_def_id: &rustc_hir::def_id::LocalDefId,
-    path: &rustc_hir::Path,
+    path: &rustc_hir::Path<'a>,
 ) -> Vec<Rc<CoqType>> {
     match path.segments.last().unwrap().args {
         Some(args) => args

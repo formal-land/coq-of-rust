@@ -193,17 +193,6 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
 
-Module Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
-
 Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
