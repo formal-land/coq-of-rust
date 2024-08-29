@@ -4,6 +4,10 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+(* TODO(progress): 
+- Implement `push` and `pop` for `Stack`
+*)
+
 (* NOTE: STUBs: Only implement if necessary *)
 
 Module AccountAddress.

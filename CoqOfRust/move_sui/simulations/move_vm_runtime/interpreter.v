@@ -6,19 +6,16 @@ Import simulations.M.Notations.
 
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Bytecode := file_format.Bytecode.
+Module FunctionHandleIndex := file_format.FunctionHandleIndex
 
 Require CoqOfRsut.move_sui.simulations.move_vm_types.values.value_impl.
 Module Stack := value_impl.Stack.
 
 (* TODO(progress):
-- (FOCUS)Implement `values`
 - Implement `Stack`'s `push` and `pop` operations
-- Implement `Resolver`
-- Implement `InstrRet`
-- Implement `GasMeter`? Or should we ignore it?
 *)
 
-(* NOTE: This trait doesn't have a complete implementation throughout the library. We can briefly stub it
+(* NOTE: This trait doesn't have a complete implementation throughout the library. We might be able to just ignore its occurence
 /// Trait that defines a generic gas meter interface, allowing clients of the Move VM to implement
 /// their own metering scheme.
 pub trait GasMeter {
@@ -144,6 +141,38 @@ pub trait GasMeter {
 *)
 
 (* 
+enum ExitCode {
+    Return,
+    Call(FunctionHandleIndex),
+    CallGeneric(FunctionInstantiationIndex),
+}
+*)
+Module ExitCode.
+  Inductive t : Set := 
+  | Return
+  | Call : FunctionHandleIndex.t -> t
+  | CallGeneric : FunctionInstantiationIndex.t -> t
+  .
+End ExitCode.
+
+
+(* 
+enum InstrRet {
+    Ok,
+    ExitCode(ExitCode),
+    Branch,
+}
+*)
+Module InstrRet.
+  Inductive t : Set :=
+  | Ok
+  | ExitCode : ExitCode.t -> t
+  | Branch
+  .
+End InstrRet.
+
+
+(* 
 /// `Interpreter` instances can execute Move functions.
 ///
 /// An `Interpreter` instance is a stand alone execution context for a function.
@@ -162,7 +191,7 @@ Module Interpreter.
     operand_stack : Stack.t;
     (* call_stack : CallStack.t; *)
     (* runtime_limits_config : VMRuntimeLimitsConfig.t; *)
-  }
+  }.
 End Interpreter.
 
 (* 
