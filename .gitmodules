@@ -7,3 +7,6 @@
 [submodule "third-party/revm"]
 	path = third-party/revm
 	url = https://github.com/bluealloy/revm.git
+[submodule "third-party/move-sui"]
+	path = third-party/move-sui
+	url = https://github.com/move-language/move-sui.git

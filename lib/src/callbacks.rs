@@ -42,7 +42,7 @@ impl Callbacks for ToCoq {
             let current_crate_name = ctxt.crate_name(rustc_hir::def_id::LOCAL_CRATE);
             let current_crate_name_string = current_crate_name.to_string();
 
-            eprintln!("Compiling crate {current_crate_name_string:}");
+            println!("Compiling crate {current_crate_name_string:}");
 
             (
                 current_crate_name_string.clone(),
@@ -52,8 +52,16 @@ impl Callbacks for ToCoq {
 
         for (file_name, coq_output) in coq_output.clone() {
             let coq_file_name = file_name.replace(".rs", ".v");
-            let mut file = File::create(coq_file_name).unwrap();
+            println!("Writing to {coq_file_name:}");
 
+            // We exclude this specific file as it is triggered by the `thread_local!` macro
+            // but is not a file part of the current crate being translated.
+            if coq_file_name.contains("library/std/src/sys/common/thread_local/fast_local.v") {
+                println!("Skipping {coq_file_name:}");
+                continue;
+            }
+
+            let mut file = File::create(coq_file_name).unwrap();
             file.write_all(coq_output.as_bytes()).unwrap();
         }
 
