@@ -9,6 +9,10 @@ Module Bytecode := file_format.Bytecode.
 Module CompiledModule := file_format.CompiledModule.
 
 (* NOTE(STUB): only implement if necessary *)
+Module Function.
+  Inductive t : Set := .
+End Function.
+
 Module ModuleCache.
   Inductive t : Set := .
 End ModuleCache.
@@ -24,6 +28,8 @@ End NativeFunctions.
 Module VMConfig.
   Inductive t : Set := .
 End VMConfig.
+
+(* **************** *)
 
 (* 
 pub(crate) struct Loader {
@@ -57,10 +63,11 @@ struct BinaryType {
 }
 *)
 Module BinaryType.
-  compiled : CompiledModule.t;
-  loaded : LoadedModule.t;
+  Record t : Set := {
+    compiled : CompiledModule.t;
+    loaded : LoadedModule.t;
+  }.
 End BinaryType.
-
 
 (* 
 // A Resolver is a simple and small structure allocated on the stack and used by the
@@ -74,6 +81,6 @@ pub(crate) struct Resolver<'a> {
 Module Resolver.
   Record t : Set := {
     loader : Loader.t;
-    (* binary : BinaryType.t; *)
+    binary : BinaryType.t;
   }.
 End Resolver.

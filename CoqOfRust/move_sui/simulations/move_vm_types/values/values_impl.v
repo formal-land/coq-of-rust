@@ -6,6 +6,7 @@ Import simulations.M.Notations.
 
 (* TODO(progress): 
 - Implement `push` and `pop` for `Stack`
+- Implement `Locals`
 *)
 
 (* NOTE: STUBs: Only implement if necessary *)

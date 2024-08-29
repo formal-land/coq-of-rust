@@ -10,10 +10,28 @@ Module FunctionHandleIndex := file_format.FunctionHandleIndex
 
 Require CoqOfRsut.move_sui.simulations.move_vm_types.values.value_impl.
 Module Stack := value_impl.Stack.
+Module Locals := value_impl.Locals.
+
+Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
+Module PartialVMResult := errors.PartialVMResult.
+Module PartialVMError := errors.PartialVMError.
+
+Require CoqOfRust.move_sui.simulations.move_vm_runtime.loader.
+Module Function := loader.Function.
+Module Resolver := loader.Resolver.
 
 (* TODO(progress):
 - Implement `Stack`'s `push` and `pop` operations
+- Write the basic framework for that function
 *)
+
+(* NOTE(STUB): only implement if necessary *)
+Module Type.
+  Inductive t : Set := .
+End Type.
+
+
+(* **************** *)
 
 (* NOTE: This trait doesn't have a complete implementation throughout the library. We might be able to just ignore its occurence
 /// Trait that defines a generic gas meter interface, allowing clients of the Move VM to implement
@@ -205,21 +223,24 @@ struct Frame {
 Module Frame.
   Record t : Set := {
     pc : Z;
-    (* TODO: Implement below *)
-    locals : Set;
-    function : Set;
-    ty_args : list Set;
+    locals : Locals.t;
+    function : Function.t;
+    ty_args : list Type.t;
   }
 End Frame.
 
+(* NOTE: State to be designed: Z * Locals * Interpreter *)
+Definition State := (Z * Locals.t * Interpreter.t).
+
 (* NOTE: this function is of `impl Frame` (but doesn't involve `Frame` item?) *)
-(* NOTE: State to be designed: Z * Locals * Interpreter * GasMeter *)
 Definition execute_instruction (pc : Z) 
-(* TODO: correctly implement below *)
-  (locals : Set) (ty_args : list Set)
-  (function : Set) (resolver : Set)
-  (interpreter : Set) (gas_meter : Set) (* Note: how should we deal with `impl Gasmeter`? *)
-  (instruction : Bytecode.t) : Set. Admitted.
+  (locals : Locals.t) (ty_args : list Type.t)
+  (function : Function.t) (resolver : Resolver.t)
+  (interpreter : Interpreter.t) (* (gas_meter : GasMeter.t) *) (* NOTE: We ignore gas since it's never implemented *)
+  (instruction : Bytecode.t)
+  : MS? State string PartialVMResult.t InstrRet.t . (* := *) 
+  
+  Admitted.
 (* 
     fn execute_instruction(
         pc: &mut u16,
