@@ -4,6 +4,26 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+(* NOTE: STUBs: Only implement if necessary *)
+
+Module AccountAddress.
+  Inductive t : Set := .
+End AccountAddress.
+
+Module Container.
+  Inductive t : Set := .
+End Container.
+
+Module ContainerRef.
+  Inductive t : Set := .
+End ContainerRef.
+
+Module IndexRef.
+  Inductive t : Set := .
+End IndexRef.
+
+(* **************** *)
+
 (* 
 enum ValueImpl {
     Invalid,
@@ -33,13 +53,11 @@ Module ValueImpl.
   | U128 : Z -> t
   | U256 : Z -> t
   | Bool : bool -> t
-  (* TODO: Implement below *)
-  | Address (*(AccountAddress) *)
-  | Container (* (Container) *)
-  | ContainerRef (* (ContainerRef) *)
-  | IndexedRef (* (IndexedRef) *)
+  | Address : AccountAddress.t -> t
+  | Container : Container.t -> t
+  | ContainerRef : ContainerRef.t -> t
+  | IndexedRef : IndexedRef.t -> t
   .
-
 End ValueImpl.
 
 (* pub struct Value(ValueImpl); *)

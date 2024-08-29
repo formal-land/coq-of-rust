@@ -7,6 +7,9 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Bytecode := file_format.Bytecode.
 
+Require CoqOfRsut.move_sui.simulations.move_vm_types.values.value_impl.
+Module Stack := value_impl.Stack.
+
 (* TODO(progress):
 - (FOCUS)Implement `values`
 - Implement `Stack`'s `push` and `pop` operations
@@ -155,7 +158,11 @@ pub(crate) struct Interpreter {
 }
 *)
 Module Interpreter.
-
+  Record t : Set := {
+    operand_stack : Stack.t;
+    (* call_stack : CallStack.t; *)
+    (* runtime_limits_config : VMRuntimeLimitsConfig.t; *)
+  }
 End Interpreter.
 
 (* 
