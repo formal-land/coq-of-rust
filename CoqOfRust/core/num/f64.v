@@ -64,6 +64,8 @@ Module f64.
     
     Definition value_FRAC_1_SQRT_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
     
+    Definition value_FRAC_1_SQRT_2PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    
     Definition value_FRAC_2_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
     
     Definition value_FRAC_2_SQRT_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
@@ -215,6 +217,51 @@ Module f64.
     Axiom AssociatedConstant_value_NEG_INFINITY :
       M.IsAssociatedConstant Self "value_NEG_INFINITY" value_NEG_INFINITY.
     
+    (*     const SIGN_MASK: u64 = 0x8000_0000_0000_0000; *)
+    (* Ty.path "u64" *)
+    Definition value_SIGN_MASK : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer 9223372036854775808 |))).
+    
+    Axiom AssociatedConstant_value_SIGN_MASK :
+      M.IsAssociatedConstant Self "value_SIGN_MASK" value_SIGN_MASK.
+    
+    (*     const EXP_MASK: u64 = 0x7ff0_0000_0000_0000; *)
+    (* Ty.path "u64" *)
+    Definition value_EXP_MASK : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer 9218868437227405312 |))).
+    
+    Axiom AssociatedConstant_value_EXP_MASK :
+      M.IsAssociatedConstant Self "value_EXP_MASK" value_EXP_MASK.
+    
+    (*     const MAN_MASK: u64 = 0x000f_ffff_ffff_ffff; *)
+    (* Ty.path "u64" *)
+    Definition value_MAN_MASK : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer 4503599627370495 |))).
+    
+    Axiom AssociatedConstant_value_MAN_MASK :
+      M.IsAssociatedConstant Self "value_MAN_MASK" value_MAN_MASK.
+    
+    (*     const TINY_BITS: u64 = 0x1; *)
+    (* Ty.path "u64" *)
+    Definition value_TINY_BITS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+    
+    Axiom AssociatedConstant_value_TINY_BITS :
+      M.IsAssociatedConstant Self "value_TINY_BITS" value_TINY_BITS.
+    
+    (*     const NEG_TINY_BITS: u64 = Self::TINY_BITS | Self::SIGN_MASK; *)
+    (* Ty.path "u64" *)
+    Definition value_NEG_TINY_BITS : Value.t :=
+      M.run
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.Pure.bit_or
+              (M.read (| M.get_constant (| "core::f64::TINY_BITS" |) |))
+              (M.read (| M.get_constant (| "core::f64::SIGN_MASK" |) |))
+          |))).
+    
+    Axiom AssociatedConstant_value_NEG_TINY_BITS :
+      M.IsAssociatedConstant Self "value_NEG_TINY_BITS" value_NEG_TINY_BITS.
+    
     (*
         pub const fn is_nan(self) -> bool {
             self != self
@@ -222,7 +269,7 @@ Module f64.
     *)
     Definition is_nan (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.ne (M.read (| self |)) (M.read (| self |))))
@@ -233,15 +280,13 @@ Module f64.
     
     (*
         pub(crate) const fn abs_private(self) -> f64 {
-            // SAFETY: This transmutation is fine. Probably. For the reasons std is using it.
-            unsafe {
-                mem::transmute::<u64, f64>(mem::transmute::<f64, u64>(self) & 0x7fff_ffff_ffff_ffff)
-            }
+            // SAFETY: This transmutation is fine just like in `to_bits`/`from_bits`.
+            unsafe { mem::transmute::<u64, f64>(mem::transmute::<f64, u64>(self) & !Self::SIGN_MASK) }
         }
     *)
     Definition abs_private (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -255,7 +300,7 @@ Module f64.
                   |),
                   [ M.read (| self |) ]
                 |))
-                (Value.Integer 9223372036854775807)
+                (UnOp.Pure.not (M.read (| M.get_constant (| "core::f64::SIGN_MASK" |) |)))
             ]
           |)))
       | _, _, _ => M.impossible
@@ -273,7 +318,7 @@ Module f64.
     *)
     Definition is_infinite (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.bit_or
@@ -297,7 +342,7 @@ Module f64.
     *)
     Definition is_finite (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.lt
@@ -318,7 +363,7 @@ Module f64.
     *)
     Definition is_subnormal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -350,7 +395,7 @@ Module f64.
     *)
     Definition is_normal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -379,12 +424,14 @@ Module f64.
         pub const fn classify(self) -> FpCategory {
             // A previous implementation tried to only use bitmask-based checks,
             // using f64::to_bits to transmute the float to its bit repr and match on that.
-            // Unfortunately, floating point numbers can be much worse than that.
-            // This also needs to not result in recursive evaluations of f64::to_bits.
+            // If we only cared about being "technically" correct, that's an entirely legit
+            // implementation.
             //
-            // On some processors, in some cases, LLVM will "helpfully" lower floating point ops,
-            // in spite of a request for them using f32 and f64, to things like x87 operations.
-            // These have an f64's mantissa, but can have a larger than normal exponent.
+            // Unfortunately, there is hardware out there that does not correctly implement the IEEE
+            // float semantics Rust relies on: x87 uses a too-large exponent, and some hardware flushes
+            // subnormals to zero. These are platforms bugs, and Rust will misbehave on such hardware,
+            // but we can at least try to make things seem as sane as possible by being careful here.
+            //
             // FIXME(jubilee): Using x87 operations is never necessary in order to function
             // on x86 processors for Rust-to-Rust calls, so this issue should not happen.
             // Code generation should be adjusted to use non-C calling conventions, avoiding this.
@@ -398,18 +445,24 @@ Module f64.
                 // as correctness requires avoiding equality tests that may be Subnormal == -0.0
                 // because it may be wrong under "denormals are zero" and "flush to zero" modes.
                 // Most of std's targets don't use those, but they are used for thumbv7neon.
-                // So, this does use bitpattern matching for the rest.
-    
-                // SAFETY: f64 to u64 is fine. Usually.
-                // If control flow has gotten this far, the value is definitely in one of the categories
-                // that f64::partial_classify can correctly analyze.
-                unsafe { f64::partial_classify(self) }
+                // So, this does use bitpattern matching for the rest. On x87, due to the incorrect
+                // float codegen on this hardware, this doesn't actually return a right answer for NaN
+                // because it cannot correctly discern between a floating point NaN, and some normal
+                // floating point numbers truncated from an x87 FPU -- but we took care of NaN above, so
+                // we are fine.
+                let b = self.to_bits();
+                match (b & Self::MAN_MASK, b & Self::EXP_MASK) {
+                    (0, Self::EXP_MASK) => FpCategory::Infinite,
+                    (0, 0) => FpCategory::Zero,
+                    (_, 0) => FpCategory::Subnormal,
+                    _ => FpCategory::Normal,
+                }
             }
         }
     *)
     Definition classify (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -430,11 +483,70 @@ Module f64.
                     M.alloc (| Value.StructTuple "core::num::FpCategory::Nan" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "f64", "partial_classify", [] |),
-                        [ M.read (| self |) ]
-                      |)
+                    (let~ b :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "f64", "to_bits", [] |),
+                          [ M.read (| self |) ]
+                        |)
+                      |) in
+                    M.match_operator (|
+                      M.alloc (|
+                        Value.Tuple
+                          [
+                            BinOp.Pure.bit_and
+                              (M.read (| b |))
+                              (M.read (| M.get_constant (| "core::f64::MAN_MASK" |) |));
+                            BinOp.Pure.bit_and
+                              (M.read (| b |))
+                              (M.read (| M.get_constant (| "core::f64::EXP_MASK" |) |))
+                          ]
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let _ :=
+                              M.is_constant_or_break_match (|
+                                M.read (| γ0_0 |),
+                                Value.Integer 0
+                              |) in
+                            let _ :=
+                              M.is_constant_or_break_match (|
+                                M.read (| γ0_1 |),
+                                Value.Integer 9218868437227405312
+                              |) in
+                            M.alloc (| Value.StructTuple "core::num::FpCategory::Infinite" [] |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let _ :=
+                              M.is_constant_or_break_match (|
+                                M.read (| γ0_0 |),
+                                Value.Integer 0
+                              |) in
+                            let _ :=
+                              M.is_constant_or_break_match (|
+                                M.read (| γ0_1 |),
+                                Value.Integer 0
+                              |) in
+                            M.alloc (| Value.StructTuple "core::num::FpCategory::Zero" [] |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let _ :=
+                              M.is_constant_or_break_match (|
+                                M.read (| γ0_1 |),
+                                Value.Integer 0
+                              |) in
+                            M.alloc (| Value.StructTuple "core::num::FpCategory::Subnormal" [] |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.alloc (| Value.StructTuple "core::num::FpCategory::Normal" [] |)))
+                      ]
                     |)))
               ]
             |)
@@ -445,180 +557,13 @@ Module f64.
     Axiom AssociatedFunction_classify : M.IsAssociatedFunction Self "classify" classify.
     
     (*
-        const unsafe fn partial_classify(self) -> FpCategory {
-            const EXP_MASK: u64 = 0x7ff0000000000000;
-            const MAN_MASK: u64 = 0x000fffffffffffff;
-    
-            // SAFETY: The caller is not asking questions for which this will tell lies.
-            let b = unsafe { mem::transmute::<f64, u64>(self) };
-            match (b & MAN_MASK, b & EXP_MASK) {
-                (0, EXP_MASK) => FpCategory::Infinite,
-                (0, 0) => FpCategory::Zero,
-                (_, 0) => FpCategory::Subnormal,
-                _ => FpCategory::Normal,
-            }
-        }
-    *)
-    Definition partial_classify (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [ host ], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            let~ b :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (|
-                    "core::intrinsics::transmute",
-                    [ Ty.path "f64"; Ty.path "u64" ]
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |) in
-            M.match_operator (|
-              M.alloc (|
-                Value.Tuple
-                  [
-                    BinOp.Pure.bit_and
-                      (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f64::partial_classify::MAN_MASK" |) |));
-                    BinOp.Pure.bit_and
-                      (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f64::partial_classify::EXP_MASK" |) |))
-                  ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ0_1 |),
-                        Value.Integer 9218868437227405312
-                      |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Infinite" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Zero" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Subnormal" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::num::FpCategory::Normal" [] |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_partial_classify :
-      M.IsAssociatedFunction Self "partial_classify" partial_classify.
-    
-    (*
-        const fn classify_bits(b: u64) -> FpCategory {
-            const EXP_MASK: u64 = 0x7ff0000000000000;
-            const MAN_MASK: u64 = 0x000fffffffffffff;
-    
-            match (b & MAN_MASK, b & EXP_MASK) {
-                (0, EXP_MASK) => FpCategory::Infinite,
-                (_, EXP_MASK) => FpCategory::Nan,
-                (0, 0) => FpCategory::Zero,
-                (_, 0) => FpCategory::Subnormal,
-                _ => FpCategory::Normal,
-            }
-        }
-    *)
-    Definition classify_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [ host ], [], [ b ] =>
-        ltac:(M.monadic
-          (let b := M.alloc (| b |) in
-          M.read (|
-            M.match_operator (|
-              M.alloc (|
-                Value.Tuple
-                  [
-                    BinOp.Pure.bit_and
-                      (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f64::classify_bits::MAN_MASK" |) |));
-                    BinOp.Pure.bit_and
-                      (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f64::classify_bits::EXP_MASK" |) |))
-                  ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ0_1 |),
-                        Value.Integer 9218868437227405312
-                      |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Infinite" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ0_1 |),
-                        Value.Integer 9218868437227405312
-                      |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Nan" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Zero" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Subnormal" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::num::FpCategory::Normal" [] |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_classify_bits :
-      M.IsAssociatedFunction Self "classify_bits" classify_bits.
-    
-    (*
         pub const fn is_sign_positive(self) -> bool {
             !self.is_sign_negative()
         }
     *)
     Definition is_sign_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
@@ -656,12 +601,12 @@ Module f64.
             // IEEE754 says: isSignMinus(x) is true if and only if x has negative sign. isSignMinus
             // applies to zeros and NaNs as well.
             // SAFETY: This is just transmuting to get the sign bit, it's fine.
-            unsafe { mem::transmute::<f64, u64>(self) & 0x8000_0000_0000_0000 != 0 }
+            unsafe { mem::transmute::<f64, u64>(self) & Self::SIGN_MASK != 0 }
         }
     *)
     Definition is_sign_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.ne
@@ -673,7 +618,7 @@ Module f64.
                 |),
                 [ M.read (| self |) ]
               |))
-              (Value.Integer 9223372036854775808))
+              (M.read (| M.get_constant (| "core::f64::SIGN_MASK" |) |)))
             (Value.Integer 0)))
       | _, _, _ => M.impossible
       end.
@@ -702,19 +647,17 @@ Module f64.
     
     (*
         pub const fn next_up(self) -> Self {
-            // We must use strictly integer arithmetic to prevent denormals from
-            // flushing to zero after an arithmetic operation on some platforms.
-            const TINY_BITS: u64 = 0x1; // Smallest positive f64.
-            const CLEAR_SIGN_MASK: u64 = 0x7fff_ffff_ffff_ffff;
-    
+            // Some targets violate Rust's assumption of IEEE semantics, e.g. by flushing
+            // denormals to zero. This is in general unsound and unsupported, but here
+            // we do our best to still produce the correct result on such targets.
             let bits = self.to_bits();
             if self.is_nan() || bits == Self::INFINITY.to_bits() {
                 return self;
             }
     
-            let abs = bits & CLEAR_SIGN_MASK;
+            let abs = bits & !Self::SIGN_MASK;
             let next_bits = if abs == 0 {
-                TINY_BITS
+                Self::TINY_BITS
             } else if bits == abs {
                 bits + 1
             } else {
@@ -725,7 +668,7 @@ Module f64.
     *)
     Definition next_up (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -777,7 +720,7 @@ Module f64.
                   M.alloc (|
                     BinOp.Pure.bit_and
                       (M.read (| bits |))
-                      (M.read (| M.get_constant (| "core::f64::next_up::CLEAR_SIGN_MASK" |) |))
+                      (UnOp.Pure.not (M.read (| M.get_constant (| "core::f64::SIGN_MASK" |) |)))
                   |) in
                 let~ next_bits :=
                   M.copy (|
@@ -793,7 +736,7 @@ Module f64.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::f64::next_up::TINY_BITS" |)));
+                            M.get_constant (| "core::f64::TINY_BITS" |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -845,19 +788,17 @@ Module f64.
     
     (*
         pub const fn next_down(self) -> Self {
-            // We must use strictly integer arithmetic to prevent denormals from
-            // flushing to zero after an arithmetic operation on some platforms.
-            const NEG_TINY_BITS: u64 = 0x8000_0000_0000_0001; // Smallest (in magnitude) negative f64.
-            const CLEAR_SIGN_MASK: u64 = 0x7fff_ffff_ffff_ffff;
-    
+            // Some targets violate Rust's assumption of IEEE semantics, e.g. by flushing
+            // denormals to zero. This is in general unsound and unsupported, but here
+            // we do our best to still produce the correct result on such targets.
             let bits = self.to_bits();
             if self.is_nan() || bits == Self::NEG_INFINITY.to_bits() {
                 return self;
             }
     
-            let abs = bits & CLEAR_SIGN_MASK;
+            let abs = bits & !Self::SIGN_MASK;
             let next_bits = if abs == 0 {
-                NEG_TINY_BITS
+                Self::NEG_TINY_BITS
             } else if bits == abs {
                 bits - 1
             } else {
@@ -868,7 +809,7 @@ Module f64.
     *)
     Definition next_down (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -924,7 +865,7 @@ Module f64.
                   M.alloc (|
                     BinOp.Pure.bit_and
                       (M.read (| bits |))
-                      (M.read (| M.get_constant (| "core::f64::next_down::CLEAR_SIGN_MASK" |) |))
+                      (UnOp.Pure.not (M.read (| M.get_constant (| "core::f64::SIGN_MASK" |) |)))
                   |) in
                 let~ next_bits :=
                   M.copy (|
@@ -940,7 +881,7 @@ Module f64.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::f64::next_down::NEG_TINY_BITS" |)));
+                            M.get_constant (| "core::f64::NEG_TINY_BITS" |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -1033,8 +974,8 @@ Module f64.
     
     (*
         pub fn to_radians(self) -> f64 {
-            let value: f64 = consts::PI;
-            self * (value / 180.0)
+            const RADS_PER_DEG: f64 = consts::PI / 180.0;
+            self * RADS_PER_DEG
         }
     *)
     Definition to_radians (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1042,18 +983,10 @@ Module f64.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            let~ value := M.copy (| M.get_constant (| "core::f64::consts::PI" |) |) in
-            M.alloc (|
-              BinOp.Wrap.mul
-                Integer.Usize
-                (M.read (| self |))
-                (BinOp.Wrap.div
-                  Integer.Usize
-                  (M.read (| value |))
-                  (M.read (| UnsupportedLiteral |)))
-            |)
-          |)))
+          BinOp.Wrap.mul
+            Integer.Usize
+            (M.read (| self |))
+            (M.read (| M.get_constant (| "core::f64::to_radians::RADS_PER_DEG" |) |))))
       | _, _, _ => M.impossible
       end.
     
@@ -1351,13 +1284,13 @@ Module f64.
                 // Overflow is impossible
                 (a + b) / 2.
             } else if abs_a < LO {
-                // Not safe to halve a
+                // Not safe to halve `a` (would underflow)
                 a + (b / 2.)
             } else if abs_b < LO {
-                // Not safe to halve b
+                // Not safe to halve `b` (would underflow)
                 (a / 2.) + b
             } else {
-                // Not safe to halve a and b
+                // Safe to halve `a` and `b`
                 (a / 2.) + (b / 2.)
             }
         }
@@ -1542,56 +1475,17 @@ Module f64.
     (*
         pub const fn to_bits(self) -> u64 {
             // SAFETY: `u64` is a plain old datatype so we can always transmute to it.
-            // ...sorta.
-            //
-            // See the SAFETY comment in f64::from_bits for more.
-            #[rustc_const_unstable(feature = "const_float_bits_conv", issue = "72447")]
-            const fn ct_f64_to_u64(ct: f64) -> u64 {
-                match ct.classify() {
-                    FpCategory::Nan => {
-                        panic!("const-eval error: cannot use f64::to_bits on a NaN")
-                    }
-                    FpCategory::Subnormal => {
-                        panic!("const-eval error: cannot use f64::to_bits on a subnormal number")
-                    }
-                    FpCategory::Infinite | FpCategory::Normal | FpCategory::Zero => {
-                        // SAFETY: We have a normal floating point number. Now we transmute, i.e. do a bitcopy.
-                        unsafe { mem::transmute::<f64, u64>(ct) }
-                    }
-                }
-            }
-    
-            #[inline(always)] // See https://github.com/rust-lang/compiler-builtins/issues/491
-            fn rt_f64_to_u64(rt: f64) -> u64 {
-                // SAFETY: `u64` is a plain old datatype so we can always... uh...
-                // ...look, just pretend you forgot what you just read.
-                // Stability concerns.
-                unsafe { mem::transmute::<f64, u64>(rt) }
-            }
-            // SAFETY: We use internal implementations that either always work or fail at compile time.
-            unsafe { intrinsics::const_eval_select((self,), ct_f64_to_u64, rt_f64_to_u64) }
+            unsafe { mem::transmute(self) }
         }
     *)
     Definition to_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (|
-              "core::intrinsics::const_eval_select",
-              [
-                Ty.tuple [ Ty.path "f64" ];
-                Ty.function [ Ty.path "f64" ] (Ty.path "u64");
-                Ty.function [ Ty.path "f64" ] (Ty.path "u64");
-                Ty.path "u64"
-              ]
-            |),
-            [
-              Value.Tuple [ M.read (| self |) ];
-              M.get_associated_function (| Self, "ct_f64_to_u64.to_bits", [] |);
-              M.get_associated_function (| Self, "rt_f64_to_u64.to_bits", [] |)
-            ]
+            M.get_function (| "core::intrinsics::transmute", [ Ty.path "f64"; Ty.path "u64" ] |),
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -1601,81 +1495,18 @@ Module f64.
     (*
         pub const fn from_bits(v: u64) -> Self {
             // It turns out the safety issues with sNaN were overblown! Hooray!
-            // SAFETY: `u64` is a plain old datatype so we can always transmute from it
-            // ...sorta.
-            //
-            // It turns out that at runtime, it is possible for a floating point number
-            // to be subject to floating point modes that alter nonzero subnormal numbers
-            // to zero on reads and writes, aka "denormals are zero" and "flush to zero".
-            // This is not a problem usually, but at least one tier2 platform for Rust
-            // actually exhibits an FTZ behavior by default: thumbv7neon
-            // aka "the Neon FPU in AArch32 state"
-            //
-            // Even with this, not all instructions exhibit the FTZ behaviors on thumbv7neon,
-            // so this should load the same bits if LLVM emits the "correct" instructions,
-            // but LLVM sometimes makes interesting choices about float optimization,
-            // and other FPUs may do similar. Thus, it is wise to indulge luxuriously in caution.
-            //
-            // In addition, on x86 targets with SSE or SSE2 disabled and the x87 FPU enabled,
-            // i.e. not soft-float, the way Rust does parameter passing can actually alter
-            // a number that is "not infinity" to have the same exponent as infinity,
-            // in a slightly unpredictable manner.
-            //
-            // And, of course evaluating to a NaN value is fairly nondeterministic.
-            // More precisely: when NaN should be returned is knowable, but which NaN?
-            // So far that's defined by a combination of LLVM and the CPU, not Rust.
-            // This function, however, allows observing the bitstring of a NaN,
-            // thus introspection on CTFE.
-            //
-            // In order to preserve, at least for the moment, const-to-runtime equivalence,
-            // reject any of these possible situations from happening.
-            #[rustc_const_unstable(feature = "const_float_bits_conv", issue = "72447")]
-            const fn ct_u64_to_f64(ct: u64) -> f64 {
-                match f64::classify_bits(ct) {
-                    FpCategory::Subnormal => {
-                        panic!("const-eval error: cannot use f64::from_bits on a subnormal number")
-                    }
-                    FpCategory::Nan => {
-                        panic!("const-eval error: cannot use f64::from_bits on NaN")
-                    }
-                    FpCategory::Infinite | FpCategory::Normal | FpCategory::Zero => {
-                        // SAFETY: It's not a frumious number
-                        unsafe { mem::transmute::<u64, f64>(ct) }
-                    }
-                }
-            }
-    
-            #[inline(always)] // See https://github.com/rust-lang/compiler-builtins/issues/491
-            fn rt_u64_to_f64(rt: u64) -> f64 {
-                // SAFETY: `u64` is a plain old datatype so we can always... uh...
-                // ...look, just pretend you forgot what you just read.
-                // Stability concerns.
-                unsafe { mem::transmute::<u64, f64>(rt) }
-            }
-            // SAFETY: We use internal implementations that either always work or fail at compile time.
-            unsafe { intrinsics::const_eval_select((v,), ct_u64_to_f64, rt_u64_to_f64) }
+            // SAFETY: `u64` is a plain old datatype so we can always transmute from it.
+            unsafe { mem::transmute(v) }
         }
     *)
     Definition from_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ v ] =>
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
-            M.get_function (|
-              "core::intrinsics::const_eval_select",
-              [
-                Ty.tuple [ Ty.path "u64" ];
-                Ty.function [ Ty.path "u64" ] (Ty.path "f64");
-                Ty.function [ Ty.path "u64" ] (Ty.path "f64");
-                Ty.path "f64"
-              ]
-            |),
-            [
-              Value.Tuple [ M.read (| v |) ];
-              M.get_associated_function (| Self, "ct_u64_to_f64.from_bits", [] |);
-              M.get_associated_function (| Self, "rt_u64_to_f64.from_bits", [] |)
-            ]
+            M.get_function (| "core::intrinsics::transmute", [ Ty.path "u64"; Ty.path "f64" ] |),
+            [ M.read (| v |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -1689,7 +1520,7 @@ Module f64.
     *)
     Definition to_be_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1713,7 +1544,7 @@ Module f64.
     *)
     Definition to_le_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1737,7 +1568,7 @@ Module f64.
     *)
     Definition to_ne_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1761,7 +1592,7 @@ Module f64.
     *)
     Definition from_be_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ bytes ] =>
+      | [], [], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
@@ -1786,7 +1617,7 @@ Module f64.
     *)
     Definition from_le_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ bytes ] =>
+      | [], [], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
@@ -1811,7 +1642,7 @@ Module f64.
     *)
     Definition from_ne_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ bytes ] =>
+      | [], [], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
@@ -1963,40 +1794,36 @@ Module f64.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "min > max, or either was NaN. min = "
-                                          |);
-                                          M.read (| Value.String ", max = " |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_debug",
-                                              [ Ty.path "f64" ]
-                                            |),
-                                            [ min ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_debug",
-                                              [ Ty.path "f64" ]
-                                            |),
-                                            [ max ]
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "min > max, or either was NaN. min = "
+                                        |);
+                                        M.read (| Value.String ", max = " |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [ Ty.path "f64" ]
+                                          |),
+                                          [ min ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [ Ty.path "f64" ]
+                                          |),
+                                          [ max ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]

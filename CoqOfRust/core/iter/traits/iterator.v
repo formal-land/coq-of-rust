@@ -261,8 +261,11 @@ Module iter.
                                                                 [
                                                                   M.call_closure (|
                                                                     M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::num::nonzero::NonZeroUsize",
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::num::nonzero::NonZero")
+                                                                        []
+                                                                        [ Ty.path "usize" ],
                                                                       "new_unchecked",
                                                                       []
                                                                     |),
@@ -322,7 +325,13 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
                                   "ok",
                                   []
                                 |),
@@ -1712,7 +1721,7 @@ Module iter.
             (α : list Value.t)
             : M :=
           match ε, τ, α with
-          | [], [ F; R ], [ self; f ] =>
+          | [], [ R; impl_FnMut_Self_Item__Self_Item__arrow_R ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -1780,7 +1789,7 @@ Module iter.
                                 Self,
                                 [],
                                 "try_fold",
-                                [ Ty.associated; F; R ]
+                                [ Ty.associated; impl_FnMut_Self_Item__Self_Item__arrow_R; R ]
                               |),
                               [ M.read (| self |); M.read (| first |); M.read (| f |) ]
                             |)
@@ -2065,7 +2074,7 @@ Module iter.
             (α : list Value.t)
             : M :=
           match ε, τ, α with
-          | [], [ F; R ], [ self; f ] =>
+          | [], [ R; impl_FnMut__Self_Item__arrow_R ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -2147,41 +2156,46 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::ops::control_flow::ControlFlow")
-                    []
-                    [ Ty.path "usize"; Ty.path "usize" ],
-                  "break_value",
-                  []
-                |),
-                [
+              M.read (|
+                let~ acc := M.alloc (| Value.Integer 0 |) in
+                M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (|
-                      "core::iter::traits::iterator::Iterator",
-                      Self,
-                      [],
-                      "try_fold",
-                      [
-                        Ty.path "usize";
-                        Ty.associated;
-                        Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
-                          []
-                          [ Ty.path "usize"; Ty.path "usize" ]
-                      ]
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [ Ty.path "usize"; Ty.tuple [] ],
+                      "break_value",
+                      []
                     |),
                     [
-                      M.read (| self |);
-                      Value.Integer 0;
                       M.call_closure (|
-                        M.get_associated_function (| Self, "check.position", [] |),
-                        [ M.read (| predicate |) ]
+                        M.get_trait_method (|
+                          "core::iter::traits::iterator::Iterator",
+                          Self,
+                          [],
+                          "try_fold",
+                          [
+                            Ty.tuple [];
+                            Ty.associated;
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [ Ty.path "usize"; Ty.tuple [] ]
+                          ]
+                        |),
+                        [
+                          M.read (| self |);
+                          Value.Tuple [];
+                          M.call_closure (|
+                            M.get_associated_function (| Self, "check.position", [] |),
+                            [ M.read (| predicate |); acc ]
+                          |)
+                        ]
                       |)
                     ]
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible
           end.
@@ -3469,24 +3483,50 @@ Module iter.
                   [
                     Ty.function
                       [
-                        Ty.apply (Ty.path "&") [] [ Ty.associated ];
-                        Ty.apply (Ty.path "&") [] [ Ty.associated ]
+                        Ty.tuple
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.associated ];
+                            Ty.apply (Ty.path "&") [] [ Ty.associated ]
+                          ]
                       ]
-                      (Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.path "core::cmp::Ordering" ])
+                      (Ty.path "bool")
                   ]
                 |),
                 [
                   M.read (| self |);
-                  M.get_trait_method (|
-                    "core::cmp::PartialOrd",
-                    Ty.associated,
-                    [ Ty.associated ],
-                    "partial_cmp",
-                    []
-                  |)
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0; α1 ] =>
+                          M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let a := M.copy (| γ |) in
+                                  M.match_operator (|
+                                    M.alloc (| α1 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let b := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::cmp::PartialOrd",
+                                              Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
+                                              "le",
+                                              []
+                                            |),
+                                            [ a; M.alloc (| M.read (| b |) |) ]
+                                          |)))
+                                    ]
+                                  |)))
+                            ]
+                          |)
+                        | _ => M.impossible (||)
+                        end))
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -3626,29 +3666,25 @@ Module iter.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String
-                                    "internal error: entered unreachable code: Always specialized"
-                                |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "none",
-                                []
-                              |),
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (|
+                                Value.String
+                                  "internal error: entered unreachable code: Always specialized"
+                              |)
+                            ]
+                        |);
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "none",
                               []
-                            |)
-                          |))
+                            |),
+                            []
+                          |)
+                        |)
                       ]
                     |)
                   ]
@@ -3990,7 +4026,7 @@ Module iter.
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 ( **self).advance_by(n)
             }
         *)

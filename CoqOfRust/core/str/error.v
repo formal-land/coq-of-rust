@@ -26,17 +26,6 @@ Module str.
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_str_error_Utf8Error.
     
-    Module Impl_core_marker_StructuralEq_for_core_str_error_Utf8Error.
-      Definition Self : Ty.t := Ty.path "core::str::error::Utf8Error".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_str_error_Utf8Error.
-    
     Module Impl_core_cmp_Eq_for_core_str_error_Utf8Error.
       Definition Self : Ty.t := Ty.path "core::str::error::Utf8Error".
       
@@ -199,23 +188,19 @@ Module str.
                 M.read (| f |);
                 M.read (| Value.String "Utf8Error" |);
                 M.read (| Value.String "valid_up_to" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::error::Utf8Error",
+                  "valid_up_to"
+                |);
+                M.read (| Value.String "error_len" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::str::error::Utf8Error",
-                    "valid_up_to"
-                  |));
-                M.read (| Value.String "error_len" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::error::Utf8Error",
-                      "error_len"
-                    |)
-                  |))
+                    "error_len"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -239,7 +224,7 @@ Module str.
       *)
       Definition valid_up_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -265,7 +250,7 @@ Module str.
       *)
       Definition error_len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -360,44 +345,40 @@ Module str.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "invalid utf-8 sequence of " |);
-                                        M.read (| Value.String " bytes from index " |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [ error_len ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::str::error::Utf8Error",
-                                              "valid_up_to"
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "invalid utf-8 sequence of " |);
+                                      M.read (| Value.String " bytes from index " |)
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "u8" ]
+                                        |),
+                                        [ error_len ]
+                                      |);
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::str::error::Utf8Error",
+                                            "valid_up_to"
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -421,37 +402,33 @@ Module str.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "incomplete utf-8 byte sequence from index "
-                                        |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::str::error::Utf8Error",
-                                              "valid_up_to"
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String "incomplete utf-8 byte sequence from index "
+                                      |)
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::str::error::Utf8Error",
+                                            "valid_up_to"
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -582,17 +559,6 @@ Module str.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_str_error_ParseBoolError.
-    
-    Module Impl_core_marker_StructuralEq_for_core_str_error_ParseBoolError.
-      Definition Self : Ty.t := Ty.path "core::str::error::ParseBoolError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_str_error_ParseBoolError.
     
     Module Impl_core_cmp_Eq_for_core_str_error_ParseBoolError.
       Definition Self : Ty.t := Ty.path "core::str::error::ParseBoolError".

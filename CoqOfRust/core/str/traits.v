@@ -220,7 +220,7 @@ Module str.
     *)
     Definition str_index_overflow_fail (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [] =>
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -228,12 +228,10 @@ Module str.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [ M.read (| Value.String "attempted to index str up to maximum usize" |) ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [ M.read (| Value.String "attempted to index str up to maximum usize" |) ]
+                  |)
                 ]
               |)
             ]
@@ -590,22 +588,28 @@ Module str.
           unsafe fn get_unchecked(self, slice: *const str) -> *const Self::Output {
               let slice = slice as *const [u8];
       
-              debug_assert_nounwind!(
+              assert_unsafe_precondition!(
                   // We'd like to check that the bounds are on char boundaries,
                   // but there's not really a way to do so without reading
                   // behind the pointer, which has aliasing implications.
                   // It's also not possible to move this check up to
                   // `str::get_unchecked` without adding a special function
                   // to `SliceIndex` just for this.
-                  self.end >= self.start && self.end <= slice.len(),
+                  check_library_ub,
                   "str::get_unchecked requires that the range is within the string slice",
+                  (
+                      start: usize = self.start,
+                      end: usize = self.end,
+                      len: usize = slice.len()
+                  ) => end >= start && end <= len,
               );
       
               // SAFETY: the caller guarantees that `self` is in bounds of `slice`
               // which satisfies all the conditions for `add`.
-              let ptr = unsafe { slice.as_ptr().add(self.start) };
-              let len = self.end - self.start;
-              ptr::slice_from_raw_parts(ptr, len) as *const str
+              unsafe {
+                  let new_len = unchecked_sub(self.end, self.start);
+                  ptr::slice_from_raw_parts(slice.as_ptr().add(self.start), new_len) as *const str
+              }
           }
       *)
       Definition get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -622,120 +626,68 @@ Module str.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                []
+                              |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                self,
-                                                "core::ops::range::Range",
-                                                "end"
-                                              |)
-                                            |))
-                                            (M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                self,
-                                                "core::ops::range::Range",
-                                                "start"
-                                              |)
-                                            |)),
-                                          ltac:(M.monadic
-                                            (BinOp.Pure.le
-                                              (M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  self,
-                                                  "core::ops::range::Range",
-                                                  "end"
-                                                |)
-                                              |))
-                                              (M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "*const")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ],
-                                                  "len",
-                                                  []
-                                                |),
-                                                [ M.read (| slice |) ]
-                                              |))))
-                                        |))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::panicking::panic_nounwind_fmt",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            []
-                                          |),
-                                          [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "str::get_unchecked requires that the range is within the string slice"
-                                                    |)
-                                                  ]
-                                              |))
-                                          ]
-                                        |);
-                                        Value.Bool false
-                                      ]
-                                    |)
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.get_unchecked",
+                                []
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "start"
                                   |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)));
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*const")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    "len",
+                                    []
+                                  |),
+                                  [ M.read (| slice |) ]
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ ptr :=
+              let~ new_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                      "add",
-                      []
-                    |),
+                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "*const")
-                            []
-                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                          "as_ptr",
-                          []
-                        |),
-                        [ M.read (| slice |) ]
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::Range",
+                          "end"
+                        |)
                       |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -747,30 +699,40 @@ Module str.
                     ]
                   |)
                 |) in
-              let~ len :=
-                M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::ops::range::Range",
-                        "end"
-                      |)
-                    |))
-                    (M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::ops::range::Range",
-                        "start"
-                      |)
-                    |))
-                |) in
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
                     M.get_function (| "core::ptr::slice_from_raw_parts", [ Ty.path "u8" ] |),
-                    [ M.read (| ptr |); M.read (| len |) ]
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                          "add",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "*const")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                              "as_ptr",
+                              []
+                            |),
+                            [ M.read (| slice |) ]
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ops::range::Range",
+                              "start"
+                            |)
+                          |)
+                        ]
+                      |);
+                      M.read (| new_len |)
+                    ]
                   |))
               |)
             |)))
@@ -781,15 +743,21 @@ Module str.
           unsafe fn get_unchecked_mut(self, slice: *mut str) -> *mut Self::Output {
               let slice = slice as *mut [u8];
       
-              debug_assert_nounwind!(
-                  self.end >= self.start && self.end <= slice.len(),
+              assert_unsafe_precondition!(
+                  check_library_ub,
                   "str::get_unchecked_mut requires that the range is within the string slice",
+                  (
+                      start: usize = self.start,
+                      end: usize = self.end,
+                      len: usize = slice.len()
+                  ) => end >= start && end <= len,
               );
       
               // SAFETY: see comments for `get_unchecked`.
-              let ptr = unsafe { slice.as_mut_ptr().add(self.start) };
-              let len = self.end - self.start;
-              ptr::slice_from_raw_parts_mut(ptr, len) as *mut str
+              unsafe {
+                  let new_len = unchecked_sub(self.end, self.start);
+                  ptr::slice_from_raw_parts_mut(slice.as_mut_ptr().add(self.start), new_len) as *mut str
+              }
           }
       *)
       Definition get_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -806,120 +774,68 @@ Module str.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                []
+                              |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                self,
-                                                "core::ops::range::Range",
-                                                "end"
-                                              |)
-                                            |))
-                                            (M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                self,
-                                                "core::ops::range::Range",
-                                                "start"
-                                              |)
-                                            |)),
-                                          ltac:(M.monadic
-                                            (BinOp.Pure.le
-                                              (M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  self,
-                                                  "core::ops::range::Range",
-                                                  "end"
-                                                |)
-                                              |))
-                                              (M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "*mut")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ],
-                                                  "len",
-                                                  []
-                                                |),
-                                                [ M.read (| slice |) ]
-                                              |))))
-                                        |))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::panicking::panic_nounwind_fmt",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            []
-                                          |),
-                                          [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "str::get_unchecked_mut requires that the range is within the string slice"
-                                                    |)
-                                                  ]
-                                              |))
-                                          ]
-                                        |);
-                                        Value.Bool false
-                                      ]
-                                    |)
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.get_unchecked_mut",
+                                []
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "start"
                                   |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)));
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    "len",
+                                    []
+                                  |),
+                                  [ M.read (| slice |) ]
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ ptr :=
+              let~ new_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                      "add",
-                      []
-                    |),
+                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "*mut")
-                            []
-                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                          "as_mut_ptr",
-                          []
-                        |),
-                        [ M.read (| slice |) ]
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::Range",
+                          "end"
+                        |)
                       |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -931,30 +847,40 @@ Module str.
                     ]
                   |)
                 |) in
-              let~ len :=
-                M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::ops::range::Range",
-                        "end"
-                      |)
-                    |))
-                    (M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::ops::range::Range",
-                        "start"
-                      |)
-                    |))
-                |) in
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
                     M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ Ty.path "u8" ] |),
-                    [ M.read (| ptr |); M.read (| len |) ]
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                          "add",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                              "as_mut_ptr",
+                              []
+                            |),
+                            [ M.read (| slice |) ]
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ops::range::Range",
+                              "start"
+                            |)
+                          |)
+                        ]
+                      |);
+                      M.read (| new_len |)
+                    ]
                   |))
               |)
             |)))
@@ -1195,6 +1121,761 @@ Module str.
             ("index_mut", InstanceField.Method index_mut)
           ].
     End Impl_core_slice_index_SliceIndex_str_for_core_ops_range_Range_usize.
+    
+    Module Impl_core_slice_index_SliceIndex_str_for_core_range_Range_usize.
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ].
+      
+      (*     type Output = str; *)
+      Definition _Output : Ty.t := Ty.path "str".
+      
+      (*
+          fn get(self, slice: &str) -> Option<&Self::Output> {
+              if self.start <= self.end
+                  && slice.is_char_boundary(self.start)
+                  && slice.is_char_boundary(self.end)
+              {
+                  // SAFETY: just checked that `start` and `end` are on a char boundary,
+                  // and we are passing in a safe reference, so the return value will also be one.
+                  // We also checked char boundaries, so this is valid UTF-8.
+                  Some(unsafe { &*self.get_unchecked(slice) })
+              } else {
+                  None
+              }
+          }
+      *)
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            LogicalOp.and (|
+                              LogicalOp.and (|
+                                BinOp.Pure.le
+                                  (M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::range::Range",
+                                      "start"
+                                    |)
+                                  |))
+                                  (M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::range::Range",
+                                      "end"
+                                    |)
+                                  |)),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "str",
+                                      "is_char_boundary",
+                                      []
+                                    |),
+                                    [
+                                      M.read (| slice |);
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "core::range::Range",
+                                          "start"
+                                        |)
+                                      |)
+                                    ]
+                                  |)))
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "str",
+                                    "is_char_boundary",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| slice |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::range::Range",
+                                        "end"
+                                      |)
+                                    |)
+                                  ]
+                                |)))
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::slice::index::SliceIndex",
+                                Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                                [ Ty.path "str" ],
+                                "get_unchecked",
+                                []
+                              |),
+                              [ M.read (| self |); M.read (| slice |) ]
+                            |)
+                          ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          fn get_mut(self, slice: &mut str) -> Option<&mut Self::Output> {
+              if self.start <= self.end
+                  && slice.is_char_boundary(self.start)
+                  && slice.is_char_boundary(self.end)
+              {
+                  // SAFETY: just checked that `start` and `end` are on a char boundary.
+                  // We know the pointer is unique because we got it from `slice`.
+                  Some(unsafe { &mut *self.get_unchecked_mut(slice) })
+              } else {
+                  None
+              }
+          }
+      *)
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            LogicalOp.and (|
+                              LogicalOp.and (|
+                                BinOp.Pure.le
+                                  (M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::range::Range",
+                                      "start"
+                                    |)
+                                  |))
+                                  (M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::range::Range",
+                                      "end"
+                                    |)
+                                  |)),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "str",
+                                      "is_char_boundary",
+                                      []
+                                    |),
+                                    [
+                                      M.read (| slice |);
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "core::range::Range",
+                                          "start"
+                                        |)
+                                      |)
+                                    ]
+                                  |)))
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "str",
+                                    "is_char_boundary",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| slice |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::range::Range",
+                                        "end"
+                                      |)
+                                    |)
+                                  ]
+                                |)))
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::slice::index::SliceIndex",
+                                Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                                [ Ty.path "str" ],
+                                "get_unchecked_mut",
+                                []
+                              |),
+                              [ M.read (| self |); M.read (| slice |) ]
+                            |)
+                          ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          unsafe fn get_unchecked(self, slice: *const str) -> *const Self::Output {
+              let slice = slice as *const [u8];
+      
+              assert_unsafe_precondition!(
+                  // We'd like to check that the bounds are on char boundaries,
+                  // but there's not really a way to do so without reading
+                  // behind the pointer, which has aliasing implications.
+                  // It's also not possible to move this check up to
+                  // `str::get_unchecked` without adding a special function
+                  // to `SliceIndex` just for this.
+                  check_library_ub,
+                  "str::get_unchecked requires that the range is within the string slice",
+                  (
+                      start: usize = self.start,
+                      end: usize = self.end,
+                      len: usize = slice.len()
+                  ) => end >= start && end <= len,
+              );
+      
+              // SAFETY: the caller guarantees that `self` is in bounds of `slice`
+              // which satisfies all the conditions for `add`.
+              unsafe {
+                  let new_len = unchecked_sub(self.end, self.start);
+                  ptr::slice_from_raw_parts(slice.as_ptr().add(self.start), new_len) as *const str
+              }
+          }
+      *)
+      Definition get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              let~ slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                []
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.get_unchecked",
+                                []
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::range::Range",
+                                    "start"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::range::Range",
+                                    "end"
+                                  |)
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*const")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    "len",
+                                    []
+                                  |),
+                                  [ M.read (| slice |) ]
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              let~ new_len :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (| self, "core::range::Range", "end" |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::range::Range",
+                          "start"
+                        |)
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (|
+                M.rust_cast
+                  (M.call_closure (|
+                    M.get_function (| "core::ptr::slice_from_raw_parts", [ Ty.path "u8" ] |),
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                          "add",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "*const")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                              "as_ptr",
+                              []
+                            |),
+                            [ M.read (| slice |) ]
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::range::Range",
+                              "start"
+                            |)
+                          |)
+                        ]
+                      |);
+                      M.read (| new_len |)
+                    ]
+                  |))
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          unsafe fn get_unchecked_mut(self, slice: *mut str) -> *mut Self::Output {
+              let slice = slice as *mut [u8];
+      
+              assert_unsafe_precondition!(
+                  check_library_ub,
+                  "str::get_unchecked_mut requires that the range is within the string slice",
+                  (
+                      start: usize = self.start,
+                      end: usize = self.end,
+                      len: usize = slice.len()
+                  ) => end >= start && end <= len,
+              );
+      
+              // SAFETY: see comments for `get_unchecked`.
+              unsafe {
+                  let new_len = unchecked_sub(self.end, self.start);
+                  ptr::slice_from_raw_parts_mut(slice.as_mut_ptr().add(self.start), new_len) as *mut str
+              }
+          }
+      *)
+      Definition get_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              let~ slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                []
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.get_unchecked_mut",
+                                []
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::range::Range",
+                                    "start"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::range::Range",
+                                    "end"
+                                  |)
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    "len",
+                                    []
+                                  |),
+                                  [ M.read (| slice |) ]
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              let~ new_len :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (| self, "core::range::Range", "end" |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::range::Range",
+                          "start"
+                        |)
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (|
+                M.rust_cast
+                  (M.call_closure (|
+                    M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ Ty.path "u8" ] |),
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                          "add",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                              "as_mut_ptr",
+                              []
+                            |),
+                            [ M.read (| slice |) ]
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::range::Range",
+                              "start"
+                            |)
+                          |)
+                        ]
+                      |);
+                      M.read (| new_len |)
+                    ]
+                  |))
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          fn index(self, slice: &str) -> &Self::Output {
+              let (start, end) = (self.start, self.end);
+              match self.get(slice) {
+                  Some(s) => s,
+                  None => super::slice_error_fail(slice, start, end),
+              }
+          }
+      *)
+      Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (|
+                  Value.Tuple
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::range::Range",
+                          "start"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (| self, "core::range::Range", "end" |)
+                      |)
+                    ]
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let start := M.copy (| γ0_0 |) in
+                      let end_ := M.copy (| γ0_1 |) in
+                      M.match_operator (|
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::slice::index::SliceIndex",
+                              Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                              [ Ty.path "str" ],
+                              "get",
+                              []
+                            |),
+                            [ M.read (| self |); M.read (| slice |) ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::option::Option::Some",
+                                  0
+                                |) in
+                              let s := M.copy (| γ0_0 |) in
+                              M.alloc (| M.read (| s |) |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.call_closure (|
+                                    M.get_function (| "core::str::slice_error_fail", [] |),
+                                    [ M.read (| slice |); M.read (| start |); M.read (| end_ |) ]
+                                  |)
+                                |)
+                              |)))
+                        ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          fn index_mut(self, slice: &mut str) -> &mut Self::Output {
+              // is_char_boundary checks that the index is in [0, .len()]
+              // cannot reuse `get` as above, because of NLL trouble
+              if self.start <= self.end
+                  && slice.is_char_boundary(self.start)
+                  && slice.is_char_boundary(self.end)
+              {
+                  // SAFETY: just checked that `start` and `end` are on a char boundary,
+                  // and we are passing in a safe reference, so the return value will also be one.
+                  unsafe { &mut *self.get_unchecked_mut(slice) }
+              } else {
+                  super::slice_error_fail(slice, self.start, self.end)
+              }
+          }
+      *)
+      Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            LogicalOp.and (|
+                              LogicalOp.and (|
+                                BinOp.Pure.le
+                                  (M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::range::Range",
+                                      "start"
+                                    |)
+                                  |))
+                                  (M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::range::Range",
+                                      "end"
+                                    |)
+                                  |)),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "str",
+                                      "is_char_boundary",
+                                      []
+                                    |),
+                                    [
+                                      M.read (| slice |);
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "core::range::Range",
+                                          "start"
+                                        |)
+                                      |)
+                                    ]
+                                  |)))
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "str",
+                                    "is_char_boundary",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| slice |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::range::Range",
+                                        "end"
+                                      |)
+                                    |)
+                                  ]
+                                |)))
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::slice::index::SliceIndex",
+                            Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                            [ Ty.path "str" ],
+                            "get_unchecked_mut",
+                            []
+                          |),
+                          [ M.read (| self |); M.read (| slice |) ]
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.never_to_any (|
+                          M.call_closure (|
+                            M.get_function (| "core::str::slice_error_fail", [] |),
+                            [
+                              M.read (| slice |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::range::Range",
+                                  "start"
+                                |)
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::range::Range",
+                                  "end"
+                                |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::slice::index::SliceIndex"
+          Self
+          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
+          (* Instance *)
+          [
+            ("Output", InstanceField.Ty _Output);
+            ("get", InstanceField.Method get);
+            ("get_mut", InstanceField.Method get_mut);
+            ("get_unchecked", InstanceField.Method get_unchecked);
+            ("get_unchecked_mut", InstanceField.Method get_unchecked_mut);
+            ("index", InstanceField.Method index);
+            ("index_mut", InstanceField.Method index_mut)
+          ].
+    End Impl_core_slice_index_SliceIndex_str_for_core_range_Range_usize.
     
     Module Impl_core_slice_index_SliceIndex_str_for_Tuple_core_ops_range_Bound_usize_core_ops_range_Bound_usize_.
       Definition Self : Ty.t :=
@@ -2452,6 +3133,444 @@ Module str.
           ].
     End Impl_core_slice_index_SliceIndex_str_for_core_ops_range_RangeFrom_usize.
     
+    Module Impl_core_slice_index_SliceIndex_str_for_core_range_RangeFrom_usize.
+      Definition Self : Ty.t := Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ].
+      
+      (*     type Output = str; *)
+      Definition _Output : Ty.t := Ty.path "str".
+      
+      (*
+          fn get(self, slice: &str) -> Option<&Self::Output> {
+              if slice.is_char_boundary(self.start) {
+                  // SAFETY: just checked that `start` is on a char boundary,
+                  // and we are passing in a safe reference, so the return value will also be one.
+                  Some(unsafe { &*self.get_unchecked(slice) })
+              } else {
+                  None
+              }
+          }
+      *)
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                              [
+                                M.read (| slice |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::range::RangeFrom",
+                                    "start"
+                                  |)
+                                |)
+                              ]
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::slice::index::SliceIndex",
+                                Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                                [ Ty.path "str" ],
+                                "get_unchecked",
+                                []
+                              |),
+                              [ M.read (| self |); M.read (| slice |) ]
+                            |)
+                          ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          fn get_mut(self, slice: &mut str) -> Option<&mut Self::Output> {
+              if slice.is_char_boundary(self.start) {
+                  // SAFETY: just checked that `start` is on a char boundary,
+                  // and we are passing in a safe reference, so the return value will also be one.
+                  Some(unsafe { &mut *self.get_unchecked_mut(slice) })
+              } else {
+                  None
+              }
+          }
+      *)
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                              [
+                                M.read (| slice |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::range::RangeFrom",
+                                    "start"
+                                  |)
+                                |)
+                              ]
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::slice::index::SliceIndex",
+                                Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                                [ Ty.path "str" ],
+                                "get_unchecked_mut",
+                                []
+                              |),
+                              [ M.read (| self |); M.read (| slice |) ]
+                            |)
+                          ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          unsafe fn get_unchecked(self, slice: *const str) -> *const Self::Output {
+              let len = (slice as *const [u8]).len();
+              // SAFETY: the caller has to uphold the safety contract for `get_unchecked`.
+              unsafe { (self.start..len).get_unchecked(slice) }
+          }
+      *)
+      Definition get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              let~ len :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      "len",
+                      []
+                    |),
+                    [ M.rust_cast (M.read (| slice |)) ]
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::slice::index::SliceIndex",
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [ Ty.path "str" ],
+                    "get_unchecked",
+                    []
+                  |),
+                  [
+                    Value.StructRecord
+                      "core::ops::range::Range"
+                      [
+                        ("start",
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::range::RangeFrom",
+                              "start"
+                            |)
+                          |));
+                        ("end_", M.read (| len |))
+                      ];
+                    M.read (| slice |)
+                  ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          unsafe fn get_unchecked_mut(self, slice: *mut str) -> *mut Self::Output {
+              let len = (slice as *mut [u8]).len();
+              // SAFETY: the caller has to uphold the safety contract for `get_unchecked_mut`.
+              unsafe { (self.start..len).get_unchecked_mut(slice) }
+          }
+      *)
+      Definition get_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              let~ len :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      "len",
+                      []
+                    |),
+                    [ M.rust_cast (M.read (| slice |)) ]
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::slice::index::SliceIndex",
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [ Ty.path "str" ],
+                    "get_unchecked_mut",
+                    []
+                  |),
+                  [
+                    Value.StructRecord
+                      "core::ops::range::Range"
+                      [
+                        ("start",
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::range::RangeFrom",
+                              "start"
+                            |)
+                          |));
+                        ("end_", M.read (| len |))
+                      ];
+                    M.read (| slice |)
+                  ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          fn index(self, slice: &str) -> &Self::Output {
+              let (start, end) = (self.start, slice.len());
+              match self.get(slice) {
+                  Some(s) => s,
+                  None => super::slice_error_fail(slice, start, end),
+              }
+          }
+      *)
+      Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (|
+                  Value.Tuple
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::range::RangeFrom",
+                          "start"
+                        |)
+                      |);
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "str", "len", [] |),
+                        [ M.read (| slice |) ]
+                      |)
+                    ]
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let start := M.copy (| γ0_0 |) in
+                      let end_ := M.copy (| γ0_1 |) in
+                      M.match_operator (|
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::slice::index::SliceIndex",
+                              Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                              [ Ty.path "str" ],
+                              "get",
+                              []
+                            |),
+                            [ M.read (| self |); M.read (| slice |) ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::option::Option::Some",
+                                  0
+                                |) in
+                              let s := M.copy (| γ0_0 |) in
+                              M.alloc (| M.read (| s |) |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.call_closure (|
+                                    M.get_function (| "core::str::slice_error_fail", [] |),
+                                    [ M.read (| slice |); M.read (| start |); M.read (| end_ |) ]
+                                  |)
+                                |)
+                              |)))
+                        ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          fn index_mut(self, slice: &mut str) -> &mut Self::Output {
+              if slice.is_char_boundary(self.start) {
+                  // SAFETY: just checked that `start` is on a char boundary,
+                  // and we are passing in a safe reference, so the return value will also be one.
+                  unsafe { &mut *self.get_unchecked_mut(slice) }
+              } else {
+                  super::slice_error_fail(slice, self.start, slice.len())
+              }
+          }
+      *)
+      Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                              [
+                                M.read (| slice |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::range::RangeFrom",
+                                    "start"
+                                  |)
+                                |)
+                              ]
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::slice::index::SliceIndex",
+                            Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                            [ Ty.path "str" ],
+                            "get_unchecked_mut",
+                            []
+                          |),
+                          [ M.read (| self |); M.read (| slice |) ]
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.never_to_any (|
+                          M.call_closure (|
+                            M.get_function (| "core::str::slice_error_fail", [] |),
+                            [
+                              M.read (| slice |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::range::RangeFrom",
+                                  "start"
+                                |)
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (| Ty.path "str", "len", [] |),
+                                [ M.read (| slice |) ]
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::slice::index::SliceIndex"
+          Self
+          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
+          (* Instance *)
+          [
+            ("Output", InstanceField.Ty _Output);
+            ("get", InstanceField.Method get);
+            ("get_mut", InstanceField.Method get_mut);
+            ("get_unchecked", InstanceField.Method get_unchecked);
+            ("get_unchecked_mut", InstanceField.Method get_unchecked_mut);
+            ("index", InstanceField.Method index);
+            ("index_mut", InstanceField.Method index_mut)
+          ].
+    End Impl_core_slice_index_SliceIndex_str_for_core_range_RangeFrom_usize.
+    
     Module Impl_core_slice_index_SliceIndex_str_for_core_ops_range_RangeInclusive_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ].
@@ -2851,6 +3970,376 @@ Module str.
             ("index_mut", InstanceField.Method index_mut)
           ].
     End Impl_core_slice_index_SliceIndex_str_for_core_ops_range_RangeInclusive_usize.
+    
+    Module Impl_core_slice_index_SliceIndex_str_for_core_range_RangeInclusive_usize.
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ].
+      
+      (*     type Output = str; *)
+      Definition _Output : Ty.t := Ty.path "str".
+      
+      (*
+          fn get(self, slice: &str) -> Option<&Self::Output> {
+              if self.end == usize::MAX { None } else { self.into_slice_range().get(slice) }
+          }
+      *)
+      Definition get (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.eq
+                              (M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::range::RangeInclusive",
+                                  "end"
+                                |)
+                              |))
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::slice::index::SliceIndex",
+                            Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                            [ Ty.path "str" ],
+                            "get",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::range::RangeInclusive")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "into_slice_range",
+                                []
+                              |),
+                              [ M.read (| self |) ]
+                            |);
+                            M.read (| slice |)
+                          ]
+                        |)
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          fn get_mut(self, slice: &mut str) -> Option<&mut Self::Output> {
+              if self.end == usize::MAX { None } else { self.into_slice_range().get_mut(slice) }
+          }
+      *)
+      Definition get_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.eq
+                              (M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::range::RangeInclusive",
+                                  "end"
+                                |)
+                              |))
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::slice::index::SliceIndex",
+                            Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                            [ Ty.path "str" ],
+                            "get_mut",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::range::RangeInclusive")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "into_slice_range",
+                                []
+                              |),
+                              [ M.read (| self |) ]
+                            |);
+                            M.read (| slice |)
+                          ]
+                        |)
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          unsafe fn get_unchecked(self, slice: *const str) -> *const Self::Output {
+              // SAFETY: the caller must uphold the safety contract for `get_unchecked`.
+              unsafe { self.into_slice_range().get_unchecked(slice) }
+          }
+      *)
+      Definition get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                [ Ty.path "str" ],
+                "get_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    "into_slice_range",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          unsafe fn get_unchecked_mut(self, slice: *mut str) -> *mut Self::Output {
+              // SAFETY: the caller must uphold the safety contract for `get_unchecked_mut`.
+              unsafe { self.into_slice_range().get_unchecked_mut(slice) }
+          }
+      *)
+      Definition get_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                [ Ty.path "str" ],
+                "get_unchecked_mut",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    "into_slice_range",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          fn index(self, slice: &str) -> &Self::Output {
+              if self.end == usize::MAX {
+                  str_index_overflow_fail();
+              }
+              self.into_slice_range().index(slice)
+          }
+      *)
+      Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              BinOp.Pure.eq
+                                (M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::range::RangeInclusive",
+                                    "end"
+                                  |)
+                                |))
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.call_closure (|
+                              M.get_function (| "core::str::traits::str_index_overflow_fail", [] |),
+                              []
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::slice::index::SliceIndex",
+                    Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                    [ Ty.path "str" ],
+                    "index",
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
+                        "into_slice_range",
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| slice |)
+                  ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          fn index_mut(self, slice: &mut str) -> &mut Self::Output {
+              if self.end == usize::MAX {
+                  str_index_overflow_fail();
+              }
+              self.into_slice_range().index_mut(slice)
+          }
+      *)
+      Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.read (|
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              BinOp.Pure.eq
+                                (M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::range::RangeInclusive",
+                                    "end"
+                                  |)
+                                |))
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.call_closure (|
+                              M.get_function (| "core::str::traits::str_index_overflow_fail", [] |),
+                              []
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::slice::index::SliceIndex",
+                    Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                    [ Ty.path "str" ],
+                    "index_mut",
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
+                        "into_slice_range",
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    M.read (| slice |)
+                  ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::slice::index::SliceIndex"
+          Self
+          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
+          (* Instance *)
+          [
+            ("Output", InstanceField.Ty _Output);
+            ("get", InstanceField.Method get);
+            ("get_mut", InstanceField.Method get_mut);
+            ("get_unchecked", InstanceField.Method get_unchecked);
+            ("get_unchecked_mut", InstanceField.Method get_unchecked_mut);
+            ("index", InstanceField.Method index);
+            ("index_mut", InstanceField.Method index_mut)
+          ].
+    End Impl_core_slice_index_SliceIndex_str_for_core_range_RangeInclusive_usize.
     
     Module Impl_core_slice_index_SliceIndex_str_for_core_ops_range_RangeToInclusive_usize.
       Definition Self : Ty.t :=

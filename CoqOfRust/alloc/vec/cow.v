@@ -32,6 +32,43 @@ Module vec.
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_clone_Clone_T_ref__slice_T_for_alloc_borrow_Cow_slice_T.
     
+    Module Impl_core_convert_From_where_core_clone_Clone_T_ref__array_N_T_for_alloc_borrow_Cow_slice_T.
+      Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.apply (Ty.path "slice") [] [ T ] ].
+      
+      (*
+          fn from(s: &'a [T; N]) -> Cow<'a, [T]> {
+              Cow::Borrowed(s as &[_])
+          }
+      *)
+      Definition from
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T in
+        match ε, τ, α with
+        | [], [], [ s ] =>
+          ltac:(M.monadic
+            (let s := M.alloc (| s |) in
+            Value.StructTuple
+              "alloc::borrow::Cow::Borrowed"
+              [ M.read (| M.use (M.alloc (| M.read (| s |) |)) |) ]))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        forall (N : Value.t) (T : Ty.t),
+        M.IsTraitInstance
+          "core::convert::From"
+          (Self N T)
+          (* Trait polymorphic types *)
+          [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ]
+          (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
+    End Impl_core_convert_From_where_core_clone_Clone_T_ref__array_N_T_for_alloc_borrow_Cow_slice_T.
+    
     Module Impl_core_convert_From_where_core_clone_Clone_T_alloc_vec_Vec_T_alloc_alloc_Global_for_alloc_borrow_Cow_slice_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.apply (Ty.path "slice") [] [ T ] ].

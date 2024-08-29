@@ -4,19 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 Module str.
   (*
   const fn slice_error_fail(s: &str, begin: usize, end: usize) -> ! {
-      // SAFETY: panics for both branches
-      unsafe {
-          crate::intrinsics::const_eval_select(
-              (s, begin, end),
-              slice_error_fail_ct,
-              slice_error_fail_rt,
-          )
-      }
+      crate::intrinsics::const_eval_select((s, begin, end), slice_error_fail_ct, slice_error_fail_rt)
   }
   *)
   Definition slice_error_fail (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [ s; begin; end_ ] =>
+    | [], [], [ s; begin; end_ ] =>
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         let begin := M.alloc (| begin |) in
@@ -54,7 +47,7 @@ Module str.
   *)
   Definition slice_error_fail_ct (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [ β0; β1; β2 ] =>
+    | [], [], [ β0; β1; β2 ] =>
       ltac:(M.monadic
         (let β0 := M.alloc (| β0 |) in
         let β1 := M.alloc (| β1 |) in
@@ -84,12 +77,10 @@ Module str.
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "failed to slice string" |) ]
-                                          |))
+                                        M.alloc (|
+                                          Value.Array
+                                            [ M.read (| Value.String "failed to slice string" |) ]
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -274,47 +265,43 @@ Module str.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| Value.String "byte index " |);
-                                            M.read (| Value.String " is out of bounds of `" |);
-                                            M.read (| Value.String "`" |)
-                                          ]
-                                      |));
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [ Ty.path "usize" ]
-                                              |),
-                                              [ oob_index ]
-                                            |);
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                              |),
-                                              [ s_trunc ]
-                                            |);
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                              |),
-                                              [ ellipsis ]
-                                            |)
-                                          ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "byte index " |);
+                                          M.read (| Value.String " is out of bounds of `" |);
+                                          M.read (| Value.String "`" |)
+                                        ]
+                                    |);
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.path "usize" ]
+                                            |),
+                                            [ oob_index ]
+                                          |);
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                            |),
+                                            [ s_trunc ]
+                                          |);
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                            |),
+                                            [ ellipsis ]
+                                          |)
+                                        ]
+                                    |)
                                   ]
                                 |)
                               ]
@@ -350,56 +337,52 @@ Module str.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "begin <= end (" |);
-                                        M.read (| Value.String " <= " |);
-                                        M.read (| Value.String ") when slicing `" |);
-                                        M.read (| Value.String "`" |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [ begin ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [ end_ ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                          |),
-                                          [ s_trunc ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                          |),
-                                          [ ellipsis ]
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "begin <= end (" |);
+                                      M.read (| Value.String " <= " |);
+                                      M.read (| Value.String ") when slicing `" |);
+                                      M.read (| Value.String "`" |)
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [ begin ]
+                                      |);
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [ end_ ]
+                                      |);
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                        |),
+                                        [ s_trunc ]
+                                      |);
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                        |),
+                                        [ ellipsis ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -515,70 +498,62 @@ Module str.
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "byte index " |);
-                            M.read (| Value.String " is not a char boundary; it is inside " |);
-                            M.read (| Value.String " (bytes " |);
-                            M.read (| Value.String ") of `" |);
-                            M.read (| Value.String "`" |)
-                          ]
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ index ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "char" ]
-                              |),
-                              [ ch ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::Range")
-                                    []
-                                    [ Ty.path "usize" ]
-                                ]
-                              |),
-                              [ char_range ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              |),
-                              [ s_trunc ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              |),
-                              [ ellipsis ]
-                            |)
-                          ]
-                      |))
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.read (| Value.String "byte index " |);
+                          M.read (| Value.String " is not a char boundary; it is inside " |);
+                          M.read (| Value.String " (bytes " |);
+                          M.read (| Value.String ") of `" |);
+                          M.read (| Value.String "`" |)
+                        ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_display",
+                              [ Ty.path "usize" ]
+                            |),
+                            [ index ]
+                          |);
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_debug",
+                              [ Ty.path "char" ]
+                            |),
+                            [ ch ]
+                          |);
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_debug",
+                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
+                              ]
+                            |),
+                            [ char_range ]
+                          |);
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_display",
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            |),
+                            [ s_trunc ]
+                          |);
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_display",
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            |),
+                            [ ellipsis ]
+                          |)
+                        ]
+                    |)
                   ]
                 |)
               ]
@@ -606,7 +581,7 @@ Module str.
     *)
     Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -634,7 +609,7 @@ Module str.
     *)
     Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.eq
@@ -1110,7 +1085,7 @@ Module str.
     *)
     Definition as_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1155,7 +1130,7 @@ Module str.
     *)
     Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
@@ -1366,12 +1341,9 @@ Module str.
     
     (*
         pub fn split_at(&self, mid: usize) -> (&str, &str) {
-            // is_char_boundary checks that the index is in [0, .len()]
-            if self.is_char_boundary(mid) {
-                // SAFETY: just checked that `mid` is on a char boundary.
-                unsafe { (self.get_unchecked(0..mid), self.get_unchecked(mid..self.len())) }
-            } else {
-                slice_error_fail(self, 0, mid)
+            match self.split_at_checked(mid) {
+                None => slice_error_fail(self, 0, mid),
+                Some(pair) => pair,
             }
         }
     *)
@@ -1383,69 +1355,34 @@ Module str.
           let mid := M.alloc (| mid |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "str", "split_at_checked", [] |),
+                  [ M.read (| self |); M.read (| mid |) ]
+                |)
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
-                            [ M.read (| self |); M.read (| mid |) ]
-                          |)
-                        |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
-                      Value.Tuple
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "str",
-                              "get_unchecked",
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
-                              ]
-                            |),
-                            [
-                              M.read (| self |);
-                              Value.StructRecord
-                                "core::ops::range::Range"
-                                [ ("start", Value.Integer 0); ("end_", M.read (| mid |)) ]
-                            ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "str",
-                              "get_unchecked",
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
-                              ]
-                            |),
-                            [
-                              M.read (| self |);
-                              Value.StructRecord
-                                "core::ops::range::Range"
-                                [
-                                  ("start", M.read (| mid |));
-                                  ("end_",
-                                    M.call_closure (|
-                                      M.get_associated_function (| Ty.path "str", "len", [] |),
-                                      [ M.read (| self |) ]
-                                    |))
-                                ]
-                            ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::str::slice_error_fail", [] |),
                           [ M.read (| self |); Value.Integer 0; M.read (| mid |) ]
                         |)
                       |)
-                    |)))
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let pair_ := M.copy (| γ0_0 |) in
+                    pair_))
               ]
             |)
           |)))
@@ -1458,15 +1395,8 @@ Module str.
         pub fn split_at_mut(&mut self, mid: usize) -> (&mut str, &mut str) {
             // is_char_boundary checks that the index is in [0, .len()]
             if self.is_char_boundary(mid) {
-                let len = self.len();
-                let ptr = self.as_mut_ptr();
                 // SAFETY: just checked that `mid` is on a char boundary.
-                unsafe {
-                    (
-                        from_utf8_unchecked_mut(slice::from_raw_parts_mut(ptr, mid)),
-                        from_utf8_unchecked_mut(slice::from_raw_parts_mut(ptr.add(mid), len - mid)),
-                    )
-                }
+                unsafe { self.split_at_mut_unchecked(mid) }
             } else {
                 slice_error_fail(self, 0, mid)
             }
@@ -1493,58 +1423,11 @@ Module str.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ len :=
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "len", [] |),
-                          [ M.read (| self |) ]
-                        |)
-                      |) in
-                    let~ ptr :=
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "as_mut_ptr", [] |),
-                          [ M.read (| self |) ]
-                        |)
-                      |) in
                     M.alloc (|
-                      Value.Tuple
-                        [
-                          M.call_closure (|
-                            M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
-                            [
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::slice::raw::from_raw_parts_mut",
-                                  [ Ty.path "u8" ]
-                                |),
-                                [ M.read (| ptr |); M.read (| mid |) ]
-                              |)
-                            ]
-                          |);
-                          M.call_closure (|
-                            M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
-                            [
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::slice::raw::from_raw_parts_mut",
-                                  [ Ty.path "u8" ]
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                      "add",
-                                      []
-                                    |),
-                                    [ M.read (| ptr |); M.read (| mid |) ]
-                                  |);
-                                  BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| mid |))
-                                ]
-                              |)
-                            ]
-                          |)
-                        ]
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "str", "split_at_mut_unchecked", [] |),
+                        [ M.read (| self |); M.read (| mid |) ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1563,6 +1446,238 @@ Module str.
       end.
     
     Axiom AssociatedFunction_split_at_mut : M.IsAssociatedFunction Self "split_at_mut" split_at_mut.
+    
+    (*
+        pub fn split_at_checked(&self, mid: usize) -> Option<(&str, &str)> {
+            // is_char_boundary checks that the index is in [0, .len()]
+            if self.is_char_boundary(mid) {
+                // SAFETY: just checked that `mid` is on a char boundary.
+                Some(unsafe { (self.get_unchecked(0..mid), self.get_unchecked(mid..self.len())) })
+            } else {
+                None
+            }
+        }
+    *)
+    Definition split_at_checked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; mid ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let mid := M.alloc (| mid |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                            [ M.read (| self |); M.read (| mid |) ]
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          Value.Tuple
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "str",
+                                  "get_unchecked",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ]
+                                |),
+                                [
+                                  M.read (| self |);
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    [ ("start", Value.Integer 0); ("end_", M.read (| mid |)) ]
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "str",
+                                  "get_unchecked",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ]
+                                |),
+                                [
+                                  M.read (| self |);
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    [
+                                      ("start", M.read (| mid |));
+                                      ("end_",
+                                        M.call_closure (|
+                                          M.get_associated_function (| Ty.path "str", "len", [] |),
+                                          [ M.read (| self |) ]
+                                        |))
+                                    ]
+                                ]
+                              |)
+                            ]
+                        ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_split_at_checked :
+      M.IsAssociatedFunction Self "split_at_checked" split_at_checked.
+    
+    (*
+        pub fn split_at_mut_checked(&mut self, mid: usize) -> Option<(&mut str, &mut str)> {
+            // is_char_boundary checks that the index is in [0, .len()]
+            if self.is_char_boundary(mid) {
+                // SAFETY: just checked that `mid` is on a char boundary.
+                Some(unsafe { self.split_at_mut_unchecked(mid) })
+            } else {
+                None
+            }
+        }
+    *)
+    Definition split_at_mut_checked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; mid ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let mid := M.alloc (| mid |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                            [ M.read (| self |); M.read (| mid |) ]
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "str",
+                              "split_at_mut_unchecked",
+                              []
+                            |),
+                            [ M.read (| self |); M.read (| mid |) ]
+                          |)
+                        ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_split_at_mut_checked :
+      M.IsAssociatedFunction Self "split_at_mut_checked" split_at_mut_checked.
+    
+    (*
+        unsafe fn split_at_mut_unchecked(&mut self, mid: usize) -> (&mut str, &mut str) {
+            let len = self.len();
+            let ptr = self.as_mut_ptr();
+            // SAFETY: caller guarantees `mid` is on a char boundary.
+            unsafe {
+                (
+                    from_utf8_unchecked_mut(slice::from_raw_parts_mut(ptr, mid)),
+                    from_utf8_unchecked_mut(slice::from_raw_parts_mut(ptr.add(mid), len - mid)),
+                )
+            }
+        }
+    *)
+    Definition split_at_mut_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; mid ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let mid := M.alloc (| mid |) in
+          M.read (|
+            let~ len :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "str", "len", [] |),
+                  [ M.read (| self |) ]
+                |)
+              |) in
+            let~ ptr :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "str", "as_mut_ptr", [] |),
+                  [ M.read (| self |) ]
+                |)
+              |) in
+            M.alloc (|
+              Value.Tuple
+                [
+                  M.call_closure (|
+                    M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
+                    [
+                      M.call_closure (|
+                        M.get_function (|
+                          "core::slice::raw::from_raw_parts_mut",
+                          [ Ty.path "u8" ]
+                        |),
+                        [ M.read (| ptr |); M.read (| mid |) ]
+                      |)
+                    ]
+                  |);
+                  M.call_closure (|
+                    M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
+                    [
+                      M.call_closure (|
+                        M.get_function (|
+                          "core::slice::raw::from_raw_parts_mut",
+                          [ Ty.path "u8" ]
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                              "add",
+                              []
+                            |),
+                            [ M.read (| ptr |); M.read (| mid |) ]
+                          |);
+                          BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| mid |))
+                        ]
+                      |)
+                    ]
+                  |)
+                ]
+            |)
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_split_at_mut_unchecked :
+      M.IsAssociatedFunction Self "split_at_mut_unchecked" split_at_mut_unchecked.
     
     (*
         pub fn chars(&self) -> Chars<'_> {
@@ -1878,7 +1993,7 @@ Module str.
     Axiom AssociatedFunction_encode_utf16 : M.IsAssociatedFunction Self "encode_utf16" encode_utf16.
     
     (*
-        pub fn contains<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool {
+        pub fn contains<P: Pattern>(&self, pat: P) -> bool {
             pat.is_contained_in(self)
         }
     *)
@@ -1898,7 +2013,7 @@ Module str.
     Axiom AssociatedFunction_contains : M.IsAssociatedFunction Self "contains" contains.
     
     (*
-        pub fn starts_with<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool {
+        pub fn starts_with<P: Pattern>(&self, pat: P) -> bool {
             pat.is_prefix_of(self)
         }
     *)
@@ -1918,9 +2033,9 @@ Module str.
     Axiom AssociatedFunction_starts_with : M.IsAssociatedFunction Self "starts_with" starts_with.
     
     (*
-        pub fn ends_with<'a, P>(&'a self, pat: P) -> bool
+        pub fn ends_with<P: Pattern>(&self, pat: P) -> bool
         where
-            P: Pattern<'a, Searcher: ReverseSearcher<'a>>,
+            for<'a> P::Searcher<'a>: ReverseSearcher<'a>,
         {
             pat.is_suffix_of(self)
         }
@@ -1941,7 +2056,7 @@ Module str.
     Axiom AssociatedFunction_ends_with : M.IsAssociatedFunction Self "ends_with" ends_with.
     
     (*
-        pub fn find<'a, P: Pattern<'a>>(&'a self, pat: P) -> Option<usize> {
+        pub fn find<P: Pattern>(&self, pat: P) -> Option<usize> {
             pat.into_searcher(self).next_match().map(|(i, _)| i)
         }
     *)
@@ -2015,9 +2130,9 @@ Module str.
     Axiom AssociatedFunction_find : M.IsAssociatedFunction Self "find" find.
     
     (*
-        pub fn rfind<'a, P>(&'a self, pat: P) -> Option<usize>
+        pub fn rfind<P: Pattern>(&self, pat: P) -> Option<usize>
         where
-            P: Pattern<'a, Searcher: ReverseSearcher<'a>>,
+            for<'a> P::Searcher<'a>: ReverseSearcher<'a>,
         {
             pat.into_searcher(self).next_match_back().map(|(i, _)| i)
         }
@@ -2092,7 +2207,7 @@ Module str.
     Axiom AssociatedFunction_rfind : M.IsAssociatedFunction Self "rfind" rfind.
     
     (*
-        pub fn split<'a, P: Pattern<'a>>(&'a self, pat: P) -> Split<'a, P> {
+        pub fn split<P: Pattern>(&self, pat: P) -> Split<'_, P> {
             Split(SplitInternal {
                 start: 0,
                 end: self.len(),
@@ -2141,7 +2256,7 @@ Module str.
     Axiom AssociatedFunction_split : M.IsAssociatedFunction Self "split" split.
     
     (*
-        pub fn split_inclusive<'a, P: Pattern<'a>>(&'a self, pat: P) -> SplitInclusive<'a, P> {
+        pub fn split_inclusive<P: Pattern>(&self, pat: P) -> SplitInclusive<'_, P> {
             SplitInclusive(SplitInternal {
                 start: 0,
                 end: self.len(),
@@ -2191,9 +2306,9 @@ Module str.
       M.IsAssociatedFunction Self "split_inclusive" split_inclusive.
     
     (*
-        pub fn rsplit<'a, P>(&'a self, pat: P) -> RSplit<'a, P>
+        pub fn rsplit<P: Pattern>(&self, pat: P) -> RSplit<'_, P>
         where
-            P: Pattern<'a, Searcher: ReverseSearcher<'a>>,
+            for<'a> P::Searcher<'a>: ReverseSearcher<'a>,
         {
             RSplit(self.split(pat).0)
         }
@@ -2226,7 +2341,7 @@ Module str.
     Axiom AssociatedFunction_rsplit : M.IsAssociatedFunction Self "rsplit" rsplit.
     
     (*
-        pub fn split_terminator<'a, P: Pattern<'a>>(&'a self, pat: P) -> SplitTerminator<'a, P> {
+        pub fn split_terminator<P: Pattern>(&self, pat: P) -> SplitTerminator<'_, P> {
             SplitTerminator(SplitInternal { allow_trailing_empty: false, ..self.split(pat).0 })
         }
     *)
@@ -2261,9 +2376,9 @@ Module str.
       M.IsAssociatedFunction Self "split_terminator" split_terminator.
     
     (*
-        pub fn rsplit_terminator<'a, P>(&'a self, pat: P) -> RSplitTerminator<'a, P>
+        pub fn rsplit_terminator<P: Pattern>(&self, pat: P) -> RSplitTerminator<'_, P>
         where
-            P: Pattern<'a, Searcher: ReverseSearcher<'a>>,
+            for<'a> P::Searcher<'a>: ReverseSearcher<'a>,
         {
             RSplitTerminator(self.split_terminator(pat).0)
         }
@@ -2297,7 +2412,7 @@ Module str.
       M.IsAssociatedFunction Self "rsplit_terminator" rsplit_terminator.
     
     (*
-        pub fn splitn<'a, P: Pattern<'a>>(&'a self, n: usize, pat: P) -> SplitN<'a, P> {
+        pub fn splitn<P: Pattern>(&self, n: usize, pat: P) -> SplitN<'_, P> {
             SplitN(SplitNInternal { iter: self.split(pat).0, count: n })
         }
     *)
@@ -2336,9 +2451,9 @@ Module str.
     Axiom AssociatedFunction_splitn : M.IsAssociatedFunction Self "splitn" splitn.
     
     (*
-        pub fn rsplitn<'a, P>(&'a self, n: usize, pat: P) -> RSplitN<'a, P>
+        pub fn rsplitn<P: Pattern>(&self, n: usize, pat: P) -> RSplitN<'_, P>
         where
-            P: Pattern<'a, Searcher: ReverseSearcher<'a>>,
+            for<'a> P::Searcher<'a>: ReverseSearcher<'a>,
         {
             RSplitN(self.splitn(n, pat).0)
         }
@@ -2372,7 +2487,7 @@ Module str.
     Axiom AssociatedFunction_rsplitn : M.IsAssociatedFunction Self "rsplitn" rsplitn.
     
     (*
-        pub fn split_once<'a, P: Pattern<'a>>(&'a self, delimiter: P) -> Option<(&'a str, &'a str)> {
+        pub fn split_once<P: Pattern>(&self, delimiter: P) -> Option<(&'_ str, &'_ str)> {
             let (start, end) = delimiter.into_searcher(self).next_match()?;
             // SAFETY: `Searcher` is known to return valid indices.
             unsafe { Some((self.get_unchecked(..start), self.get_unchecked(end..))) }
@@ -2544,9 +2659,9 @@ Module str.
     Axiom AssociatedFunction_split_once : M.IsAssociatedFunction Self "split_once" split_once.
     
     (*
-        pub fn rsplit_once<'a, P>(&'a self, delimiter: P) -> Option<(&'a str, &'a str)>
+        pub fn rsplit_once<P: Pattern>(&self, delimiter: P) -> Option<(&'_ str, &'_ str)>
         where
-            P: Pattern<'a, Searcher: ReverseSearcher<'a>>,
+            for<'a> P::Searcher<'a>: ReverseSearcher<'a>,
         {
             let (start, end) = delimiter.into_searcher(self).next_match_back()?;
             // SAFETY: `Searcher` is known to return valid indices.
@@ -2719,7 +2834,7 @@ Module str.
     Axiom AssociatedFunction_rsplit_once : M.IsAssociatedFunction Self "rsplit_once" rsplit_once.
     
     (*
-        pub fn matches<'a, P: Pattern<'a>>(&'a self, pat: P) -> Matches<'a, P> {
+        pub fn matches<P: Pattern>(&self, pat: P) -> Matches<'_, P> {
             Matches(MatchesInternal(pat.into_searcher(self)))
         }
     *)
@@ -2753,9 +2868,9 @@ Module str.
     Axiom AssociatedFunction_matches : M.IsAssociatedFunction Self "matches" matches.
     
     (*
-        pub fn rmatches<'a, P>(&'a self, pat: P) -> RMatches<'a, P>
+        pub fn rmatches<P: Pattern>(&self, pat: P) -> RMatches<'_, P>
         where
-            P: Pattern<'a, Searcher: ReverseSearcher<'a>>,
+            for<'a> P::Searcher<'a>: ReverseSearcher<'a>,
         {
             RMatches(self.matches(pat).0)
         }
@@ -2788,7 +2903,7 @@ Module str.
     Axiom AssociatedFunction_rmatches : M.IsAssociatedFunction Self "rmatches" rmatches.
     
     (*
-        pub fn match_indices<'a, P: Pattern<'a>>(&'a self, pat: P) -> MatchIndices<'a, P> {
+        pub fn match_indices<P: Pattern>(&self, pat: P) -> MatchIndices<'_, P> {
             MatchIndices(MatchIndicesInternal(pat.into_searcher(self)))
         }
     *)
@@ -2823,9 +2938,9 @@ Module str.
       M.IsAssociatedFunction Self "match_indices" match_indices.
     
     (*
-        pub fn rmatch_indices<'a, P>(&'a self, pat: P) -> RMatchIndices<'a, P>
+        pub fn rmatch_indices<P: Pattern>(&self, pat: P) -> RMatchIndices<'_, P>
         where
-            P: Pattern<'a, Searcher: ReverseSearcher<'a>>,
+            for<'a> P::Searcher<'a>: ReverseSearcher<'a>,
         {
             RMatchIndices(self.match_indices(pat).0)
         }
@@ -3029,9 +3144,9 @@ Module str.
     Axiom AssociatedFunction_trim_right : M.IsAssociatedFunction Self "trim_right" trim_right.
     
     (*
-        pub fn trim_matches<'a, P>(&'a self, pat: P) -> &'a str
+        pub fn trim_matches<P: Pattern>(&self, pat: P) -> &str
         where
-            P: Pattern<'a, Searcher: DoubleEndedSearcher<'a>>,
+            for<'a> P::Searcher<'a>: DoubleEndedSearcher<'a>,
         {
             let mut i = 0;
             let mut j = 0;
@@ -3160,7 +3275,7 @@ Module str.
     Axiom AssociatedFunction_trim_matches : M.IsAssociatedFunction Self "trim_matches" trim_matches.
     
     (*
-        pub fn trim_start_matches<'a, P: Pattern<'a>>(&'a self, pat: P) -> &'a str {
+        pub fn trim_start_matches<P: Pattern>(&self, pat: P) -> &str {
             let mut i = self.len();
             let mut matcher = pat.into_searcher(self);
             if let Some((a, _)) = matcher.next_reject() {
@@ -3260,7 +3375,7 @@ Module str.
       M.IsAssociatedFunction Self "trim_start_matches" trim_start_matches.
     
     (*
-        pub fn strip_prefix<'a, P: Pattern<'a>>(&'a self, prefix: P) -> Option<&'a str> {
+        pub fn strip_prefix<P: Pattern>(&self, prefix: P) -> Option<&str> {
             prefix.strip_prefix_of(self)
         }
     *)
@@ -3280,10 +3395,9 @@ Module str.
     Axiom AssociatedFunction_strip_prefix : M.IsAssociatedFunction Self "strip_prefix" strip_prefix.
     
     (*
-        pub fn strip_suffix<'a, P>(&'a self, suffix: P) -> Option<&'a str>
+        pub fn strip_suffix<P: Pattern>(&self, suffix: P) -> Option<&str>
         where
-            P: Pattern<'a>,
-            <P as Pattern<'a>>::Searcher: ReverseSearcher<'a>,
+            for<'a> P::Searcher<'a>: ReverseSearcher<'a>,
         {
             suffix.strip_suffix_of(self)
         }
@@ -3304,9 +3418,9 @@ Module str.
     Axiom AssociatedFunction_strip_suffix : M.IsAssociatedFunction Self "strip_suffix" strip_suffix.
     
     (*
-        pub fn trim_end_matches<'a, P>(&'a self, pat: P) -> &'a str
+        pub fn trim_end_matches<P: Pattern>(&self, pat: P) -> &str
         where
-            P: Pattern<'a, Searcher: ReverseSearcher<'a>>,
+            for<'a> P::Searcher<'a>: ReverseSearcher<'a>,
         {
             let mut j = 0;
             let mut matcher = pat.into_searcher(self);
@@ -3394,7 +3508,7 @@ Module str.
       M.IsAssociatedFunction Self "trim_end_matches" trim_end_matches.
     
     (*
-        pub fn trim_left_matches<'a, P: Pattern<'a>>(&'a self, pat: P) -> &'a str {
+        pub fn trim_left_matches<P: Pattern>(&self, pat: P) -> &str {
             self.trim_start_matches(pat)
         }
     *)
@@ -3415,9 +3529,9 @@ Module str.
       M.IsAssociatedFunction Self "trim_left_matches" trim_left_matches.
     
     (*
-        pub fn trim_right_matches<'a, P>(&'a self, pat: P) -> &'a str
+        pub fn trim_right_matches<P: Pattern>(&self, pat: P) -> &str
         where
-            P: Pattern<'a, Searcher: ReverseSearcher<'a>>,
+            for<'a> P::Searcher<'a>: ReverseSearcher<'a>,
         {
             self.trim_end_matches(pat)
         }
@@ -3467,7 +3581,7 @@ Module str.
     *)
     Definition is_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -3496,7 +3610,7 @@ Module str.
     *)
     Definition as_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -3634,7 +3748,7 @@ Module str.
     *)
     Definition trim_ascii_start (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -3670,7 +3784,7 @@ Module str.
     *)
     Definition trim_ascii_end (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -3706,7 +3820,7 @@ Module str.
     *)
     Definition trim_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -3970,6 +4084,39 @@ Module str.
     
     Axiom AssociatedFunction_escape_unicode :
       M.IsAssociatedFunction Self "escape_unicode" escape_unicode.
+    
+    (*
+        pub fn substr_range(&self, substr: &str) -> Option<Range<usize>> {
+            self.as_bytes().subslice_range(substr.as_bytes())
+        }
+    *)
+    Definition substr_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; substr ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let substr := M.alloc (| substr |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+              "subslice_range",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                [ M.read (| self |) ]
+              |);
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                [ M.read (| substr |) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_substr_range : M.IsAssociatedFunction Self "substr_range" substr_range.
   End Impl_str.
   
   Module Impl_core_convert_AsRef_slice_u8_for_str.
@@ -4037,7 +4184,7 @@ Module str.
         ltac:(M.monadic
           (M.call_closure (|
             M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
-            [ (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |)) ]
+            [ M.alloc (| Value.Array [] |) ]
           |)))
       | _, _, _ => M.impossible
       end.

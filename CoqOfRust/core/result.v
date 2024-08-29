@@ -59,7 +59,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -69,7 +69,7 @@ Module result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -81,7 +81,7 @@ Module result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -109,8 +109,14 @@ Module result.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ T ],
+                                  [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -135,8 +141,14 @@ Module result.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::PartialEq", E, [ E ], "eq", [] |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ E ],
+                                  [ Ty.apply (Ty.path "&") [] [ E ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -179,7 +191,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -189,7 +201,7 @@ Module result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -277,7 +289,7 @@ Module result.
                           "partial_cmp",
                           []
                         |),
-                        [ __self_tag; __arg1_tag ]
+                        [ __self_discr; __arg1_discr ]
                       |)
                     |)))
               ]
@@ -294,18 +306,6 @@ Module result.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T E)) ].
   End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_cmp_PartialOrd_E_for_core_result_Result_T_E.
-  
-  Module Impl_core_marker_StructuralEq_for_core_result_Result_T_E.
-    Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
-    
-    Axiom Implements :
-      forall (T E : Ty.t),
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        (Self T E)
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_core_result_Result_T_E.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_cmp_Eq_E_for_core_result_Result_T_E.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
@@ -360,7 +360,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -370,7 +370,7 @@ Module result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -384,7 +384,7 @@ Module result.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |),
               [
@@ -505,11 +505,7 @@ Module result.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Ok" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Ok" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -525,11 +521,7 @@ Module result.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Err" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Err" |); __self_0 ]
                       |)
                     |)))
               ]
@@ -559,7 +551,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -573,7 +565,7 @@ Module result.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -629,7 +621,7 @@ Module result.
     Definition is_ok (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -711,7 +703,7 @@ Module result.
     Definition is_err (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
@@ -874,7 +866,7 @@ Module result.
     Definition as_ref (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -914,7 +906,7 @@ Module result.
     Definition as_mut (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1555,7 +1547,7 @@ Module result.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::result::unwrap_failed", [] |),
-                          [ M.read (| msg |); (* Unsize *) M.pointer_coercion e ]
+                          [ M.read (| msg |); e ]
                         |)
                       |)
                     |)))
@@ -1607,7 +1599,7 @@ Module result.
                           M.get_function (| "core::result::unwrap_failed", [] |),
                           [
                             M.read (| Value.String "called `Result::unwrap()` on an `Err` value" |);
-                            (* Unsize *) M.pointer_coercion e
+                            e
                           ]
                         |)
                       |)
@@ -1705,7 +1697,7 @@ Module result.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::result::unwrap_failed", [] |),
-                          [ M.read (| msg |); (* Unsize *) M.pointer_coercion t ]
+                          [ M.read (| msg |); t ]
                         |)
                       |)
                     |)));
@@ -1759,7 +1751,7 @@ Module result.
                             M.read (|
                               Value.String "called `Result::unwrap_err()` on an `Ok` value"
                             |);
-                            (* Unsize *) M.pointer_coercion t
+                            t
                           ]
                         |)
                       |)
@@ -2175,7 +2167,6 @@ Module result.
     
     (*
         pub unsafe fn unwrap_unchecked(self) -> T {
-            debug_assert!(self.is_ok());
             match self {
                 Ok(t) => t,
                 // SAFETY: the safety contract must be upheld by the caller.
@@ -2195,53 +2186,6 @@ Module result.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
-                                            "is_ok",
-                                            []
-                                          |),
-                                          [ self ]
-                                        |))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
-                                      [ M.read (| Value.String "assertion failed: self.is_ok()" |) ]
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
             M.match_operator (|
               self,
               [
@@ -2275,7 +2219,6 @@ Module result.
     
     (*
         pub unsafe fn unwrap_err_unchecked(self) -> E {
-            debug_assert!(self.is_err());
             match self {
                 // SAFETY: the safety contract must be upheld by the caller.
                 Ok(_) => unsafe { hint::unreachable_unchecked() },
@@ -2295,54 +2238,6 @@ Module result.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
-                                            "is_err",
-                                            []
-                                          |),
-                                          [ self ]
-                                        |))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
-                                      [ M.read (| Value.String "assertion failed: self.is_err()" |)
-                                      ]
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
             M.match_operator (|
               self,
               [
@@ -2606,7 +2501,7 @@ Module result.
     Definition transpose (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2721,39 +2616,31 @@ Module result.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array [ M.read (| Value.String "" |); M.read (| Value.String ": " |) ]
-                  |));
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                          |),
-                          [ msg ]
-                        |);
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_debug",
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                            ]
-                          |),
-                          [ error ]
-                        |)
-                      ]
-                  |))
+                M.alloc (|
+                  Value.Array [ M.read (| Value.String "" |); M.read (| Value.String ": " |) ]
+                |);
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::rt::Argument",
+                          "new_display",
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        |),
+                        [ msg ]
+                      |);
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::rt::Argument",
+                          "new_debug",
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                        |),
+                        [ error ]
+                      |)
+                    ]
+                |)
               ]
             |)
           ]
@@ -3108,15 +2995,13 @@ Module result.
               M.read (| f |);
               M.read (| Value.String "Iter" |);
               M.read (| Value.String "inner" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::result::Iter",
-                    "inner"
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::result::Iter",
+                  "inner"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -3383,15 +3268,13 @@ Module result.
               M.read (| f |);
               M.read (| Value.String "IterMut" |);
               M.read (| Value.String "inner" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::result::IterMut",
-                    "inner"
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::result::IterMut",
+                  "inner"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -3659,15 +3542,13 @@ Module result.
               M.read (| f |);
               M.read (| Value.String "IntoIter" |);
               M.read (| Value.String "inner" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::result::IntoIter",
-                    "inner"
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::result::IntoIter",
+                  "inner"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible

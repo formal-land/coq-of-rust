@@ -129,8 +129,11 @@ Module iter.
                                                                 [
                                                                   M.call_closure (|
                                                                     M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::num::nonzero::NonZeroUsize",
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::num::nonzero::NonZero")
+                                                                        []
+                                                                        [ Ty.path "usize" ],
                                                                       "new_unchecked",
                                                                       []
                                                                     |),
@@ -195,7 +198,12 @@ Module iter.
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize"
+                                          [
+                                            Ty.tuple [];
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "usize" ]
                                           ],
                                         "is_err",
                                         []
@@ -564,7 +572,7 @@ Module iter.
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 ( **self).advance_back_by(n)
             }
         *)

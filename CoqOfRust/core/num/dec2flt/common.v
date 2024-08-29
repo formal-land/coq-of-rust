@@ -33,7 +33,7 @@ Module num.
                         []
                       |),
                       [
-                        (* Unsize *) M.pointer_coercion tmp;
+                        tmp;
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::index::Index",
@@ -94,14 +94,12 @@ Module num.
                       Value.StructRecord "core::ops::range::RangeTo" [ ("end_", Value.Integer 8) ]
                     ]
                   |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "to_le_bytes", [] |),
-                        [ M.read (| value |) ]
-                      |)
-                    |))
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "to_le_bytes", [] |),
+                      [ M.read (| value |) ]
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -145,9 +143,7 @@ Module num.
             fn parse_digits(&self, mut func: impl FnMut(u8)) -> &Self {
                 let mut s = self;
         
-                // FIXME: Can't use s.split_first() here yet,
-                // see https://github.com/rust-lang/rust/issues/109328
-                while let [c, s_next @ ..] = s {
+                while let Some((c, s_next)) = s.split_first() {
                     let c = c.wrapping_sub(b'0');
                     if c < 10 {
                         func(c);
@@ -176,12 +172,27 @@ Module num.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ := s in
-                              let γ := M.read (| γ |) in
-                              let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
-                              let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
-                              let c := M.alloc (| γ1_0 |) in
-                              let s_next := M.alloc (| γ1_rest |) in
+                              (let γ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      "split_first",
+                                      []
+                                    |),
+                                    [ M.read (| s |) ]
+                                  |)
+                                |) in
+                              let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::option::Option::Some",
+                                  0
+                                |) in
+                              let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                              let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                              let c := M.copy (| γ1_0 |) in
+                              let s_next := M.copy (| γ1_1 |) in
                               let~ c :=
                                 M.alloc (|
                                   M.call_closure (|
@@ -333,23 +344,19 @@ Module num.
                   M.read (| f |);
                   M.read (| Value.String "BiasedFp" |);
                   M.read (| Value.String "f" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::dec2flt::common::BiasedFp",
+                    "f"
+                  |);
+                  M.read (| Value.String "e" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::dec2flt::common::BiasedFp",
-                      "f"
-                    |));
-                  M.read (| Value.String "e" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::num::dec2flt::common::BiasedFp",
-                        "e"
-                      |)
-                    |))
+                      "e"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -472,17 +479,6 @@ Module num.
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_dec2flt_common_BiasedFp.
       
-      Module Impl_core_marker_StructuralEq_for_core_num_dec2flt_common_BiasedFp.
-        Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_core_num_dec2flt_common_BiasedFp.
-      
       Module Impl_core_cmp_Eq_for_core_num_dec2flt_common_BiasedFp.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
         
@@ -576,7 +572,7 @@ Module num.
         *)
         Definition zero_pow2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           match ε, τ, α with
-          | [ host ], [], [ e ] =>
+          | [], [], [ e ] =>
             ltac:(M.monadic
               (let e := M.alloc (| e |) in
               Value.StructRecord

@@ -9,7 +9,8 @@ Module iter.
           name := "StepBy";
           const_params := [];
           ty_params := [ "I" ];
-          fields := [ ("iter", I); ("step", Ty.path "usize"); ("first_take", Ty.path "bool") ];
+          fields :=
+            [ ("iter", I); ("step_minus_one", Ty.path "usize"); ("first_take", Ty.path "bool") ];
         } *)
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_I_for_core_iter_adapters_step_by_StepBy_I.
@@ -37,7 +38,7 @@ Module iter.
                         |)
                       ]
                     |));
-                  ("step",
+                  ("step_minus_one",
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::clone::Clone",
@@ -50,7 +51,7 @@ Module iter.
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::step_by::StepBy",
-                          "step"
+                          "step_minus_one"
                         |)
                       ]
                     |));
@@ -106,31 +107,25 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "StepBy" |);
                   M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::step_by::StepBy",
-                      "iter"
-                    |));
-                  M.read (| Value.String "step" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::step_by::StepBy",
-                      "step"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::step_by::StepBy",
+                    "iter"
+                  |);
+                  M.read (| Value.String "step_minus_one" |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::step_by::StepBy",
+                    "step_minus_one"
+                  |);
                   M.read (| Value.String "first_take" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::step_by::StepBy",
-                        "first_take"
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::step_by::StepBy",
+                      "first_take"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -153,7 +148,7 @@ Module iter.
             pub(in crate::iter) fn new(iter: I, step: usize) -> StepBy<I> {
                 assert!(step != 0);
                 let iter = <I as SpecRangeSetup<I>>::setup(iter, step);
-                StepBy { iter, step: step - 1, first_take: true }
+                StepBy { iter, step_minus_one: step - 1, first_take: true }
             }
         *)
         Definition new (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -206,7 +201,8 @@ Module iter.
                     "core::iter::adapters::step_by::StepBy"
                     [
                       ("iter", M.read (| iter |));
-                      ("step", BinOp.Wrap.sub Integer.Usize (M.read (| step |)) (Value.Integer 1));
+                      ("step_minus_one",
+                        BinOp.Wrap.sub Integer.Usize (M.read (| step |)) (Value.Integer 1));
                       ("first_take", Value.Bool true)
                     ]
                 |)
@@ -217,10 +213,57 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "new" (new I).
+        
+        (*
+            fn original_step(&self) -> NonZero<usize> {
+                // SAFETY: By type invariant, `step_minus_one` cannot be `MAX`, which
+                // means the addition cannot overflow and the result cannot be zero.
+                unsafe { NonZero::new_unchecked(intrinsics::unchecked_add(self.step_minus_one, 1)) }
+            }
+        *)
+        Definition original_step
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                  "new_unchecked",
+                  []
+                |),
+                [
+                  M.call_closure (|
+                    M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "usize" ] |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::step_by::StepBy",
+                          "step_minus_one"
+                        |)
+                      |);
+                      Value.Integer 1
+                    ]
+                  |)
+                ]
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom AssociatedFunction_original_step :
+          forall (I : Ty.t),
+          M.IsAssociatedFunction (Self I) "original_step" (original_step I).
         (*
             fn next_back_index(&self) -> usize {
-                let rem = self.iter.len() % (self.step + 1);
-                if self.first_take { if rem == 0 { self.step } else { rem - 1 } } else { rem }
+                let rem = self.iter.len() % self.original_step();
+                if self.first_take { if rem == 0 { self.step_minus_one } else { rem - 1 } } else { rem }
             }
         *)
         Definition next_back_index
@@ -237,34 +280,41 @@ Module iter.
               M.read (|
                 let~ rem :=
                   M.alloc (|
-                    BinOp.Wrap.rem
-                      Integer.Usize
-                      (M.call_closure (|
-                        M.get_trait_method (|
-                          "core::iter::traits::exact_size::ExactSizeIterator",
-                          I,
-                          [],
-                          "len",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::step_by::StepBy",
-                            "iter"
-                          |)
-                        ]
-                      |))
-                      (BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::step_by::StepBy",
-                            "step"
-                          |)
-                        |))
-                        (Value.Integer 1))
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "usize",
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::iter::traits::exact_size::ExactSizeIterator",
+                            I,
+                            [],
+                            "len",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::step_by::StepBy",
+                              "iter"
+                            |)
+                          ]
+                        |);
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
+                            "original_step",
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      ]
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -298,7 +348,7 @@ Module iter.
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::iter::adapters::step_by::StepBy",
-                                  "step"
+                                  "step_minus_one"
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -617,6 +667,19 @@ Module iter.
             (* Instance *) [].
       End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_for_core_iter_adapters_step_by_StepBy_I.
       
+      Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_adapters_zip_TrustedRandomAccess_I_for_core_iter_adapters_step_by_StepBy_I.
+        Definition Self (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ].
+        
+        Axiom Implements :
+          forall (I : Ty.t),
+          M.IsTraitInstance
+            "core::iter::traits::marker::TrustedLen"
+            (Self I)
+            (* Trait polymorphic types *) []
+            (* Instance *) [].
+      End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_adapters_zip_TrustedRandomAccess_I_for_core_iter_adapters_step_by_StepBy_I.
+      
       (* Trait *)
       (* Empty module 'SpecRangeSetup' *)
       
@@ -663,7 +726,7 @@ Module iter.
         
         (*
             default fn spec_next(&mut self) -> Option<I::Item> {
-                let step_size = if self.first_take { 0 } else { self.step };
+                let step_size = if self.first_take { 0 } else { self.step_minus_one };
                 self.first_take = false;
                 self.iter.nth(step_size)
             }
@@ -697,7 +760,7 @@ Module iter.
                             (M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::step_by::StepBy",
-                              "step"
+                              "step_minus_one"
                             |)))
                       ]
                     |)
@@ -737,22 +800,22 @@ Module iter.
         (*
             default fn spec_size_hint(&self) -> (usize, Option<usize>) {
                 #[inline]
-                fn first_size(step: usize) -> impl Fn(usize) -> usize {
-                    move |n| if n == 0 { 0 } else { 1 + (n - 1) / (step + 1) }
+                fn first_size(step: NonZero<usize>) -> impl Fn(usize) -> usize {
+                    move |n| if n == 0 { 0 } else { 1 + (n - 1) / step }
                 }
         
                 #[inline]
-                fn other_size(step: usize) -> impl Fn(usize) -> usize {
-                    move |n| n / (step + 1)
+                fn other_size(step: NonZero<usize>) -> impl Fn(usize) -> usize {
+                    move |n| n / step
                 }
         
                 let (low, high) = self.iter.size_hint();
         
                 if self.first_take {
-                    let f = first_size(self.step);
+                    let f = first_size(self.original_step());
                     (f(low), high.map(f))
                 } else {
-                    let f = other_size(self.step);
+                    let f = other_size(self.original_step());
                     (f(low), high.map(f))
                 }
             }
@@ -821,12 +884,16 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::iter::adapters::step_by::StepBy",
-                                            "step"
-                                          |)
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::iter::adapters::step_by::StepBy")
+                                              []
+                                              [ I ],
+                                            "original_step",
+                                            []
+                                          |),
+                                          [ M.read (| self |) ]
                                         |)
                                       ]
                                     |)
@@ -868,12 +935,16 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::iter::adapters::step_by::StepBy",
-                                            "step"
-                                          |)
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::iter::adapters::step_by::StepBy")
+                                              []
+                                              [ I ],
+                                            "original_step",
+                                            []
+                                          |),
+                                          [ M.read (| self |) ]
                                         |)
                                       ]
                                     |)
@@ -922,10 +993,9 @@ Module iter.
                     }
                     n -= 1;
                 }
-                // n and self.step are indices, we need to add 1 to get the amount of elements
+                // n and self.step_minus_one are indices, we need to add 1 to get the amount of elements
                 // When calling `.nth`, we need to subtract 1 again to convert back to an index
-                // step + 1 can't overflow because `.step_by` sets `self.step` to `step - 1`
-                let mut step = self.step + 1;
+                let mut step = self.original_step().get();
                 // n + 1 could overflow
                 // thus, if n is usize::MAX, instead of adding one, we call .nth(step)
                 if n == usize::MAX {
@@ -1049,16 +1119,23 @@ Module iter.
                       |) in
                     let~ step :=
                       M.alloc (|
-                        BinOp.Wrap.add
-                          Integer.Usize
-                          (M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::step_by::StepBy",
-                              "step"
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                            "get",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
+                                "original_step",
+                                []
+                              |),
+                              [ M.read (| self |) ]
                             |)
-                          |))
-                          (Value.Integer 1)
+                          ]
+                        |)
                       |) in
                     let~ _ :=
                       M.match_operator (|
@@ -1310,8 +1387,11 @@ Module iter.
                 R: Try<Output = Acc>,
             {
                 #[inline]
-                fn nth<I: Iterator>(iter: &mut I, step: usize) -> impl FnMut() -> Option<I::Item> + '_ {
-                    move || iter.nth(step)
+                fn nth<I: Iterator>(
+                    iter: &mut I,
+                    step_minus_one: usize,
+                ) -> impl FnMut() -> Option<I::Item> + '_ {
+                    move || iter.nth(step_minus_one)
                 }
         
                 if self.first_take {
@@ -1321,7 +1401,7 @@ Module iter.
                         Some(x) => acc = f(acc, x)?,
                     }
                 }
-                from_fn(nth(&mut self.iter, self.step)).try_fold(acc, f)
+                from_fn(nth(&mut self.iter, self.step_minus_one)).try_fold(acc, f)
             }
         *)
         Definition spec_try_fold
@@ -1528,7 +1608,7 @@ Module iter.
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "core::iter::adapters::step_by::StepBy",
-                                        "step"
+                                        "step_minus_one"
                                       |)
                                     |)
                                   ]
@@ -1552,8 +1632,11 @@ Module iter.
                 F: FnMut(Acc, Self::Item) -> Acc,
             {
                 #[inline]
-                fn nth<I: Iterator>(iter: &mut I, step: usize) -> impl FnMut() -> Option<I::Item> + '_ {
-                    move || iter.nth(step)
+                fn nth<I: Iterator>(
+                    iter: &mut I,
+                    step_minus_one: usize,
+                ) -> impl FnMut() -> Option<I::Item> + '_ {
+                    move || iter.nth(step_minus_one)
                 }
         
                 if self.first_take {
@@ -1563,7 +1646,7 @@ Module iter.
                         Some(x) => acc = f(acc, x),
                     }
                 }
-                from_fn(nth(&mut self.iter, self.step)).fold(acc, f)
+                from_fn(nth(&mut self.iter, self.step_minus_one)).fold(acc, f)
             }
         *)
         Definition spec_fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1691,7 +1774,7 @@ Module iter.
                                     M.SubPointer.get_struct_record_field (|
                                       self,
                                       "core::iter::adapters::step_by::StepBy",
-                                      "step"
+                                      "step_minus_one"
                                     |)
                                   |)
                                 ]
@@ -1781,7 +1864,7 @@ Module iter.
                 // is out of bounds because the length of `self.iter` does not exceed
                 // `usize::MAX` (because `I: ExactSizeIterator`) and `nth_back` is
                 // zero-indexed
-                let n = n.saturating_mul(self.step + 1).saturating_add(self.next_back_index());
+                let n = n.saturating_mul(self.original_step().get()).saturating_add(self.next_back_index());
                 self.iter.nth_back(n)
             }
         *)
@@ -1807,16 +1890,29 @@ Module iter.
                           M.get_associated_function (| Ty.path "usize", "saturating_mul", [] |),
                           [
                             M.read (| n |);
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::step_by::StepBy",
-                                  "step"
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "get",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
+                                      []
+                                      [ I ],
+                                    "original_step",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              ]
+                            |)
                           ]
                         |);
                         M.call_closure (|
@@ -1862,16 +1958,16 @@ Module iter.
                 #[inline]
                 fn nth_back<I: DoubleEndedIterator>(
                     iter: &mut I,
-                    step: usize,
+                    step_minus_one: usize,
                 ) -> impl FnMut() -> Option<I::Item> + '_ {
-                    move || iter.nth_back(step)
+                    move || iter.nth_back(step_minus_one)
                 }
         
                 match self.next_back() {
                     None => try { init },
                     Some(x) => {
                         let acc = f(init, x)?;
-                        from_fn(nth_back(&mut self.iter, self.step)).try_fold(acc, f)
+                        from_fn(nth_back(&mut self.iter, self.step_minus_one)).try_fold(acc, f)
                     }
                 }
             }
@@ -2033,7 +2129,7 @@ Module iter.
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "core::iter::adapters::step_by::StepBy",
-                                                "step"
+                                                "step_minus_one"
                                               |)
                                             |)
                                           ]
@@ -2062,16 +2158,16 @@ Module iter.
                 #[inline]
                 fn nth_back<I: DoubleEndedIterator>(
                     iter: &mut I,
-                    step: usize,
+                    step_minus_one: usize,
                 ) -> impl FnMut() -> Option<I::Item> + '_ {
-                    move || iter.nth_back(step)
+                    move || iter.nth_back(step_minus_one)
                 }
         
                 match self.next_back() {
                     None => init,
                     Some(x) => {
                         let acc = f(init, x);
-                        from_fn(nth_back(&mut self.iter, self.step)).fold(acc, f)
+                        from_fn(nth_back(&mut self.iter, self.step_minus_one)).fold(acc, f)
                     }
                 }
             }
@@ -2161,7 +2257,7 @@ Module iter.
                                         M.SubPointer.get_struct_record_field (|
                                           self,
                                           "core::iter::adapters::step_by::StepBy",
-                                          "step"
+                                          "step_minus_one"
                                         |)
                                       |)
                                     ]
@@ -2271,8 +2367,7 @@ Module iter.
                     fn spec_next(&mut self) -> Option<$t> {
                         // if a step size larger than the type has been specified fall back to
                         // t::MAX, in which case remaining will be at most 1.
-                        // The `+ 1` can't overflow since the constructor substracted 1 from the original value.
-                        let step = <$t>::try_from(self.step + 1).unwrap_or(<$t>::MAX);
+                        let step = <$t>::try_from(self.original_step().get()).unwrap_or(<$t>::MAX);
                         let remaining = self.iter.end;
                         if remaining > 0 {
                             let val = self.iter.start;
@@ -2313,16 +2408,34 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::step_by::StepBy",
-                                  "step"
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "get",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "u8" ]
+                                      ],
+                                    "original_step",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              ]
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -2476,7 +2589,13 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
                                   "ok",
                                   []
                                 |),
@@ -2747,7 +2866,7 @@ Module iter.
                     {
                         // if a step size larger than the type has been specified fall back to
                         // t::MAX, in which case remaining will be at most 1.
-                        let step = <$t>::try_from(self.step + 1).unwrap_or(<$t>::MAX);
+                        let step = <$t>::try_from(self.original_step().get()).unwrap_or(<$t>::MAX);
                         let remaining = self.iter.end;
                         let mut acc = init;
                         let mut val = self.iter.start;
@@ -2789,16 +2908,34 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::iter::adapters::step_by::StepBy",
-                                  "step"
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "get",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "u8" ]
+                                      ],
+                                    "original_step",
+                                    []
+                                  |),
+                                  [ self ]
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              ]
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -2948,21 +3085,6 @@ Module iter.
             ].
       End Impl_core_iter_adapters_step_by_StepByImpl_core_ops_range_Range_u8_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u8.
       
-      Module Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u8.
-        Definition Self : Ty.t :=
-          Ty.apply
-            (Ty.path "core::iter::adapters::step_by::StepBy")
-            []
-            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ] ].
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::iter::traits::marker::TrustedLen"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u8.
-      
       Module Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_u16_for_core_ops_range_Range_u16.
         Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ].
         
@@ -3039,8 +3161,7 @@ Module iter.
                     fn spec_next(&mut self) -> Option<$t> {
                         // if a step size larger than the type has been specified fall back to
                         // t::MAX, in which case remaining will be at most 1.
-                        // The `+ 1` can't overflow since the constructor substracted 1 from the original value.
-                        let step = <$t>::try_from(self.step + 1).unwrap_or(<$t>::MAX);
+                        let step = <$t>::try_from(self.original_step().get()).unwrap_or(<$t>::MAX);
                         let remaining = self.iter.end;
                         if remaining > 0 {
                             let val = self.iter.start;
@@ -3081,16 +3202,34 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::step_by::StepBy",
-                                  "step"
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "get",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "u16" ]
+                                      ],
+                                    "original_step",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              ]
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -3244,7 +3383,13 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
                                   "ok",
                                   []
                                 |),
@@ -3515,7 +3660,7 @@ Module iter.
                     {
                         // if a step size larger than the type has been specified fall back to
                         // t::MAX, in which case remaining will be at most 1.
-                        let step = <$t>::try_from(self.step + 1).unwrap_or(<$t>::MAX);
+                        let step = <$t>::try_from(self.original_step().get()).unwrap_or(<$t>::MAX);
                         let remaining = self.iter.end;
                         let mut acc = init;
                         let mut val = self.iter.start;
@@ -3557,16 +3702,34 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::iter::adapters::step_by::StepBy",
-                                  "step"
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "get",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "u16" ]
+                                      ],
+                                    "original_step",
+                                    []
+                                  |),
+                                  [ self ]
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              ]
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -3716,21 +3879,6 @@ Module iter.
             ].
       End Impl_core_iter_adapters_step_by_StepByImpl_core_ops_range_Range_u16_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u16.
       
-      Module Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u16.
-        Definition Self : Ty.t :=
-          Ty.apply
-            (Ty.path "core::iter::adapters::step_by::StepBy")
-            []
-            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ] ].
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::iter::traits::marker::TrustedLen"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u16.
-      
       Module Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_u32_for_core_ops_range_Range_u32.
         Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ].
         
@@ -3807,8 +3955,7 @@ Module iter.
                     fn spec_next(&mut self) -> Option<$t> {
                         // if a step size larger than the type has been specified fall back to
                         // t::MAX, in which case remaining will be at most 1.
-                        // The `+ 1` can't overflow since the constructor substracted 1 from the original value.
-                        let step = <$t>::try_from(self.step + 1).unwrap_or(<$t>::MAX);
+                        let step = <$t>::try_from(self.original_step().get()).unwrap_or(<$t>::MAX);
                         let remaining = self.iter.end;
                         if remaining > 0 {
                             let val = self.iter.start;
@@ -3849,16 +3996,34 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::step_by::StepBy",
-                                  "step"
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "get",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "u32" ]
+                                      ],
+                                    "original_step",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              ]
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -4012,7 +4177,13 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
                                   "ok",
                                   []
                                 |),
@@ -4283,7 +4454,7 @@ Module iter.
                     {
                         // if a step size larger than the type has been specified fall back to
                         // t::MAX, in which case remaining will be at most 1.
-                        let step = <$t>::try_from(self.step + 1).unwrap_or(<$t>::MAX);
+                        let step = <$t>::try_from(self.original_step().get()).unwrap_or(<$t>::MAX);
                         let remaining = self.iter.end;
                         let mut acc = init;
                         let mut val = self.iter.start;
@@ -4325,16 +4496,34 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::iter::adapters::step_by::StepBy",
-                                  "step"
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "get",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "u32" ]
+                                      ],
+                                    "original_step",
+                                    []
+                                  |),
+                                  [ self ]
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              ]
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -4484,21 +4673,6 @@ Module iter.
             ].
       End Impl_core_iter_adapters_step_by_StepByImpl_core_ops_range_Range_u32_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u32.
       
-      Module Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u32.
-        Definition Self : Ty.t :=
-          Ty.apply
-            (Ty.path "core::iter::adapters::step_by::StepBy")
-            []
-            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ] ].
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::iter::traits::marker::TrustedLen"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u32.
-      
       Module Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_u64_for_core_ops_range_Range_u64.
         Definition Self : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ].
         
@@ -4575,8 +4749,7 @@ Module iter.
                     fn spec_next(&mut self) -> Option<$t> {
                         // if a step size larger than the type has been specified fall back to
                         // t::MAX, in which case remaining will be at most 1.
-                        // The `+ 1` can't overflow since the constructor substracted 1 from the original value.
-                        let step = <$t>::try_from(self.step + 1).unwrap_or(<$t>::MAX);
+                        let step = <$t>::try_from(self.original_step().get()).unwrap_or(<$t>::MAX);
                         let remaining = self.iter.end;
                         if remaining > 0 {
                             let val = self.iter.start;
@@ -4617,16 +4790,34 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::step_by::StepBy",
-                                  "step"
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "get",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "u64" ]
+                                      ],
+                                    "original_step",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              ]
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -4780,7 +4971,13 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
                                   "ok",
                                   []
                                 |),
@@ -5051,7 +5248,7 @@ Module iter.
                     {
                         // if a step size larger than the type has been specified fall back to
                         // t::MAX, in which case remaining will be at most 1.
-                        let step = <$t>::try_from(self.step + 1).unwrap_or(<$t>::MAX);
+                        let step = <$t>::try_from(self.original_step().get()).unwrap_or(<$t>::MAX);
                         let remaining = self.iter.end;
                         let mut acc = init;
                         let mut val = self.iter.start;
@@ -5093,16 +5290,34 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::iter::adapters::step_by::StepBy",
-                                  "step"
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "get",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "u64" ]
+                                      ],
+                                    "original_step",
+                                    []
+                                  |),
+                                  [ self ]
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              ]
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -5252,21 +5467,6 @@ Module iter.
             ].
       End Impl_core_iter_adapters_step_by_StepByImpl_core_ops_range_Range_u64_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u64.
       
-      Module Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u64.
-        Definition Self : Ty.t :=
-          Ty.apply
-            (Ty.path "core::iter::adapters::step_by::StepBy")
-            []
-            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ] ].
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::iter::traits::marker::TrustedLen"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u64.
-      
       Module Impl_core_iter_adapters_step_by_SpecRangeSetup_core_ops_range_Range_usize_for_core_ops_range_Range_usize.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ].
@@ -5344,8 +5544,7 @@ Module iter.
                     fn spec_next(&mut self) -> Option<$t> {
                         // if a step size larger than the type has been specified fall back to
                         // t::MAX, in which case remaining will be at most 1.
-                        // The `+ 1` can't overflow since the constructor substracted 1 from the original value.
-                        let step = <$t>::try_from(self.step + 1).unwrap_or(<$t>::MAX);
+                        let step = <$t>::try_from(self.original_step().get()).unwrap_or(<$t>::MAX);
                         let remaining = self.iter.end;
                         if remaining > 0 {
                             let val = self.iter.start;
@@ -5386,16 +5585,34 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::step_by::StepBy",
-                                  "step"
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "get",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
+                                    "original_step",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              ]
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -5547,7 +5764,13 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
                                   "ok",
                                   []
                                 |),
@@ -5818,7 +6041,7 @@ Module iter.
                     {
                         // if a step size larger than the type has been specified fall back to
                         // t::MAX, in which case remaining will be at most 1.
-                        let step = <$t>::try_from(self.step + 1).unwrap_or(<$t>::MAX);
+                        let step = <$t>::try_from(self.original_step().get()).unwrap_or(<$t>::MAX);
                         let remaining = self.iter.end;
                         let mut acc = init;
                         let mut val = self.iter.start;
@@ -5860,16 +6083,34 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::iter::adapters::step_by::StepBy",
-                                  "step"
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ],
+                                "get",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::step_by::StepBy")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
+                                    "original_step",
+                                    []
+                                  |),
+                                  [ self ]
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              ]
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -6019,21 +6260,6 @@ Module iter.
             ].
       End Impl_core_iter_adapters_step_by_StepByImpl_core_ops_range_Range_usize_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_usize.
       
-      Module Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_usize.
-        Definition Self : Ty.t :=
-          Ty.apply
-            (Ty.path "core::iter::adapters::step_by::StepBy")
-            []
-            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ].
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::iter::traits::marker::TrustedLen"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_iter_traits_marker_TrustedLen_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_usize.
-      
       Module Impl_core_iter_adapters_step_by_StepByBackImpl_core_ops_range_Range_u8_for_core_iter_adapters_step_by_StepBy_core_ops_range_Range_u8.
         Definition Self : Ty.t :=
           Ty.apply
@@ -6042,10 +6268,8 @@ Module iter.
             [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ] ].
         
         (*
-                    fn spec_next_back(&mut self) -> Option<Self::Item>
-                        where Range<$t>: DoubleEndedIterator + ExactSizeIterator,
-                    {
-                        let step = (self.step + 1) as $t;
+                    fn spec_next_back(&mut self) -> Option<Self::Item> {
+                        let step = self.original_step().get() as $t;
                         let remaining = self.iter.end;
                         if remaining > 0 {
                             let start = self.iter.start;
@@ -6065,16 +6289,27 @@ Module iter.
                 let~ step :=
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::step_by::StepBy",
-                            "step"
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                          "get",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::step_by::StepBy")
+                                []
+                                [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+                                ],
+                              "original_step",
+                              []
+                            |),
+                            [ M.read (| self |) ]
                           |)
-                        |))
-                        (Value.Integer 1))
+                        ]
+                      |))
                   |) in
                 let~ remaining :=
                   M.copy (|
@@ -6151,9 +6386,7 @@ Module iter.
           end.
         
         (*
-                    fn spec_nth_back(&mut self, n: usize) -> Option<Self::Item>
-                        where Self: DoubleEndedIterator,
-                    {
+                    fn spec_nth_back(&mut self, n: usize) -> Option<Self::Item> {
                         if self.advance_back_by(n).is_err() {
                             return None;
                         }
@@ -6183,7 +6416,12 @@ Module iter.
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize"
+                                          [
+                                            Ty.tuple [];
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "usize" ]
                                           ],
                                         "is_err",
                                         []
@@ -6251,10 +6489,9 @@ Module iter.
         
         (*
                     fn spec_try_rfold<Acc, F, R>(&mut self, init: Acc, mut f: F) -> R
-                        where
-                            Self: DoubleEndedIterator,
-                            F: FnMut(Acc, Self::Item) -> R,
-                            R: Try<Output = Acc>
+                    where
+                        F: FnMut(Acc, Self::Item) -> R,
+                        R: Try<Output = Acc>
                     {
                         let mut accum = init;
                         while let Some(x) = self.next_back() {
@@ -6420,9 +6657,8 @@ Module iter.
         
         (*
                     fn spec_rfold<Acc, F>(mut self, init: Acc, mut f: F) -> Acc
-                        where
-                            Self: DoubleEndedIterator,
-                            F: FnMut(Acc, Self::Item) -> Acc
+                    where
+                        F: FnMut(Acc, Self::Item) -> Acc
                     {
                         let mut accum = init;
                         while let Some(x) = self.next_back() {
@@ -6535,10 +6771,8 @@ Module iter.
             [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ] ].
         
         (*
-                    fn spec_next_back(&mut self) -> Option<Self::Item>
-                        where Range<$t>: DoubleEndedIterator + ExactSizeIterator,
-                    {
-                        let step = (self.step + 1) as $t;
+                    fn spec_next_back(&mut self) -> Option<Self::Item> {
+                        let step = self.original_step().get() as $t;
                         let remaining = self.iter.end;
                         if remaining > 0 {
                             let start = self.iter.start;
@@ -6558,16 +6792,27 @@ Module iter.
                 let~ step :=
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::step_by::StepBy",
-                            "step"
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                          "get",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::step_by::StepBy")
+                                []
+                                [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u16" ]
+                                ],
+                              "original_step",
+                              []
+                            |),
+                            [ M.read (| self |) ]
                           |)
-                        |))
-                        (Value.Integer 1))
+                        ]
+                      |))
                   |) in
                 let~ remaining :=
                   M.copy (|
@@ -6644,9 +6889,7 @@ Module iter.
           end.
         
         (*
-                    fn spec_nth_back(&mut self, n: usize) -> Option<Self::Item>
-                        where Self: DoubleEndedIterator,
-                    {
+                    fn spec_nth_back(&mut self, n: usize) -> Option<Self::Item> {
                         if self.advance_back_by(n).is_err() {
                             return None;
                         }
@@ -6676,7 +6919,12 @@ Module iter.
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize"
+                                          [
+                                            Ty.tuple [];
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "usize" ]
                                           ],
                                         "is_err",
                                         []
@@ -6744,10 +6992,9 @@ Module iter.
         
         (*
                     fn spec_try_rfold<Acc, F, R>(&mut self, init: Acc, mut f: F) -> R
-                        where
-                            Self: DoubleEndedIterator,
-                            F: FnMut(Acc, Self::Item) -> R,
-                            R: Try<Output = Acc>
+                    where
+                        F: FnMut(Acc, Self::Item) -> R,
+                        R: Try<Output = Acc>
                     {
                         let mut accum = init;
                         while let Some(x) = self.next_back() {
@@ -6913,9 +7160,8 @@ Module iter.
         
         (*
                     fn spec_rfold<Acc, F>(mut self, init: Acc, mut f: F) -> Acc
-                        where
-                            Self: DoubleEndedIterator,
-                            F: FnMut(Acc, Self::Item) -> Acc
+                    where
+                        F: FnMut(Acc, Self::Item) -> Acc
                     {
                         let mut accum = init;
                         while let Some(x) = self.next_back() {
@@ -7028,10 +7274,8 @@ Module iter.
             [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ] ].
         
         (*
-                    fn spec_next_back(&mut self) -> Option<Self::Item>
-                        where Range<$t>: DoubleEndedIterator + ExactSizeIterator,
-                    {
-                        let step = (self.step + 1) as $t;
+                    fn spec_next_back(&mut self) -> Option<Self::Item> {
+                        let step = self.original_step().get() as $t;
                         let remaining = self.iter.end;
                         if remaining > 0 {
                             let start = self.iter.start;
@@ -7051,16 +7295,27 @@ Module iter.
                 let~ step :=
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::step_by::StepBy",
-                            "step"
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                          "get",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::step_by::StepBy")
+                                []
+                                [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ]
+                                ],
+                              "original_step",
+                              []
+                            |),
+                            [ M.read (| self |) ]
                           |)
-                        |))
-                        (Value.Integer 1))
+                        ]
+                      |))
                   |) in
                 let~ remaining :=
                   M.copy (|
@@ -7137,9 +7392,7 @@ Module iter.
           end.
         
         (*
-                    fn spec_nth_back(&mut self, n: usize) -> Option<Self::Item>
-                        where Self: DoubleEndedIterator,
-                    {
+                    fn spec_nth_back(&mut self, n: usize) -> Option<Self::Item> {
                         if self.advance_back_by(n).is_err() {
                             return None;
                         }
@@ -7169,7 +7422,12 @@ Module iter.
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize"
+                                          [
+                                            Ty.tuple [];
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "usize" ]
                                           ],
                                         "is_err",
                                         []
@@ -7237,10 +7495,9 @@ Module iter.
         
         (*
                     fn spec_try_rfold<Acc, F, R>(&mut self, init: Acc, mut f: F) -> R
-                        where
-                            Self: DoubleEndedIterator,
-                            F: FnMut(Acc, Self::Item) -> R,
-                            R: Try<Output = Acc>
+                    where
+                        F: FnMut(Acc, Self::Item) -> R,
+                        R: Try<Output = Acc>
                     {
                         let mut accum = init;
                         while let Some(x) = self.next_back() {
@@ -7406,9 +7663,8 @@ Module iter.
         
         (*
                     fn spec_rfold<Acc, F>(mut self, init: Acc, mut f: F) -> Acc
-                        where
-                            Self: DoubleEndedIterator,
-                            F: FnMut(Acc, Self::Item) -> Acc
+                    where
+                        F: FnMut(Acc, Self::Item) -> Acc
                     {
                         let mut accum = init;
                         while let Some(x) = self.next_back() {
@@ -7521,10 +7777,8 @@ Module iter.
             [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ].
         
         (*
-                    fn spec_next_back(&mut self) -> Option<Self::Item>
-                        where Range<$t>: DoubleEndedIterator + ExactSizeIterator,
-                    {
-                        let step = (self.step + 1) as $t;
+                    fn spec_next_back(&mut self) -> Option<Self::Item> {
+                        let step = self.original_step().get() as $t;
                         let remaining = self.iter.end;
                         if remaining > 0 {
                             let start = self.iter.start;
@@ -7545,16 +7799,31 @@ Module iter.
                   M.copy (|
                     M.use
                       (M.alloc (|
-                        BinOp.Wrap.add
-                          Integer.Usize
-                          (M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::step_by::StepBy",
-                              "step"
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                            "get",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::step_by::StepBy")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                "original_step",
+                                []
+                              |),
+                              [ M.read (| self |) ]
                             |)
-                          |))
-                          (Value.Integer 1)
+                          ]
+                        |)
                       |))
                   |) in
                 let~ remaining :=
@@ -7632,9 +7901,7 @@ Module iter.
           end.
         
         (*
-                    fn spec_nth_back(&mut self, n: usize) -> Option<Self::Item>
-                        where Self: DoubleEndedIterator,
-                    {
+                    fn spec_nth_back(&mut self, n: usize) -> Option<Self::Item> {
                         if self.advance_back_by(n).is_err() {
                             return None;
                         }
@@ -7664,7 +7931,12 @@ Module iter.
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize"
+                                          [
+                                            Ty.tuple [];
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "usize" ]
                                           ],
                                         "is_err",
                                         []
@@ -7732,10 +8004,9 @@ Module iter.
         
         (*
                     fn spec_try_rfold<Acc, F, R>(&mut self, init: Acc, mut f: F) -> R
-                        where
-                            Self: DoubleEndedIterator,
-                            F: FnMut(Acc, Self::Item) -> R,
-                            R: Try<Output = Acc>
+                    where
+                        F: FnMut(Acc, Self::Item) -> R,
+                        R: Try<Output = Acc>
                     {
                         let mut accum = init;
                         while let Some(x) = self.next_back() {
@@ -7901,9 +8172,8 @@ Module iter.
         
         (*
                     fn spec_rfold<Acc, F>(mut self, init: Acc, mut f: F) -> Acc
-                        where
-                            Self: DoubleEndedIterator,
-                            F: FnMut(Acc, Self::Item) -> Acc
+                    where
+                        F: FnMut(Acc, Self::Item) -> Acc
                     {
                         let mut accum = init;
                         while let Some(x) = self.next_back() {

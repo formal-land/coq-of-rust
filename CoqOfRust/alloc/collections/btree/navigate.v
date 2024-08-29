@@ -4472,29 +4472,25 @@ Module collections.
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "internal error: entered unreachable code: BTreeMap has different depths"
-                                                                  |)
-                                                                ]
-                                                            |));
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "none",
-                                                                  []
-                                                                |),
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "internal error: entered unreachable code: BTreeMap has different depths"
+                                                                |)
+                                                              ]
+                                                          |);
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "none",
                                                                 []
-                                                              |)
-                                                            |))
+                                                              |),
+                                                              []
+                                                            |)
+                                                          |)
                                                         ]
                                                       |)
                                                     ]
@@ -5332,7 +5328,7 @@ Module collections.
                                     visit(Position::Leaf(leaf));
                                     match edge.next_kv() {
                                         Ok(kv) => {
-                                            visit(Position::InternalKV(kv));
+                                            visit(Position::InternalKV);
                                             kv.right_edge()
                                         }
                                         Err(_) => return,
@@ -5661,7 +5657,7 @@ Module collections.
                                                                     [
                                                                       Value.StructTuple
                                                                         "alloc::collections::btree::navigate::Position::InternalKV"
-                                                                        [ M.read (| kv |) ]
+                                                                        []
                                                                     ]
                                                                 ]
                                                               |)
@@ -5802,7 +5798,7 @@ Module collections.
                 self.visit_nodes_in_order(|pos| match pos {
                     Position::Leaf(node) => result += node.len(),
                     Position::Internal(node) => result += node.len(),
-                    Position::InternalKV(_) => (),
+                    Position::InternalKV => (),
                 });
                 result
             }
@@ -5938,11 +5934,10 @@ Module collections.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_struct_tuple_field (|
+                                                  (let _ :=
+                                                    M.is_struct_tuple (|
                                                       γ,
-                                                      "alloc::collections::btree::navigate::Position::InternalKV",
-                                                      0
+                                                      "alloc::collections::btree::navigate::Position::InternalKV"
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)))
                                             ]
@@ -9449,25 +9444,7 @@ Module collections.
             };
             {
               name := "InternalKV";
-              item :=
-                StructTuple
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::node::Handle")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [
-                            BorrowType;
-                            K;
-                            V;
-                            Ty.path "alloc::collections::btree::node::marker::Internal"
-                          ];
-                        Ty.path "alloc::collections::btree::node::marker::KV"
-                      ]
-                  ];
+              item := StructTuple [];
               discriminant := None;
             }
           ];

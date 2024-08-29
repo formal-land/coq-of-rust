@@ -615,6 +615,18 @@ Module borrow.
         [ ("Target", InstanceField.Ty (_Target B)); ("deref", InstanceField.Method (deref B)) ].
   End Impl_core_ops_deref_Deref_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_type_B_for_alloc_borrow_Cow_B.
   
+  Module Impl_core_ops_deref_DerefPure_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_type_B_for_alloc_borrow_Cow_B.
+    Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
+    
+    Axiom Implements :
+      forall (B : Ty.t),
+      M.IsTraitInstance
+        "core::ops::deref::DerefPure"
+        (Self B)
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_type_B_for_alloc_borrow_Cow_B.
+  
   Module Impl_core_cmp_Eq_where_core_marker_Sized_B_where_core_cmp_Eq_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
     Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     

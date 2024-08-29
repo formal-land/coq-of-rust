@@ -86,7 +86,279 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I P : Ty.t),
           M.IsAssociatedFunction (Self I P) "new" (new I P).
+        (*
+            fn next_chunk_dropless<const N: usize>(
+                &mut self,
+            ) -> Result<[I::Item; N], array::IntoIter<I::Item, N>> {
+                let mut array: [MaybeUninit<I::Item>; N] = [const { MaybeUninit::uninit() }; N];
+                let mut initialized = 0;
+        
+                let result = self.iter.try_for_each(|element| {
+                    let idx = initialized;
+                    // branchless index update combined with unconditionally copying the value even when
+                    // it is filtered reduces branching and dependencies in the loop.
+                    initialized = idx + (self.predicate)(&element) as usize;
+                    // SAFETY: Loop conditions ensure the index is in bounds.
+                    unsafe { array.get_unchecked_mut(idx) }.write(element);
+        
+                    if initialized < N { ControlFlow::Continue(()) } else { ControlFlow::Break(()) }
+                });
+        
+                match result {
+                    ControlFlow::Break(()) => {
+                        // SAFETY: The loop above is only explicitly broken when the array has been fully initialized
+                        Ok(unsafe { MaybeUninit::array_assume_init(array) })
+                    }
+                    ControlFlow::Continue(()) => {
+                        // SAFETY: The range is in bounds since the loop breaks when reaching N elements.
+                        Err(unsafe { array::IntoIter::new_unchecked(array, 0..initialized) })
+                    }
+                }
+            }
+        *)
+        Definition next_chunk_dropless
+            (I P : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self I P in
+          match ε, τ, α with
+          | [ N ], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.read (|
+                let~ array :=
+                  M.alloc (|
+                    repeat (|
+                      M.read (|
+                        M.get_constant (|
+                          "core::iter::adapters::filter::next_chunk_dropless_discriminant"
+                        |)
+                      |),
+                      N
+                    |)
+                  |) in
+                let~ initialized := M.alloc (| Value.Integer 0 |) in
+                let~ result :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        I,
+                        [],
+                        "try_for_each",
+                        [
+                          Ty.function
+                            [ Ty.tuple [ Ty.associated ] ]
+                            (Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [ Ty.tuple []; Ty.tuple [] ]);
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [ Ty.tuple []; Ty.tuple [] ]
+                        ]
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::filter::Filter",
+                          "iter"
+                        |);
+                        M.closure
+                          (fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [ α0 ] =>
+                                M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let element := M.copy (| γ |) in
+                                        M.read (|
+                                          let~ idx := M.copy (| initialized |) in
+                                          let~ _ :=
+                                            M.write (|
+                                              initialized,
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| idx |))
+                                                (M.rust_cast
+                                                  (M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::function::FnMut",
+                                                      P,
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.associated ]
+                                                          ]
+                                                      ],
+                                                      "call_mut",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::iter::adapters::filter::Filter",
+                                                        "predicate"
+                                                      |);
+                                                      Value.Tuple [ element ]
+                                                    ]
+                                                  |)))
+                                            |) in
+                                          let~ _ :=
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ Ty.associated ],
+                                                  "write",
+                                                  []
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ Ty.associated ]
+                                                        ],
+                                                      "get_unchecked_mut",
+                                                      [ Ty.path "usize" ]
+                                                    |),
+                                                    [ array; M.read (| idx |) ]
+                                                  |);
+                                                  M.read (| element |)
+                                                ]
+                                              |)
+                                            |) in
+                                          M.match_operator (|
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        BinOp.Pure.lt
+                                                          (M.read (| initialized |))
+                                                          (M.read (|
+                                                            M.get_constant (|
+                                                              "core::iter::adapters::filter::next_chunk_dropless::N"
+                                                            |)
+                                                          |))
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  M.alloc (|
+                                                    Value.StructTuple
+                                                      "core::ops::control_flow::ControlFlow::Continue"
+                                                      [ Value.Tuple [] ]
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (M.alloc (|
+                                                    Value.StructTuple
+                                                      "core::ops::control_flow::ControlFlow::Break"
+                                                      [ Value.Tuple [] ]
+                                                  |)))
+                                            ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)
+                              | _ => M.impossible (||)
+                              end))
+                      ]
+                    |)
+                  |) in
+                M.match_operator (|
+                  result,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ Ty.associated ],
+                                  "array_assume_init",
+                                  []
+                                |),
+                                [ M.read (| array |) ]
+                              |)
+                            ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::array::iter::IntoIter")
+                                    [ N ]
+                                    [ Ty.associated ],
+                                  "new_unchecked",
+                                  []
+                                |),
+                                [
+                                  M.read (| array |);
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    [ ("start", Value.Integer 0); ("end_", M.read (| initialized |))
+                                    ]
+                                ]
+                              |)
+                            ]
+                        |)))
+                  ]
+                |)
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom AssociatedFunction_next_chunk_dropless :
+          forall (I P : Ty.t),
+          M.IsAssociatedFunction (Self I P) "next_chunk_dropless" (next_chunk_dropless I P).
       End Impl_core_iter_adapters_filter_Filter_I_P.
+      
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_filter_Filter_I_P.
         Definition Self (I P : Ty.t) : Ty.t :=
@@ -129,13 +401,11 @@ Module iter.
                         |)
                       |);
                       M.read (| Value.String "iter" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::filter::Filter",
-                          "iter"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::filter::Filter",
+                        "iter"
+                      |)
                     ]
                   |)
                 ]
@@ -406,52 +676,16 @@ Module iter.
             fn next_chunk<const N: usize>(
                 &mut self,
             ) -> Result<[Self::Item; N], array::IntoIter<Self::Item, N>> {
-                let mut array: [MaybeUninit<Self::Item>; N] = MaybeUninit::uninit_array();
-        
-                struct Guard<'a, T> {
-                    array: &'a mut [MaybeUninit<T>],
-                    initialized: usize,
-                }
-        
-                impl<T> Drop for Guard<'_, T> {
-                    #[inline]
-                    fn drop(&mut self) {
-                        if const { crate::mem::needs_drop::<T>() } {
-                            // SAFETY: self.initialized is always <= N, which also is the length of the array.
-                            unsafe {
-                                core::ptr::drop_in_place(MaybeUninit::slice_assume_init_mut(
-                                    self.array.get_unchecked_mut(..self.initialized),
-                                ));
-                            }
-                        }
+                // avoid codegen for the dead branch
+                let fun = const {
+                    if crate::mem::needs_drop::<I::Item>() {
+                        array::iter_next_chunk::<I::Item, N>
+                    } else {
+                        Self::next_chunk_dropless::<N>
                     }
-                }
+                };
         
-                let mut guard = Guard { array: &mut array, initialized: 0 };
-        
-                let result = self.iter.try_for_each(|element| {
-                    let idx = guard.initialized;
-                    guard.initialized = idx + (self.predicate)(&element) as usize;
-        
-                    // SAFETY: Loop conditions ensure the index is in bounds.
-                    unsafe { guard.array.get_unchecked_mut(idx) }.write(element);
-        
-                    if guard.initialized < N { ControlFlow::Continue(()) } else { ControlFlow::Break(()) }
-                });
-        
-                let guard = ManuallyDrop::new(guard);
-        
-                match result {
-                    ControlFlow::Break(()) => {
-                        // SAFETY: The loop above is only explicitly broken when the array has been fully initialized
-                        Ok(unsafe { MaybeUninit::array_assume_init(array) })
-                    }
-                    ControlFlow::Continue(()) => {
-                        let initialized = guard.initialized;
-                        // SAFETY: The range is in bounds since the loop breaks when reaching N elements.
-                        Err(unsafe { array::IntoIter::new_unchecked(array, 0..initialized) })
-                    }
-                }
+                fun(self)
             }
         *)
         Definition next_chunk
@@ -466,309 +700,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ array :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.associated ],
-                        "uninit_array",
-                        []
-                      |),
-                      []
-                    |)
+                let~ fun :=
+                  M.copy (|
+                    M.get_constant (| "core::iter::adapters::filter::next_chunk_discriminant" |)
                   |) in
-                let~ guard :=
-                  M.alloc (|
-                    Value.StructRecord
-                      "core::iter::adapters::filter::next_chunk::Guard"
-                      [
-                        ("array", (* Unsize *) M.pointer_coercion array);
-                        ("initialized", Value.Integer 0)
-                      ]
-                  |) in
-                let~ result :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        I,
-                        [],
-                        "try_for_each",
-                        [
-                          Ty.function
-                            [ Ty.tuple [ Ty.associated ] ]
-                            (Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [ Ty.tuple []; Ty.tuple [] ]);
-                          Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
-                            []
-                            [ Ty.tuple []; Ty.tuple [] ]
-                        ]
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::filter::Filter",
-                          "iter"
-                        |);
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let element := M.copy (| γ |) in
-                                        M.read (|
-                                          let~ idx :=
-                                            M.copy (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                guard,
-                                                "core::iter::adapters::filter::next_chunk::Guard",
-                                                "initialized"
-                                              |)
-                                            |) in
-                                          let~ _ :=
-                                            M.write (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                guard,
-                                                "core::iter::adapters::filter::next_chunk::Guard",
-                                                "initialized"
-                                              |),
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| idx |))
-                                                (M.rust_cast
-                                                  (M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      P,
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.associated ]
-                                                          ]
-                                                      ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::iter::adapters::filter::Filter",
-                                                        "predicate"
-                                                      |);
-                                                      Value.Tuple [ element ]
-                                                    ]
-                                                  |)))
-                                            |) in
-                                          let~ _ :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                    []
-                                                    [ Ty.associated ],
-                                                  "write",
-                                                  []
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "core::mem::maybe_uninit::MaybeUninit")
-                                                            []
-                                                            [ Ty.associated ]
-                                                        ],
-                                                      "get_unchecked_mut",
-                                                      [ Ty.path "usize" ]
-                                                    |),
-                                                    [
-                                                      M.read (|
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          guard,
-                                                          "core::iter::adapters::filter::next_chunk::Guard",
-                                                          "array"
-                                                        |)
-                                                      |);
-                                                      M.read (| idx |)
-                                                    ]
-                                                  |);
-                                                  M.read (| element |)
-                                                ]
-                                              |)
-                                            |) in
-                                          M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.use
-                                                      (M.alloc (|
-                                                        BinOp.Pure.lt
-                                                          (M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              guard,
-                                                              "core::iter::adapters::filter::next_chunk::Guard",
-                                                              "initialized"
-                                                            |)
-                                                          |))
-                                                          (M.read (|
-                                                            M.get_constant (|
-                                                              "core::iter::adapters::filter::next_chunk::N"
-                                                            |)
-                                                          |))
-                                                      |)) in
-                                                  let _ :=
-                                                    M.is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::ops::control_flow::ControlFlow::Continue"
-                                                      [ Value.Tuple [] ]
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::ops::control_flow::ControlFlow::Break"
-                                                      [ Value.Tuple [] ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
-                              end))
-                      ]
-                    |)
-                  |) in
-                let~ guard :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::iter::adapters::filter::next_chunk::Guard")
-                              []
-                              [ Ty.associated ]
-                          ],
-                        "new",
-                        []
-                      |),
-                      [ M.read (| guard |) ]
-                    |)
-                  |) in
-                M.match_operator (|
-                  result,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::ops::control_flow::ControlFlow::Break",
-                            0
-                          |) in
-                        M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                    []
-                                    [ Ty.associated ],
-                                  "array_assume_init",
-                                  []
-                                |),
-                                [ M.read (| array |) ]
-                              |)
-                            ]
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::ops::control_flow::ControlFlow::Continue",
-                            0
-                          |) in
-                        let~ initialized :=
-                          M.copy (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::iter::adapters::filter::next_chunk::Guard")
-                                        []
-                                        [ Ty.associated ]
-                                    ],
-                                  [],
-                                  "deref",
-                                  []
-                                |),
-                                [ guard ]
-                              |),
-                              "core::iter::adapters::filter::next_chunk::Guard",
-                              "initialized"
-                            |)
-                          |) in
-                        M.alloc (|
-                          Value.StructTuple
-                            "core::result::Result::Err"
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::array::iter::IntoIter")
-                                    [ N ]
-                                    [ Ty.associated ],
-                                  "new_unchecked",
-                                  []
-                                |),
-                                [
-                                  M.read (| array |);
-                                  Value.StructRecord
-                                    "core::ops::range::Range"
-                                    [ ("start", Value.Integer 0); ("end_", M.read (| initialized |))
-                                    ]
-                                ]
-                              |)
-                            ]
-                        |)))
-                  ]
-                |)
+                M.alloc (| M.call_closure (| M.read (| fun |), [ M.read (| self |) ] |) |)
               |)))
           | _, _, _ => M.impossible
           end.
@@ -1261,22 +1197,22 @@ Module iter.
         Definition Self (I P : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::filter::Filter") [] [ I; P ].
         
-        (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
+        (*     const EXPAND_BY: Option<NonZero<usize>> = I::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_EXPAND_BY (I P : Ty.t) : Value.t :=
           let Self : Ty.t := Self I P in
           M.run
             ltac:(M.monadic
               (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
         
-        (*     const MERGE_BY: Option<NonZeroUsize> = I::MERGE_BY; *)
+        (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_MERGE_BY (I P : Ty.t) : Value.t :=
           let Self : Ty.t := Self I P in
           M.run

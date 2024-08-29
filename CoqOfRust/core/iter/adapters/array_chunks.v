@@ -48,23 +48,19 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "ArrayChunks" |);
                   M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::array_chunks::ArrayChunks",
+                    "iter"
+                  |);
+                  M.read (| Value.String "remainder" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::iter::adapters::array_chunks::ArrayChunks",
-                      "iter"
-                    |));
-                  M.read (| Value.String "remainder" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::array_chunks::ArrayChunks",
-                        "remainder"
-                      |)
-                    |))
+                      "remainder"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -197,16 +193,11 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
-                                        |))
+                                      M.alloc (|
+                                        Value.Array
+                                          [ M.read (| Value.String "chunk size must be non-zero" |)
+                                          ]
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -233,7 +224,10 @@ Module iter.
           M.IsAssociatedFunction (Self N I) "new" (new N I).
         
         (*
-            pub fn into_remainder(self) -> Option<array::IntoIter<I::Item, N>> {
+            pub fn into_remainder(mut self) -> Option<array::IntoIter<I::Item, N>> {
+                if self.remainder.is_none() {
+                    while let Some(_) = self.next() {}
+                }
                 self.remainder
             }
         *)
@@ -250,6 +244,90 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::array::iter::IntoIter")
+                                          [ N ]
+                                          [ Ty.associated ]
+                                      ],
+                                    "is_none",
+                                    []
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::iter::adapters::array_chunks::ArrayChunks",
+                                      "remainder"
+                                    |)
+                                  ]
+                                |)
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.loop (|
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
+                                              Ty.apply
+                                                (Ty.path
+                                                  "core::iter::adapters::array_chunks::ArrayChunks")
+                                                [ N ]
+                                                [ I ],
+                                              [],
+                                              "next",
+                                              []
+                                            |),
+                                            [ self ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      M.alloc (| Value.Tuple [] |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ :=
+                                              M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |) in
                 M.SubPointer.get_struct_record_field (|
                   self,
                   "core::iter::adapters::array_chunks::ArrayChunks",
@@ -1176,7 +1254,7 @@ Module iter.
                                           "reverse",
                                           []
                                         |),
-                                        [ (* Unsize *) M.pointer_coercion chunk ]
+                                        [ chunk ]
                                       |)
                                     |) in
                                   M.write (|
@@ -1835,11 +1913,11 @@ Module iter.
         Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ].
         
-        (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
+        (*     const EXPAND_BY: Option<NonZero<usize>> = I::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_EXPAND_BY (N : Value.t) (I : Ty.t) : Value.t :=
           let Self : Ty.t := Self N I in
           M.run
@@ -1847,8 +1925,8 @@ Module iter.
               (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
         
         (*
-            const MERGE_BY: Option<NonZeroUsize> = const {
-                match (I::MERGE_BY, NonZeroUsize::new(N)) {
+            const MERGE_BY: Option<NonZero<usize>> = const {
+                match (I::MERGE_BY, NonZero::new(N)) {
                     (Some(m), Some(n)) => m.checked_mul(n),
                     _ => None,
                 }
@@ -1857,7 +1935,7 @@ Module iter.
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_MERGE_BY (N : Value.t) (I : Ty.t) : Value.t :=
           let Self : Ty.t := Self N I in
           M.run

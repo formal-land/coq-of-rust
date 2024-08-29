@@ -56,7 +56,7 @@ Module cell.
       Definition new (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F in
         match ε, τ, α with
-        | [ host ], [], [ f ] =>
+        | [], [], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
             Value.StructRecord
@@ -165,17 +165,15 @@ Module cell.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "LazyCell instance has previously been poisoned"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "LazyCell instance has previously been poisoned"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -284,16 +282,14 @@ Module cell.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "LazyCell has previously been poisoned"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "LazyCell has previously been poisoned"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -696,7 +692,7 @@ Module cell.
                               "field",
                               []
                             |),
-                            [ d; (* Unsize *) M.pointer_coercion (M.read (| data |)) ]
+                            [ d; M.read (| data |) ]
                           |)
                         |)));
                     fun γ =>
@@ -711,24 +707,20 @@ Module cell.
                             |),
                             [
                               d;
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::Arguments",
-                                      "new_const",
-                                      []
-                                    |),
-                                    [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array [ M.read (| Value.String "<uninit>" |) ]
-                                        |))
-                                    ]
-                                  |)
-                                |))
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::Arguments",
+                                    "new_const",
+                                    []
+                                  |),
+                                  [
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "<uninit>" |) ]
+                                    |)
+                                  ]
+                                |)
+                              |)
                             ]
                           |)
                         |)))

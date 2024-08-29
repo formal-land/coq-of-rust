@@ -7,10 +7,17 @@ Module slice.
     pub const unsafe fn from_raw_parts<'a, T>(data: *const T, len: usize) -> &'a [T] {
         // SAFETY: the caller must uphold the safety contract for `from_raw_parts`.
         unsafe {
-            assert_unsafe_precondition!(
+            ub_checks::assert_unsafe_precondition!(
+                check_language_ub,
                 "slice::from_raw_parts requires the pointer to be aligned and non-null, and the total size of the slice not to exceed `isize::MAX`",
-                [T](data: *const T, len: usize) => is_aligned_and_not_null(data)
-                    && is_valid_allocation_size::<T>(len)
+                (
+                    data: *mut () = data as *mut (),
+                    size: usize = size_of::<T>(),
+                    align: usize = align_of::<T>(),
+                    len: usize = len,
+                ) =>
+                ub_checks::is_aligned_and_not_null(data, align)
+                    && ub_checks::is_valid_allocation_size(size, len)
             );
             &*ptr::slice_from_raw_parts(data, len)
         }
@@ -18,7 +25,7 @@ Module slice.
     *)
     Definition from_raw_parts (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [ T ], [ data; len ] =>
+      | [], [ T ], [ data; len ] =>
         ltac:(M.monadic
           (let data := M.alloc (| data |) in
           let len := M.alloc (| len |) in
@@ -29,28 +36,33 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              []
+                            |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (|
-                              "core::intrinsics::const_eval_select",
-                              [
-                                Ty.tuple [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "usize" ];
-                                Ty.function
-                                  [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "usize" ]
-                                  (Ty.tuple []);
-                                Ty.function
-                                  [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "usize" ]
-                                  (Ty.tuple []);
-                                Ty.tuple []
-                              ]
+                              "core::slice::raw::from_raw_parts.precondition_check",
+                              []
                             |),
                             [
-                              Value.Tuple [ M.read (| data |); M.read (| len |) ];
-                              M.get_function (| "core::slice::raw::from_raw_parts.comptime", [] |);
-                              M.get_function (| "core::slice::raw::from_raw_parts.runtime", [] |)
+                              M.rust_cast (M.read (| data |));
+                              M.call_closure (|
+                                M.get_function (| "core::mem::size_of", [ T ] |),
+                                []
+                              |);
+                              M.call_closure (|
+                                M.get_function (| "core::mem::align_of", [ T ] |),
+                                []
+                              |);
+                              M.read (| len |)
                             ]
                           |)
                         |) in
@@ -74,10 +86,17 @@ Module slice.
     pub const unsafe fn from_raw_parts_mut<'a, T>(data: *mut T, len: usize) -> &'a mut [T] {
         // SAFETY: the caller must uphold the safety contract for `from_raw_parts_mut`.
         unsafe {
-            assert_unsafe_precondition!(
+            ub_checks::assert_unsafe_precondition!(
+                check_language_ub,
                 "slice::from_raw_parts_mut requires the pointer to be aligned and non-null, and the total size of the slice not to exceed `isize::MAX`",
-                [T](data: *mut T, len: usize) => is_aligned_and_not_null(data)
-                    && is_valid_allocation_size::<T>(len)
+                (
+                    data: *mut () = data as *mut (),
+                    size: usize = size_of::<T>(),
+                    align: usize = align_of::<T>(),
+                    len: usize = len,
+                ) =>
+                ub_checks::is_aligned_and_not_null(data, align)
+                    && ub_checks::is_valid_allocation_size(size, len)
             );
             &mut *ptr::slice_from_raw_parts_mut(data, len)
         }
@@ -85,7 +104,7 @@ Module slice.
     *)
     Definition from_raw_parts_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [ T ], [ data; len ] =>
+      | [], [ T ], [ data; len ] =>
         ltac:(M.monadic
           (let data := M.alloc (| data |) in
           let len := M.alloc (| len |) in
@@ -96,34 +115,33 @@ Module slice.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              []
+                            |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (|
-                              "core::intrinsics::const_eval_select",
-                              [
-                                Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "usize" ];
-                                Ty.function
-                                  [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "usize" ]
-                                  (Ty.tuple []);
-                                Ty.function
-                                  [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "usize" ]
-                                  (Ty.tuple []);
-                                Ty.tuple []
-                              ]
+                              "core::slice::raw::from_raw_parts_mut.precondition_check",
+                              []
                             |),
                             [
-                              Value.Tuple [ M.read (| data |); M.read (| len |) ];
-                              M.get_function (|
-                                "core::slice::raw::from_raw_parts_mut.comptime",
+                              M.rust_cast (M.read (| data |));
+                              M.call_closure (|
+                                M.get_function (| "core::mem::size_of", [ T ] |),
                                 []
                               |);
-                              M.get_function (|
-                                "core::slice::raw::from_raw_parts_mut.runtime",
+                              M.call_closure (|
+                                M.get_function (| "core::mem::align_of", [ T ] |),
                                 []
-                              |)
+                              |);
+                              M.read (| len |)
                             ]
                           |)
                         |) in
@@ -151,15 +169,13 @@ Module slice.
     *)
     Definition from_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [ T ], [ s ] =>
+      | [], [ T ], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.call_closure (|
-              M.get_function (| "core::array::from_ref", [ T ] |),
-              [ M.read (| s |) ]
-            |))))
+          M.call_closure (|
+            M.get_function (| "core::array::from_ref", [ T ] |),
+            [ M.read (| s |) ]
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -172,15 +188,13 @@ Module slice.
     *)
     Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [ T ], [ s ] =>
+      | [], [ T ], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.call_closure (|
-              M.get_function (| "core::array::from_mut", [ T ] |),
-              [ M.read (| s |) ]
-            |))))
+          M.call_closure (|
+            M.get_function (| "core::array::from_mut", [ T ] |),
+            [ M.read (| s |) ]
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -194,7 +208,7 @@ Module slice.
     *)
     Definition from_ptr_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [ T ], [ range ] =>
+      | [], [ T ], [ range ] =>
         ltac:(M.monadic
           (let range := M.alloc (| range |) in
           M.call_closure (|
@@ -237,7 +251,7 @@ Module slice.
     *)
     Definition from_mut_ptr_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [ T ], [ range ] =>
+      | [], [ T ], [ range ] =>
         ltac:(M.monadic
           (let range := M.alloc (| range |) in
           M.call_closure (|

@@ -843,7 +843,7 @@ Module fmt.
                       "len",
                       []
                     |),
-                    [ (* Unsize *) M.pointer_coercion buf ]
+                    [ buf ]
                   |)
                 |) in
               let~ base :=
@@ -918,7 +918,7 @@ Module fmt.
                                           "iter_mut",
                                           []
                                         |),
-                                        [ (* Unsize *) M.pointer_coercion buf ]
+                                        [ buf ]
                                       |)
                                     ]
                                   |)
@@ -1153,7 +1153,7 @@ Module fmt.
                                           "iter_mut",
                                           []
                                         |),
-                                        [ (* Unsize *) M.pointer_coercion buf ]
+                                        [ buf ]
                                       |)
                                     ]
                                   |)
@@ -1730,49 +1730,45 @@ Module fmt.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "number not in the range 0..=" |);
-                                          M.read (| Value.String ": " |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "u8" ]
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                BinOp.Wrap.sub
-                                                  Integer.U8
-                                                  (M.read (|
-                                                    M.get_constant (|
-                                                      "core::fmt::num::GenericRadix::BASE"
-                                                    |)
-                                                  |))
-                                                  (Value.Integer 1)
-                                              |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "u8" ]
-                                            |),
-                                            [ x ]
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "number not in the range 0..=" |);
+                                        M.read (| Value.String ": " |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "u8" ]
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              BinOp.Wrap.sub
+                                                Integer.U8
+                                                (M.read (|
+                                                  M.get_constant (|
+                                                    "core::fmt::num::GenericRadix::BASE"
+                                                  |)
+                                                |))
+                                                (Value.Integer 1)
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "u8" ]
+                                          |),
+                                          [ x ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -1847,49 +1843,45 @@ Module fmt.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "number not in the range 0..=" |);
-                                          M.read (| Value.String ": " |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "u8" ]
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                BinOp.Wrap.sub
-                                                  Integer.U8
-                                                  (M.read (|
-                                                    M.get_constant (|
-                                                      "core::fmt::num::GenericRadix::BASE"
-                                                    |)
-                                                  |))
-                                                  (Value.Integer 1)
-                                              |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "u8" ]
-                                            |),
-                                            [ x ]
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "number not in the range 0..=" |);
+                                        M.read (| Value.String ": " |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "u8" ]
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              BinOp.Wrap.sub
+                                                Integer.U8
+                                                (M.read (|
+                                                  M.get_constant (|
+                                                    "core::fmt::num::GenericRadix::BASE"
+                                                  |)
+                                                |))
+                                                (Value.Integer 1)
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "u8" ]
+                                          |),
+                                          [ x ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -1973,49 +1965,45 @@ Module fmt.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "number not in the range 0..=" |);
-                                          M.read (| Value.String ": " |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "u8" ]
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                BinOp.Wrap.sub
-                                                  Integer.U8
-                                                  (M.read (|
-                                                    M.get_constant (|
-                                                      "core::fmt::num::GenericRadix::BASE"
-                                                    |)
-                                                  |))
-                                                  (Value.Integer 1)
-                                              |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "u8" ]
-                                            |),
-                                            [ x ]
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "number not in the range 0..=" |);
+                                        M.read (| Value.String ": " |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "u8" ]
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              BinOp.Wrap.sub
+                                                Integer.U8
+                                                (M.read (|
+                                                  M.get_constant (|
+                                                    "core::fmt::num::GenericRadix::BASE"
+                                                  |)
+                                                |))
+                                                (Value.Integer 1)
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "u8" ]
+                                          |),
+                                          [ x ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -2099,49 +2087,45 @@ Module fmt.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "number not in the range 0..=" |);
-                                          M.read (| Value.String ": " |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "u8" ]
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                BinOp.Wrap.sub
-                                                  Integer.U8
-                                                  (M.read (|
-                                                    M.get_constant (|
-                                                      "core::fmt::num::GenericRadix::BASE"
-                                                    |)
-                                                  |))
-                                                  (Value.Integer 1)
-                                              |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "u8" ]
-                                            |),
-                                            [ x ]
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "number not in the range 0..=" |);
+                                        M.read (| Value.String ": " |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "u8" ]
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              BinOp.Wrap.sub
+                                                Integer.U8
+                                                (M.read (|
+                                                  M.get_constant (|
+                                                    "core::fmt::num::GenericRadix::BASE"
+                                                  |)
+                                                |))
+                                                (Value.Integer 1)
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "u8" ]
+                                          |),
+                                          [ x ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -5554,7 +5538,7 @@ Module fmt.
                       "len",
                       []
                     |),
-                    [ (* Unsize *) M.pointer_coercion buf ]
+                    [ buf ]
                   |)
                 |) in
               let~ buf_ptr :=
@@ -5565,7 +5549,7 @@ Module fmt.
                       "slice_as_mut_ptr",
                       []
                     |),
-                    [ (* Unsize *) M.pointer_coercion buf ]
+                    [ buf ]
                   |)
                 |) in
               let~ lut_ptr :=
@@ -5577,11 +5561,9 @@ Module fmt.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.read (|
-                          M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
-                        |))
+                      M.read (|
+                        M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
+                      |)
                     ]
                   |)
                 |) in
@@ -5924,7 +5906,7 @@ Module fmt.
                                 "len",
                                 []
                               |),
-                              [ (* Unsize *) M.pointer_coercion buf ]
+                              [ buf ]
                             |))
                             (M.read (| curr |))
                         ]
@@ -7442,7 +7424,7 @@ Module fmt.
                               "len",
                               []
                             |),
-                            [ (* Unsize *) M.pointer_coercion buf ]
+                            [ buf ]
                           |)
                         |) in
                       let~ buf_ptr :=
@@ -7456,7 +7438,7 @@ Module fmt.
                               "slice_as_mut_ptr",
                               []
                             |),
-                            [ (* Unsize *) M.pointer_coercion buf ]
+                            [ buf ]
                           |)
                         |) in
                       let~ lut_ptr :=
@@ -7468,11 +7450,9 @@ Module fmt.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.read (|
-                                  M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
-                                |))
+                              M.read (|
+                                M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
+                              |)
                             ]
                           |)
                         |) in
@@ -7724,7 +7704,7 @@ Module fmt.
                                     "len",
                                     []
                                   |),
-                                  [ (* Unsize *) M.pointer_coercion buf ]
+                                  [ buf ]
                                 |))
                                 (M.read (| M.use curr |))
                             |) in
@@ -7778,7 +7758,7 @@ Module fmt.
                               "slice_as_mut_ptr",
                               []
                             |),
-                            [ (* Unsize *) M.pointer_coercion exp_buf ]
+                            [ exp_buf ]
                           |)
                         |) in
                       let~ exp_slice :=
@@ -7969,10 +7949,7 @@ Module fmt.
                         M.alloc (|
                           Value.StructRecord
                             "core::num::fmt::Formatted"
-                            [
-                              ("sign", M.read (| sign |));
-                              ("parts", (* Unsize *) M.pointer_coercion (M.read (| parts |)))
-                            ]
+                            [ ("sign", M.read (| sign |)); ("parts", M.read (| parts |)) ]
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -10361,7 +10338,7 @@ Module fmt.
                             "len",
                             []
                           |),
-                          [ (* Unsize *) M.pointer_coercion buf ]
+                          [ buf ]
                         |)
                       |) in
                     let~ buf_ptr :=
@@ -10375,7 +10352,7 @@ Module fmt.
                             "slice_as_mut_ptr",
                             []
                           |),
-                          [ (* Unsize *) M.pointer_coercion buf ]
+                          [ buf ]
                         |)
                       |) in
                     let~ lut_ptr :=
@@ -10387,11 +10364,9 @@ Module fmt.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.read (|
-                                M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
-                              |))
+                            M.read (|
+                              M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
+                            |)
                           ]
                         |)
                       |) in
@@ -10643,7 +10618,7 @@ Module fmt.
                                   "len",
                                   []
                                 |),
-                                [ (* Unsize *) M.pointer_coercion buf ]
+                                [ buf ]
                               |))
                               (M.read (| M.use curr |))
                           |) in
@@ -10697,7 +10672,7 @@ Module fmt.
                             "slice_as_mut_ptr",
                             []
                           |),
-                          [ (* Unsize *) M.pointer_coercion exp_buf ]
+                          [ exp_buf ]
                         |)
                       |) in
                     let~ exp_slice :=
@@ -10888,10 +10863,7 @@ Module fmt.
                       M.alloc (|
                         Value.StructRecord
                           "core::num::fmt::Formatted"
-                          [
-                            ("sign", M.read (| sign |));
-                            ("parts", (* Unsize *) M.pointer_coercion (M.read (| parts |)))
-                          ]
+                          [ ("sign", M.read (| sign |)); ("parts", M.read (| parts |)) ]
                       |) in
                     M.alloc (|
                       M.call_closure (|
@@ -11366,7 +11338,7 @@ Module fmt.
                     "slice_as_mut_ptr",
                     []
                   |),
-                  [ (* Unsize *) M.pointer_coercion (M.read (| buf |)) ]
+                  [ M.read (| buf |) ]
                 |)
               |) in
             let~ lut_ptr :=
@@ -11377,12 +11349,7 @@ Module fmt.
                     "as_ptr",
                     []
                   |),
-                  [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
-                      |))
+                  [ M.read (| M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |) |)
                   ]
                 |)
               |) in
@@ -12506,7 +12473,7 @@ Module fmt.
                     "len",
                     []
                   |),
-                  [ (* Unsize *) M.pointer_coercion buf ]
+                  [ buf ]
                 |)
               |) in
             M.match_operator (|
@@ -12564,7 +12531,7 @@ Module fmt.
                                         "len",
                                         []
                                       |),
-                                      [ (* Unsize *) M.pointer_coercion buf ]
+                                      [ buf ]
                                     |))
                                     (Value.Integer 19)
                                 |) in
@@ -12593,7 +12560,7 @@ Module fmt.
                                                 "slice_as_mut_ptr",
                                                 []
                                               |),
-                                              [ (* Unsize *) M.pointer_coercion buf ]
+                                              [ buf ]
                                             |);
                                             M.read (| target |)
                                           ]
@@ -12666,7 +12633,7 @@ Module fmt.
                                                         "len",
                                                         []
                                                       |),
-                                                      [ (* Unsize *) M.pointer_coercion buf ]
+                                                      [ buf ]
                                                     |))
                                                     (Value.Integer 38)
                                                 |) in
@@ -12682,7 +12649,7 @@ Module fmt.
                                                       "slice_as_mut_ptr",
                                                       []
                                                     |),
-                                                    [ (* Unsize *) M.pointer_coercion buf ]
+                                                    [ buf ]
                                                   |)
                                                 |) in
                                               let~ _ :=
@@ -12774,7 +12741,7 @@ Module fmt.
                                           "slice_as_mut_ptr",
                                           []
                                         |),
-                                        [ (* Unsize *) M.pointer_coercion buf ]
+                                        [ buf ]
                                       |);
                                       M.read (| curr |)
                                     ]
@@ -12795,7 +12762,7 @@ Module fmt.
                                       "len",
                                       []
                                     |),
-                                    [ (* Unsize *) M.pointer_coercion buf ]
+                                    [ buf ]
                                   |))
                                   (M.read (| curr |))
                               ]

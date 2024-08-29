@@ -121,17 +121,6 @@ Module mem.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_mem_transmutability_Assume.
     
-    Module Impl_core_marker_StructuralEq_for_core_mem_transmutability_Assume.
-      Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_mem_transmutability_Assume.
-    
     Module Impl_core_cmp_Eq_for_core_mem_transmutability_Assume.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
@@ -220,39 +209,31 @@ Module mem.
                 M.read (| f |);
                 M.read (| Value.String "Assume" |);
                 M.read (| Value.String "alignment" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::mem::transmutability::Assume",
-                    "alignment"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::mem::transmutability::Assume",
+                  "alignment"
+                |);
                 M.read (| Value.String "lifetimes" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::mem::transmutability::Assume",
-                    "lifetimes"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::mem::transmutability::Assume",
+                  "lifetimes"
+                |);
                 M.read (| Value.String "safety" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::mem::transmutability::Assume",
+                  "safety"
+                |);
+                M.read (| Value.String "validity" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::mem::transmutability::Assume",
-                    "safety"
-                  |));
-                M.read (| Value.String "validity" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::mem::transmutability::Assume",
-                      "validity"
-                    |)
-                  |))
+                    "validity"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -266,16 +247,27 @@ Module mem.
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_mem_transmutability_Assume.
     
-    Module Impl_core_marker_ConstParamTy_for_core_mem_transmutability_Assume.
+    Module Impl_core_marker_ConstParamTy__for_core_mem_transmutability_Assume.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       Axiom Implements :
         M.IsTraitInstance
-          "core::marker::ConstParamTy"
+          "core::marker::ConstParamTy_"
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_marker_ConstParamTy_for_core_mem_transmutability_Assume.
+    End Impl_core_marker_ConstParamTy__for_core_mem_transmutability_Assume.
+    
+    Module Impl_core_marker_UnsizedConstParamTy_for_core_mem_transmutability_Assume.
+      Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::UnsizedConstParamTy"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_UnsizedConstParamTy_for_core_mem_transmutability_Assume.
     
     Module Impl_core_mem_transmutability_Assume.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
@@ -370,7 +362,7 @@ Module mem.
       *)
       Definition and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; other_assumptions ] =>
+        | [], [], [ self; other_assumptions ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other_assumptions := M.alloc (| other_assumptions |) in
@@ -467,7 +459,7 @@ Module mem.
       *)
       Definition but_not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; other_assumptions ] =>
+        | [], [], [ self; other_assumptions ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other_assumptions := M.alloc (| other_assumptions |) in

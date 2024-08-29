@@ -168,7 +168,7 @@ Module array.
           : M :=
         let Self : Ty.t := Self N T in
         match ε, τ, α with
-        | [ host ], [], [ buffer; initialized ] =>
+        | [], [], [ buffer; initialized ] =>
           ltac:(M.monadic
             (let buffer := M.alloc (| buffer |) in
             let initialized := M.alloc (| initialized |) in
@@ -214,7 +214,7 @@ Module array.
       
       (*
           pub const fn empty() -> Self {
-              let buffer = MaybeUninit::uninit_array();
+              let buffer = [const { MaybeUninit::uninit() }; N];
               let initialized = 0..0;
       
               // SAFETY: We're telling it that none of the elements are initialized,
@@ -231,18 +231,14 @@ Module array.
           : M :=
         let Self : Ty.t := Self N T in
         match ε, τ, α with
-        | [ host ], [], [] =>
+        | [], [], [] =>
           ltac:(M.monadic
             (M.read (|
               let~ buffer :=
                 M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                      "uninit_array",
-                      []
-                    |),
-                    []
+                  repeat (|
+                    M.read (| M.get_constant (| "core::array::iter::empty_discriminant" |) |),
+                    N
                   |)
                 |) in
               let~ initialized :=
@@ -303,13 +299,11 @@ Module array.
                       [ Ty.path "core::ops::index_range::IndexRange" ]
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::array::iter::IntoIter",
-                          "data"
-                        |));
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::array::iter::IntoIter",
+                        "data"
+                      |);
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
@@ -381,13 +375,11 @@ Module array.
                       [ Ty.path "core::ops::index_range::IndexRange" ]
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::array::iter::IntoIter",
-                          "data"
-                        |));
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::array::iter::IntoIter",
+                        "data"
+                      |);
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
@@ -522,13 +514,11 @@ Module array.
                                         [ Ty.path "usize" ]
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::array::iter::IntoIter",
-                                            "data"
-                                          |));
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::array::iter::IntoIter",
+                                          "data"
+                                        |);
                                         M.read (| idx |)
                                       ]
                                     |)
@@ -702,11 +692,7 @@ Module array.
                                                             "get_unchecked",
                                                             [ Ty.path "usize" ]
                                                           |),
-                                                          [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion (M.read (| data |));
-                                                            M.read (| idx |)
-                                                          ]
+                                                          [ M.read (| data |); M.read (| idx |) ]
                                                         |)
                                                       ]
                                                     |)
@@ -787,7 +773,7 @@ Module array.
         end.
       
       (*
-          fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               // This also moves the start, which marks them as conceptually "dropped",
               // so if anything goes bad then our drop impl won't double-free them.
               let range_to_drop = self.alive.take_prefix(n);
@@ -799,7 +785,7 @@ Module array.
                   ptr::drop_in_place(MaybeUninit::slice_assume_init_mut(slice));
               }
       
-              NonZeroUsize::new(remaining).map_or(Ok(()), Err)
+              NonZero::new(remaining).map_or(Ok(()), Err)
           }
       *)
       Definition advance_by
@@ -861,13 +847,11 @@ Module array.
                         [ Ty.path "core::ops::index_range::IndexRange" ]
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::array::iter::IntoIter",
-                            "data"
-                          |));
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::array::iter::IntoIter",
+                          "data"
+                        |);
                         M.read (| range_to_drop |)
                       ]
                     |)
@@ -898,25 +882,31 @@ Module array.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -999,13 +989,11 @@ Module array.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::array::iter::IntoIter",
-                                    "data"
-                                  |))
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::array::iter::IntoIter",
+                                  "data"
+                                |)
                               ]
                             |);
                             M.call_closure (|
@@ -1146,13 +1134,11 @@ Module array.
                                         [ Ty.path "usize" ]
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::array::iter::IntoIter",
-                                            "data"
-                                          |));
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::array::iter::IntoIter",
+                                          "data"
+                                        |);
                                         M.read (| idx |)
                                       ]
                                     |)
@@ -1283,11 +1269,7 @@ Module array.
                                                             "get_unchecked",
                                                             [ Ty.path "usize" ]
                                                           |),
-                                                          [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion (M.read (| data |));
-                                                            M.read (| idx |)
-                                                          ]
+                                                          [ M.read (| data |); M.read (| idx |) ]
                                                         |)
                                                       ]
                                                     |)
@@ -1308,7 +1290,7 @@ Module array.
         end.
       
       (*
-          fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               // This also moves the end, which marks them as conceptually "dropped",
               // so if anything goes bad then our drop impl won't double-free them.
               let range_to_drop = self.alive.take_suffix(n);
@@ -1320,7 +1302,7 @@ Module array.
                   ptr::drop_in_place(MaybeUninit::slice_assume_init_mut(slice));
               }
       
-              NonZeroUsize::new(remaining).map_or(Ok(()), Err)
+              NonZero::new(remaining).map_or(Ok(()), Err)
           }
       *)
       Definition advance_back_by
@@ -1382,13 +1364,11 @@ Module array.
                         [ Ty.path "core::ops::index_range::IndexRange" ]
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::array::iter::IntoIter",
-                            "data"
-                          |));
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::array::iter::IntoIter",
+                          "data"
+                        |);
                         M.read (| range_to_drop |)
                       ]
                     |)
@@ -1419,25 +1399,31 @@ Module array.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -1675,7 +1661,8 @@ Module array.
           fn clone(&self) -> Self {
               // Note, we don't really need to match the exact same alive range, so
               // we can just clone into offset 0 regardless of where `self` is.
-              let mut new = Self { data: MaybeUninit::uninit_array(), alive: IndexRange::zero_to(0) };
+              let mut new =
+                  Self { data: [const { MaybeUninit::uninit() }; N], alive: IndexRange::zero_to(0) };
       
               // Clone all alive elements.
               for (src, dst) in iter::zip(self.as_slice(), &mut new.data) {
@@ -1708,13 +1695,9 @@ Module array.
                     "core::array::iter::IntoIter"
                     [
                       ("data",
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                            "uninit_array",
-                            []
-                          |),
-                          []
+                        repeat (|
+                          M.read (| M.get_constant (| "core::array::iter::clone_discriminant" |) |),
+                          N
                         |));
                       ("alive",
                         M.call_closure (|
@@ -1973,18 +1956,16 @@ Module array.
                         [ M.read (| f |); M.read (| Value.String "IntoIter" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
-                            "as_slice",
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
+                          "as_slice",
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |)
+                    |)
                   ]
                 |)
               ]

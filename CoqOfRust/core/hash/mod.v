@@ -95,10 +95,7 @@ Module hash.
           let i := M.alloc (| i |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
-            [
-              M.read (| self |);
-              (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [ M.read (| i |) ] |))
-            ]
+            [ M.read (| self |); M.alloc (| Value.Array [ M.read (| i |) ] |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -114,14 +111,12 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
             [
               M.read (| self |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [] |),
-                    [ M.read (| i |) ]
-                  |)
-                |))
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [] |),
+                  [ M.read (| i |) ]
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -138,14 +133,12 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
             [
               M.read (| self |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [] |),
-                    [ M.read (| i |) ]
-                  |)
-                |))
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [] |),
+                  [ M.read (| i |) ]
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -162,14 +155,12 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
             [
               M.read (| self |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [] |),
-                    [ M.read (| i |) ]
-                  |)
-                |))
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [] |),
+                  [ M.read (| i |) ]
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -186,14 +177,12 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
             [
               M.read (| self |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [] |),
-                    [ M.read (| i |) ]
-                  |)
-                |))
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [] |),
+                  [ M.read (| i |) ]
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -216,14 +205,12 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
             [
               M.read (| self |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [] |),
-                    [ M.read (| i |) ]
-                  |)
-                |))
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [] |),
+                  [ M.read (| i |) ]
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -766,6 +753,29 @@ Module hash.
       fields := [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ Ty.function [] H ] ];
     } *)
   
+  Module Impl_core_hash_BuildHasherDefault_H.
+    Definition Self (H : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ].
+    
+    (*
+        pub const fn new() -> Self {
+            BuildHasherDefault(marker::PhantomData)
+        }
+    *)
+    Definition new (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self H in
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (Value.StructTuple
+            "core::hash::BuildHasherDefault"
+            [ Value.StructTuple "core::marker::PhantomData" [] ]))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_new : forall (H : Ty.t), M.IsAssociatedFunction (Self H) "new" (new H).
+  End Impl_core_hash_BuildHasherDefault_H.
+  
   Module Impl_core_fmt_Debug_for_core_hash_BuildHasherDefault_H.
     Definition Self (H : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ].
@@ -887,7 +897,7 @@ Module hash.
     
     (*
         fn default() -> BuildHasherDefault<H> {
-            BuildHasherDefault(marker::PhantomData)
+            Self::new()
         }
     *)
     Definition default (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -895,9 +905,14 @@ Module hash.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructTuple
-            "core::hash::BuildHasherDefault"
-            [ Value.StructTuple "core::marker::PhantomData" [] ]))
+          (M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ],
+              "new",
+              []
+            |),
+            []
+          |)))
       | _, _, _ => M.impossible
       end.
     

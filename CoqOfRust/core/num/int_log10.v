@@ -25,7 +25,7 @@ Module num.
     *)
     Definition u8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
@@ -83,7 +83,7 @@ Module num.
     *)
     Definition less_than_5 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           BinOp.Wrap.shr
@@ -143,7 +143,7 @@ Module num.
     *)
     Definition u16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
@@ -167,7 +167,7 @@ Module num.
     *)
     Definition u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
@@ -229,7 +229,7 @@ Module num.
     *)
     Definition u64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
@@ -320,7 +320,7 @@ Module num.
     *)
     Definition u128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.catch_return (|
@@ -430,7 +430,7 @@ Module num.
     *)
     Definition usize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
@@ -449,7 +449,7 @@ Module num.
     *)
     Definition i8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
@@ -468,7 +468,7 @@ Module num.
     *)
     Definition i16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
@@ -487,7 +487,7 @@ Module num.
     *)
     Definition i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
@@ -506,7 +506,7 @@ Module num.
     *)
     Definition i64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
@@ -525,7 +525,7 @@ Module num.
     *)
     Definition i128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
@@ -548,7 +548,7 @@ Module num.
         (α : list Value.t)
         : M :=
       match ε, τ, α with
-      | [ host ], [], [] =>
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -556,13 +556,10 @@ Module num.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [ M.read (| Value.String "argument of integer logarithm must be positive" |)
-                        ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [ M.read (| Value.String "argument of integer logarithm must be positive" |) ]
+                  |)
                 ]
               |)
             ]

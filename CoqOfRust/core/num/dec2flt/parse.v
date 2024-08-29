@@ -326,9 +326,7 @@ Module num.
           let mut s = *s_ref;
       
           while *x < MIN_19DIGIT_INT {
-              // FIXME: Can't use s.split_first() here yet,
-              // see https://github.com/rust-lang/rust/issues/109328
-              if let [c, s_next @ ..] = s {
+              if let Some((c, s_next)) = s.split_first() {
                   let digit = c.wrapping_sub(b'0');
       
                   if digit < 10 {
@@ -379,12 +377,27 @@ Module num.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ := s in
-                                    let γ := M.read (| γ |) in
-                                    let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
-                                    let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
-                                    let c := M.alloc (| γ1_0 |) in
-                                    let s_next := M.alloc (| γ1_rest |) in
+                                    (let γ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            "split_first",
+                                            []
+                                          |),
+                                          [ M.read (| s |) ]
+                                        |)
+                                      |) in
+                                    let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::option::Option::Some",
+                                        0
+                                      |) in
+                                    let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                    let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                    let c := M.copy (| γ1_0 |) in
+                                    let s_next := M.copy (| γ1_1 |) in
                                     let~ digit :=
                                       M.alloc (|
                                         M.call_closure (|

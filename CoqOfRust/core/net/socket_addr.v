@@ -90,7 +90,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -100,7 +100,7 @@ Module net.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -112,7 +112,7 @@ Module net.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -142,12 +142,20 @@ Module net.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "core::net::socket_addr::SocketAddrV4",
-                                    [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "core::net::socket_addr::SocketAddrV4" ]
+                                    ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -174,12 +182,20 @@ Module net.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "core::net::socket_addr::SocketAddrV6",
-                                    [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "core::net::socket_addr::SocketAddrV6" ]
+                                    ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -208,17 +224,6 @@ Module net.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_net_socket_addr_SocketAddr.
-    
-    Module Impl_core_marker_StructuralEq_for_core_net_socket_addr_SocketAddr.
-      Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_net_socket_addr_SocketAddr.
     
     Module Impl_core_cmp_Eq_for_core_net_socket_addr_SocketAddr.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
@@ -269,7 +274,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -289,7 +294,7 @@ Module net.
                       "hash",
                       [ __H ]
                     |),
-                    [ __self_tag; M.read (| state |) ]
+                    [ __self_discr; M.read (| state |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -364,7 +369,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -374,7 +379,7 @@ Module net.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -462,7 +467,7 @@ Module net.
                             "partial_cmp",
                             []
                           |),
-                          [ __self_tag; __arg1_tag ]
+                          [ __self_discr; __arg1_discr ]
                         |)
                       |)))
                 ]
@@ -490,7 +495,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -500,7 +505,7 @@ Module net.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -514,7 +519,7 @@ Module net.
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                    [ __self_tag; __arg1_tag ]
+                    [ __self_discr; __arg1_discr ]
                   |)
                 |),
                 [
@@ -669,17 +674,6 @@ Module net.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_net_socket_addr_SocketAddrV4.
-    
-    Module Impl_core_marker_StructuralEq_for_core_net_socket_addr_SocketAddrV4.
-      Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_net_socket_addr_SocketAddrV4.
     
     Module Impl_core_cmp_Eq_for_core_net_socket_addr_SocketAddrV4.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
@@ -1070,17 +1064,6 @@ Module net.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_net_socket_addr_SocketAddrV6.
-    
-    Module Impl_core_marker_StructuralEq_for_core_net_socket_addr_SocketAddrV6.
-      Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_net_socket_addr_SocketAddrV6.
     
     Module Impl_core_cmp_Eq_for_core_net_socket_addr_SocketAddrV6.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
@@ -1644,7 +1627,7 @@ Module net.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ip; port ] =>
+        | [], [], [ ip; port ] =>
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             let port := M.alloc (| port |) in
@@ -1717,7 +1700,7 @@ Module net.
       *)
       Definition ip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1905,7 +1888,7 @@ Module net.
       *)
       Definition port (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2029,7 +2012,7 @@ Module net.
       *)
       Definition is_ipv4 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2061,7 +2044,7 @@ Module net.
       *)
       Definition is_ipv6 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2097,7 +2080,7 @@ Module net.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ip; port ] =>
+        | [], [], [ ip; port ] =>
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             let port := M.alloc (| port |) in
@@ -2116,7 +2099,7 @@ Module net.
       *)
       Definition ip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -2164,7 +2147,7 @@ Module net.
       *)
       Definition port (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2218,7 +2201,7 @@ Module net.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ip; port; flowinfo; scope_id ] =>
+        | [], [], [ ip; port; flowinfo; scope_id ] =>
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             let port := M.alloc (| port |) in
@@ -2244,7 +2227,7 @@ Module net.
       *)
       Definition ip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -2292,7 +2275,7 @@ Module net.
       *)
       Definition port (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2342,7 +2325,7 @@ Module net.
       *)
       Definition flowinfo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2393,7 +2376,7 @@ Module net.
       *)
       Definition scope_id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2656,7 +2639,7 @@ Module net.
               if f.precision().is_none() && f.width().is_none() {
                   write!(f, "{}:{}", self.ip(), self.port())
               } else {
-                  const LONGEST_IPV4_SOCKET_ADDR: &str = "255.255.255.255:65536";
+                  const LONGEST_IPV4_SOCKET_ADDR: &str = "255.255.255.255:65535";
       
                   let mut buf = DisplayBuffer::<{ LONGEST_IPV4_SOCKET_ADDR.len() }>::new();
                   // Buffer is long enough for the longest possible IPv4 socket address, so this should never fail.
@@ -2743,63 +2726,58 @@ Module net.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "" |); M.read (| Value.String ":" |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
+                                M.alloc (|
+                                  Value.Array
+                                    [ M.read (| Value.String "" |); M.read (| Value.String ":" |) ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                                          ]
+                                        |),
+                                        [
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::net::socket_addr::SocketAddrV4",
+                                                "ip",
                                                 []
-                                                [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
-                                            ]
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::net::socket_addr::SocketAddrV4",
-                                                  "ip",
-                                                  []
-                                                |),
-                                                [ M.read (| self |) ]
-                                              |)
+                                              |),
+                                              [ M.read (| self |) ]
                                             |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "u16" ]
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::net::socket_addr::SocketAddrV4",
-                                                  "port",
-                                                  []
-                                                |),
-                                                [ M.read (| self |) ]
-                                              |)
+                                          |)
+                                        ]
+                                      |);
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "u16" ]
+                                        |),
+                                        [
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::net::socket_addr::SocketAddrV4",
+                                                "port",
+                                                []
+                                              |),
+                                              [ M.read (| self |) ]
                                             |)
-                                          ]
-                                        |)
-                                      ]
-                                  |))
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -2853,67 +2831,63 @@ Module net.
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "" |);
-                                              M.read (| Value.String ":" |)
-                                            ]
-                                        |));
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| Value.String "" |);
+                                            M.read (| Value.String ":" |)
+                                          ]
+                                      |);
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
+                                                ]
+                                              |),
+                                              [
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "core::net::socket_addr::SocketAddrV4",
+                                                      "ip",
                                                       []
-                                                      [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
-                                                  ]
-                                                |),
-                                                [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::net::socket_addr::SocketAddrV4",
-                                                        "ip",
-                                                        []
-                                                      |),
-                                                      [ M.read (| self |) ]
-                                                    |)
+                                                    |),
+                                                    [ M.read (| self |) ]
                                                   |)
-                                                ]
-                                              |);
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "u16" ]
-                                                |),
-                                                [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::net::socket_addr::SocketAddrV4",
-                                                        "port",
-                                                        []
-                                                      |),
-                                                      [ M.read (| self |) ]
-                                                    |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.path "u16" ]
+                                              |),
+                                              [
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "core::net::socket_addr::SocketAddrV4",
+                                                      "port",
+                                                      []
+                                                    |),
+                                                    [ M.read (| self |) ]
                                                   |)
-                                                ]
-                                              |)
-                                            ]
-                                        |))
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -3003,7 +2977,7 @@ Module net.
                   }
               } else {
                   const LONGEST_IPV6_SOCKET_ADDR: &str =
-                      "[ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff%4294967296]:65536";
+                      "[ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff%4294967295]:65535";
       
                   let mut buf = DisplayBuffer::<{ LONGEST_IPV6_SOCKET_ADDR.len() }>::new();
                   match self.scope_id() {
@@ -3113,67 +3087,63 @@ Module net.
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "[" |);
-                                                M.read (| Value.String "]:" |)
-                                              ]
-                                          |));
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "[" |);
+                                              M.read (| Value.String "]:" |)
+                                            ]
+                                        |);
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
+                                                  ]
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "core::net::socket_addr::SocketAddrV6",
+                                                        "ip",
                                                         []
-                                                        [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
-                                                    ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "core::net::socket_addr::SocketAddrV6",
-                                                          "ip",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
+                                                      |),
+                                                      [ M.read (| self |) ]
                                                     |)
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "u16" ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "core::net::socket_addr::SocketAddrV6",
-                                                          "port",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "u16" ]
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "core::net::socket_addr::SocketAddrV6",
+                                                        "port",
+                                                        []
+                                                      |),
+                                                      [ M.read (| self |) ]
                                                     |)
-                                                  ]
-                                                |)
-                                              ]
-                                          |))
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -3198,76 +3168,72 @@ Module net.
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "[" |);
-                                                M.read (| Value.String "%" |);
-                                                M.read (| Value.String "]:" |)
-                                              ]
-                                          |));
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "[" |);
+                                              M.read (| Value.String "%" |);
+                                              M.read (| Value.String "]:" |)
+                                            ]
+                                        |);
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
+                                                  ]
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "core::net::socket_addr::SocketAddrV6",
+                                                        "ip",
                                                         []
-                                                        [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
-                                                    ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "core::net::socket_addr::SocketAddrV6",
-                                                          "ip",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
+                                                      |),
+                                                      [ M.read (| self |) ]
                                                     |)
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "u32" ]
-                                                  |),
-                                                  [ scope_id ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "u16" ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "core::net::socket_addr::SocketAddrV6",
-                                                          "port",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "u32" ]
+                                                |),
+                                                [ scope_id ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "u16" ]
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "core::net::socket_addr::SocketAddrV6",
+                                                        "port",
+                                                        []
+                                                      |),
+                                                      [ M.read (| self |) ]
                                                     |)
-                                                  ]
-                                                |)
-                                              ]
-                                          |))
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -3344,70 +3310,66 @@ Module net.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (| Value.String "[" |);
-                                                          M.read (| Value.String "]:" |)
-                                                        ]
-                                                    |));
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| Value.String "[" |);
+                                                        M.read (| Value.String "]:" |)
+                                                      ]
+                                                  |);
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::net::ip_addr::Ipv6Addr"
+                                                                ]
+                                                            ]
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::net::socket_addr::SocketAddrV6",
+                                                                  "ip",
                                                                   []
-                                                                  [
-                                                                    Ty.path
-                                                                      "core::net::ip_addr::Ipv6Addr"
-                                                                  ]
-                                                              ]
-                                                            |),
-                                                            [
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::net::socket_addr::SocketAddrV6",
-                                                                    "ip",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| self |) ]
-                                                                |)
+                                                                |),
+                                                                [ M.read (| self |) ]
                                                               |)
-                                                            ]
-                                                          |);
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [ Ty.path "u16" ]
-                                                            |),
-                                                            [
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::net::socket_addr::SocketAddrV6",
-                                                                    "port",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| self |) ]
-                                                                |)
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [ Ty.path "u16" ]
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::net::socket_addr::SocketAddrV6",
+                                                                  "port",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| self |) ]
                                                               |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                    |))
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -3437,79 +3399,75 @@ Module net.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (| Value.String "[" |);
-                                                          M.read (| Value.String "%" |);
-                                                          M.read (| Value.String "]:" |)
-                                                        ]
-                                                    |));
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| Value.String "[" |);
+                                                        M.read (| Value.String "%" |);
+                                                        M.read (| Value.String "]:" |)
+                                                      ]
+                                                  |);
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::net::ip_addr::Ipv6Addr"
+                                                                ]
+                                                            ]
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::net::socket_addr::SocketAddrV6",
+                                                                  "ip",
                                                                   []
-                                                                  [
-                                                                    Ty.path
-                                                                      "core::net::ip_addr::Ipv6Addr"
-                                                                  ]
-                                                              ]
-                                                            |),
-                                                            [
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::net::socket_addr::SocketAddrV6",
-                                                                    "ip",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| self |) ]
-                                                                |)
+                                                                |),
+                                                                [ M.read (| self |) ]
                                                               |)
-                                                            ]
-                                                          |);
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [ Ty.path "u32" ]
-                                                            |),
-                                                            [ scope_id ]
-                                                          |);
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [ Ty.path "u16" ]
-                                                            |),
-                                                            [
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::net::socket_addr::SocketAddrV6",
-                                                                    "port",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| self |) ]
-                                                                |)
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [ Ty.path "u32" ]
+                                                          |),
+                                                          [ scope_id ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [ Ty.path "u16" ]
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::net::socket_addr::SocketAddrV6",
+                                                                  "port",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| self |) ]
                                                               |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                    |))
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)
                                                 ]
                                               |)
                                             ]

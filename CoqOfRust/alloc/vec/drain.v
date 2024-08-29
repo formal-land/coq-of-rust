@@ -61,24 +61,22 @@ Module vec.
                         [ M.read (| f |); M.read (| Value.String "Drain" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                            "as_slice",
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::vec::drain::Drain",
-                              "iter"
-                            |)
-                          ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                          "as_slice",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::drain::Drain",
+                            "iter"
+                          |)
+                        ]
+                      |)
+                    |)
                   ]
                 |)
               ]

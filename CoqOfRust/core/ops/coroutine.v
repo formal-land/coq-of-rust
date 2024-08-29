@@ -133,7 +133,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -143,7 +143,7 @@ Module ops.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -155,7 +155,7 @@ Module ops.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -185,12 +185,12 @@ Module ops.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Y,
-                                    [ Y ],
+                                    Ty.apply (Ty.path "&") [] [ Y ],
+                                    [ Ty.apply (Ty.path "&") [] [ Y ] ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -217,12 +217,12 @@ Module ops.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    R,
-                                    [ R ],
+                                    Ty.apply (Ty.path "&") [] [ R ],
+                                    [ Ty.apply (Ty.path "&") [] [ R ] ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -271,7 +271,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -281,7 +281,7 @@ Module ops.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -369,7 +369,7 @@ Module ops.
                             "partial_cmp",
                             []
                           |),
-                          [ __self_tag; __arg1_tag ]
+                          [ __self_discr; __arg1_discr ]
                         |)
                       |)))
                 ]
@@ -386,19 +386,6 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp Y R)) ].
     End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_R_for_core_ops_coroutine_CoroutineState_Y_R.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ops_coroutine_CoroutineState_Y_R.
-      Definition Self (Y R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
-      
-      Axiom Implements :
-        forall (Y R : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self Y R)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_coroutine_CoroutineState_Y_R.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Y_where_core_cmp_Eq_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
@@ -456,7 +443,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -466,7 +453,7 @@ Module ops.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -480,7 +467,7 @@ Module ops.
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                    [ __self_tag; __arg1_tag ]
+                    [ __self_discr; __arg1_discr ]
                   |)
                 |),
                 [
@@ -606,11 +593,7 @@ Module ops.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Yielded" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Yielded" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -630,11 +613,7 @@ Module ops.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Complete" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Complete" |); __self_0 ]
                         |)
                       |)))
                 ]
@@ -665,7 +644,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -685,7 +664,7 @@ Module ops.
                       "hash",
                       [ __H ]
                     |),
-                    [ __self_tag; M.read (| state |) ]
+                    [ __self_discr; M.read (| state |) ]
                   |)
                 |) in
               M.match_operator (|

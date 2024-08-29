@@ -119,9 +119,9 @@ Module collections.
         end.
       
       (*
-          fn clone_from(&mut self, other: &Self) {
+          fn clone_from(&mut self, source: &Self) {
               self.clear();
-              self.extend(other.iter().cloned());
+              self.extend(source.iter().cloned());
           }
       *)
       Definition clone_from
@@ -132,10 +132,10 @@ Module collections.
           : M :=
         let Self : Ty.t := Self T A in
         match ε, τ, α with
-        | [], [], [ self; other ] =>
+        | [], [], [ self; source ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            let source := M.alloc (| source |) in
             M.read (|
               let~ _ :=
                 M.alloc (|
@@ -184,7 +184,7 @@ Module collections.
                               "iter",
                               []
                             |),
-                            [ M.read (| other |) ]
+                            [ M.read (| source |) ]
                           |)
                         ]
                       |)
@@ -368,6 +368,76 @@ Module collections.
       Axiom AssociatedFunction_ptr :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "ptr" (ptr T A).
+      
+      (*
+          unsafe fn push_unchecked(&mut self, element: T) {
+              // SAFETY: Because of the precondition, it's guaranteed that there is space
+              // in the logical array after the last element.
+              unsafe { self.buffer_write(self.to_physical_idx(self.len), element) };
+              // This can't overflow because `deque.len() < deque.capacity() <= usize::MAX`.
+              self.len += 1;
+          }
+      *)
+      Definition push_unchecked
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T A in
+        match ε, τ, α with
+        | [], [], [ self; element ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let element := M.alloc (| element |) in
+            M.read (|
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
+                      "buffer_write",
+                      []
+                    |),
+                    [
+                      M.read (| self |);
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
+                          "to_physical_idx",
+                          []
+                        |),
+                        [
+                          M.read (| self |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::VecDeque",
+                              "len"
+                            |)
+                          |)
+                        ]
+                      |);
+                      M.read (| element |)
+                    ]
+                  |)
+                |) in
+              let~ _ :=
+                let β :=
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::vec_deque::VecDeque",
+                    "len"
+                  |) in
+                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
+              M.alloc (| Value.Tuple [] |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_push_unchecked :
+        forall (T A : Ty.t),
+        M.IsAssociatedFunction (Self T A) "push_unchecked" (push_unchecked T A).
       
       (*
           unsafe fn buffer_read(&mut self, off: usize) -> T {
@@ -791,71 +861,67 @@ Module collections.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (| Value.String "cpy dst=" |);
-                                                      M.read (| Value.String " src=" |);
-                                                      M.read (| Value.String " len=" |);
-                                                      M.read (| Value.String " cap=" |)
-                                                    ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ dst ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ src ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ len ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::vec_deque::VecDeque")
-                                                                  []
-                                                                  [ T; A ],
-                                                                "capacity",
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (| Value.String "cpy dst=" |);
+                                                    M.read (| Value.String " src=" |);
+                                                    M.read (| Value.String " len=" |);
+                                                    M.read (| Value.String " cap=" |)
+                                                  ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ dst ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ src ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ len ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::collections::vec_deque::VecDeque")
                                                                 []
-                                                              |),
-                                                              [ M.read (| self |) ]
-                                                            |)
+                                                                [ T; A ],
+                                                              "capacity",
+                                                              []
+                                                            |),
+                                                            [ M.read (| self |) ]
                                                           |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                |))
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -923,71 +989,67 @@ Module collections.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (| Value.String "cpy dst=" |);
-                                                      M.read (| Value.String " src=" |);
-                                                      M.read (| Value.String " len=" |);
-                                                      M.read (| Value.String " cap=" |)
-                                                    ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ dst ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ src ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ len ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::vec_deque::VecDeque")
-                                                                  []
-                                                                  [ T; A ],
-                                                                "capacity",
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (| Value.String "cpy dst=" |);
+                                                    M.read (| Value.String " src=" |);
+                                                    M.read (| Value.String " len=" |);
+                                                    M.read (| Value.String " cap=" |)
+                                                  ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ dst ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ src ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ len ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::collections::vec_deque::VecDeque")
                                                                 []
-                                                              |),
-                                                              [ M.read (| self |) ]
-                                                            |)
+                                                                [ T; A ],
+                                                              "capacity",
+                                                              []
+                                                            |),
+                                                            [ M.read (| self |) ]
                                                           |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                |))
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -1155,71 +1217,67 @@ Module collections.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (| Value.String "cno dst=" |);
-                                                      M.read (| Value.String " src=" |);
-                                                      M.read (| Value.String " len=" |);
-                                                      M.read (| Value.String " cap=" |)
-                                                    ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ dst ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ src ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ len ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::vec_deque::VecDeque")
-                                                                  []
-                                                                  [ T; A ],
-                                                                "capacity",
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (| Value.String "cno dst=" |);
+                                                    M.read (| Value.String " src=" |);
+                                                    M.read (| Value.String " len=" |);
+                                                    M.read (| Value.String " cap=" |)
+                                                  ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ dst ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ src ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ len ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::collections::vec_deque::VecDeque")
                                                                 []
-                                                              |),
-                                                              [ M.read (| self |) ]
-                                                            |)
+                                                                [ T; A ],
+                                                              "capacity",
+                                                              []
+                                                            |),
+                                                            [ M.read (| self |) ]
                                                           |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                |))
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -1287,71 +1345,67 @@ Module collections.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (| Value.String "cno dst=" |);
-                                                      M.read (| Value.String " src=" |);
-                                                      M.read (| Value.String " len=" |);
-                                                      M.read (| Value.String " cap=" |)
-                                                    ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ dst ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ src ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ len ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::vec_deque::VecDeque")
-                                                                  []
-                                                                  [ T; A ],
-                                                                "capacity",
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (| Value.String "cno dst=" |);
+                                                    M.read (| Value.String " src=" |);
+                                                    M.read (| Value.String " len=" |);
+                                                    M.read (| Value.String " cap=" |)
+                                                  ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ dst ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ src ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ len ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::collections::vec_deque::VecDeque")
                                                                 []
-                                                              |),
-                                                              [ M.read (| self |) ]
-                                                            |)
+                                                                [ T; A ],
+                                                              "capacity",
+                                                              []
+                                                            |),
+                                                            [ M.read (| self |) ]
                                                           |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                |))
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -1662,71 +1716,67 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (| Value.String "wrc dst=" |);
-                                                          M.read (| Value.String " src=" |);
-                                                          M.read (| Value.String " len=" |);
-                                                          M.read (| Value.String " cap=" |)
-                                                        ]
-                                                    |));
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [ Ty.path "usize" ]
-                                                            |),
-                                                            [ dst ]
-                                                          |);
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [ Ty.path "usize" ]
-                                                            |),
-                                                            [ src ]
-                                                          |);
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [ Ty.path "usize" ]
-                                                            |),
-                                                            [ len ]
-                                                          |);
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [ Ty.path "usize" ]
-                                                            |),
-                                                            [
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "alloc::collections::vec_deque::VecDeque")
-                                                                      []
-                                                                      [ T; A ],
-                                                                    "capacity",
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| Value.String "wrc dst=" |);
+                                                        M.read (| Value.String " src=" |);
+                                                        M.read (| Value.String " len=" |);
+                                                        M.read (| Value.String " cap=" |)
+                                                      ]
+                                                  |);
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [ Ty.path "usize" ]
+                                                          |),
+                                                          [ dst ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [ Ty.path "usize" ]
+                                                          |),
+                                                          [ src ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [ Ty.path "usize" ]
+                                                          |),
+                                                          [ len ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [ Ty.path "usize" ]
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "alloc::collections::vec_deque::VecDeque")
                                                                     []
-                                                                  |),
-                                                                  [ M.read (| self |) ]
-                                                                |)
+                                                                    [ T; A ],
+                                                                  "capacity",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| self |) ]
                                                               |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                    |))
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -3050,18 +3100,18 @@ Module collections.
               // H := head
               // L := last element (`self.to_physical_idx(self.len - 1)`)
               //
-              //    H           L
-              //   [o o o o o o o . ]
-              //    H           L
-              // A [o o o o o o o . . . . . . . . . ]
+              //    H             L
+              //   [o o o o o o o o ]
+              //    H             L
+              // A [o o o o o o o o . . . . . . . . ]
               //        L H
               //   [o o o o o o o o ]
-              //          H           L
-              // B [. . . o o o o o o o . . . . . . ]
+              //          H             L
+              // B [. . . o o o o o o o o . . . . . ]
               //              L H
               //   [o o o o o o o o ]
-              //            L                   H
-              // C [o o o o o . . . . . . . . . o o ]
+              //              L                 H
+              // C [o o o o o o . . . . . . . . o o ]
       
               // can't use is_contiguous() because the capacity is already updated.
               if self.head <= old_capacity - self.len {
@@ -4943,6 +4993,8 @@ Module collections.
               // `head` and `len` are at most `isize::MAX` and `target_cap < self.capacity()`, so nothing can
               // overflow.
               let tail_outside = (target_cap + 1..=self.capacity()).contains(&(self.head + self.len));
+              // Used in the drop guard below.
+              let old_head = self.head;
       
               if self.len == 0 {
                   self.head = 0;
@@ -4995,7 +5047,30 @@ Module collections.
                   }
                   self.head = new_head;
               }
-              self.buf.shrink_to_fit(target_cap);
+      
+              struct Guard<'a, T, A: Allocator> {
+                  deque: &'a mut VecDeque<T, A>,
+                  old_head: usize,
+                  target_cap: usize,
+              }
+      
+              impl<T, A: Allocator> Drop for Guard<'_, T, A> {
+                  #[cold]
+                  fn drop(&mut self) {
+                      unsafe {
+                          // SAFETY: This is only called if `buf.shrink_to_fit` unwinds,
+                          // which is the only time it's safe to call `abort_shrink`.
+                          self.deque.abort_shrink(self.old_head, self.target_cap)
+                      }
+                  }
+              }
+      
+              let guard = Guard { deque: self, old_head, target_cap };
+      
+              guard.deque.buf.shrink_to_fit(target_cap);
+      
+              // Don't drop the guard if we didn't unwind.
+              mem::forget(guard);
       
               debug_assert!(self.head < self.capacity() || self.capacity() == 0);
               debug_assert!(self.len <= self.capacity());
@@ -5124,6 +5199,14 @@ Module collections.
                               |))
                           |)
                         ]
+                      |)
+                    |) in
+                  let~ old_head :=
+                    M.copy (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::VecDeque",
+                        "head"
                       |)
                     |) in
                   let~ _ :=
@@ -5407,6 +5490,16 @@ Module collections.
                             |)))
                       ]
                     |) in
+                  let~ guard :=
+                    M.alloc (|
+                      Value.StructRecord
+                        "alloc::collections::vec_deque::shrink_to::Guard"
+                        [
+                          ("deque", M.read (| self |));
+                          ("old_head", M.read (| old_head |));
+                          ("target_cap", M.read (| target_cap |))
+                        ]
+                    |) in
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
@@ -5417,12 +5510,33 @@ Module collections.
                         |),
                         [
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                guard,
+                                "alloc::collections::vec_deque::shrink_to::Guard",
+                                "deque"
+                              |)
+                            |),
                             "alloc::collections::vec_deque::VecDeque",
                             "buf"
                           |);
                           M.read (| target_cap |)
                         ]
+                      |)
+                    |) in
+                  let~ _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (|
+                          "core::mem::forget",
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::vec_deque::shrink_to::Guard")
+                              []
+                              [ T; A ]
+                          ]
+                        |),
+                        [ M.read (| guard |) ]
                       |)
                     |) in
                   let~ _ :=
@@ -5581,6 +5695,219 @@ Module collections.
       Axiom AssociatedFunction_shrink_to :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "shrink_to" (shrink_to T A).
+      
+      (*
+          unsafe fn abort_shrink(&mut self, old_head: usize, target_cap: usize) {
+              // Moral equivalent of self.head + self.len <= target_cap. Won't overflow
+              // because `self.len <= target_cap`.
+              if self.head <= target_cap - self.len {
+                  // The deque's buffer is contiguous, so no need to copy anything around.
+                  return;
+              }
+      
+              // `shrink_to` already copied the head to fit into the new capacity, so this won't overflow.
+              let head_len = target_cap - self.head;
+              // `self.head > target_cap - self.len` => `self.len > target_cap - self.head =: head_len` so this must be positive.
+              let tail_len = self.len - head_len;
+      
+              if tail_len <= cmp::min(head_len, self.capacity() - target_cap) {
+                  // There's enough spare capacity to copy the tail to the back (because `tail_len < self.capacity() - target_cap`),
+                  // and copying the tail should be cheaper than copying the head (because `tail_len <= head_len`).
+      
+                  unsafe {
+                      // The old tail and the new tail can't overlap because the head slice lies between them. The
+                      // head slice ends at `target_cap`, so that's where we copy to.
+                      self.copy_nonoverlapping(0, target_cap, tail_len);
+                  }
+              } else {
+                  // Either there's not enough spare capacity to make the deque contiguous, or the head is shorter than the tail
+                  // (and therefore hopefully cheaper to copy).
+                  unsafe {
+                      // The old and the new head slice can overlap, so we can't use `copy_nonoverlapping` here.
+                      self.copy(self.head, old_head, head_len);
+                      self.head = old_head;
+                  }
+              }
+          }
+      *)
+      Definition abort_shrink
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T A in
+        match ε, τ, α with
+        | [], [], [ self; old_head; target_cap ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let old_head := M.alloc (| old_head |) in
+            let target_cap := M.alloc (| target_cap |) in
+            M.catch_return (|
+              ltac:(M.monadic
+                (M.read (|
+                  let~ _ :=
+                    M.match_operator (|
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  BinOp.Pure.le
+                                    (M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::vec_deque::VecDeque",
+                                        "head"
+                                      |)
+                                    |))
+                                    (BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.read (| target_cap |))
+                                      (M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::vec_deque::VecDeque",
+                                          "len"
+                                        |)
+                                      |)))
+                                |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |) in
+                  let~ head_len :=
+                    M.alloc (|
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.read (| target_cap |))
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::VecDeque",
+                            "head"
+                          |)
+                        |))
+                    |) in
+                  let~ tail_len :=
+                    M.alloc (|
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::VecDeque",
+                            "len"
+                          |)
+                        |))
+                        (M.read (| head_len |))
+                    |) in
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                BinOp.Pure.le
+                                  (M.read (| tail_len |))
+                                  (M.call_closure (|
+                                    M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                                    [
+                                      M.read (| head_len |);
+                                      BinOp.Wrap.sub
+                                        Integer.Usize
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                              []
+                                              [ T; A ],
+                                            "capacity",
+                                            []
+                                          |),
+                                          [ M.read (| self |) ]
+                                        |))
+                                        (M.read (| target_cap |))
+                                    ]
+                                  |))
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ :=
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                    []
+                                    [ T; A ],
+                                  "copy_nonoverlapping",
+                                  []
+                                |),
+                                [
+                                  M.read (| self |);
+                                  Value.Integer 0;
+                                  M.read (| target_cap |);
+                                  M.read (| tail_len |)
+                                ]
+                              |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let~ _ :=
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                    []
+                                    [ T; A ],
+                                  "copy",
+                                  []
+                                |),
+                                [
+                                  M.read (| self |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::vec_deque::VecDeque",
+                                      "head"
+                                    |)
+                                  |);
+                                  M.read (| old_head |);
+                                  M.read (| head_len |)
+                                ]
+                              |)
+                            |) in
+                          let~ _ :=
+                            M.write (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::VecDeque",
+                                "head"
+                              |),
+                              M.read (| old_head |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)
+                |)))
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_abort_shrink :
+        forall (T A : Ty.t),
+        M.IsAssociatedFunction (Self T A) "abort_shrink" (abort_shrink T A).
       
       (*
           pub fn truncate(&mut self, len: usize) {
@@ -7044,7 +7371,10 @@ Module collections.
                   let old_head = self.head;
                   self.head = self.to_physical_idx(1);
                   self.len -= 1;
-                  Some(unsafe { self.buffer_read(old_head) })
+                  unsafe {
+                      core::hint::assert_unchecked(self.len < self.capacity());
+                      Some(self.buffer_read(old_head))
+                  }
               }
           }
       *)
@@ -7117,6 +7447,33 @@ Module collections.
                           β,
                           BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [
+                              BinOp.Pure.lt
+                                (M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::vec_deque::VecDeque",
+                                    "len"
+                                  |)
+                                |))
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                      []
+                                      [ T; A ],
+                                    "capacity",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
+                                |))
+                            ]
+                          |)
+                        |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -7150,7 +7507,10 @@ Module collections.
                   None
               } else {
                   self.len -= 1;
-                  Some(unsafe { self.buffer_read(self.to_physical_idx(self.len)) })
+                  unsafe {
+                      core::hint::assert_unchecked(self.len < self.capacity());
+                      Some(self.buffer_read(self.to_physical_idx(self.len)))
+                  }
               }
           }
       *)
@@ -7195,6 +7555,33 @@ Module collections.
                         M.write (|
                           β,
                           BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                        |) in
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [
+                              BinOp.Pure.lt
+                                (M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::vec_deque::VecDeque",
+                                    "len"
+                                  |)
+                                |))
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                      []
+                                      [ T; A ],
+                                    "capacity",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
+                                |))
+                            ]
+                          |)
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -7853,12 +8240,10 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "index out of bounds" |) ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [ M.read (| Value.String "index out of bounds" |) ]
+                                    |)
                                   ]
                                 |)
                               ]
@@ -8464,12 +8849,9 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "`at` out of bounds" |) ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "`at` out of bounds" |) ]
+                                    |)
                                   ]
                                 |)
                               ]
@@ -9433,7 +9815,7 @@ Module collections.
               // buffer without it being full emerge
               debug_assert!(self.is_full());
               let old_cap = self.capacity();
-              self.buf.reserve_for_push(old_cap);
+              self.buf.grow_one();
               unsafe {
                   self.handle_capacity_increase(old_cap);
               }
@@ -9518,7 +9900,7 @@ Module collections.
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
-                      "reserve_for_push",
+                      "grow_one",
                       []
                     |),
                     [
@@ -9526,8 +9908,7 @@ Module collections.
                         M.read (| self |),
                         "alloc::collections::vec_deque::VecDeque",
                         "buf"
-                      |);
-                      M.read (| old_cap |)
+                      |)
                     ]
                   |)
                 |) in
@@ -11741,6 +12122,140 @@ Module collections.
       Axiom AssociatedFunction_with_capacity :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "with_capacity" (with_capacity T).
+      
+      (*
+          pub fn try_with_capacity(capacity: usize) -> Result<VecDeque<T>, TryReserveError> {
+              Ok(VecDeque { head: 0, len: 0, buf: RawVec::try_with_capacity_in(capacity, Global)? })
+          }
+      *)
+      Definition try_with_capacity
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ capacity ] =>
+          ltac:(M.monadic
+            (let capacity := M.alloc (| capacity |) in
+            M.catch_return (|
+              ltac:(M.monadic
+                (Value.StructTuple
+                  "core::result::Result::Ok"
+                  [
+                    Value.StructRecord
+                      "alloc::collections::vec_deque::VecDeque"
+                      [
+                        ("head", Value.Integer 0);
+                        ("len", Value.Integer 0);
+                        ("buf",
+                          M.read (|
+                            M.match_operator (|
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::Try",
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::raw_vec::RawVec")
+                                          []
+                                          [ T; Ty.path "alloc::alloc::Global" ];
+                                        Ty.path "alloc::collections::TryReserveError"
+                                      ],
+                                    [],
+                                    "branch",
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::raw_vec::RawVec")
+                                          []
+                                          [ T; Ty.path "alloc::alloc::Global" ],
+                                        "try_with_capacity_in",
+                                        []
+                                      |),
+                                      [
+                                        M.read (| capacity |);
+                                        Value.StructTuple "alloc::alloc::Global" []
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Break",
+                                        0
+                                      |) in
+                                    let residual := M.copy (| γ0_0 |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::try_trait::FromResidual",
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::vec_deque::VecDeque")
+                                                      []
+                                                      [ T; Ty.path "alloc::alloc::Global" ];
+                                                    Ty.path "alloc::collections::TryReserveError"
+                                                  ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path "alloc::collections::TryReserveError"
+                                                    ]
+                                                ],
+                                                "from_residual",
+                                                []
+                                              |),
+                                              [ M.read (| residual |) ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Continue",
+                                        0
+                                      |) in
+                                    let val := M.copy (| γ0_0 |) in
+                                    val))
+                              ]
+                            |)
+                          |))
+                      ]
+                  ]))
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_try_with_capacity :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "try_with_capacity" (try_with_capacity T).
     End Impl_alloc_collections_vec_deque_VecDeque_T_alloc_alloc_Global.
     
     
@@ -14175,6 +14690,43 @@ Module collections.
         | _, _, _ => M.impossible
         end.
       
+      (*
+          unsafe fn extend_one_unchecked(&mut self, item: T) {
+              // SAFETY: Our preconditions ensure the space has been reserved, and `extend_reserve` is implemented correctly.
+              unsafe {
+                  self.push_unchecked(item);
+              }
+          }
+      *)
+      Definition extend_one_unchecked
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T A in
+        match ε, τ, α with
+        | [], [], [ self; item ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let item := M.alloc (| item |) in
+            M.read (|
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
+                      "push_unchecked",
+                      []
+                    |),
+                    [ M.read (| self |); M.read (| item |) ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
       Axiom Implements :
         forall (T A : Ty.t),
         M.IsTraitInstance
@@ -14185,7 +14737,8 @@ Module collections.
           [
             ("extend", InstanceField.Method (extend T A));
             ("extend_one", InstanceField.Method (extend_one T A));
-            ("extend_reserve", InstanceField.Method (extend_reserve T A))
+            ("extend_reserve", InstanceField.Method (extend_reserve T A));
+            ("extend_one_unchecked", InstanceField.Method (extend_one_unchecked T A))
           ].
     End Impl_core_iter_traits_collect_Extend_where_core_alloc_Allocator_A_T_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -14316,6 +14869,55 @@ Module collections.
         | _, _, _ => M.impossible
         end.
       
+      (*
+          unsafe fn extend_one_unchecked(&mut self, &item: &'a T) {
+              // SAFETY: Our preconditions ensure the space has been reserved, and `extend_reserve` is implemented correctly.
+              unsafe {
+                  self.push_unchecked(item);
+              }
+          }
+      *)
+      Definition extend_one_unchecked
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T A in
+        match ε, τ, α with
+        | [], [], [ self; β1 ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let β1 := M.alloc (| β1 |) in
+            M.match_operator (|
+              β1,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let item := M.copy (| γ |) in
+                    M.read (|
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                []
+                                [ T; A ],
+                              "push_unchecked",
+                              []
+                            |),
+                            [ M.read (| self |); M.read (| item |) ]
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |)
+                    |)))
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
       Axiom Implements :
         forall (T A : Ty.t),
         M.IsTraitInstance
@@ -14326,7 +14928,8 @@ Module collections.
           [
             ("extend", InstanceField.Method (extend T A));
             ("extend_one", InstanceField.Method (extend_one T A));
-            ("extend_reserve", InstanceField.Method (extend_reserve T A))
+            ("extend_reserve", InstanceField.Method (extend_reserve T A));
+            ("extend_one_unchecked", InstanceField.Method (extend_one_unchecked T A))
           ].
     End Impl_core_iter_traits_collect_Extend_where_core_marker_Copy_T_where_core_alloc_Allocator_A_ref__T_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -14855,21 +15458,19 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::deref::Deref",
-                                          Ty.apply
-                                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                            []
-                                            [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                                          [],
-                                          "deref",
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
                                           []
-                                        |),
-                                        [ arr ]
-                                      |))
+                                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                                        [],
+                                        "deref",
+                                        []
+                                      |),
+                                      [ arr ]
+                                    |)
                                   ]
                                 |);
                                 M.call_closure (|

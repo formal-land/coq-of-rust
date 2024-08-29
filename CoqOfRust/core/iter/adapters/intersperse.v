@@ -11,13 +11,14 @@ Module iter.
           ty_params := [ "I" ];
           fields :=
             [
+              ("started", Ty.path "bool");
               ("separator", Ty.associated);
-              ("iter", Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ]);
-              ("needs_sep", Ty.path "bool")
+              ("next_item", Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ]);
+              ("iter", Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ])
             ];
         } *)
       
-      Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_fmt_Debug_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
+      Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
         Definition Self (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [] [ I ].
         
@@ -32,38 +33,38 @@ Module iter.
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
-                  "debug_struct_field3_finish",
+                  "debug_struct_field4_finish",
                   []
                 |),
                 [
                   M.read (| f |);
                   M.read (| Value.String "Intersperse" |);
+                  M.read (| Value.String "started" |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::intersperse::Intersperse",
+                    "started"
+                  |);
                   M.read (| Value.String "separator" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::intersperse::Intersperse",
-                      "separator"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::intersperse::Intersperse",
+                    "separator"
+                  |);
+                  M.read (| Value.String "next_item" |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::intersperse::Intersperse",
+                    "next_item"
+                  |);
                   M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::iter::adapters::intersperse::Intersperse",
                       "iter"
-                    |));
-                  M.read (| Value.String "needs_sep" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::intersperse::Intersperse",
-                        "needs_sep"
-                      |)
-                    |))
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -76,9 +77,9 @@ Module iter.
             (Self I)
             (* Trait polymorphic types *) []
             (* Instance *) [ ("fmt", InstanceField.Method (fmt I)) ].
-      End Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_fmt_Debug_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
+      End Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
       
-      Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
+      Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
         Definition Self (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [] [ I ].
         
@@ -92,35 +93,7 @@ Module iter.
               Value.StructRecord
                 "core::iter::adapters::intersperse::Intersperse"
                 [
-                  ("separator",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::Intersperse",
-                          "separator"
-                        |)
-                      ]
-                    |));
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ],
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::Intersperse",
-                          "iter"
-                        |)
-                      ]
-                    |));
-                  ("needs_sep",
+                  ("started",
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::clone::Clone",
@@ -133,7 +106,52 @@ Module iter.
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::intersperse::Intersperse",
-                          "needs_sep"
+                          "started"
+                        |)
+                      ]
+                    |));
+                  ("separator",
+                    M.call_closure (|
+                      M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::intersperse::Intersperse",
+                          "separator"
+                        |)
+                      ]
+                    |));
+                  ("next_item",
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::intersperse::Intersperse",
+                          "next_item"
+                        |)
+                      ]
+                    |));
+                  ("iter",
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::intersperse::Intersperse",
+                          "iter"
                         |)
                       ]
                     |))
@@ -148,7 +166,20 @@ Module iter.
             (Self I)
             (* Trait polymorphic types *) []
             (* Instance *) [ ("clone", InstanceField.Method (clone I)) ].
-      End Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
+      End Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
+      
+      Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
+        Definition Self (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [] [ I ].
+        
+        Axiom Implements :
+          forall (I : Ty.t),
+          M.IsTraitInstance
+            "core::iter::traits::marker::FusedIterator"
+            (Self I)
+            (* Trait polymorphic types *) []
+            (* Instance *) [].
+      End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
       
       Module Impl_core_iter_adapters_intersperse_Intersperse_I.
         Definition Self (I : Ty.t) : Ty.t :=
@@ -156,7 +187,7 @@ Module iter.
         
         (*
             pub(in crate::iter) fn new(iter: I, separator: I::Item) -> Self {
-                Self { iter: iter.peekable(), separator, needs_sep: false }
+                Self { started: false, separator, next_item: None, iter: iter.fuse() }
             }
         *)
         Definition new (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -169,19 +200,20 @@ Module iter.
               Value.StructRecord
                 "core::iter::adapters::intersperse::Intersperse"
                 [
+                  ("started", Value.Bool false);
+                  ("separator", M.read (| separator |));
+                  ("next_item", Value.StructTuple "core::option::Option::None" []);
                   ("iter",
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
-                        "peekable",
+                        "fuse",
                         []
                       |),
                       [ M.read (| iter |) ]
-                    |));
-                  ("separator", M.read (| separator |));
-                  ("needs_sep", Value.Bool false)
+                    |))
                 ]))
           | _, _, _ => M.impossible
           end.
@@ -199,12 +231,21 @@ Module iter.
         Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
         
         (*
-            fn next(&mut self) -> Option<I::Item> {
-                if self.needs_sep && self.iter.peek().is_some() {
-                    self.needs_sep = false;
-                    Some(self.separator.clone())
+            fn next(&mut self) -> Option<Self::Item> {
+                if self.started {
+                    if let Some(v) = self.next_item.take() {
+                        Some(v)
+                    } else {
+                        let next_item = self.iter.next();
+                        if next_item.is_some() {
+                            self.next_item = next_item;
+                            Some(self.separator.clone())
+                        } else {
+                            None
+                        }
+                    }
                 } else {
-                    self.needs_sep = true;
+                    self.started = true;
                     self.iter.next()
                 }
             }
@@ -223,81 +264,136 @@ Module iter.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              LogicalOp.and (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::intersperse::Intersperse",
-                                    "needs_sep"
-                                  |)
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
-                                      "is_some",
-                                      []
-                                    |),
-                                    [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::iter::adapters::peekable::Peekable")
-                                              []
-                                              [ I ],
-                                            "peek",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::iter::adapters::intersperse::Intersperse",
-                                              "iter"
-                                            |)
-                                          ]
-                                        |)
-                                      |)
-                                    ]
-                                  |)))
-                              |)
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::Intersperse",
+                              "started"
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
-                          M.write (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::intersperse::Intersperse",
-                              "needs_sep"
-                            |),
-                            Value.Bool false
-                          |) in
-                        M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.associated,
-                                  [],
-                                  "clone",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::intersperse::Intersperse",
-                                    "separator"
-                                  |)
-                                ]
-                              |)
-                            ]
+                        M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.associated ],
+                                        "take",
+                                        []
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::iter::adapters::intersperse::Intersperse",
+                                          "next_item"
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::option::Option::Some",
+                                    0
+                                  |) in
+                                let v := M.copy (| γ0_0 |) in
+                                M.alloc (|
+                                  Value.StructTuple "core::option::Option::Some" [ M.read (| v |) ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let~ next_item :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::iter::adapters::fuse::Fuse")
+                                          []
+                                          [ I ],
+                                        [],
+                                        "next",
+                                        []
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::iter::adapters::intersperse::Intersperse",
+                                          "iter"
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                M.match_operator (|
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.associated ],
+                                                  "is_some",
+                                                  []
+                                                |),
+                                                [ next_item ]
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ _ :=
+                                          M.write (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::iter::adapters::intersperse::Intersperse",
+                                              "next_item"
+                                            |),
+                                            M.read (| next_item |)
+                                          |) in
+                                        M.alloc (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            [
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::clone::Clone",
+                                                  Ty.associated,
+                                                  [],
+                                                  "clone",
+                                                  []
+                                                |),
+                                                [
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::iter::adapters::intersperse::Intersperse",
+                                                    "separator"
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (|
+                                          Value.StructTuple "core::option::Option::None" []
+                                        |)))
+                                  ]
+                                |)))
+                          ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -306,7 +402,7 @@ Module iter.
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::intersperse::Intersperse",
-                              "needs_sep"
+                              "started"
                             |),
                             Value.Bool true
                           |) in
@@ -314,10 +410,7 @@ Module iter.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::peekable::Peekable")
-                                []
-                                [ I ],
+                              Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
                               [],
                               "next",
                               []
@@ -338,13 +431,68 @@ Module iter.
           end.
         
         (*
+            fn size_hint(&self) -> (usize, Option<usize>) {
+                intersperse_size_hint(&self.iter, self.started, self.next_item.is_some())
+            }
+        *)
+        Definition size_hint (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_function (|
+                  "core::iter::adapters::intersperse::intersperse_size_hint",
+                  [ Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ] ]
+                |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::intersperse::Intersperse",
+                    "iter"
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::intersperse::Intersperse",
+                      "started"
+                    |)
+                  |);
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                      "is_some",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::intersperse::Intersperse",
+                        "next_item"
+                      |)
+                    ]
+                  |)
+                ]
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        (*
             fn fold<B, F>(self, init: B, f: F) -> B
             where
                 Self: Sized,
                 F: FnMut(B, Self::Item) -> B,
             {
                 let separator = self.separator;
-                intersperse_fold(self.iter, init, f, move || separator.clone(), self.needs_sep)
+                intersperse_fold(
+                    self.iter,
+                    init,
+                    f,
+                    move || separator.clone(),
+                    self.started,
+                    self.next_item,
+                )
             }
         *)
         Definition fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -369,7 +517,7 @@ Module iter.
                     M.get_function (|
                       "core::iter::adapters::intersperse::intersperse_fold",
                       [
-                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ];
+                        Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ];
                         B;
                         F;
                         Ty.function [ Ty.tuple [] ] Ty.associated
@@ -413,46 +561,19 @@ Module iter.
                         M.SubPointer.get_struct_record_field (|
                           self,
                           "core::iter::adapters::intersperse::Intersperse",
-                          "needs_sep"
+                          "started"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::intersperse::Intersperse",
+                          "next_item"
                         |)
                       |)
                     ]
                   |)
                 |)
-              |)))
-          | _, _, _ => M.impossible
-          end.
-        
-        (*
-            fn size_hint(&self) -> (usize, Option<usize>) {
-                intersperse_size_hint(&self.iter, self.needs_sep)
-            }
-        *)
-        Definition size_hint (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self I in
-          match ε, τ, α with
-          | [], [], [ self ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_function (|
-                  "core::iter::adapters::intersperse::intersperse_size_hint",
-                  [ Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ] ]
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::intersperse::Intersperse",
-                    "iter"
-                  |);
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::intersperse::Intersperse",
-                      "needs_sep"
-                    |)
-                  |)
-                ]
               |)))
           | _, _, _ => M.impossible
           end.
@@ -467,8 +588,8 @@ Module iter.
             [
               ("Item", InstanceField.Ty (_Item I));
               ("next", InstanceField.Method (next I));
-              ("fold", InstanceField.Method (fold I));
-              ("size_hint", InstanceField.Method (size_hint I))
+              ("size_hint", InstanceField.Method (size_hint I));
+              ("fold", InstanceField.Method (fold I))
             ].
       End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
       
@@ -479,22 +600,37 @@ Module iter.
           ty_params := [ "I"; "G" ];
           fields :=
             [
+              ("started", Ty.path "bool");
               ("separator", G);
-              ("iter", Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ]);
-              ("needs_sep", Ty.path "bool")
+              ("next_item", Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ]);
+              ("iter", Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ])
             ];
         } *)
+      
+      Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_ops_function_FnMut_G_Tuple__for_core_iter_adapters_intersperse_IntersperseWith_I_G.
+        Definition Self (I G : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::intersperse::IntersperseWith") [] [ I; G ].
+        
+        Axiom Implements :
+          forall (I G : Ty.t),
+          M.IsTraitInstance
+            "core::iter::traits::marker::FusedIterator"
+            (Self I G)
+            (* Trait polymorphic types *) []
+            (* Instance *) [].
+      End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_ops_function_FnMut_G_Tuple__for_core_iter_adapters_intersperse_IntersperseWith_I_G.
       
       Module Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_G_for_core_iter_adapters_intersperse_IntersperseWith_I_G.
         Definition Self (I G : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::intersperse::IntersperseWith") [] [ I; G ].
         
         (*
-            fn fmt(&self, f: &mut crate::fmt::Formatter<'_>) -> crate::fmt::Result {
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 f.debug_struct("IntersperseWith")
+                    .field("started", &self.started)
                     .field("separator", &self.separator)
                     .field("iter", &self.iter)
-                    .field("needs_sep", &self.needs_sep)
+                    .field("next_item", &self.next_item)
                     .finish()
             }
         *)
@@ -533,44 +669,54 @@ Module iter.
                               []
                             |),
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::Formatter",
-                                    "debug_struct",
-                                    []
-                                  |),
-                                  [ M.read (| f |); M.read (| Value.String "IntersperseWith" |) ]
-                                |)
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::builders::DebugStruct",
+                                  "field",
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::Formatter",
+                                        "debug_struct",
+                                        []
+                                      |),
+                                      [ M.read (| f |); M.read (| Value.String "IntersperseWith" |)
+                                      ]
+                                    |)
+                                  |);
+                                  M.read (| Value.String "started" |);
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::intersperse::IntersperseWith",
+                                    "started"
+                                  |)
+                                ]
                               |);
                               M.read (| Value.String "separator" |);
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::intersperse::IntersperseWith",
-                                  "separator"
-                                |))
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::intersperse::IntersperseWith",
+                                "separator"
+                              |)
                             ]
                           |);
                           M.read (| Value.String "iter" |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::intersperse::IntersperseWith",
-                              "iter"
-                            |))
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::intersperse::IntersperseWith",
+                            "iter"
+                          |)
                         ]
                       |);
-                      M.read (| Value.String "needs_sep" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::IntersperseWith",
-                          "needs_sep"
-                        |))
+                      M.read (| Value.String "next_item" |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::intersperse::IntersperseWith",
+                        "next_item"
+                      |)
                     ]
                   |)
                 ]
@@ -593,10 +739,11 @@ Module iter.
         
         (*
             fn clone(&self) -> Self {
-                IntersperseWith {
+                Self {
+                    started: self.started,
                     separator: self.separator.clone(),
                     iter: self.iter.clone(),
-                    needs_sep: self.needs_sep.clone(),
+                    next_item: self.next_item.clone(),
                 }
             }
         *)
@@ -609,6 +756,14 @@ Module iter.
               Value.StructRecord
                 "core::iter::adapters::intersperse::IntersperseWith"
                 [
+                  ("started",
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::intersperse::IntersperseWith",
+                        "started"
+                      |)
+                    |));
                   ("separator",
                     M.call_closure (|
                       M.get_trait_method (| "core::clone::Clone", G, [], "clone", [] |),
@@ -624,7 +779,7 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::clone::Clone",
-                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ],
+                        Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
                         [],
                         "clone",
                         []
@@ -637,11 +792,11 @@ Module iter.
                         |)
                       ]
                     |));
-                  ("needs_sep",
+                  ("next_item",
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::clone::Clone",
-                        Ty.path "bool",
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                         [],
                         "clone",
                         []
@@ -650,7 +805,7 @@ Module iter.
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::intersperse::IntersperseWith",
-                          "needs_sep"
+                          "next_item"
                         |)
                       ]
                     |))
@@ -673,7 +828,7 @@ Module iter.
         
         (*
             pub(in crate::iter) fn new(iter: I, separator: G) -> Self {
-                Self { iter: iter.peekable(), separator, needs_sep: false }
+                Self { started: false, separator, next_item: None, iter: iter.fuse() }
             }
         *)
         Definition new (I G : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -686,19 +841,20 @@ Module iter.
               Value.StructRecord
                 "core::iter::adapters::intersperse::IntersperseWith"
                 [
+                  ("started", Value.Bool false);
+                  ("separator", M.read (| separator |));
+                  ("next_item", Value.StructTuple "core::option::Option::None" []);
                   ("iter",
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
-                        "peekable",
+                        "fuse",
                         []
                       |),
                       [ M.read (| iter |) ]
-                    |));
-                  ("separator", M.read (| separator |));
-                  ("needs_sep", Value.Bool false)
+                    |))
                 ]))
           | _, _, _ => M.impossible
           end.
@@ -716,12 +872,21 @@ Module iter.
         Definition _Item (I G : Ty.t) : Ty.t := Ty.associated.
         
         (*
-            fn next(&mut self) -> Option<I::Item> {
-                if self.needs_sep && self.iter.peek().is_some() {
-                    self.needs_sep = false;
-                    Some((self.separator)())
+            fn next(&mut self) -> Option<Self::Item> {
+                if self.started {
+                    if let Some(v) = self.next_item.take() {
+                        Some(v)
+                    } else {
+                        let next_item = self.iter.next();
+                        if next_item.is_some() {
+                            self.next_item = next_item;
+                            Some((self.separator)())
+                        } else {
+                            None
+                        }
+                    }
                 } else {
-                    self.needs_sep = true;
+                    self.started = true;
                     self.iter.next()
                 }
             }
@@ -740,82 +905,137 @@ Module iter.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              LogicalOp.and (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::intersperse::IntersperseWith",
-                                    "needs_sep"
-                                  |)
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
-                                      "is_some",
-                                      []
-                                    |),
-                                    [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::iter::adapters::peekable::Peekable")
-                                              []
-                                              [ I ],
-                                            "peek",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::iter::adapters::intersperse::IntersperseWith",
-                                              "iter"
-                                            |)
-                                          ]
-                                        |)
-                                      |)
-                                    ]
-                                  |)))
-                              |)
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::IntersperseWith",
+                              "started"
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
-                          M.write (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::intersperse::IntersperseWith",
-                              "needs_sep"
-                            |),
-                            Value.Bool false
-                          |) in
-                        M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::function::FnMut",
-                                  G,
-                                  [ Ty.tuple [] ],
-                                  "call_mut",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::intersperse::IntersperseWith",
-                                    "separator"
-                                  |);
-                                  Value.Tuple []
-                                ]
-                              |)
-                            ]
+                        M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.associated ],
+                                        "take",
+                                        []
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::iter::adapters::intersperse::IntersperseWith",
+                                          "next_item"
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::option::Option::Some",
+                                    0
+                                  |) in
+                                let v := M.copy (| γ0_0 |) in
+                                M.alloc (|
+                                  Value.StructTuple "core::option::Option::Some" [ M.read (| v |) ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let~ next_item :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::iter::adapters::fuse::Fuse")
+                                          []
+                                          [ I ],
+                                        [],
+                                        "next",
+                                        []
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::iter::adapters::intersperse::IntersperseWith",
+                                          "iter"
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                M.match_operator (|
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.associated ],
+                                                  "is_some",
+                                                  []
+                                                |),
+                                                [ next_item ]
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ _ :=
+                                          M.write (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::iter::adapters::intersperse::IntersperseWith",
+                                              "next_item"
+                                            |),
+                                            M.read (| next_item |)
+                                          |) in
+                                        M.alloc (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            [
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  G,
+                                                  [ Ty.tuple [] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::iter::adapters::intersperse::IntersperseWith",
+                                                    "separator"
+                                                  |);
+                                                  Value.Tuple []
+                                                ]
+                                              |)
+                                            ]
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (|
+                                          Value.StructTuple "core::option::Option::None" []
+                                        |)))
+                                  ]
+                                |)))
+                          ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -824,7 +1044,7 @@ Module iter.
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::intersperse::IntersperseWith",
-                              "needs_sep"
+                              "started"
                             |),
                             Value.Bool true
                           |) in
@@ -832,10 +1052,7 @@ Module iter.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::peekable::Peekable")
-                                []
-                                [ I ],
+                              Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
                               [],
                               "next",
                               []
@@ -856,12 +1073,65 @@ Module iter.
           end.
         
         (*
+            fn size_hint(&self) -> (usize, Option<usize>) {
+                intersperse_size_hint(&self.iter, self.started, self.next_item.is_some())
+            }
+        *)
+        Definition size_hint
+            (I G : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self I G in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_function (|
+                  "core::iter::adapters::intersperse::intersperse_size_hint",
+                  [ Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ] ]
+                |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::intersperse::IntersperseWith",
+                    "iter"
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::intersperse::IntersperseWith",
+                      "started"
+                    |)
+                  |);
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                      "is_some",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::intersperse::IntersperseWith",
+                        "next_item"
+                      |)
+                    ]
+                  |)
+                ]
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        (*
             fn fold<B, F>(self, init: B, f: F) -> B
             where
                 Self: Sized,
                 F: FnMut(B, Self::Item) -> B,
             {
-                intersperse_fold(self.iter, init, f, self.separator, self.needs_sep)
+                intersperse_fold(self.iter, init, f, self.separator, self.started, self.next_item)
             }
         *)
         Definition fold (I G : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -875,8 +1145,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::intersperse::intersperse_fold",
-                  [ Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ]; B; F; G
-                  ]
+                  [ Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ]; B; F; G ]
                 |),
                 [
                   M.read (|
@@ -899,46 +1168,14 @@ Module iter.
                     M.SubPointer.get_struct_record_field (|
                       self,
                       "core::iter::adapters::intersperse::IntersperseWith",
-                      "needs_sep"
+                      "started"
                     |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible
-          end.
-        
-        (*
-            fn size_hint(&self) -> (usize, Option<usize>) {
-                intersperse_size_hint(&self.iter, self.needs_sep)
-            }
-        *)
-        Definition size_hint
-            (I G : Ty.t)
-            (ε : list Value.t)
-            (τ : list Ty.t)
-            (α : list Value.t)
-            : M :=
-          let Self : Ty.t := Self I G in
-          match ε, τ, α with
-          | [], [], [ self ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_function (|
-                  "core::iter::adapters::intersperse::intersperse_size_hint",
-                  [ Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ] ]
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::intersperse::IntersperseWith",
-                    "iter"
                   |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      self,
                       "core::iter::adapters::intersperse::IntersperseWith",
-                      "needs_sep"
+                      "next_item"
                     |)
                   |)
                 ]
@@ -956,30 +1193,36 @@ Module iter.
             [
               ("Item", InstanceField.Ty (_Item I G));
               ("next", InstanceField.Method (next I G));
-              ("fold", InstanceField.Method (fold I G));
-              ("size_hint", InstanceField.Method (size_hint I G))
+              ("size_hint", InstanceField.Method (size_hint I G));
+              ("fold", InstanceField.Method (fold I G))
             ].
       End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_G_Tuple__for_core_iter_adapters_intersperse_IntersperseWith_I_G.
       
       (*
-      fn intersperse_size_hint<I>(iter: &I, needs_sep: bool) -> (usize, Option<usize>)
+      fn intersperse_size_hint<I>(iter: &I, started: bool, next_is_some: bool) -> (usize, Option<usize>)
       where
           I: Iterator,
       {
           let (lo, hi) = iter.size_hint();
-          let next_is_elem = !needs_sep;
           (
-              lo.saturating_sub(next_is_elem as usize).saturating_add(lo),
-              hi.and_then(|hi| hi.saturating_sub(next_is_elem as usize).checked_add(hi)),
+              lo.saturating_sub(!started as usize)
+                  .saturating_add(next_is_some as usize)
+                  .saturating_add(lo),
+              hi.and_then(|hi| {
+                  hi.saturating_sub(!started as usize)
+                      .saturating_add(next_is_some as usize)
+                      .checked_add(hi)
+              }),
           )
       }
       *)
       Definition intersperse_size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [ _ as I ], [ iter; needs_sep ] =>
+        | [], [ _ as I ], [ iter; started; next_is_some ] =>
           ltac:(M.monadic
             (let iter := M.alloc (| iter |) in
-            let needs_sep := M.alloc (| needs_sep |) in
+            let started := M.alloc (| started |) in
+            let next_is_some := M.alloc (| next_is_some |) in
             M.read (|
               M.match_operator (|
                 M.alloc (|
@@ -1001,7 +1244,6 @@ Module iter.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let lo := M.copy (| γ0_0 |) in
                       let hi := M.copy (| γ0_1 |) in
-                      let~ next_is_elem := M.alloc (| UnOp.Pure.not (M.read (| needs_sep |)) |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -1011,10 +1253,23 @@ Module iter.
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "usize",
-                                    "saturating_sub",
+                                    "saturating_add",
                                     []
                                   |),
-                                  [ M.read (| lo |); M.rust_cast (M.read (| next_is_elem |)) ]
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "usize",
+                                        "saturating_sub",
+                                        []
+                                      |),
+                                      [
+                                        M.read (| lo |);
+                                        M.rust_cast (UnOp.Pure.not (M.read (| started |)))
+                                      ]
+                                    |);
+                                    M.rust_cast (M.read (| next_is_some |))
+                                  ]
                                 |);
                                 M.read (| lo |)
                               ]
@@ -1056,12 +1311,23 @@ Module iter.
                                                     M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.path "usize",
-                                                        "saturating_sub",
+                                                        "saturating_add",
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| hi |);
-                                                        M.rust_cast (M.read (| next_is_elem |))
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "usize",
+                                                            "saturating_sub",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| hi |);
+                                                            M.rust_cast
+                                                              (UnOp.Pure.not (M.read (| started |)))
+                                                          ]
+                                                        |);
+                                                        M.rust_cast (M.read (| next_is_some |))
                                                       ]
                                                     |);
                                                     M.read (| hi |)
@@ -1092,7 +1358,8 @@ Module iter.
           init: B,
           mut f: F,
           mut separator: G,
-          needs_sep: bool,
+          started: bool,
+          mut next_item: Option<I::Item>,
       ) -> B
       where
           I: Iterator,
@@ -1101,12 +1368,9 @@ Module iter.
       {
           let mut accum = init;
       
-          if !needs_sep {
-              if let Some(x) = iter.next() {
-                  accum = f(accum, x);
-              } else {
-                  return accum;
-              }
+          let first = if started { next_item.take() } else { iter.next() };
+          if let Some(x) = first {
+              accum = f(accum, x);
           }
       
           iter.fold(accum, |mut accum, x| {
@@ -1118,169 +1382,174 @@ Module iter.
       *)
       Definition intersperse_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [ _ as I; B; F; G ], [ iter; init; f; separator; needs_sep ] =>
+        | [], [ _ as I; B; F; G ], [ iter; init; f; separator; started; next_item ] =>
           ltac:(M.monadic
             (let iter := M.alloc (| iter |) in
             let init := M.alloc (| init |) in
             let f := M.alloc (| f |) in
             let separator := M.alloc (| separator |) in
-            let needs_sep := M.alloc (| needs_sep |) in
-            M.catch_return (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ accum := M.copy (| init |) in
-                  let~ _ :=
-                    M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use (M.alloc (| UnOp.Pure.not (M.read (| needs_sep |)) |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+            let started := M.alloc (| started |) in
+            let next_item := M.alloc (| next_item |) in
+            M.read (|
+              let~ accum := M.copy (| init |) in
+              let~ first :=
+                M.copy (|
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.use started in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                                "take",
+                                []
+                              |),
+                              [ next_item ]
+                            |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::iter::traits::iterator::Iterator",
+                                I,
+                                [],
+                                "next",
+                                []
+                              |),
+                              [ iter ]
+                            |)
+                          |)))
+                    ]
+                  |)
+                |) in
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := first in
+                        let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::option::Option::Some",
+                            0
+                          |) in
+                        let x := M.copy (| γ0_0 |) in
+                        let~ _ :=
+                          M.write (|
+                            accum,
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::function::FnMut",
+                                F,
+                                [ Ty.tuple [ B; Ty.associated ] ],
+                                "call_mut",
+                                []
+                              |),
+                              [ f; Value.Tuple [ M.read (| accum |); M.read (| x |) ] ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::iter::traits::iterator::Iterator",
+                    I,
+                    [],
+                    "fold",
+                    [ B; Ty.function [ Ty.tuple [ B; Ty.associated ] ] B ]
+                  |),
+                  [
+                    M.read (| iter |);
+                    M.read (| accum |);
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0; α1 ] =>
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ :=
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::iter::traits::iterator::Iterator",
-                                            I,
-                                            [],
-                                            "next",
-                                            []
-                                          |),
-                                          [ iter ]
-                                        |)
-                                      |) in
-                                    let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::option::Option::Some",
-                                        0
-                                      |) in
-                                    let x := M.copy (| γ0_0 |) in
-                                    let~ _ :=
-                                      M.write (|
-                                        accum,
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::function::FnMut",
-                                            F,
-                                            [ Ty.tuple [ B; Ty.associated ] ],
-                                            "call_mut",
-                                            []
-                                          |),
-                                          [ f; Value.Tuple [ M.read (| accum |); M.read (| x |) ] ]
-                                        |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (| M.return_ (| M.read (| accum |) |) |)
-                                      |)
+                                    (let accum := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let x := M.copy (| γ |) in
+                                            M.read (|
+                                              let~ _ :=
+                                                M.write (|
+                                                  accum,
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::function::FnMut",
+                                                      F,
+                                                      [ Ty.tuple [ B; Ty.associated ] ],
+                                                      "call_mut",
+                                                      []
+                                                    |),
+                                                    [
+                                                      f;
+                                                      Value.Tuple
+                                                        [
+                                                          M.read (| accum |);
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::function::FnMut",
+                                                              G,
+                                                              [ Ty.tuple [] ],
+                                                              "call_mut",
+                                                              []
+                                                            |),
+                                                            [ separator; Value.Tuple [] ]
+                                                          |)
+                                                        ]
+                                                    ]
+                                                  |)
+                                                |) in
+                                              let~ _ :=
+                                                M.write (|
+                                                  accum,
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::function::FnMut",
+                                                      F,
+                                                      [ Ty.tuple [ B; Ty.associated ] ],
+                                                      "call_mut",
+                                                      []
+                                                    |),
+                                                    [
+                                                      f;
+                                                      Value.Tuple
+                                                        [ M.read (| accum |); M.read (| x |) ]
+                                                    ]
+                                                  |)
+                                                |) in
+                                              accum
+                                            |)))
+                                      ]
                                     |)))
                               ]
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        I,
-                        [],
-                        "fold",
-                        [ B; Ty.function [ Ty.tuple [ B; Ty.associated ] ] B ]
-                      |),
-                      [
-                        M.read (| iter |);
-                        M.read (| accum |);
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [ α0; α1 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let accum := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let x := M.copy (| γ |) in
-                                                M.read (|
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      accum,
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::function::FnMut",
-                                                          F,
-                                                          [ Ty.tuple [ B; Ty.associated ] ],
-                                                          "call_mut",
-                                                          []
-                                                        |),
-                                                        [
-                                                          f;
-                                                          Value.Tuple
-                                                            [
-                                                              M.read (| accum |);
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::ops::function::FnMut",
-                                                                  G,
-                                                                  [ Ty.tuple [] ],
-                                                                  "call_mut",
-                                                                  []
-                                                                |),
-                                                                [ separator; Value.Tuple [] ]
-                                                              |)
-                                                            ]
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      accum,
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::function::FnMut",
-                                                          F,
-                                                          [ Ty.tuple [ B; Ty.associated ] ],
-                                                          "call_mut",
-                                                          []
-                                                        |),
-                                                        [
-                                                          f;
-                                                          Value.Tuple
-                                                            [ M.read (| accum |); M.read (| x |) ]
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  accum
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
-                              end))
-                      ]
-                    |)
-                  |)
-                |)))
+                            |)
+                          | _ => M.impossible (||)
+                          end))
+                  ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible
         end.

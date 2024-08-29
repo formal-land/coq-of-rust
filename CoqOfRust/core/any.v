@@ -124,13 +124,13 @@ Module any.
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
   
-  Module Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
+  Module Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
     Definition Self : Ty.t :=
       Ty.dyn
         [
           ("core::any::Any::Trait", []);
-          ("core::marker::Sync::AutoTrait", []);
-          ("core::marker::Send::AutoTrait", [])
+          ("core::marker::Send::AutoTrait", []);
+          ("core::marker::Sync::AutoTrait", [])
         ].
     
     (*
@@ -172,7 +172,7 @@ Module any.
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-  End Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
+  End Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
   
   Module Impl_Dyn_core_any_Any_Trait.
     Definition Self : Ty.t := Ty.dyn [ ("core::any::Any::Trait", []) ].
@@ -414,12 +414,7 @@ Module any.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            M.alloc (|
-              M.rust_cast
-                (M.read (|
-                  M.use (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |))
-                |))
-            |)
+            M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |)) |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -488,12 +483,7 @@ Module any.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            M.alloc (|
-              M.rust_cast
-                (M.read (|
-                  M.use (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |))
-                |))
-            |)
+            M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |)) |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -518,7 +508,7 @@ Module any.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -541,7 +531,7 @@ Module any.
               "downcast_ref",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -564,7 +554,7 @@ Module any.
               "downcast_mut",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -588,7 +578,7 @@ Module any.
               "downcast_ref_unchecked",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -613,7 +603,7 @@ Module any.
               "downcast_mut_unchecked",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -622,13 +612,13 @@ Module any.
       M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
   End Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
   
-  Module Impl_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
+  Module Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
     Definition Self : Ty.t :=
       Ty.dyn
         [
           ("core::any::Any::Trait", []);
-          ("core::marker::Sync::AutoTrait", []);
-          ("core::marker::Send::AutoTrait", [])
+          ("core::marker::Send::AutoTrait", []);
+          ("core::marker::Sync::AutoTrait", [])
         ].
     
     (*
@@ -643,7 +633,7 @@ Module any.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -666,7 +656,7 @@ Module any.
               "downcast_ref",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -689,7 +679,7 @@ Module any.
               "downcast_mut",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -713,7 +703,7 @@ Module any.
               "downcast_ref_unchecked",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -738,21 +728,21 @@ Module any.
               "downcast_mut_unchecked",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_mut_unchecked :
       M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
-  End Impl_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
+  End Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
   
   (* StructRecord
     {
       name := "TypeId";
       const_params := [];
       ty_params := [];
-      fields := [ ("t", Ty.path "u128") ];
+      fields := [ ("t", Ty.tuple [ Ty.path "u64"; Ty.path "u64" ]) ];
     } *)
   
   Module Impl_core_clone_Clone_for_core_any_TypeId.
@@ -791,59 +781,6 @@ Module any.
         (* Trait polymorphic types *) []
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_any_TypeId.
-  
-  Module Impl_core_fmt_Debug_for_core_any_TypeId.
-    Definition Self : Ty.t := Ty.path "core::any::TypeId".
-    
-    (* Debug *)
-    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; f ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.path "core::fmt::Formatter",
-              "debug_struct_field1_finish",
-              []
-            |),
-            [
-              M.read (| f |);
-              M.read (| Value.String "TypeId" |);
-              M.read (| Value.String "t" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::any::TypeId",
-                    "t"
-                  |)
-                |))
-            ]
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::fmt::Debug"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-  End Impl_core_fmt_Debug_for_core_any_TypeId.
-  
-  Module Impl_core_marker_StructuralEq_for_core_any_TypeId.
-    Definition Self : Ty.t := Ty.path "core::any::TypeId".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_core_any_TypeId.
   
   Module Impl_core_cmp_Eq_for_core_any_TypeId.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
@@ -889,8 +826,8 @@ Module any.
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.path "u128",
-              [ Ty.path "u128" ],
+              Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
+              [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ],
               "partial_cmp",
               []
             |),
@@ -929,7 +866,13 @@ Module any.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", Ty.path "u128", [], "cmp", [] |),
+            M.get_trait_method (|
+              "core::cmp::Ord",
+              Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
+              [],
+              "cmp",
+              []
+            |),
             [
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -968,17 +911,27 @@ Module any.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          BinOp.Pure.eq
-            (M.read (|
-              M.SubPointer.get_struct_record_field (| M.read (| self |), "core::any::TypeId", "t" |)
-            |))
-            (M.read (|
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::cmp::PartialEq",
+              Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
+              [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ],
+              "eq",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::any::TypeId",
+                "t"
+              |);
               M.SubPointer.get_struct_record_field (|
                 M.read (| other |),
                 "core::any::TypeId",
                 "t"
               |)
-            |))))
+            ]
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -996,24 +949,86 @@ Module any.
     (*
         pub const fn of<T: ?Sized + 'static>() -> TypeId {
             let t: u128 = intrinsics::type_id::<T>();
-            TypeId { t }
+    
+            let t1 = (t >> 64) as u64;
+            let t2 = t as u64;
+            TypeId { t: (t1, t2) }
         }
     *)
     Definition of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [ T ], [] =>
+      | [], [ T ], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ t :=
               M.alloc (|
                 M.call_closure (| M.get_function (| "core::intrinsics::type_id", [ T ] |), [] |)
               |) in
-            M.alloc (| Value.StructRecord "core::any::TypeId" [ ("t", M.read (| t |)) ] |)
+            let~ t1 :=
+              M.alloc (| M.rust_cast (BinOp.Wrap.shr (M.read (| t |)) (Value.Integer 64)) |) in
+            let~ t2 := M.alloc (| M.rust_cast (M.read (| t |)) |) in
+            M.alloc (|
+              Value.StructRecord
+                "core::any::TypeId"
+                [ ("t", Value.Tuple [ M.read (| t1 |); M.read (| t2 |) ]) ]
+            |)
           |)))
       | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_of : M.IsAssociatedFunction Self "of" of.
+    
+    (*
+        fn as_u128(self) -> u128 {
+            u128::from(self.t.0) << 64 | u128::from(self.t.1)
+        }
+    *)
+    Definition as_u128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          BinOp.Pure.bit_or
+            (BinOp.Wrap.shl
+              (M.call_closure (|
+                M.get_trait_method (|
+                  "core::convert::From",
+                  Ty.path "u128",
+                  [ Ty.path "u64" ],
+                  "from",
+                  []
+                |),
+                [
+                  M.read (|
+                    M.SubPointer.get_tuple_field (|
+                      M.SubPointer.get_struct_record_field (| self, "core::any::TypeId", "t" |),
+                      0
+                    |)
+                  |)
+                ]
+              |))
+              (Value.Integer 64))
+            (M.call_closure (|
+              M.get_trait_method (|
+                "core::convert::From",
+                Ty.path "u128",
+                [ Ty.path "u64" ],
+                "from",
+                []
+              |),
+              [
+                M.read (|
+                  M.SubPointer.get_tuple_field (|
+                    M.SubPointer.get_struct_record_field (| self, "core::any::TypeId", "t" |),
+                    1
+                  |)
+                |)
+              ]
+            |))))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_as_u128 : M.IsAssociatedFunction Self "as_u128" as_u128.
   End Impl_core_any_TypeId.
   
   Module Impl_core_hash_Hash_for_core_any_TypeId.
@@ -1033,7 +1048,7 @@ Module any.
             // - It is correct to do so -- only hashing a subset of `self` is still
             //   with an `Eq` implementation that considers the entire value, as
             //   ours does.
-            (self.t as u64).hash(state);
+            self.t.1.hash(state);
         }
     *)
     Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1048,15 +1063,13 @@ Module any.
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ H ] |),
                   [
-                    M.alloc (|
-                      M.rust_cast
-                        (M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::any::TypeId",
-                            "t"
-                          |)
-                        |))
+                    M.SubPointer.get_tuple_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::any::TypeId",
+                        "t"
+                      |),
+                      1
                     |);
                     M.read (| state |)
                   ]
@@ -1075,6 +1088,98 @@ Module any.
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_core_any_TypeId.
   
+  Module Impl_core_fmt_Debug_for_core_any_TypeId.
+    Definition Self : Ty.t := Ty.path "core::any::TypeId".
+    
+    (*
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+            write!(f, "TypeId({:#034x})", self.as_u128())
+        }
+    *)
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let f := M.alloc (| f |) in
+          M.call_closure (|
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            [
+              M.read (| f |);
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1_formatted",
+                  []
+                |),
+                [
+                  M.alloc (|
+                    Value.Array
+                      [ M.read (| Value.String "TypeId(" |); M.read (| Value.String ")" |) ]
+                  |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_lower_hex",
+                            [ Ty.path "u128" ]
+                          |),
+                          [
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::any::TypeId",
+                                  "as_u128",
+                                  []
+                                |),
+                                [ M.read (| M.read (| self |) |) ]
+                              |)
+                            |)
+                          ]
+                        |)
+                      ]
+                  |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Placeholder",
+                            "new",
+                            []
+                          |),
+                          [
+                            Value.Integer 0;
+                            Value.UnicodeChar 32;
+                            Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                            Value.Integer 12;
+                            Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                            Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 34 ]
+                          ]
+                        |)
+                      ]
+                  |);
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::rt::UnsafeArg", "new", [] |),
+                    []
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::fmt::Debug"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+  End Impl_core_fmt_Debug_for_core_any_TypeId.
+  
   (*
   pub const fn type_name<T: ?Sized>() -> &'static str {
       intrinsics::type_name::<T>()
@@ -1082,7 +1187,7 @@ Module any.
   *)
   Definition type_name (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [] =>
+    | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::type_name", [ T ] |), [] |)))
     | _, _, _ => M.impossible
@@ -1097,7 +1202,7 @@ Module any.
   *)
   Definition type_name_of_val (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ _val ] =>
+    | [], [ T ], [ _val ] =>
       ltac:(M.monadic
         (let _val := M.alloc (| _val |) in
         M.call_closure (| M.get_function (| "core::any::type_name", [ T ] |), [] |)))

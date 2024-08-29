@@ -104,17 +104,6 @@ Module collections.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_alloc_collections_TryReserveError.
   
-  Module Impl_core_marker_StructuralEq_for_alloc_collections_TryReserveError.
-    Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveError".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_alloc_collections_TryReserveError.
-  
   Module Impl_core_cmp_Eq_for_alloc_collections_TryReserveError.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveError".
     
@@ -166,15 +155,13 @@ Module collections.
               M.read (| f |);
               M.read (| Value.String "TryReserveError" |);
               M.read (| Value.String "kind" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::TryReserveError",
-                    "kind"
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::collections::TryReserveError",
+                  "kind"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -354,7 +341,7 @@ Module collections.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -364,7 +351,7 @@ Module collections.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -376,7 +363,7 @@ Module collections.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -421,23 +408,31 @@ Module collections.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "core::alloc::layout::Layout",
-                                    [ Ty.path "core::alloc::layout::Layout" ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "core::alloc::layout::Layout" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "core::alloc::layout::Layout" ]
+                                    ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.tuple [],
-                                      [ Ty.tuple [] ],
+                                      Ty.apply (Ty.path "&") [] [ Ty.tuple [] ],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ],
                                       "eq",
                                       []
                                     |),
-                                    [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                    [ __self_1; __arg1_1 ]
                                   |)))
                               |)
                             |)));
@@ -458,17 +453,6 @@ Module collections.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_alloc_collections_TryReserveErrorKind.
-  
-  Module Impl_core_marker_StructuralEq_for_alloc_collections_TryReserveErrorKind.
-    Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveErrorKind".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_alloc_collections_TryReserveErrorKind.
   
   Module Impl_core_cmp_Eq_for_alloc_collections_TryReserveErrorKind.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveErrorKind".
@@ -568,9 +552,9 @@ Module collections.
                           M.read (| f |);
                           M.read (| Value.String "AllocError" |);
                           M.read (| Value.String "layout" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
+                          M.read (| __self_0 |);
                           M.read (| Value.String "non_exhaustive" |);
-                          (* Unsize *) M.pointer_coercion __self_1
+                          __self_1
                         ]
                       |)
                     |)))

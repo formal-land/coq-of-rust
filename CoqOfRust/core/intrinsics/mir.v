@@ -45,6 +45,14 @@ Module intrinsics.
     }
     *)
     
+    (* StructTuple
+      {
+        name := "UnwindActionArg";
+        const_params := [];
+        ty_params := [];
+        fields := [];
+      } *)
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindContinue (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
@@ -118,6 +126,31 @@ Module intrinsics.
     Axiom Function_value_UnwindCleanup :
       M.IsFunction "core::intrinsics::mir::UnwindCleanup" value_UnwindCleanup.
     
+    (* StructTuple
+      {
+        name := "ReturnToArg";
+        const_params := [];
+        ty_params := [];
+        fields := [];
+      } *)
+    
+    (*         pub fn $($sig)* { panic!() } *)
+    Definition value_ReturnTo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ goto ] =>
+        ltac:(M.monadic
+          (let goto := M.alloc (| goto |) in
+          M.never_to_any (|
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::mir::ReturnTo.panic_cold_explicit", [] |),
+              []
+            |)
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_value_ReturnTo : M.IsFunction "core::intrinsics::mir::ReturnTo" value_ReturnTo.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Return (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
@@ -171,7 +204,7 @@ Module intrinsics.
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [ T; U ], [ place; goto; unwind_action ] =>
+      | [], [ T ], [ place; goto; unwind_action ] =>
         ltac:(M.monadic
           (let place := M.alloc (| place |) in
           let goto := M.alloc (| goto |) in
@@ -190,7 +223,7 @@ Module intrinsics.
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [ U ], [ call; goto; unwind_action ] =>
+      | [], [], [ call; goto; unwind_action ] =>
         ltac:(M.monadic
           (let call := M.alloc (| call |) in
           let goto := M.alloc (| goto |) in
@@ -205,6 +238,23 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Call : M.IsFunction "core::intrinsics::mir::Call" value_Call.
+    
+    (*         pub fn $($sig)* { panic!() } *)
+    Definition value_TailCall (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ call ] =>
+        ltac:(M.monadic
+          (let call := M.alloc (| call |) in
+          M.never_to_any (|
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::mir::TailCall.panic_cold_explicit", [] |),
+              []
+            |)
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_value_TailCall : M.IsFunction "core::intrinsics::mir::TailCall" value_TailCall.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindResume (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -260,6 +310,23 @@ Module intrinsics.
       M.IsFunction "core::intrinsics::mir::StorageDead" value_StorageDead.
     
     (*         pub fn $($sig)* { panic!() } *)
+    Definition value_Assume (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ operand ] =>
+        ltac:(M.monadic
+          (let operand := M.alloc (| operand |) in
+          M.never_to_any (|
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::mir::Assume.panic_cold_explicit", [] |),
+              []
+            |)
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_value_Assume : M.IsFunction "core::intrinsics::mir::Assume" value_Assume.
+    
+    (*         pub fn $($sig)* { panic!() } *)
     Definition value_Deinit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [ T ], [ place ] =>
@@ -309,6 +376,24 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Len : M.IsFunction "core::intrinsics::mir::Len" value_Len.
+    
+    (*         pub fn $($sig)* { panic!() } *)
+    Definition value_PtrMetadata (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ P ], [ place ] =>
+        ltac:(M.monadic
+          (let place := M.alloc (| place |) in
+          M.never_to_any (|
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::mir::PtrMetadata.panic_cold_explicit", [] |),
+              []
+            |)
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_value_PtrMetadata :
+      M.IsFunction "core::intrinsics::mir::PtrMetadata" value_PtrMetadata.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_CopyForDeref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -505,6 +590,24 @@ Module intrinsics.
     
     Axiom Function_value_CastTransmute :
       M.IsFunction "core::intrinsics::mir::CastTransmute" value_CastTransmute.
+    
+    (*         pub fn $($sig)* { panic!() } *)
+    Definition value_CastPtrToPtr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T; U ], [ operand ] =>
+        ltac:(M.monadic
+          (let operand := M.alloc (| operand |) in
+          M.never_to_any (|
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::mir::CastPtrToPtr.panic_cold_explicit", [] |),
+              []
+            |)
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_value_CastPtrToPtr :
+      M.IsFunction "core::intrinsics::mir::CastPtrToPtr" value_CastPtrToPtr.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition __internal_make_place (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=

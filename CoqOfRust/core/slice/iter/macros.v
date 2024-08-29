@@ -7,6 +7,50 @@ Module slice.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ].
       
       (*
+                  unsafe fn next_back_unchecked(&mut self) -> $elem {
+                      // SAFETY: the caller promised it's not empty, so
+                      // the offsetting is in-bounds and there's an element to return.
+                      unsafe { self.pre_dec_end(1).$into_ref() }
+                  }
+      *)
+      Definition next_back_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                "as_ref",
+                []
+              |),
+              [
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                      "pre_dec_end",
+                      []
+                    |),
+                    [ M.read (| self |); Value.Integer 1 ]
+                  |)
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_next_back_unchecked :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "next_back_unchecked" (next_back_unchecked T).
+      
+      (*
                   fn make_slice(&self) -> &'a [T] {
                       // SAFETY: the iterator was created from a slice with pointer
                       // `self.ptr` and length `len!(self)`. This guarantees that all
@@ -132,7 +176,8 @@ Module slice.
                       // so this new pointer is inside `self` and thus guaranteed to be non-null.
                       unsafe {
                           if_zst!(mut self,
-                              len => *len = len.unchecked_sub(offset),
+                              // Using the intrinsic directly avoids emitting a UbCheck
+                              len => *len = crate::intrinsics::unchecked_sub( *len, offset),
                               _end => self.ptr = self.ptr.add(offset),
                           );
                       }
@@ -194,7 +239,10 @@ Module slice.
                           M.write (|
                             M.read (| len |),
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+                              M.get_function (|
+                                "core::intrinsics::unchecked_sub",
+                                [ Ty.path "usize" ]
+                              |),
                               [ M.read (| M.read (| len |) |); M.read (| offset |) ]
                             |)
                           |)));
@@ -262,7 +310,8 @@ Module slice.
                           // SAFETY: By our precondition, `offset` can be at most the
                           // current length, so the subtraction can never overflow.
                           len => unsafe {
-                              *len = len.unchecked_sub(offset);
+                              // Using the intrinsic directly avoids emitting a UbCheck
+                              *len = crate::intrinsics::unchecked_sub( *len, offset);
                               self.ptr
                           },
                           // SAFETY: the caller guarantees that `offset` doesn't exceed `self.len()`,
@@ -312,7 +361,10 @@ Module slice.
                         M.write (|
                           M.read (| len |),
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+                            M.get_function (|
+                              "core::intrinsics::unchecked_sub",
+                              [ Ty.path "usize" ]
+                            |),
                             [ M.read (| M.read (| len |) |); M.read (| offset |) ]
                           |)
                         |) in
@@ -562,13 +614,13 @@ Module slice.
                   fn next(&mut self) -> Option<$elem> {
                       // could be implemented with slices, but this avoids bounds checks
       
-                      // SAFETY: The call to `next_unchecked!` is
+                      // SAFETY: The call to `next_unchecked` is
                       // safe since we check if the iterator is empty first.
                       unsafe {
                           if is_empty!(self) {
                               None
                           } else {
-                              Some(next_unchecked!(self))
+                              Some(self.next_unchecked())
                           }
                       }
                   }
@@ -682,23 +734,14 @@ Module slice.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                "as_ref",
+                              M.get_trait_method (|
+                                "core::iter::traits::unchecked_iterator::UncheckedIterator",
+                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                                [],
+                                "next_unchecked",
                                 []
                               |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                                      "post_inc_start",
-                                      []
-                                    |),
-                                    [ M.read (| self |); Value.Integer 1 ]
-                                  |)
-                                |)
-                              ]
+                              [ M.read (| self |) ]
                             |)
                           ]
                       |)))
@@ -907,7 +950,7 @@ Module slice.
                       // SAFETY: We are in bounds. `post_inc_start` does the right thing even for ZSTs.
                       unsafe {
                           self.post_inc_start(n);
-                          Some(next_unchecked!(self))
+                          Some(self.next_unchecked())
                       }
                   }
       *)
@@ -1123,23 +1166,14 @@ Module slice.
                       "core::option::Option::Some"
                       [
                         M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                            "as_ref",
+                          M.get_trait_method (|
+                            "core::iter::traits::unchecked_iterator::UncheckedIterator",
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                            [],
+                            "next_unchecked",
                             []
                           |),
-                          [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                                  "post_inc_start",
-                                  []
-                                |),
-                                [ M.read (| self |); Value.Integer 1 ]
-                              |)
-                            |)
-                          ]
+                          [ M.read (| self |) ]
                         |)
                       ]
                   |)
@@ -1149,11 +1183,11 @@ Module slice.
         end.
       
       (*
-                  fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+                  fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                       let advance = cmp::min(len!(self), n);
                       // SAFETY: By construction, `advance` does not exceed `self.len()`.
                       unsafe { self.post_inc_start(advance) };
-                      NonZeroUsize::new(n - advance).map_or(Ok(()), Err)
+                      NonZero::new(n - advance).map_or(Ok(()), Err)
                   }
       *)
       Definition advance_by (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1271,25 +1305,31 @@ Module slice.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -2184,7 +2224,7 @@ Module slice.
                           if predicate(x) {
                               // SAFETY: we are guaranteed to be in bounds by the loop invariant:
                               // when `i >= n`, `self.next()` returns `None` and the loop breaks.
-                              unsafe { assume(i < n) };
+                              unsafe { assert_unchecked(i < n) };
                               return Some(i);
                           }
                           i += 1;
@@ -2343,7 +2383,7 @@ Module slice.
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       M.get_function (|
-                                                        "core::intrinsics::assume",
+                                                        "core::hint::assert_unchecked",
                                                         []
                                                       |),
                                                       [
@@ -2405,7 +2445,7 @@ Module slice.
                           if predicate(x) {
                               // SAFETY: `i` must be lower than `n` since it starts at `n`
                               // and is only decreasing.
-                              unsafe { assume(i < n) };
+                              unsafe { assert_unchecked(i < n) };
                               return Some(i);
                           }
                       }
@@ -2567,7 +2607,7 @@ Module slice.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_function (|
-                                                      "core::intrinsics::assume",
+                                                      "core::hint::assert_unchecked",
                                                       []
                                                     |),
                                                     [
@@ -2666,7 +2706,7 @@ Module slice.
           fn is_sorted_by<F>(self, mut compare: F) -> bool
           where
               Self: Sized,
-              F: FnMut(&Self::Item, &Self::Item) -> Option<Ordering>,
+              F: FnMut(&Self::Item, &Self::Item) -> bool,
           {
               self.as_slice().is_sorted_by(|a, b| compare(&a, &b))
           }
@@ -2691,7 +2731,7 @@ Module slice.
                   Ty.function
                     [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
                     ]
-                    (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ])
+                    (Ty.path "bool")
                 ]
               |),
               [
@@ -2788,13 +2828,13 @@ Module slice.
                   fn next_back(&mut self) -> Option<$elem> {
                       // could be implemented with slices, but this avoids bounds checks
       
-                      // SAFETY: The call to `next_back_unchecked!`
+                      // SAFETY: The call to `next_back_unchecked`
                       // is safe since we check if the iterator is empty first.
                       unsafe {
                           if is_empty!(self) {
                               None
                           } else {
-                              Some(next_back_unchecked!(self))
+                              Some(self.next_back_unchecked())
                           }
                       }
                   }
@@ -2909,22 +2949,11 @@ Module slice.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                "as_ref",
+                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                                "next_back_unchecked",
                                 []
                               |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                                      "pre_dec_end",
-                                      []
-                                    |),
-                                    [ M.read (| self |); Value.Integer 1 ]
-                                  |)
-                                |)
-                              ]
+                              [ M.read (| self |) ]
                             |)
                           ]
                       |)))
@@ -2947,7 +2976,7 @@ Module slice.
                       // SAFETY: We are in bounds. `pre_dec_end` does the right thing even for ZSTs.
                       unsafe {
                           self.pre_dec_end(n);
-                          Some(next_back_unchecked!(self))
+                          Some(self.next_back_unchecked())
                       }
                   }
       *)
@@ -3166,22 +3195,11 @@ Module slice.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                            "as_ref",
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                            "next_back_unchecked",
                             []
                           |),
-                          [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                                  "pre_dec_end",
-                                  []
-                                |),
-                                [ M.read (| self |); Value.Integer 1 ]
-                              |)
-                            |)
-                          ]
+                          [ M.read (| self |) ]
                         |)
                       ]
                   |)
@@ -3191,11 +3209,11 @@ Module slice.
         end.
       
       (*
-                  fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+                  fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                       let advance = cmp::min(len!(self), n);
                       // SAFETY: By construction, `advance` does not exceed `self.len()`.
                       unsafe { self.pre_dec_end(advance) };
-                      NonZeroUsize::new(n - advance).map_or(Ok(()), Err)
+                      NonZero::new(n - advance).map_or(Ok(()), Err)
                   }
       *)
       Definition advance_back_by
@@ -3318,25 +3336,31 @@ Module slice.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -3396,7 +3420,7 @@ Module slice.
                   unsafe fn next_unchecked(&mut self) -> $elem {
                       // SAFETY: The caller promised there's at least one more item.
                       unsafe {
-                          next_unchecked!(self)
+                          self.post_inc_start(1).$into_ref()
                       }
                   }
       *)
@@ -3479,6 +3503,50 @@ Module slice.
     
     Module Impl_core_slice_iter_IterMut_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ].
+      
+      (*
+                  unsafe fn next_back_unchecked(&mut self) -> $elem {
+                      // SAFETY: the caller promised it's not empty, so
+                      // the offsetting is in-bounds and there's an element to return.
+                      unsafe { self.pre_dec_end(1).$into_ref() }
+                  }
+      *)
+      Definition next_back_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                "as_mut",
+                []
+              |),
+              [
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                      "pre_dec_end",
+                      []
+                    |),
+                    [ M.read (| self |); Value.Integer 1 ]
+                  |)
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_next_back_unchecked :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "next_back_unchecked" (next_back_unchecked T).
       
       (*
                   fn make_slice(&self) -> &'a [T] {
@@ -3606,7 +3674,8 @@ Module slice.
                       // so this new pointer is inside `self` and thus guaranteed to be non-null.
                       unsafe {
                           if_zst!(mut self,
-                              len => *len = len.unchecked_sub(offset),
+                              // Using the intrinsic directly avoids emitting a UbCheck
+                              len => *len = crate::intrinsics::unchecked_sub( *len, offset),
                               _end => self.ptr = self.ptr.add(offset),
                           );
                       }
@@ -3668,7 +3737,10 @@ Module slice.
                           M.write (|
                             M.read (| len |),
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+                              M.get_function (|
+                                "core::intrinsics::unchecked_sub",
+                                [ Ty.path "usize" ]
+                              |),
                               [ M.read (| M.read (| len |) |); M.read (| offset |) ]
                             |)
                           |)));
@@ -3736,7 +3808,8 @@ Module slice.
                           // SAFETY: By our precondition, `offset` can be at most the
                           // current length, so the subtraction can never overflow.
                           len => unsafe {
-                              *len = len.unchecked_sub(offset);
+                              // Using the intrinsic directly avoids emitting a UbCheck
+                              *len = crate::intrinsics::unchecked_sub( *len, offset);
                               self.ptr
                           },
                           // SAFETY: the caller guarantees that `offset` doesn't exceed `self.len()`,
@@ -3786,7 +3859,10 @@ Module slice.
                         M.write (|
                           M.read (| len |),
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+                            M.get_function (|
+                              "core::intrinsics::unchecked_sub",
+                              [ Ty.path "usize" ]
+                            |),
                             [ M.read (| M.read (| len |) |); M.read (| offset |) ]
                           |)
                         |) in
@@ -4030,13 +4106,13 @@ Module slice.
                   fn next(&mut self) -> Option<$elem> {
                       // could be implemented with slices, but this avoids bounds checks
       
-                      // SAFETY: The call to `next_unchecked!` is
+                      // SAFETY: The call to `next_unchecked` is
                       // safe since we check if the iterator is empty first.
                       unsafe {
                           if is_empty!(self) {
                               None
                           } else {
-                              Some(next_unchecked!(self))
+                              Some(self.next_unchecked())
                           }
                       }
                   }
@@ -4150,23 +4226,14 @@ Module slice.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                "as_mut",
+                              M.get_trait_method (|
+                                "core::iter::traits::unchecked_iterator::UncheckedIterator",
+                                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                                [],
+                                "next_unchecked",
                                 []
                               |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                                      "post_inc_start",
-                                      []
-                                    |),
-                                    [ M.read (| self |); Value.Integer 1 ]
-                                  |)
-                                |)
-                              ]
+                              [ M.read (| self |) ]
                             |)
                           ]
                       |)))
@@ -4372,7 +4439,7 @@ Module slice.
                       // SAFETY: We are in bounds. `post_inc_start` does the right thing even for ZSTs.
                       unsafe {
                           self.post_inc_start(n);
-                          Some(next_unchecked!(self))
+                          Some(self.next_unchecked())
                       }
                   }
       *)
@@ -4588,23 +4655,14 @@ Module slice.
                       "core::option::Option::Some"
                       [
                         M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                            "as_mut",
+                          M.get_trait_method (|
+                            "core::iter::traits::unchecked_iterator::UncheckedIterator",
+                            Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                            [],
+                            "next_unchecked",
                             []
                           |),
-                          [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                                  "post_inc_start",
-                                  []
-                                |),
-                                [ M.read (| self |); Value.Integer 1 ]
-                              |)
-                            |)
-                          ]
+                          [ M.read (| self |) ]
                         |)
                       ]
                   |)
@@ -4614,11 +4672,11 @@ Module slice.
         end.
       
       (*
-                  fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+                  fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                       let advance = cmp::min(len!(self), n);
                       // SAFETY: By construction, `advance` does not exceed `self.len()`.
                       unsafe { self.post_inc_start(advance) };
-                      NonZeroUsize::new(n - advance).map_or(Ok(()), Err)
+                      NonZero::new(n - advance).map_or(Ok(()), Err)
                   }
       *)
       Definition advance_by (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4736,25 +4794,31 @@ Module slice.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -5652,7 +5716,7 @@ Module slice.
                           if predicate(x) {
                               // SAFETY: we are guaranteed to be in bounds by the loop invariant:
                               // when `i >= n`, `self.next()` returns `None` and the loop breaks.
-                              unsafe { assume(i < n) };
+                              unsafe { assert_unchecked(i < n) };
                               return Some(i);
                           }
                           i += 1;
@@ -5813,7 +5877,7 @@ Module slice.
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       M.get_function (|
-                                                        "core::intrinsics::assume",
+                                                        "core::hint::assert_unchecked",
                                                         []
                                                       |),
                                                       [
@@ -5875,7 +5939,7 @@ Module slice.
                           if predicate(x) {
                               // SAFETY: `i` must be lower than `n` since it starts at `n`
                               // and is only decreasing.
-                              unsafe { assume(i < n) };
+                              unsafe { assert_unchecked(i < n) };
                               return Some(i);
                           }
                       }
@@ -6037,7 +6101,7 @@ Module slice.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_function (|
-                                                      "core::intrinsics::assume",
+                                                      "core::hint::assert_unchecked",
                                                       []
                                                     |),
                                                     [
@@ -6166,13 +6230,13 @@ Module slice.
                   fn next_back(&mut self) -> Option<$elem> {
                       // could be implemented with slices, but this avoids bounds checks
       
-                      // SAFETY: The call to `next_back_unchecked!`
+                      // SAFETY: The call to `next_back_unchecked`
                       // is safe since we check if the iterator is empty first.
                       unsafe {
                           if is_empty!(self) {
                               None
                           } else {
-                              Some(next_back_unchecked!(self))
+                              Some(self.next_back_unchecked())
                           }
                       }
                   }
@@ -6287,22 +6351,11 @@ Module slice.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                "as_mut",
+                                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                                "next_back_unchecked",
                                 []
                               |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                                      "pre_dec_end",
-                                      []
-                                    |),
-                                    [ M.read (| self |); Value.Integer 1 ]
-                                  |)
-                                |)
-                              ]
+                              [ M.read (| self |) ]
                             |)
                           ]
                       |)))
@@ -6325,7 +6378,7 @@ Module slice.
                       // SAFETY: We are in bounds. `pre_dec_end` does the right thing even for ZSTs.
                       unsafe {
                           self.pre_dec_end(n);
-                          Some(next_back_unchecked!(self))
+                          Some(self.next_back_unchecked())
                       }
                   }
       *)
@@ -6544,22 +6597,11 @@ Module slice.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                            "as_mut",
+                            Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                            "next_back_unchecked",
                             []
                           |),
-                          [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                                  "pre_dec_end",
-                                  []
-                                |),
-                                [ M.read (| self |); Value.Integer 1 ]
-                              |)
-                            |)
-                          ]
+                          [ M.read (| self |) ]
                         |)
                       ]
                   |)
@@ -6569,11 +6611,11 @@ Module slice.
         end.
       
       (*
-                  fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+                  fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                       let advance = cmp::min(len!(self), n);
                       // SAFETY: By construction, `advance` does not exceed `self.len()`.
                       unsafe { self.pre_dec_end(advance) };
-                      NonZeroUsize::new(n - advance).map_or(Ok(()), Err)
+                      NonZero::new(n - advance).map_or(Ok(()), Err)
                   }
       *)
       Definition advance_back_by
@@ -6696,25 +6738,31 @@ Module slice.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -6774,7 +6822,7 @@ Module slice.
                   unsafe fn next_unchecked(&mut self) -> $elem {
                       // SAFETY: The caller promised there's at least one more item.
                       unsafe {
-                          next_unchecked!(self)
+                          self.post_inc_start(1).$into_ref()
                       }
                   }
       *)

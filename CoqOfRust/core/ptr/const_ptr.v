@@ -23,14 +23,14 @@ Module ptr.
                   }
               }
       
-              // SAFETY: The two versions are equivalent at runtime.
-              unsafe { const_eval_select((self as *const u8,), const_impl, runtime_impl) }
+              #[allow(unused_unsafe)]
+              const_eval_select((self as *const u8,), const_impl, runtime_impl)
           }
       *)
       Definition is_null (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -64,7 +64,7 @@ Module ptr.
       Definition cast (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [ U ], [ self ] =>
+        | [], [ U ], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| self |))))
@@ -91,12 +91,12 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [ U ], [ self; meta ] =>
+        | [], [ U ], [ self; meta ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let meta := M.alloc (| meta |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::metadata::from_raw_parts", [ U ] |),
+              M.get_function (| "core::ptr::metadata::from_raw_parts", [ U; Ty.tuple [] ] |),
               [
                 M.rust_cast (M.read (| self |));
                 M.call_closure (|
@@ -120,7 +120,7 @@ Module ptr.
       Definition cast_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| self |))))
@@ -130,50 +130,6 @@ Module ptr.
       Axiom AssociatedFunction_cast_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "cast_mut" (cast_mut T).
-      
-      (*
-          pub fn to_bits(self) -> usize
-          where
-              T: Sized,
-          {
-              self as usize
-          }
-      *)
-      Definition to_bits (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T in
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| self |))))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_to_bits :
-        forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "to_bits" (to_bits T).
-      
-      (*
-          pub fn from_bits(bits: usize) -> Self
-          where
-              T: Sized,
-          {
-              bits as Self
-          }
-      *)
-      Definition from_bits (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T in
-        match ε, τ, α with
-        | [], [], [ bits ] =>
-          ltac:(M.monadic
-            (let bits := M.alloc (| bits |) in
-            M.rust_cast (M.read (| bits |))))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_from_bits :
-        forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "from_bits" (from_bits T).
       
       (*
           pub fn addr(self) -> usize {
@@ -213,12 +169,17 @@ Module ptr.
         M.IsAssociatedFunction (Self T) "addr" (addr T).
       
       (*
-          pub fn expose_addr(self) -> usize {
+          pub fn expose_provenance(self) -> usize {
               // FIXME(strict_provenance_magic): I am magic and should be a compiler intrinsic.
               self.cast::<()>() as usize
           }
       *)
-      Definition expose_addr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition expose_provenance
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
         | [], [], [ self ] =>
@@ -236,9 +197,9 @@ Module ptr.
         | _, _, _ => M.impossible
         end.
       
-      Axiom AssociatedFunction_expose_addr :
+      Axiom AssociatedFunction_expose_provenance :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "expose_addr" (expose_addr T).
+        M.IsAssociatedFunction (Self T) "expose_provenance" (expose_provenance T).
       
       (*
           pub fn with_addr(self, addr: usize) -> Self {
@@ -362,7 +323,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple
@@ -397,7 +358,7 @@ Module ptr.
       Definition as_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -436,6 +397,31 @@ Module ptr.
         M.IsAssociatedFunction (Self T) "as_ref" (as_ref T).
       
       (*
+          pub const unsafe fn as_ref_unchecked<'a>(self) -> &'a T {
+              // SAFETY: the caller must guarantee that `self` is valid for a reference
+              unsafe { &*self }
+          }
+      *)
+      Definition as_ref_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (| self |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_as_ref_unchecked :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "as_ref_unchecked" (as_ref_unchecked T).
+      
+      (*
           pub const unsafe fn as_uninit_ref<'a>(self) -> Option<&'a MaybeUninit<T>>
           where
               T: Sized,
@@ -453,7 +439,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -505,7 +491,7 @@ Module ptr.
       Definition offset (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -532,7 +518,7 @@ Module ptr.
       Definition byte_offset (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -588,7 +574,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -616,7 +602,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -712,7 +698,7 @@ Module ptr.
       Definition offset_from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; origin ] =>
+        | [], [], [ self; origin ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
@@ -786,7 +772,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [ U ], [ self; origin ] =>
+        | [], [ U ], [ self; origin ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
@@ -827,15 +813,26 @@ Module ptr.
           where
               T: Sized,
           {
-              let this = self;
-              // SAFETY: The comparison has no side-effects, and the intrinsic
-              // does this check internally in the CTFE implementation.
-              unsafe {
-                  assert_unsafe_precondition!(
-                      "ptr::sub_ptr requires `this >= origin`",
-                      [T](this: *const T, origin: *const T) => this >= origin
-                  )
-              };
+              const fn runtime_ptr_ge(this: *const (), origin: *const ()) -> bool {
+                  fn runtime(this: *const (), origin: *const ()) -> bool {
+                      this >= origin
+                  }
+                  const fn comptime(_: *const (), _: *const ()) -> bool {
+                      true
+                  }
+      
+                  #[allow(unused_unsafe)]
+                  intrinsics::const_eval_select((this, origin), comptime, runtime)
+              }
+      
+              ub_checks::assert_unsafe_precondition!(
+                  check_language_ub,
+                  "ptr::sub_ptr requires `self >= origin`",
+                  (
+                      this: *const () = self as *const (),
+                      origin: *const () = origin as *const (),
+                  ) => runtime_ptr_ge(this, origin)
+              );
       
               let pointee_size = mem::size_of::<T>();
               assert!(0 < pointee_size && pointee_size <= isize::MAX as usize);
@@ -846,52 +843,36 @@ Module ptr.
       Definition sub_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; origin ] =>
+        | [], [], [ self; origin ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
             M.read (|
-              let~ this := M.copy (| self |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                                []
+                              |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (|
-                                "core::intrinsics::const_eval_select",
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply (Ty.path "*const") [] [ T ];
-                                      Ty.apply (Ty.path "*const") [] [ T ]
-                                    ];
-                                  Ty.function
-                                    [
-                                      Ty.apply (Ty.path "*const") [] [ T ];
-                                      Ty.apply (Ty.path "*const") [] [ T ]
-                                    ]
-                                    (Ty.tuple []);
-                                  Ty.function
-                                    [
-                                      Ty.apply (Ty.path "*const") [] [ T ];
-                                      Ty.apply (Ty.path "*const") [] [ T ]
-                                    ]
-                                    (Ty.tuple []);
-                                  Ty.tuple []
-                                ]
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.sub_ptr",
+                                []
                               |),
-                              [
-                                Value.Tuple [ M.read (| this |); M.read (| origin |) ];
-                                M.get_associated_function (| Self, "comptime.sub_ptr", [] |);
-                                M.get_associated_function (| Self, "runtime.sub_ptr", [] |)
-                              ]
+                              [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| origin |)) ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -972,7 +953,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; other ] =>
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1027,7 +1008,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; other ] =>
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1084,7 +1065,7 @@ Module ptr.
       Definition add (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1111,7 +1092,7 @@ Module ptr.
       Definition byte_add (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1162,14 +1143,14 @@ Module ptr.
                   // SAFETY: the caller must uphold the safety contract for `offset`.
                   // Because the pointee is *not* a ZST, that means that `count` is
                   // at most `isize::MAX`, and thus the negation cannot overflow.
-                  unsafe { self.offset(intrinsics::unchecked_sub(0, count as isize)) }
+                  unsafe { self.offset((count as isize).unchecked_neg()) }
               }
           }
       *)
       Definition sub (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1195,11 +1176,8 @@ Module ptr.
                           [
                             M.read (| self |);
                             M.call_closure (|
-                              M.get_function (|
-                                "core::intrinsics::unchecked_sub",
-                                [ Ty.path "isize" ]
-                              |),
-                              [ Value.Integer 0; M.rust_cast (M.read (| count |)) ]
+                              M.get_associated_function (| Ty.path "isize", "unchecked_neg", [] |),
+                              [ M.rust_cast (M.read (| count |)) ]
                             |)
                           ]
                         |)
@@ -1223,7 +1201,7 @@ Module ptr.
       Definition byte_sub (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1278,7 +1256,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1310,7 +1288,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1365,7 +1343,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1403,7 +1381,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1454,7 +1432,7 @@ Module ptr.
       Definition read (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1516,7 +1494,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1542,7 +1520,7 @@ Module ptr.
       Definition copy_to (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; dest; count ] =>
+        | [], [], [ self; dest; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dest := M.alloc (| dest |) in
@@ -1575,7 +1553,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; dest; count ] =>
+        | [], [], [ self; dest; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dest := M.alloc (| dest |) in
@@ -1620,7 +1598,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; align ] =>
+        | [], [], [ self; align ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
@@ -1658,17 +1636,14 @@ Module ptr.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "align_offset: align is not a power-of-two"
-                                            |)
-                                          ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String "align_offset: align is not a power-of-two"
+                                          |)
+                                        ]
+                                    |)
                                   ]
                                 |)
                               ]
@@ -1705,7 +1680,7 @@ Module ptr.
       Definition is_aligned (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1740,14 +1715,13 @@ Module ptr.
               #[inline]
               const fn const_impl(ptr: *const (), align: usize) -> bool {
                   // We can't use the address of `self` in a `const fn`, so we use `align_offset` instead.
-                  // The cast to `()` is used to
-                  //   1. deal with fat pointers; and
-                  //   2. ensure that `align_offset` doesn't actually try to compute an offset.
                   ptr.align_offset(align) == 0
               }
       
-              // SAFETY: The two versions are equivalent at runtime.
-              unsafe { const_eval_select((self.cast::<()>(), align), const_impl, runtime_impl) }
+              // The cast to `()` is used to
+              //   1. deal with fat pointers; and
+              //   2. ensure that `align_offset` (in `const_impl`) doesn't actually try to compute an offset.
+              const_eval_select((self.cast::<()>(), align), const_impl, runtime_impl)
           }
       *)
       Definition is_aligned_to
@@ -1758,7 +1732,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; align ] =>
+        | [], [], [ self; align ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
@@ -1796,17 +1770,15 @@ Module ptr.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "is_aligned_to: align is not a power-of-two"
-                                            |)
-                                          ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String
+                                              "is_aligned_to: align is not a power-of-two"
+                                          |)
+                                        ]
+                                    |)
                                   ]
                                 |)
                               ]
@@ -1870,7 +1842,7 @@ Module ptr.
       Definition len (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1895,7 +1867,7 @@ Module ptr.
       Definition is_empty (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
@@ -1923,7 +1895,7 @@ Module ptr.
       Definition as_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| self |))))
@@ -1990,7 +1962,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2055,6 +2027,61 @@ Module ptr.
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_uninit_slice" (as_uninit_slice T).
     End Impl_pointer_const_slice_T.
+    
+    Module Impl_pointer_const_array_N_T.
+      Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ].
+      
+      (*
+          pub const fn as_ptr(self) -> *const T {
+              self as *const T
+          }
+      *)
+      Definition as_ptr
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.rust_cast (M.read (| self |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_as_ptr :
+        forall (N : Value.t) (T : Ty.t),
+        M.IsAssociatedFunction (Self N T) "as_ptr" (as_ptr N T).
+      
+      (*
+          pub const fn as_slice(self) -> *const [T] {
+              self
+          }
+      *)
+      Definition as_slice
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (| self |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_as_slice :
+        forall (N : Value.t) (T : Ty.t),
+        M.IsAssociatedFunction (Self N T) "as_slice" (as_slice N T).
+    End Impl_pointer_const_array_N_T.
     
     Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_pointer_const_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].

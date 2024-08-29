@@ -18,7 +18,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ] ]);
               ("drain_len", Ty.path "usize");
               ("idx", Ty.path "usize");
-              ("tail_len", Ty.path "usize");
+              ("new_len", Ty.path "usize");
               ("remaining", Ty.path "usize");
               ("_marker",
                 Ty.apply
@@ -39,12 +39,12 @@ Module collections.
                 drain_len: usize,
             ) -> Self {
                 let orig_len = mem::replace(&mut deque.len, drain_start);
-                let tail_len = orig_len - drain_start - drain_len;
+                let new_len = orig_len - drain_len;
                 Drain {
                     deque: NonNull::from(deque),
                     drain_len,
                     idx: drain_start,
-                    tail_len,
+                    new_len,
                     remaining: drain_len,
                     _marker: PhantomData,
                 }
@@ -73,15 +73,9 @@ Module collections.
                       ]
                     |)
                   |) in
-                let~ tail_len :=
+                let~ new_len :=
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (BinOp.Wrap.sub
-                        Integer.Usize
-                        (M.read (| orig_len |))
-                        (M.read (| drain_start |)))
-                      (M.read (| drain_len |))
+                    BinOp.Wrap.sub Integer.Usize (M.read (| orig_len |)) (M.read (| drain_len |))
                   |) in
                 M.alloc (|
                   Value.StructRecord
@@ -118,7 +112,7 @@ Module collections.
                         |));
                       ("drain_len", M.read (| drain_len |));
                       ("idx", M.read (| drain_start |));
-                      ("tail_len", M.read (| tail_len |));
+                      ("new_len", M.read (| new_len |));
                       ("remaining", M.read (| drain_len |));
                       ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                     ]
@@ -299,7 +293,7 @@ Module collections.
                 f.debug_tuple("Drain")
                     .field(&self.drain_len)
                     .field(&self.idx)
-                    .field(&self.tail_len)
+                    .field(&self.new_len)
                     .field(&self.remaining)
                     .finish()
             }
@@ -356,40 +350,32 @@ Module collections.
                                       [ M.read (| f |); M.read (| Value.String "Drain" |) ]
                                     |)
                                   |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::vec_deque::drain::Drain",
-                                      "drain_len"
-                                    |))
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::collections::vec_deque::drain::Drain",
+                                    "drain_len"
+                                  |)
                                 ]
                               |);
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::drain::Drain",
-                                  "idx"
-                                |))
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::drain::Drain",
+                                "idx"
+                              |)
                             ]
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::vec_deque::drain::Drain",
-                              "tail_len"
-                            |))
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::vec_deque::drain::Drain",
+                            "new_len"
+                          |)
                         ]
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::drain::Drain",
-                          "remaining"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::drain::Drain",
+                        "remaining"
+                      |)
                     ]
                   |)
                 ]
@@ -440,70 +426,9 @@ Module collections.
             fn drop(&mut self) {
                 struct DropGuard<'r, 'a, T, A: Allocator>(&'r mut Drain<'a, T, A>);
         
-                impl<'r, 'a, T, A: Allocator> Drop for DropGuard<'r, 'a, T, A> {
-                    fn drop(&mut self) {
-                        if self.0.remaining != 0 {
-                            unsafe {
-                                // SAFETY: We just checked that `self.remaining != 0`.
-                                let (front, back) = self.0.as_slices();
-                                ptr::drop_in_place(front);
-                                ptr::drop_in_place(back);
-                            }
-                        }
-        
-                        let source_deque = unsafe { self.0.deque.as_mut() };
-        
-                        let drain_start = source_deque.len();
-                        let drain_len = self.0.drain_len;
-                        let drain_end = drain_start + drain_len;
-        
-                        let orig_len = self.0.tail_len + drain_end;
-        
-                        if T::IS_ZST {
-                            // no need to copy around any memory if T is a ZST
-                            source_deque.len = orig_len - drain_len;
-                            return;
-                        }
-        
-                        let head_len = drain_start;
-                        let tail_len = self.0.tail_len;
-        
-                        match (head_len, tail_len) {
-                            (0, 0) => {
-                                source_deque.head = 0;
-                                source_deque.len = 0;
-                            }
-                            (0, _) => {
-                                source_deque.head = source_deque.to_physical_idx(drain_len);
-                                source_deque.len = orig_len - drain_len;
-                            }
-                            (_, 0) => {
-                                source_deque.len = orig_len - drain_len;
-                            }
-                            _ => unsafe {
-                                if head_len <= tail_len {
-                                    source_deque.wrap_copy(
-                                        source_deque.head,
-                                        source_deque.to_physical_idx(drain_len),
-                                        head_len,
-                                    );
-                                    source_deque.head = source_deque.to_physical_idx(drain_len);
-                                    source_deque.len = orig_len - drain_len;
-                                } else {
-                                    source_deque.wrap_copy(
-                                        source_deque.to_physical_idx(head_len + drain_len),
-                                        source_deque.to_physical_idx(head_len),
-                                        tail_len,
-                                    );
-                                    source_deque.len = orig_len - drain_len;
-                                }
-                            },
-                        }
-                    }
-                }
-        
                 let guard = DropGuard(self);
-                if guard.0.remaining != 0 {
+        
+                if mem::needs_drop::<T>() && guard.0.remaining != 0 {
                     unsafe {
                         // SAFETY: We just checked that `self.remaining != 0`.
                         let (front, back) = guard.0.as_slices();
@@ -517,6 +442,125 @@ Module collections.
                 }
         
                 // Dropping `guard` handles moving the remaining elements into place.
+                impl<'r, 'a, T, A: Allocator> Drop for DropGuard<'r, 'a, T, A> {
+                    #[inline]
+                    fn drop(&mut self) {
+                        if mem::needs_drop::<T>() && self.0.remaining != 0 {
+                            unsafe {
+                                // SAFETY: We just checked that `self.remaining != 0`.
+                                let (front, back) = self.0.as_slices();
+                                ptr::drop_in_place(front);
+                                ptr::drop_in_place(back);
+                            }
+                        }
+        
+                        let source_deque = unsafe { self.0.deque.as_mut() };
+        
+                        let drain_len = self.0.drain_len;
+                        let new_len = self.0.new_len;
+        
+                        if T::IS_ZST {
+                            // no need to copy around any memory if T is a ZST
+                            source_deque.len = new_len;
+                            return;
+                        }
+        
+                        let head_len = source_deque.len; // #elements in front of the drain
+                        let tail_len = new_len - head_len; // #elements behind the drain
+        
+                        // Next, we will fill the hole left by the drain with as few writes as possible.
+                        // The code below handles the following control flow and reduces the amount of
+                        // branches under the assumption that `head_len == 0 || tail_len == 0`, i.e.
+                        // draining at the front or at the back of the dequeue is especially common.
+                        //
+                        // H = "head index" = `deque.head`
+                        // h = elements in front of the drain
+                        // d = elements in the drain
+                        // t = elements behind the drain
+                        //
+                        // Note that the buffer may wrap at any point and the wrapping is handled by
+                        // `wrap_copy` and `to_physical_idx`.
+                        //
+                        // Case 1: if `head_len == 0 && tail_len == 0`
+                        // Everything was drained, reset the head index back to 0.
+                        //             H
+                        // [ . . . . . d d d d . . . . . ]
+                        //   H
+                        // [ . . . . . . . . . . . . . . ]
+                        //
+                        // Case 2: else if `tail_len == 0`
+                        // Don't move data or the head index.
+                        //         H
+                        // [ . . . h h h h d d d d . . . ]
+                        //         H
+                        // [ . . . h h h h . . . . . . . ]
+                        //
+                        // Case 3: else if `head_len == 0`
+                        // Don't move data, but move the head index.
+                        //         H
+                        // [ . . . d d d d t t t t . . . ]
+                        //                 H
+                        // [ . . . . . . . t t t t . . . ]
+                        //
+                        // Case 4: else if `tail_len <= head_len`
+                        // Move data, but not the head index.
+                        //       H
+                        // [ . . h h h h d d d d t t . . ]
+                        //       H
+                        // [ . . h h h h t t . . . . . . ]
+                        //
+                        // Case 5: else
+                        // Move data and the head index.
+                        //       H
+                        // [ . . h h d d d d t t t t . . ]
+                        //               H
+                        // [ . . . . . . h h t t t t . . ]
+        
+                        // When draining at the front (`.drain(..n)`) or at the back (`.drain(n..)`),
+                        // we don't need to copy any data. The number of elements copied would be 0.
+                        if head_len != 0 && tail_len != 0 {
+                            join_head_and_tail_wrapping(source_deque, drain_len, head_len, tail_len);
+                            // Marking this function as cold helps LLVM to eliminate it entirely if
+                            // this branch is never taken.
+                            // We use `#[cold]` instead of `#[inline(never)]`, because inlining this
+                            // function into the general case (`.drain(n..m)`) is fine.
+                            // See `tests/codegen/vecdeque-drain.rs` for a test.
+                            #[cold]
+                            fn join_head_and_tail_wrapping<T, A: Allocator>(
+                                source_deque: &mut VecDeque<T, A>,
+                                drain_len: usize,
+                                head_len: usize,
+                                tail_len: usize,
+                            ) {
+                                // Pick whether to move the head or the tail here.
+                                let (src, dst, len);
+                                if head_len < tail_len {
+                                    src = source_deque.head;
+                                    dst = source_deque.to_physical_idx(drain_len);
+                                    len = head_len;
+                                } else {
+                                    src = source_deque.to_physical_idx(head_len + drain_len);
+                                    dst = source_deque.to_physical_idx(head_len);
+                                    len = tail_len;
+                                };
+        
+                                unsafe {
+                                    source_deque.wrap_copy(src, dst, len);
+                                }
+                            }
+                        }
+        
+                        if new_len == 0 {
+                            // Special case: If the entire dequeue was drained, reset the head back to 0,
+                            // like `.clear()` does.
+                            source_deque.head = 0;
+                        } else if head_len < tail_len {
+                            // If we moved the head above, then we need to adjust the head index here.
+                            source_deque.head = source_deque.to_physical_idx(drain_len);
+                        }
+                        source_deque.len = new_len;
+                    }
+                }
             }
         *)
         Definition drop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -532,162 +576,171 @@ Module collections.
                       "alloc::collections::vec_deque::drain::drop::DropGuard"
                       [ M.read (| self |) ]
                   |) in
-                M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.Pure.ne
-                                (M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        guard,
-                                        "alloc::collections::vec_deque::drain::drop::DropGuard",
-                                        0
-                                      |)
-                                    |),
-                                    "alloc::collections::vec_deque::drain::Drain",
-                                    "remaining"
-                                  |)
-                                |))
-                                (Value.Integer 0)
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.match_operator (|
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::collections::vec_deque::drain::Drain")
-                                  []
-                                  [ T; A ],
-                                "as_slices",
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    guard,
-                                    "alloc::collections::vec_deque::drain::drop::DropGuard",
-                                    0
-                                  |)
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                LogicalOp.and (|
+                                  M.call_closure (|
+                                    M.get_function (| "core::mem::needs_drop", [ T ] |),
+                                    []
+                                  |),
+                                  ltac:(M.monadic
+                                    (BinOp.Pure.ne
+                                      (M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              guard,
+                                              "alloc::collections::vec_deque::drain::drop::DropGuard",
+                                              0
+                                            |)
+                                          |),
+                                          "alloc::collections::vec_deque::drain::Drain",
+                                          "remaining"
+                                        |)
+                                      |))
+                                      (Value.Integer 0)))
                                 |)
-                              ]
-                            |)
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let front := M.copy (| γ0_0 |) in
-                                let back := M.copy (| γ0_1 |) in
-                                let~ _ :=
-                                  let β :=
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          guard,
-                                          "alloc::collections::vec_deque::drain::drop::DropGuard",
-                                          0
-                                        |)
-                                      |),
-                                      "alloc::collections::vec_deque::drain::Drain",
-                                      "idx"
-                                    |) in
-                                  M.write (|
-                                    β,
-                                    BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.read (| β |))
-                                      (M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "*mut")
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.match_operator (|
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::vec_deque::drain::Drain")
+                                    []
+                                    [ T; A ],
+                                  "as_slices",
+                                  []
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      guard,
+                                      "alloc::collections::vec_deque::drain::drop::DropGuard",
+                                      0
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let front := M.copy (| γ0_0 |) in
+                                  let back := M.copy (| γ0_1 |) in
+                                  let~ _ :=
+                                    let β :=
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            guard,
+                                            "alloc::collections::vec_deque::drain::drop::DropGuard",
+                                            0
+                                          |)
+                                        |),
+                                        "alloc::collections::vec_deque::drain::Drain",
+                                        "idx"
+                                      |) in
+                                    M.write (|
+                                      β,
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| β |))
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "*mut")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            "len",
                                             []
-                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                          "len",
-                                          []
+                                          |),
+                                          [ M.read (| front |) ]
+                                        |))
+                                    |) in
+                                  let~ _ :=
+                                    let β :=
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            guard,
+                                            "alloc::collections::vec_deque::drain::drop::DropGuard",
+                                            0
+                                          |)
+                                        |),
+                                        "alloc::collections::vec_deque::drain::Drain",
+                                        "remaining"
+                                      |) in
+                                    M.write (|
+                                      β,
+                                      BinOp.Wrap.sub
+                                        Integer.Usize
+                                        (M.read (| β |))
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "*mut")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            "len",
+                                            []
+                                          |),
+                                          [ M.read (| front |) ]
+                                        |))
+                                    |) in
+                                  let~ _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "core::ptr::drop_in_place",
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                         |),
                                         [ M.read (| front |) ]
-                                      |))
-                                  |) in
-                                let~ _ :=
-                                  let β :=
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          guard,
-                                          "alloc::collections::vec_deque::drain::drop::DropGuard",
-                                          0
-                                        |)
-                                      |),
-                                      "alloc::collections::vec_deque::drain::Drain",
-                                      "remaining"
+                                      |)
                                     |) in
-                                  M.write (|
-                                    β,
-                                    BinOp.Wrap.sub
-                                      Integer.Usize
-                                      (M.read (| β |))
-                                      (M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "*mut")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                          "len",
-                                          []
+                                  let~ _ :=
+                                    M.write (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            guard,
+                                            "alloc::collections::vec_deque::drain::drop::DropGuard",
+                                            0
+                                          |)
                                         |),
-                                        [ M.read (| front |) ]
-                                      |))
-                                  |) in
-                                let~ _ :=
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::ptr::drop_in_place",
-                                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                        "alloc::collections::vec_deque::drain::Drain",
+                                        "remaining"
                                       |),
-                                      [ M.read (| front |) ]
-                                    |)
-                                  |) in
-                                let~ _ :=
-                                  M.write (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          guard,
-                                          "alloc::collections::vec_deque::drain::drop::DropGuard",
-                                          0
-                                        |)
-                                      |),
-                                      "alloc::collections::vec_deque::drain::Drain",
-                                      "remaining"
-                                    |),
-                                    Value.Integer 0
-                                  |) in
-                                let~ _ :=
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::ptr::drop_in_place",
-                                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                      |),
-                                      [ M.read (| back |) ]
-                                    |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
-                |)
+                                      Value.Integer 0
+                                    |) in
+                                  let~ _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "core::ptr::drop_in_place",
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                        |),
+                                        [ M.read (| back |) ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |) in
+                M.alloc (| Value.Tuple [] |)
               |)))
           | _, _, _ => M.impossible
           end.

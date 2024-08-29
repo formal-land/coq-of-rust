@@ -9,7 +9,7 @@ Module convert.
   *)
   Definition identity (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ x ] =>
+    | [], [ T ], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.read (| x |)))

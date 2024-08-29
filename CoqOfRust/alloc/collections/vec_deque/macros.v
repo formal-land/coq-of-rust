@@ -600,7 +600,7 @@ Module collections.
                                         "len",
                                         []
                                       |),
-                                      [ (* Unsize *) M.pointer_coercion (M.read (| other |)) ]
+                                      [ M.read (| other |) ]
                                     |))
                                 |)) in
                             let _ :=
@@ -785,10 +785,7 @@ Module collections.
                                         "len",
                                         []
                                       |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| M.read (| other |) |))
-                                      ]
+                                      [ M.read (| M.read (| other |) |) ]
                                     |))
                                 |)) in
                             let _ :=
@@ -974,10 +971,7 @@ Module collections.
                                         "len",
                                         []
                                       |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| M.read (| other |) |))
-                                      ]
+                                      [ M.read (| M.read (| other |) |) ]
                                     |))
                                 |)) in
                             let _ :=

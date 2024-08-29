@@ -4,13 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module cmp.
   (* Trait *)
   Module PartialEq.
-    Definition ne
-        (host : Value.t)
-        (Rhs Self : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
+    Definition ne (Rhs Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
@@ -25,8 +19,8 @@ Module cmp.
       end.
     
     Axiom ProvidedMethod_ne :
-      forall (host : Value.t) (Rhs : Ty.t),
-      M.IsProvidedMethod "core::cmp::PartialEq" "ne" (ne host Rhs).
+      forall (Rhs : Ty.t),
+      M.IsProvidedMethod "core::cmp::PartialEq" "ne" (ne Rhs).
   End PartialEq.
   
   (* Trait *)
@@ -137,7 +131,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -147,7 +141,7 @@ Module cmp.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -157,7 +151,7 @@ Module cmp.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -169,17 +163,6 @@ Module cmp.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_cmp_Ordering.
-  
-  Module Impl_core_marker_StructuralEq_for_core_cmp_Ordering.
-    Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_core_cmp_Ordering.
   
   Module Impl_core_cmp_Eq_for_core_cmp_Ordering.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
@@ -218,7 +201,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -228,7 +211,7 @@ Module cmp.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -247,7 +230,7 @@ Module cmp.
                   "partial_cmp",
                   []
                 |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
@@ -273,7 +256,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -283,7 +266,7 @@ Module cmp.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -296,7 +279,7 @@ Module cmp.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], "cmp", [] |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
@@ -371,7 +354,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -384,7 +367,7 @@ Module cmp.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "i8", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
@@ -409,7 +392,7 @@ Module cmp.
     *)
     Definition is_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -436,7 +419,7 @@ Module cmp.
     *)
     Definition is_ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
@@ -464,7 +447,7 @@ Module cmp.
     *)
     Definition is_lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -491,7 +474,7 @@ Module cmp.
     *)
     Definition is_gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -518,7 +501,7 @@ Module cmp.
     *)
     Definition is_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
@@ -546,7 +529,7 @@ Module cmp.
     *)
     Definition is_ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
@@ -578,7 +561,7 @@ Module cmp.
     *)
     Definition reverse (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -615,7 +598,7 @@ Module cmp.
     *)
     Definition then_ (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self; other ] =>
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -729,18 +712,6 @@ Module cmp.
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_cmp_Reverse_T.
   
-  Module Impl_core_marker_StructuralEq_for_core_cmp_Reverse_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
-    
-    Axiom Implements :
-      forall (T : Ty.t),
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        (Self T)
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_core_cmp_Reverse_T.
-  
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_cmp_Reverse_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
@@ -795,15 +766,9 @@ Module cmp.
             [
               M.read (| f |);
               M.read (| Value.String "Reverse" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::cmp::Reverse",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -1084,22 +1049,22 @@ Module cmp.
       end.
     
     (*
-        fn clone_from(&mut self, other: &Self) {
-            self.0.clone_from(&other.0)
+        fn clone_from(&mut self, source: &Self) {
+            self.0.clone_from(&source.0)
         }
     *)
     Definition clone_from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [], [], [ self; other ] =>
+      | [], [], [ self; source ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          let source := M.alloc (| source |) in
           M.call_closure (|
             M.get_trait_method (| "core::clone::Clone", T, [], "clone_from", [] |),
             [
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |);
-              M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |)
+              M.SubPointer.get_struct_tuple_field (| M.read (| source |), "core::cmp::Reverse", 0 |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -2035,11 +2000,10 @@ Module cmp.
     End Impl_core_cmp_PartialEq_for_Tuple_.
     
     Module Impl_core_cmp_PartialEq_for_bool.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "bool".
+      Definition Self : Ty.t := Ty.path "bool".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2050,8 +2014,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2062,21 +2025,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_bool.
     
     Module Impl_core_cmp_PartialEq_for_char.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "char".
+      Definition Self : Ty.t := Ty.path "char".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2087,8 +2047,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2099,21 +2058,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_char.
     
     Module Impl_core_cmp_PartialEq_for_usize.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "usize".
+      Definition Self : Ty.t := Ty.path "usize".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2124,8 +2080,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2136,21 +2091,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_usize.
     
     Module Impl_core_cmp_PartialEq_for_u8.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "u8".
+      Definition Self : Ty.t := Ty.path "u8".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2161,8 +2113,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2173,21 +2124,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_u8.
     
     Module Impl_core_cmp_PartialEq_for_u16.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "u16".
+      Definition Self : Ty.t := Ty.path "u16".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2198,8 +2146,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2210,21 +2157,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_u16.
     
     Module Impl_core_cmp_PartialEq_for_u32.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "u32".
+      Definition Self : Ty.t := Ty.path "u32".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2235,8 +2179,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2247,21 +2190,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_u32.
     
     Module Impl_core_cmp_PartialEq_for_u64.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "u64".
+      Definition Self : Ty.t := Ty.path "u64".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2272,8 +2212,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2284,21 +2223,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_u64.
     
     Module Impl_core_cmp_PartialEq_for_u128.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "u128".
+      Definition Self : Ty.t := Ty.path "u128".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2309,8 +2245,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2321,21 +2256,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_u128.
     
     Module Impl_core_cmp_PartialEq_for_isize.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "isize".
+      Definition Self : Ty.t := Ty.path "isize".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2346,8 +2278,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2358,21 +2289,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_isize.
     
     Module Impl_core_cmp_PartialEq_for_i8.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "i8".
+      Definition Self : Ty.t := Ty.path "i8".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2383,8 +2311,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2395,21 +2322,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_i8.
     
     Module Impl_core_cmp_PartialEq_for_i16.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "i16".
+      Definition Self : Ty.t := Ty.path "i16".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2420,8 +2344,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2432,21 +2355,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_i16.
     
     Module Impl_core_cmp_PartialEq_for_i32.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "i32".
+      Definition Self : Ty.t := Ty.path "i32".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2457,8 +2377,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2469,21 +2388,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_i32.
     
     Module Impl_core_cmp_PartialEq_for_i64.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "i64".
+      Definition Self : Ty.t := Ty.path "i64".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2494,8 +2410,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2506,21 +2421,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_i64.
     
     Module Impl_core_cmp_PartialEq_for_i128.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "i128".
+      Definition Self : Ty.t := Ty.path "i128".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2531,8 +2443,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2543,21 +2454,18 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_i128.
     
-    Module Impl_core_cmp_PartialEq_for_f32.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "f32".
+    Module Impl_core_cmp_PartialEq_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2568,8 +2476,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2580,21 +2487,51 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+    End Impl_core_cmp_PartialEq_for_f16.
+    
+    Module Impl_core_cmp_PartialEq_for_f32.
+      Definition Self : Ty.t := Ty.path "f32".
+      
+      (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::PartialEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_f32.
     
     Module Impl_core_cmp_PartialEq_for_f64.
-      Definition Self (host : Value.t) : Ty.t := Ty.path "f64".
+      Definition Self : Ty.t := Ty.path "f64".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2605,8 +2542,7 @@ Module cmp.
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self host in
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -2617,14 +2553,45 @@ Module cmp.
         end.
       
       Axiom Implements :
-        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self host)
+          Self
           (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_f64.
+    
+    Module Impl_core_cmp_PartialEq_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::PartialEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+    End Impl_core_cmp_PartialEq_for_f128.
     
     Module Impl_core_cmp_Eq_for_Tuple_.
       Definition Self : Ty.t := Ty.tuple [].
@@ -2798,6 +2765,152 @@ Module cmp.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_bool.
+    
+    Module Impl_core_cmp_PartialOrd_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*
+                      fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
+                          match ( *self <= *other, *self >= *other) {
+                              (false, false) => None,
+                              (false, true) => Some(Greater),
+                              (true, false) => Some(Less),
+                              (true, true) => Some(Equal),
+                          }
+                      }
+      *)
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (|
+                  Value.Tuple
+                    [
+                      BinOp.Pure.le
+                        (M.read (| M.read (| self |) |))
+                        (M.read (| M.read (| other |) |));
+                      BinOp.Pure.ge
+                        (M.read (| M.read (| self |) |))
+                        (M.read (| M.read (| other |) |))
+                    ]
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::PartialOrd"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [
+            ("partial_cmp", InstanceField.Method partial_cmp);
+            ("lt", InstanceField.Method lt);
+            ("le", InstanceField.Method le);
+            ("ge", InstanceField.Method ge);
+            ("gt", InstanceField.Method gt)
+          ].
+    End Impl_core_cmp_PartialOrd_for_f16.
     
     Module Impl_core_cmp_PartialOrd_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
@@ -3091,6 +3204,152 @@ Module cmp.
           ].
     End Impl_core_cmp_PartialOrd_for_f64.
     
+    Module Impl_core_cmp_PartialOrd_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*
+                      fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
+                          match ( *self <= *other, *self >= *other) {
+                              (false, false) => None,
+                              (false, true) => Some(Greater),
+                              (true, false) => Some(Less),
+                              (true, true) => Some(Equal),
+                          }
+                      }
+      *)
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (|
+                  Value.Tuple
+                    [
+                      BinOp.Pure.le
+                        (M.read (| M.read (| self |) |))
+                        (M.read (| M.read (| other |) |));
+                      BinOp.Pure.ge
+                        (M.read (| M.read (| self |) |))
+                        (M.read (| M.read (| other |) |))
+                    ]
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool false |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Bool true |) in
+                      let _ :=
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::PartialOrd"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [
+            ("partial_cmp", InstanceField.Method partial_cmp);
+            ("lt", InstanceField.Method lt);
+            ("le", InstanceField.Method le);
+            ("ge", InstanceField.Method ge);
+            ("gt", InstanceField.Method gt)
+          ].
+    End Impl_core_cmp_PartialOrd_for_f128.
+    
     Module Impl_core_cmp_Ord_for_Tuple_.
       Definition Self : Ty.t := Ty.tuple [].
       
@@ -3283,7 +3542,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3296,8 +3555,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "char", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "char" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -3367,11 +3626,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3380,48 +3635,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "char" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -3439,7 +3655,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3452,8 +3668,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "usize" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -3523,11 +3739,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3536,48 +3748,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "usize" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -3595,7 +3768,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3608,8 +3781,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u8" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -3679,11 +3852,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3692,48 +3861,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u8" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -3751,7 +3881,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3764,8 +3894,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u16" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -3835,11 +3965,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3848,48 +3974,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u16" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -3907,7 +3994,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3920,8 +4007,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u32" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -3991,11 +4078,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4004,48 +4087,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u32" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -4063,7 +4107,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4076,8 +4120,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u64" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -4147,11 +4191,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4160,48 +4200,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u64" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -4219,7 +4220,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4232,8 +4233,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u128", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u128" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -4303,11 +4304,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4316,48 +4313,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u128" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -4375,7 +4333,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4388,8 +4346,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "isize" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -4459,11 +4417,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4472,48 +4426,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "isize" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -4531,7 +4446,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4544,8 +4459,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i8" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -4615,11 +4530,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4628,48 +4539,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i8" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -4687,7 +4559,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4700,8 +4572,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "i16", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i16" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -4771,11 +4643,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4784,48 +4652,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i16" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -4843,7 +4672,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4856,8 +4685,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "i32", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i32" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -4927,11 +4756,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4940,48 +4765,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i32" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -4999,7 +4785,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -5012,8 +4798,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "i64", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i64" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -5083,11 +4869,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -5096,48 +4878,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i64" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -5155,7 +4898,7 @@ Module cmp.
       
       (*
                       fn partial_cmp(&self, other: &$t) -> Option<Ordering> {
-                          Some(self.cmp(other))
+                          Some(crate::intrinsics::three_way_compare( *self, *other))
                       }
       *)
       Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -5168,8 +4911,8 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "i128", [], "cmp", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i128" ] |),
+                  [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
         | _, _, _ => M.impossible
@@ -5239,11 +4982,7 @@ Module cmp.
       
       (*
                       fn cmp(&self, other: &$t) -> Ordering {
-                          // The order here is important to generate more optimal assembly.
-                          // See <https://github.com/rust-lang/rust/issues/63758> for more info.
-                          if *self < *other { Less }
-                          else if *self == *other { Equal }
-                          else { Greater }
+                          crate::intrinsics::three_way_compare( *self, *other)
                       }
       *)
       Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -5252,48 +4991,9 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i128" ] |),
+              [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible
         end.

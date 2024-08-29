@@ -1413,29 +1413,25 @@ Module iter.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String
-                                    "internal error: entered unreachable code: Always specialized"
-                                |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "none",
-                                []
-                              |),
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (|
+                                Value.String
+                                  "internal error: entered unreachable code: Always specialized"
+                              |)
+                            ]
+                        |);
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "none",
                               []
-                            |)
-                          |))
+                            |),
+                            []
+                          |)
+                        |)
                       ]
                     |)
                   ]
@@ -3925,22 +3921,22 @@ Module iter.
         Definition Self (A B : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ].
         
-        (*     const EXPAND_BY: Option<NonZeroUsize> = A::EXPAND_BY; *)
+        (*     const EXPAND_BY: Option<NonZero<usize>> = A::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_EXPAND_BY (A B : Ty.t) : Value.t :=
           let Self : Ty.t := Self A B in
           M.run
             ltac:(M.monadic
               (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
         
-        (*     const MERGE_BY: Option<NonZeroUsize> = A::MERGE_BY; *)
+        (*     const MERGE_BY: Option<NonZero<usize>> = A::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_MERGE_BY (A B : Ty.t) : Value.t :=
           let Self : Ty.t := Self A B in
           M.run
@@ -4049,23 +4045,19 @@ Module iter.
                             |)
                           |);
                           M.read (| Value.String "a" |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::zip::Zip",
-                              "a"
-                            |))
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::zip::Zip",
+                            "a"
+                          |)
                         ]
                       |);
                       M.read (| Value.String "b" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::zip::Zip",
-                          "b"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::zip::Zip",
+                        "b"
+                      |)
                     ]
                   |)
                 ]
@@ -4236,17 +4228,15 @@ Module iter.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "Should only be called on TrustedRandomAccess iterators"
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String
+                                          "Should only be called on TrustedRandomAccess iterators"
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]

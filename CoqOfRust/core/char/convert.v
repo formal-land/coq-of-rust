@@ -14,7 +14,7 @@ Module char.
     *)
     Definition from_u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ i ] =>
+      | [], [], [ i ] =>
         ltac:(M.monadic
           (let i := M.alloc (| i |) in
           M.read (|
@@ -50,49 +50,59 @@ Module char.
     (*
     pub(super) const unsafe fn from_u32_unchecked(i: u32) -> char {
         // SAFETY: the caller must guarantee that `i` is a valid char value.
-        if cfg!(debug_assertions) { char::from_u32(i).unwrap() } else { unsafe { transmute(i) } }
+        unsafe {
+            assert_unsafe_precondition!(
+                check_language_ub,
+                "invalid value for `char`",
+                (i: u32 = i) => char_try_from_u32(i).is_ok()
+            );
+            transmute(i)
+        }
     }
     *)
     Definition from_u32_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ i ] =>
+      | [], [], [ i ] =>
         ltac:(M.monadic
           (let i := M.alloc (| i |) in
           M.read (|
-            M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
-                          "unwrap",
-                          []
-                        |),
-                        [
+            let~ _ :=
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              []
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ _ :=
+                        M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "char", "from_u32", [] |),
+                            M.get_function (|
+                              "core::char::convert::from_u32_unchecked.precondition_check",
+                              []
+                            |),
                             [ M.read (| i |) ]
                           |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_function (|
-                          "core::intrinsics::transmute",
-                          [ Ty.path "u32"; Ty.path "char" ]
-                        |),
-                        [ M.read (| i |) ]
-                      |)
-                    |)))
-              ]
+                        |) in
+                      M.alloc (| Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |) in
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (|
+                  "core::intrinsics::transmute",
+                  [ Ty.path "u32"; Ty.path "char" ]
+                |),
+                [ M.read (| i |) ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible
@@ -440,15 +450,13 @@ Module char.
                 M.read (| f |);
                 M.read (| Value.String "ParseCharError" |);
                 M.read (| Value.String "kind" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::char::convert::ParseCharError",
-                      "kind"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::char::convert::ParseCharError",
+                    "kind"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -514,17 +522,6 @@ Module char.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_char_convert_ParseCharError.
-    
-    Module Impl_core_marker_StructuralEq_for_core_char_convert_ParseCharError.
-      Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_char_convert_ParseCharError.
     
     Module Impl_core_cmp_Eq_for_core_char_convert_ParseCharError.
       Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
@@ -684,7 +681,7 @@ Module char.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -694,7 +691,7 @@ Module char.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -704,7 +701,7 @@ Module char.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
             |)))
         | _, _, _ => M.impossible
         end.
@@ -716,17 +713,6 @@ Module char.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_char_convert_CharErrorKind.
-    
-    Module Impl_core_marker_StructuralEq_for_core_char_convert_CharErrorKind.
-      Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_char_convert_CharErrorKind.
     
     Module Impl_core_cmp_Eq_for_core_char_convert_CharErrorKind.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
@@ -998,7 +984,7 @@ Module char.
     *)
     Definition char_try_from_u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ i ] =>
+      | [], [], [ i ] =>
         ltac:(M.monadic
           (let i := M.alloc (| i |) in
           M.read (|
@@ -1153,15 +1139,13 @@ Module char.
               [
                 M.read (| f |);
                 M.read (| Value.String "CharTryFromError" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::char::convert::CharTryFromError",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::convert::CharTryFromError",
+                    0
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -1227,17 +1211,6 @@ Module char.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_char_convert_CharTryFromError.
-    
-    Module Impl_core_marker_StructuralEq_for_core_char_convert_CharTryFromError.
-      Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_char_convert_CharTryFromError.
     
     Module Impl_core_cmp_Eq_for_core_char_convert_CharTryFromError.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
@@ -1317,7 +1290,7 @@ Module char.
     *)
     Definition from_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ num; radix ] =>
+      | [], [], [ num; radix ] =>
         ltac:(M.monadic
           (let num := M.alloc (| num |) in
           let radix := M.alloc (| radix |) in
@@ -1344,17 +1317,14 @@ Module char.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "from_digit: radix is too high (maximum 36)"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "from_digit: radix is too high (maximum 36)"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]

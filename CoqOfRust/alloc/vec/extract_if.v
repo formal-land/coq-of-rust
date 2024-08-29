@@ -41,47 +41,37 @@ Module vec.
                 M.read (| f |);
                 M.read (| Value.String "ExtractIf" |);
                 M.read (| Value.String "vec" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::vec::extract_if::ExtractIf",
-                    "vec"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::extract_if::ExtractIf",
+                  "vec"
+                |);
                 M.read (| Value.String "idx" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::vec::extract_if::ExtractIf",
-                    "idx"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::extract_if::ExtractIf",
+                  "idx"
+                |);
                 M.read (| Value.String "del" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::vec::extract_if::ExtractIf",
-                    "del"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::extract_if::ExtractIf",
+                  "del"
+                |);
                 M.read (| Value.String "old_len" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::extract_if::ExtractIf",
+                  "old_len"
+                |);
+                M.read (| Value.String "pred" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "alloc::vec::extract_if::ExtractIf",
-                    "old_len"
-                  |));
-                M.read (| Value.String "pred" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::vec::extract_if::ExtractIf",
-                      "pred"
-                    |)
-                  |))
+                    "pred"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible

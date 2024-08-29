@@ -33,15 +33,13 @@ Module iter.
                 [
                   M.read (| f |);
                   M.read (| Value.String "ByRefSized" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::by_ref_sized::ByRefSized",
-                        0
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::by_ref_sized::ByRefSized",
+                      0
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -128,7 +126,7 @@ Module iter.
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 I::advance_by(self.0, n)
             }
         *)
@@ -348,7 +346,7 @@ Module iter.
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 I::advance_back_by(self.0, n)
             }
         *)

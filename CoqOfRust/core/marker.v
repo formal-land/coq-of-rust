@@ -263,221 +263,6 @@ Module marker.
   End Impl_core_marker_StructuralPartialEq_where_core_marker_Sized_T_for_ref__T.
   
   (* Trait *)
-  (* Empty module 'StructuralEq' *)
-  
-  Module Impl_core_marker_StructuralEq_for_usize.
-    Definition Self : Ty.t := Ty.path "usize".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_usize.
-  
-  Module Impl_core_marker_StructuralEq_for_u8.
-    Definition Self : Ty.t := Ty.path "u8".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_u8.
-  
-  Module Impl_core_marker_StructuralEq_for_u16.
-    Definition Self : Ty.t := Ty.path "u16".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_u16.
-  
-  Module Impl_core_marker_StructuralEq_for_u32.
-    Definition Self : Ty.t := Ty.path "u32".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_u32.
-  
-  Module Impl_core_marker_StructuralEq_for_u64.
-    Definition Self : Ty.t := Ty.path "u64".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_u64.
-  
-  Module Impl_core_marker_StructuralEq_for_u128.
-    Definition Self : Ty.t := Ty.path "u128".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_u128.
-  
-  Module Impl_core_marker_StructuralEq_for_isize.
-    Definition Self : Ty.t := Ty.path "isize".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_isize.
-  
-  Module Impl_core_marker_StructuralEq_for_i8.
-    Definition Self : Ty.t := Ty.path "i8".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_i8.
-  
-  Module Impl_core_marker_StructuralEq_for_i16.
-    Definition Self : Ty.t := Ty.path "i16".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_i16.
-  
-  Module Impl_core_marker_StructuralEq_for_i32.
-    Definition Self : Ty.t := Ty.path "i32".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_i32.
-  
-  Module Impl_core_marker_StructuralEq_for_i64.
-    Definition Self : Ty.t := Ty.path "i64".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_i64.
-  
-  Module Impl_core_marker_StructuralEq_for_i128.
-    Definition Self : Ty.t := Ty.path "i128".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_i128.
-  
-  Module Impl_core_marker_StructuralEq_for_bool.
-    Definition Self : Ty.t := Ty.path "bool".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_bool.
-  
-  Module Impl_core_marker_StructuralEq_for_char.
-    Definition Self : Ty.t := Ty.path "char".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_char.
-  
-  Module Impl_core_marker_StructuralEq_for_str.
-    Definition Self : Ty.t := Ty.path "str".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_str.
-  
-  Module Impl_core_marker_StructuralEq_for_Tuple_.
-    Definition Self : Ty.t := Ty.tuple [].
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_Tuple_.
-  
-  Module Impl_core_marker_StructuralEq_for_array_N_T.
-    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
-    
-    Axiom Implements :
-      forall (N : Value.t) (T : Ty.t),
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        (Self N T)
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_array_N_T.
-  
-  Module Impl_core_marker_StructuralEq_for_slice_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
-    
-    Axiom Implements :
-      forall (T : Ty.t),
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        (Self T)
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_slice_T.
-  
-  Module Impl_core_marker_StructuralEq_where_core_marker_Sized_T_for_ref__T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
-    
-    Axiom Implements :
-      forall (T : Ty.t),
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        (Self T)
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_where_core_marker_Sized_T_for_ref__T.
-  
-  (* Trait *)
   (* Empty module 'Copy' *)
   
   Module Impl_core_marker_Copy_for_usize.
@@ -612,6 +397,17 @@ Module marker.
         (* Instance *) [].
   End Impl_core_marker_Copy_for_i128.
   
+  Module Impl_core_marker_Copy_for_f16.
+    Definition Self : Ty.t := Ty.path "f16".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::Copy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_Copy_for_f16.
+  
   Module Impl_core_marker_Copy_for_f32.
     Definition Self : Ty.t := Ty.path "f32".
     
@@ -633,6 +429,17 @@ Module marker.
         (* Trait polymorphic types *) []
         (* Instance *) [].
   End Impl_core_marker_Copy_for_f64.
+  
+  Module Impl_core_marker_Copy_for_f128.
+    Definition Self : Ty.t := Ty.path "f128".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::Copy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_Copy_for_f128.
   
   Module Impl_core_marker_Copy_for_bool.
     Definition Self : Ty.t := Ty.path "bool".
@@ -932,18 +739,6 @@ Module marker.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
-  Module Impl_core_marker_StructuralEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
-    
-    Axiom Implements :
-      forall (T : Ty.t),
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        (Self T)
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
-  
   (* Trait *)
   (* Empty module 'DiscriminantKind' *)
   
@@ -1107,17 +902,6 @@ Module marker.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_marker_PhantomPinned.
-  
-  Module Impl_core_marker_StructuralEq_for_core_marker_PhantomPinned.
-    Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_core_marker_PhantomPinned.
   
   Module Impl_core_cmp_Eq_for_core_marker_PhantomPinned.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
@@ -1315,220 +1099,507 @@ Module marker.
   (* Empty module 'PointerLike' *)
   
   (* Trait *)
-  (* Empty module 'ConstParamTy' *)
+  (* Empty module 'ConstParamTy_' *)
   
-  Module Impl_core_marker_ConstParamTy_for_usize.
+  (* Trait *)
+  (* Empty module 'UnsizedConstParamTy' *)
+  
+  Module Impl_core_marker_ConstParamTy__for_usize.
     Definition Self : Ty.t := Ty.path "usize".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_usize.
+  End Impl_core_marker_ConstParamTy__for_usize.
   
-  Module Impl_core_marker_ConstParamTy_for_u8.
+  Module Impl_core_marker_ConstParamTy__for_u8.
     Definition Self : Ty.t := Ty.path "u8".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_u8.
+  End Impl_core_marker_ConstParamTy__for_u8.
   
-  Module Impl_core_marker_ConstParamTy_for_u16.
+  Module Impl_core_marker_ConstParamTy__for_u16.
     Definition Self : Ty.t := Ty.path "u16".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_u16.
+  End Impl_core_marker_ConstParamTy__for_u16.
   
-  Module Impl_core_marker_ConstParamTy_for_u32.
+  Module Impl_core_marker_ConstParamTy__for_u32.
     Definition Self : Ty.t := Ty.path "u32".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_u32.
+  End Impl_core_marker_ConstParamTy__for_u32.
   
-  Module Impl_core_marker_ConstParamTy_for_u64.
+  Module Impl_core_marker_ConstParamTy__for_u64.
     Definition Self : Ty.t := Ty.path "u64".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_u64.
+  End Impl_core_marker_ConstParamTy__for_u64.
   
-  Module Impl_core_marker_ConstParamTy_for_u128.
+  Module Impl_core_marker_ConstParamTy__for_u128.
     Definition Self : Ty.t := Ty.path "u128".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_u128.
+  End Impl_core_marker_ConstParamTy__for_u128.
   
-  Module Impl_core_marker_ConstParamTy_for_isize.
+  Module Impl_core_marker_ConstParamTy__for_isize.
     Definition Self : Ty.t := Ty.path "isize".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_isize.
+  End Impl_core_marker_ConstParamTy__for_isize.
   
-  Module Impl_core_marker_ConstParamTy_for_i8.
+  Module Impl_core_marker_ConstParamTy__for_i8.
     Definition Self : Ty.t := Ty.path "i8".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_i8.
+  End Impl_core_marker_ConstParamTy__for_i8.
   
-  Module Impl_core_marker_ConstParamTy_for_i16.
+  Module Impl_core_marker_ConstParamTy__for_i16.
     Definition Self : Ty.t := Ty.path "i16".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_i16.
+  End Impl_core_marker_ConstParamTy__for_i16.
   
-  Module Impl_core_marker_ConstParamTy_for_i32.
+  Module Impl_core_marker_ConstParamTy__for_i32.
     Definition Self : Ty.t := Ty.path "i32".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_i32.
+  End Impl_core_marker_ConstParamTy__for_i32.
   
-  Module Impl_core_marker_ConstParamTy_for_i64.
+  Module Impl_core_marker_ConstParamTy__for_i64.
     Definition Self : Ty.t := Ty.path "i64".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_i64.
+  End Impl_core_marker_ConstParamTy__for_i64.
   
-  Module Impl_core_marker_ConstParamTy_for_i128.
+  Module Impl_core_marker_ConstParamTy__for_i128.
     Definition Self : Ty.t := Ty.path "i128".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_i128.
+  End Impl_core_marker_ConstParamTy__for_i128.
   
-  Module Impl_core_marker_ConstParamTy_for_bool.
+  Module Impl_core_marker_ConstParamTy__for_bool.
     Definition Self : Ty.t := Ty.path "bool".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_bool.
+  End Impl_core_marker_ConstParamTy__for_bool.
   
-  Module Impl_core_marker_ConstParamTy_for_char.
+  Module Impl_core_marker_ConstParamTy__for_char.
     Definition Self : Ty.t := Ty.path "char".
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_char.
+  End Impl_core_marker_ConstParamTy__for_char.
   
-  Module Impl_core_marker_ConstParamTy_for_str.
-    Definition Self : Ty.t := Ty.path "str".
+  Module Impl_core_marker_ConstParamTy__for_Tuple_.
+    Definition Self : Ty.t := Ty.tuple [].
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_str.
+  End Impl_core_marker_ConstParamTy__for_Tuple_.
   
-  Module Impl_core_marker_ConstParamTy_where_core_marker_ConstParamTy_T_for_array_N_T.
+  Module Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__T_for_array_N_T.
     Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     Axiom Implements :
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::ConstParamTy_"
         (Self N T)
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_where_core_marker_ConstParamTy_T_for_array_N_T.
+  End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__T_for_array_N_T.
   
-  Module Impl_core_marker_ConstParamTy_where_core_marker_ConstParamTy_T_for_slice_T.
+  Module Impl_core_marker_UnsizedConstParamTy_for_usize.
+    Definition Self : Ty.t := Ty.path "usize".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_usize.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_u8.
+    Definition Self : Ty.t := Ty.path "u8".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_u8.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_u16.
+    Definition Self : Ty.t := Ty.path "u16".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_u16.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_u32.
+    Definition Self : Ty.t := Ty.path "u32".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_u32.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_u64.
+    Definition Self : Ty.t := Ty.path "u64".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_u64.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_u128.
+    Definition Self : Ty.t := Ty.path "u128".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_u128.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_isize.
+    Definition Self : Ty.t := Ty.path "isize".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_isize.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_i8.
+    Definition Self : Ty.t := Ty.path "i8".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_i8.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_i16.
+    Definition Self : Ty.t := Ty.path "i16".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_i16.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_i32.
+    Definition Self : Ty.t := Ty.path "i32".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_i32.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_i64.
+    Definition Self : Ty.t := Ty.path "i64".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_i64.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_i128.
+    Definition Self : Ty.t := Ty.path "i128".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_i128.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_bool.
+    Definition Self : Ty.t := Ty.path "bool".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_bool.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_char.
+    Definition Self : Ty.t := Ty.path "char".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_char.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_Tuple_.
+    Definition Self : Ty.t := Ty.tuple [].
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_Tuple_.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
+    
+    Axiom Implements :
+      forall (N : Value.t) (T : Ty.t),
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        (Self N T)
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_T_for_array_N_T.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_for_str.
+    Definition Self : Ty.t := Ty.path "str".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::UnsizedConstParamTy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_UnsizedConstParamTy_for_str.
+  
+  Module Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_T_for_slice_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::UnsizedConstParamTy"
         (Self T)
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_where_core_marker_ConstParamTy_T_for_slice_T.
+  End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_T_for_slice_T.
   
-  Module Impl_core_marker_ConstParamTy_where_core_marker_Sized_T_where_core_marker_ConstParamTy_T_for_ref__T.
+  Module Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_T_where_core_marker_Sized_T_for_ref__T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
       M.IsTraitInstance
-        "core::marker::ConstParamTy"
+        "core::marker::UnsizedConstParamTy"
         (Self T)
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_where_core_marker_Sized_T_where_core_marker_ConstParamTy_T_for_ref__T.
-  
-  Module Impl_core_marker_ConstParamTy_for_Tuple_.
-    Definition Self : Ty.t := Ty.tuple [].
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::ConstParamTy"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_ConstParamTy_for_Tuple_.
+  End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_T_where_core_marker_Sized_T_for_ref__T.
   
   (* Trait *)
   (* Empty module 'FnPtr' *)
+  
+  Module effects.
+    (* StructTuple
+      {
+        name := "NoRuntime";
+        const_params := [];
+        ty_params := [];
+        fields := [];
+      } *)
+    
+    (* StructTuple
+      {
+        name := "Maybe";
+        const_params := [];
+        ty_params := [];
+        fields := [];
+      } *)
+    
+    (* StructTuple
+      {
+        name := "Runtime";
+        const_params := [];
+        ty_params := [];
+        fields := [];
+      } *)
+    
+    (* Trait *)
+    (* Empty module 'Compat' *)
+    
+    Module Impl_core_marker_effects_Compat_for_core_marker_effects_NoRuntime.
+      Definition Self : Ty.t := Ty.path "core::marker::effects::NoRuntime".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::effects::Compat"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_effects_Compat_for_core_marker_effects_NoRuntime.
+    
+    Module Impl_core_marker_effects_Compat_for_core_marker_effects_Runtime.
+      Definition Self : Ty.t := Ty.path "core::marker::effects::Runtime".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::effects::Compat"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_effects_Compat_for_core_marker_effects_Runtime.
+    
+    Module Impl_core_marker_effects_Compat_for_core_marker_effects_Maybe.
+      Definition Self (RUNTIME : Value.t) : Ty.t := Ty.path "core::marker::effects::Maybe".
+      
+      Axiom Implements :
+        forall (RUNTIME : Value.t),
+        M.IsTraitInstance
+          "core::marker::effects::Compat"
+          (Self RUNTIME)
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_effects_Compat_for_core_marker_effects_Maybe.
+    
+    (* Trait *)
+    (* Empty module 'TyCompat' *)
+    
+    Module Impl_core_marker_effects_TyCompat_where_core_marker_Sized_T_T_for_T.
+      Definition Self (T : Ty.t) : Ty.t := T.
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::marker::effects::TyCompat"
+          (Self T)
+          (* Trait polymorphic types *) [ (* T *) T ]
+          (* Instance *) [].
+    End Impl_core_marker_effects_TyCompat_where_core_marker_Sized_T_T_for_T.
+    
+    Module Impl_core_marker_effects_TyCompat_where_core_marker_Sized_T_core_marker_effects_Maybe_for_T.
+      Definition Self (T : Ty.t) : Ty.t := T.
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::marker::effects::TyCompat"
+          (Self T)
+          (* Trait polymorphic types *) [ (* T *) Ty.path "core::marker::effects::Maybe" ]
+          (* Instance *) [].
+    End Impl_core_marker_effects_TyCompat_where_core_marker_Sized_T_core_marker_effects_Maybe_for_T.
+    
+    (* Trait *)
+    (* Empty module 'Intersection' *)
+    
+    Module Impl_core_marker_effects_Intersection_for_Tuple_.
+      Definition Self : Ty.t := Ty.tuple [].
+      
+      (*         type Output = Maybe; *)
+      Definition _Output : Ty.t := Ty.path "core::marker::effects::Maybe".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::effects::Intersection"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("Output", InstanceField.Ty _Output) ].
+    End Impl_core_marker_effects_Intersection_for_Tuple_.
+  End effects.
 End marker.

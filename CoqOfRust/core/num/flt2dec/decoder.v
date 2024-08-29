@@ -90,47 +90,37 @@ Module num.
                   M.read (| f |);
                   M.read (| Value.String "Decoded" |);
                   M.read (| Value.String "mant" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::flt2dec::decoder::Decoded",
-                      "mant"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::flt2dec::decoder::Decoded",
+                    "mant"
+                  |);
                   M.read (| Value.String "minus" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::flt2dec::decoder::Decoded",
-                      "minus"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::flt2dec::decoder::Decoded",
+                    "minus"
+                  |);
                   M.read (| Value.String "plus" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::flt2dec::decoder::Decoded",
-                      "plus"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::flt2dec::decoder::Decoded",
+                    "plus"
+                  |);
                   M.read (| Value.String "exp" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::flt2dec::decoder::Decoded",
+                    "exp"
+                  |);
+                  M.read (| Value.String "inclusive" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::flt2dec::decoder::Decoded",
-                      "exp"
-                    |));
-                  M.read (| Value.String "inclusive" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::num::flt2dec::decoder::Decoded",
-                        "inclusive"
-                      |)
-                    |))
+                      "inclusive"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -262,17 +252,6 @@ Module num.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_flt2dec_decoder_Decoded.
-      
-      Module Impl_core_marker_StructuralEq_for_core_num_flt2dec_decoder_Decoded.
-        Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::Decoded".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_core_num_flt2dec_decoder_Decoded.
       
       Module Impl_core_cmp_Eq_for_core_num_flt2dec_decoder_Decoded.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::Decoded".
@@ -472,11 +451,7 @@ Module num.
                               "debug_tuple_field1_finish",
                               []
                             |),
-                            [
-                              M.read (| f |);
-                              M.read (| Value.String "Finite" |);
-                              (* Unsize *) M.pointer_coercion __self_0
-                            ]
+                            [ M.read (| f |); M.read (| Value.String "Finite" |); __self_0 ]
                           |)
                         |)))
                   ]
@@ -515,7 +490,7 @@ Module num.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -525,7 +500,7 @@ Module num.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ __arg1_tag :=
+                let~ __arg1_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -537,7 +512,7 @@ Module num.
                   |) in
                 M.alloc (|
                   LogicalOp.and (|
-                    BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                    BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                     ltac:(M.monadic
                       (M.read (|
                         M.match_operator (|
@@ -567,12 +542,20 @@ Module num.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.path "core::num::flt2dec::decoder::Decoded",
-                                      [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "core::num::flt2dec::decoder::Decoded" ]
+                                      ],
                                       "eq",
                                       []
                                     |),
-                                    [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                    [ __self_0; __arg1_0 ]
                                   |)
                                 |)));
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -592,17 +575,6 @@ Module num.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_flt2dec_decoder_FullDecoded.
-      
-      Module Impl_core_marker_StructuralEq_for_core_num_flt2dec_decoder_FullDecoded.
-        Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::FullDecoded".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_core_num_flt2dec_decoder_FullDecoded.
       
       Module Impl_core_cmp_Eq_for_core_num_flt2dec_decoder_FullDecoded.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::FullDecoded".

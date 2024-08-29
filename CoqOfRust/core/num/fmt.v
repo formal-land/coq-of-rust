@@ -104,7 +104,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -114,7 +114,7 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -126,7 +126,7 @@ Module num.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -153,9 +153,16 @@ Module num.
                                 |) in
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.read (| M.read (| __self_0 |) |))
-                                  (M.read (| M.read (| __arg1_0 |) |))
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                                    "eq",
+                                    []
+                                  |),
+                                  [ __self_0; __arg1_0 ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -178,9 +185,16 @@ Module num.
                                 |) in
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.read (| M.read (| __self_0 |) |))
-                                  (M.read (| M.read (| __arg1_0 |) |))
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
+                                    "eq",
+                                    []
+                                  |),
+                                  [ __self_0; __arg1_0 ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -209,17 +223,27 @@ Module num.
                                     Ty.apply
                                       (Ty.path "&")
                                       []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                      ],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
                                         []
-                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ]
                                     ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -248,17 +272,6 @@ Module num.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_num_fmt_Part.
-    
-    Module Impl_core_marker_StructuralEq_for_core_num_fmt_Part.
-      Definition Self : Ty.t := Ty.path "core::num::fmt::Part".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_num_fmt_Part.
     
     Module Impl_core_cmp_Eq_for_core_num_fmt_Part.
       Definition Self : Ty.t := Ty.path "core::num::fmt::Part".
@@ -336,11 +349,7 @@ Module num.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Zero" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Zero" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -360,11 +369,7 @@ Module num.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Num" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Num" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -384,11 +389,7 @@ Module num.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Copy" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Copy" |); __self_0 ]
                         |)
                       |)))
                 ]

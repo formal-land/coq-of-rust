@@ -129,13 +129,11 @@ Module iter.
                         |)
                       |);
                       M.read (| Value.String "iter" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::filter_map::FilterMap",
-                          "iter"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::filter_map::FilterMap",
+                        "iter"
+                      |)
                     ]
                   |)
                 ]
@@ -413,7 +411,7 @@ Module iter.
             fn next_chunk<const N: usize>(
                 &mut self,
             ) -> Result<[Self::Item; N], array::IntoIter<Self::Item, N>> {
-                let mut array: [MaybeUninit<Self::Item>; N] = MaybeUninit::uninit_array();
+                let mut array: [MaybeUninit<Self::Item>; N] = [const { MaybeUninit::uninit() }; N];
         
                 struct Guard<'a, T> {
                     array: &'a mut [MaybeUninit<T>],
@@ -444,9 +442,8 @@ Module iter.
                     // SAFETY: Loop conditions ensure the index is in bounds.
         
                     unsafe {
-                        let opt_payload_at: *const MaybeUninit<B> = (&val as *const Option<B>)
-                            .byte_add(core::mem::offset_of!(Option<B>, Some.0))
-                            .cast();
+                        let opt_payload_at: *const MaybeUninit<B> =
+                            addr_of!(val).byte_add(core::mem::offset_of!(Option<B>, Some.0)).cast();
                         let dst = guard.array.as_mut_ptr().add(idx);
                         crate::ptr::copy_nonoverlapping(opt_payload_at, dst, 1);
                         crate::mem::forget(val);
@@ -484,23 +481,20 @@ Module iter.
               M.read (|
                 let~ array :=
                   M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ B ],
-                        "uninit_array",
-                        []
+                    repeat (|
+                      M.read (|
+                        M.get_constant (|
+                          "core::iter::adapters::filter_map::next_chunk_discriminant"
+                        |)
                       |),
-                      []
+                      N
                     |)
                   |) in
                 let~ guard :=
                   M.alloc (|
                     Value.StructRecord
                       "core::iter::adapters::filter_map::next_chunk::Guard"
-                      [
-                        ("array", (* Unsize *) M.pointer_coercion array);
-                        ("initialized", Value.Integer 0)
-                      ]
+                      [ ("array", array); ("initialized", Value.Integer 0) ]
                   |) in
                 let~ result :=
                   M.alloc (|
@@ -631,18 +625,10 @@ Module iter.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| M.use (M.alloc (| val |)) |);
-                                                        M.call_closure (|
-                                                          M.get_function (|
-                                                            "core::hint::must_use",
-                                                            [ Ty.path "usize" ]
-                                                          |),
-                                                          [
-                                                            M.read (|
-                                                              (* `OffsetOf` expression are not handled yet *)
-                                                              M.alloc (| Value.Tuple [] |)
-                                                            |)
-                                                          ]
+                                                        val;
+                                                        M.read (|
+                                                          (* `OffsetOf` expression are not handled yet *)
+                                                          M.alloc (| Value.Tuple [] |)
                                                         |)
                                                       ]
                                                     |)
@@ -1347,22 +1333,22 @@ Module iter.
         Definition Self (I F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::filter_map::FilterMap") [] [ I; F ].
         
-        (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
+        (*     const EXPAND_BY: Option<NonZero<usize>> = I::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_EXPAND_BY (I F : Ty.t) : Value.t :=
           let Self : Ty.t := Self I F in
           M.run
             ltac:(M.monadic
               (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
         
-        (*     const MERGE_BY: Option<NonZeroUsize> = I::MERGE_BY; *)
+        (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_MERGE_BY (I F : Ty.t) : Value.t :=
           let Self : Ty.t := Self I F in
           M.run

@@ -157,11 +157,7 @@ Module collections.
                               "debug_tuple_field1_finish",
                               []
                             |),
-                            [
-                              M.read (| f |);
-                              M.read (| Value.String "A" |);
-                              (* Unsize *) M.pointer_coercion __self_0
-                            ]
+                            [ M.read (| f |); M.read (| Value.String "A" |); __self_0 ]
                           |)
                         |)));
                     fun γ =>
@@ -181,11 +177,7 @@ Module collections.
                               "debug_tuple_field1_finish",
                               []
                             |),
-                            [
-                              M.read (| f |);
-                              M.read (| Value.String "B" |);
-                              (* Unsize *) M.pointer_coercion __self_0
-                            ]
+                            [ M.read (| f |); M.read (| Value.String "B" |); __self_0 ]
                           |)
                         |)))
                   ]
@@ -335,31 +327,25 @@ Module collections.
                                   [ M.read (| f |); M.read (| Value.String "MergeIterInner" |) ]
                                 |)
                               |);
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::btree::merge_iter::MergeIterInner",
-                                  "a"
-                                |))
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::btree::merge_iter::MergeIterInner",
+                                "a"
+                              |)
                             ]
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::merge_iter::MergeIterInner",
-                              "b"
-                            |))
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::btree::merge_iter::MergeIterInner",
+                            "b"
+                          |)
                         ]
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::merge_iter::MergeIterInner",
-                          "peeked"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                        "peeked"
+                      |)
                     ]
                   |)
                 ]

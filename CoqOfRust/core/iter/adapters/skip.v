@@ -89,23 +89,19 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "Skip" |);
                   M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::skip::Skip",
+                    "iter"
+                  |);
+                  M.read (| Value.String "n" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::iter::adapters::skip::Skip",
-                      "iter"
-                    |));
-                  M.read (| Value.String "n" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::skip::Skip",
-                        "n"
-                      |)
-                    |))
+                      "n"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -1196,7 +1192,7 @@ Module iter.
           end.
         
         (*
-            fn advance_by(&mut self, mut n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, mut n: usize) -> Result<(), NonZero<usize>> {
                 let skip_inner = self.n;
                 let skip_and_advance = skip_inner.saturating_add(n);
         
@@ -1216,7 +1212,7 @@ Module iter.
                     }
                 }
         
-                NonZeroUsize::new(n).map_or(Ok(()), Err)
+                NonZero::new(n).map_or(Ok(()), Err)
             }
         *)
         Definition advance_by
@@ -1291,7 +1287,10 @@ Module iter.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::num::nonzero::NonZeroUsize",
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ],
                                   "get",
                                   []
                                 |),
@@ -1408,7 +1407,10 @@ Module iter.
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.path "core::num::nonzero::NonZeroUsize",
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "usize" ],
                                             "get",
                                             []
                                           |),
@@ -1428,25 +1430,35 @@ Module iter.
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       "map_or",
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ];
                         Ty.function
-                          [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ])
                       ]
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.path "core::num::nonzero::NonZeroUsize",
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "new",
                           []
                         |),
@@ -1454,6 +1466,201 @@ Module iter.
                       |);
                       Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                       M.constructor_as_closure "core::result::Result::Err"
+                    ]
+                  |)
+                |)
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        (*
+            unsafe fn __iterator_get_unchecked(&mut self, idx: usize) -> Self::Item
+            where
+                Self: TrustedRandomAccessNoCoerce,
+            {
+                // SAFETY: the caller must uphold the contract for
+                // `Iterator::__iterator_get_unchecked`.
+                //
+                // Dropping the skipped prefix when index 0 is passed is safe
+                // since
+                // * the caller passing index 0 means that the inner iterator has more items than `self.n`
+                // * TRA contract requires that get_unchecked will only be called once
+                //   (unless elements are copyable)
+                // * it does not conflict with in-place iteration since index 0 must be accessed
+                //   before something is written into the storage used by the prefix
+                unsafe {
+                    if Self::MAY_HAVE_SIDE_EFFECT && idx == 0 {
+                        for skipped_idx in 0..self.n {
+                            drop(try_get_unchecked(&mut self.iter, skipped_idx));
+                        }
+                    }
+        
+                    try_get_unchecked(&mut self.iter, idx + self.n)
+                }
+            }
+        *)
+        Definition __iterator_get_unchecked
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self I in
+          match ε, τ, α with
+          | [], [], [ self; idx ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let idx := M.alloc (| idx |) in
+              M.read (|
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                LogicalOp.and (|
+                                  M.read (|
+                                    M.get_constant (|
+                                      "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
+                                    |)
+                                  |),
+                                  ltac:(M.monadic
+                                    (BinOp.Pure.eq (M.read (| idx |)) (Value.Integer 0)))
+                                |)
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.use
+                            (M.match_operator (|
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::iter::traits::collect::IntoIterator",
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ],
+                                    [],
+                                    "into_iter",
+                                    []
+                                  |),
+                                  [
+                                    Value.StructRecord
+                                      "core::ops::range::Range"
+                                      [
+                                        ("start", Value.Integer 0);
+                                        ("end_",
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::iter::adapters::skip::Skip",
+                                              "n"
+                                            |)
+                                          |))
+                                      ]
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter := M.copy (| γ |) in
+                                    M.loop (|
+                                      ltac:(M.monadic
+                                        (let~ _ :=
+                                          M.match_operator (|
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::iter::traits::iterator::Iterator",
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::range::Range")
+                                                    []
+                                                    [ Ty.path "usize" ],
+                                                  [],
+                                                  "next",
+                                                  []
+                                                |),
+                                                [ iter ]
+                                              |)
+                                            |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let _ :=
+                                                    M.is_struct_tuple (|
+                                                      γ,
+                                                      "core::option::Option::None"
+                                                    |) in
+                                                  M.alloc (|
+                                                    M.never_to_any (| M.read (| M.break (||) |) |)
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      γ,
+                                                      "core::option::Option::Some",
+                                                      0
+                                                    |) in
+                                                  let skipped_idx := M.copy (| γ0_0 |) in
+                                                  let~ _ :=
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::mem::drop",
+                                                          [ Ty.associated ]
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_function (|
+                                                              "core::iter::adapters::zip::try_get_unchecked",
+                                                              [ I ]
+                                                            |),
+                                                            [
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::iter::adapters::skip::Skip",
+                                                                "iter"
+                                                              |);
+                                                              M.read (| skipped_idx |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |) in
+                                                  M.alloc (| Value.Tuple [] |)))
+                                            ]
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)))
+                                    |)))
+                              ]
+                            |))));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [ I ] |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::skip::Skip",
+                        "iter"
+                      |);
+                      BinOp.Wrap.add
+                        Integer.Usize
+                        (M.read (| idx |))
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::skip::Skip",
+                            "n"
+                          |)
+                        |))
                     ]
                   |)
                 |)
@@ -1477,7 +1684,8 @@ Module iter.
               ("size_hint", InstanceField.Method (size_hint I));
               ("try_fold", InstanceField.Method (try_fold I));
               ("fold", InstanceField.Method (fold I));
-              ("advance_by", InstanceField.Method (advance_by I))
+              ("advance_by", InstanceField.Method (advance_by I));
+              ("__iterator_get_unchecked", InstanceField.Method (__iterator_get_unchecked I))
             ].
       End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_skip_Skip_I.
       
@@ -1859,11 +2067,11 @@ Module iter.
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 let min = crate::cmp::min(self.len(), n);
                 let rem = self.iter.advance_back_by(min);
                 assert!(rem.is_ok(), "ExactSizeIterator contract violation");
-                NonZeroUsize::new(n - min).map_or(Ok(()), Err)
+                NonZero::new(n - min).map_or(Ok(()), Err)
             }
         *)
         Definition advance_back_by
@@ -1936,7 +2144,13 @@ Module iter.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
+                                        [
+                                          Ty.tuple [];
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ],
                                       "is_ok",
                                       []
                                     |),
@@ -1957,16 +2171,14 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "ExactSizeIterator contract violation"
-                                              |)
-                                            ]
-                                        |))
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String "ExactSizeIterator contract violation"
+                                            |)
+                                          ]
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -1982,25 +2194,35 @@ Module iter.
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       "map_or",
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ];
                         Ty.function
-                          [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ])
                       ]
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.path "core::num::nonzero::NonZeroUsize",
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "new",
                           []
                         |),
@@ -2106,22 +2328,22 @@ Module iter.
         Definition Self (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::skip::Skip") [] [ I ].
         
-        (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
+        (*     const EXPAND_BY: Option<NonZero<usize>> = I::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_EXPAND_BY (I : Ty.t) : Value.t :=
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
               (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
         
-        (*     const MERGE_BY: Option<NonZeroUsize> = I::MERGE_BY; *)
+        (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_MERGE_BY (I : Ty.t) : Value.t :=
           let Self : Ty.t := Self I in
           M.run
@@ -2140,6 +2362,57 @@ Module iter.
               ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I))
             ].
       End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_skip_Skip_I.
+      
+      Module Impl_core_iter_adapters_zip_TrustedRandomAccess_where_core_iter_adapters_zip_TrustedRandomAccess_I_for_core_iter_adapters_skip_Skip_I.
+        Definition Self (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::skip::Skip") [] [ I ].
+        
+        Axiom Implements :
+          forall (I : Ty.t),
+          M.IsTraitInstance
+            "core::iter::adapters::zip::TrustedRandomAccess"
+            (Self I)
+            (* Trait polymorphic types *) []
+            (* Instance *) [].
+      End Impl_core_iter_adapters_zip_TrustedRandomAccess_where_core_iter_adapters_zip_TrustedRandomAccess_I_for_core_iter_adapters_skip_Skip_I.
+      
+      Module Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_I_for_core_iter_adapters_skip_Skip_I.
+        Definition Self (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::skip::Skip") [] [ I ].
+        
+        (*     const MAY_HAVE_SIDE_EFFECT: bool = I::MAY_HAVE_SIDE_EFFECT; *)
+        (* Ty.path "bool" *)
+        Definition value_MAY_HAVE_SIDE_EFFECT (I : Ty.t) : Value.t :=
+          let Self : Ty.t := Self I in
+          M.run
+            ltac:(M.monadic
+              (M.get_constant (|
+                "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
+              |))).
+        
+        Axiom Implements :
+          forall (I : Ty.t),
+          M.IsTraitInstance
+            "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
+            (Self I)
+            (* Trait polymorphic types *) []
+            (* Instance *)
+            [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT I))
+            ].
+      End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_I_for_core_iter_adapters_skip_Skip_I.
+      
+      Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_adapters_zip_TrustedRandomAccess_I_for_core_iter_adapters_skip_Skip_I.
+        Definition Self (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::skip::Skip") [] [ I ].
+        
+        Axiom Implements :
+          forall (I : Ty.t),
+          M.IsTraitInstance
+            "core::iter::traits::marker::TrustedLen"
+            (Self I)
+            (* Trait polymorphic types *) []
+            (* Instance *) [].
+      End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_adapters_zip_TrustedRandomAccess_I_for_core_iter_adapters_skip_Skip_I.
     End skip.
   End adapters.
 End iter.

@@ -71,15 +71,13 @@ Module async_iter.
                 M.read (| f |);
                 M.read (| Value.String "FromIter" |);
                 M.read (| Value.String "iter" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::async_iter::from_iter::FromIter",
-                      "iter"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::async_iter::from_iter::FromIter",
+                    "iter"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible

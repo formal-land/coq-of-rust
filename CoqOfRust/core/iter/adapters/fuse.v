@@ -78,15 +78,13 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "Fuse" |);
                   M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::fuse::Fuse",
-                        "iter"
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::fuse::Fuse",
+                      "iter"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -125,6 +123,36 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "new" (new I).
+        
+        (*
+            pub(crate) fn into_inner(self) -> Option<I> {
+                self.iter
+            }
+        *)
+        Definition into_inner
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  self,
+                  "core::iter::adapters::fuse::Fuse",
+                  "iter"
+                |)
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom AssociatedFunction_into_inner :
+          forall (I : Ty.t),
+          M.IsAssociatedFunction (Self I) "into_inner" (into_inner I).
       End Impl_core_iter_adapters_fuse_Fuse_I.
       
       Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_fuse_Fuse_I.

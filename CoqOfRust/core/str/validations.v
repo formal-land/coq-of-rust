@@ -10,7 +10,7 @@ Module str.
     *)
     Definition utf8_first_byte (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ byte; width ] =>
+      | [], [], [ byte; width ] =>
         ltac:(M.monadic
           (let byte := M.alloc (| byte |) in
           let width := M.alloc (| width |) in
@@ -31,7 +31,7 @@ Module str.
     *)
     Definition utf8_acc_cont_byte (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ ch; byte ] =>
+      | [], [], [ ch; byte ] =>
         ltac:(M.monadic
           (let ch := M.alloc (| ch |) in
           let byte := M.alloc (| byte |) in
@@ -54,7 +54,7 @@ Module str.
     *)
     Definition utf8_is_cont_byte (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ byte ] =>
+      | [], [], [ byte ] =>
         ltac:(M.monadic
           (let byte := M.alloc (| byte |) in
           BinOp.Pure.lt (M.rust_cast (M.read (| byte |))) (Value.Integer (-64))))
@@ -746,7 +746,7 @@ Module str.
     *)
     Definition contains_nonascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ x ] =>
+      | [], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           BinOp.Pure.ne
@@ -798,7 +798,7 @@ Module str.
                 //        first  E0 A0 80     last EF BF BF
                 //   excluding surrogates codepoints  \u{d800} to  \u{dfff}
                 //               ED A0 80 to       ED BF BF
-                // 4-byte encoding is for codepoints \u{1000}0 to \u{10ff}ff
+                // 4-byte encoding is for codepoints \u{10000} to \u{10ffff}
                 //        first  F0 90 80 80  last F4 8F BF BF
                 //
                 // Use the UTF-8 syntax from the RFC
@@ -880,7 +880,7 @@ Module str.
     *)
     Definition run_utf8_validation (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ v ] =>
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.catch_return (|
@@ -2434,7 +2434,7 @@ Module str.
     *)
     Definition utf8_char_width (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ b ] =>
+      | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.rust_cast

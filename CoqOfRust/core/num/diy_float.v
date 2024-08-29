@@ -75,23 +75,19 @@ Module num.
                 M.read (| f |);
                 M.read (| Value.String "Fp" |);
                 M.read (| Value.String "f" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::num::diy_float::Fp",
+                  "f"
+                |);
+                M.read (| Value.String "e" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::num::diy_float::Fp",
-                    "f"
-                  |));
-                M.read (| Value.String "e" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::diy_float::Fp",
-                      "e"
-                    |)
-                  |))
+                    "e"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible

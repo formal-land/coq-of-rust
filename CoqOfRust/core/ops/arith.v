@@ -318,6 +318,32 @@ Module ops.
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_i128.
     
+    Module Impl_core_ops_arith_Add_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*             type Output = $t; *)
+      Definition _Output : Ty.t := Ty.path "f16".
+      
+      (*             fn add(self, other: $t) -> $t { self + other } *)
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Wrap.add Integer.Usize (M.read (| self |)) (M.read (| other |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::Add"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
+    End Impl_core_ops_arith_Add_for_f16.
+    
     Module Impl_core_ops_arith_Add_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
@@ -369,6 +395,32 @@ Module ops.
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_f64.
+    
+    Module Impl_core_ops_arith_Add_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*             type Output = $t; *)
+      Definition _Output : Ty.t := Ty.path "f128".
+      
+      (*             fn add(self, other: $t) -> $t { self + other } *)
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Wrap.add Integer.Usize (M.read (| self |)) (M.read (| other |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::Add"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
+    End Impl_core_ops_arith_Add_for_f128.
     
     (* Trait *)
     (* Empty module 'Sub' *)
@@ -685,6 +737,32 @@ Module ops.
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_i128.
     
+    Module Impl_core_ops_arith_Sub_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*             type Output = $t; *)
+      Definition _Output : Ty.t := Ty.path "f16".
+      
+      (*             fn sub(self, other: $t) -> $t { self - other } *)
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Wrap.sub Integer.Usize (M.read (| self |)) (M.read (| other |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::Sub"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
+    End Impl_core_ops_arith_Sub_for_f16.
+    
     Module Impl_core_ops_arith_Sub_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
@@ -736,6 +814,32 @@ Module ops.
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_f64.
+    
+    Module Impl_core_ops_arith_Sub_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*             type Output = $t; *)
+      Definition _Output : Ty.t := Ty.path "f128".
+      
+      (*             fn sub(self, other: $t) -> $t { self - other } *)
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Wrap.sub Integer.Usize (M.read (| self |)) (M.read (| other |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::Sub"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
+    End Impl_core_ops_arith_Sub_for_f128.
     
     (* Trait *)
     (* Empty module 'Mul' *)
@@ -1052,6 +1156,32 @@ Module ops.
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_i128.
     
+    Module Impl_core_ops_arith_Mul_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*             type Output = $t; *)
+      Definition _Output : Ty.t := Ty.path "f16".
+      
+      (*             fn mul(self, other: $t) -> $t { self * other } *)
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Wrap.mul Integer.Usize (M.read (| self |)) (M.read (| other |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::Mul"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
+    End Impl_core_ops_arith_Mul_for_f16.
+    
     Module Impl_core_ops_arith_Mul_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
@@ -1103,6 +1233,32 @@ Module ops.
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_f64.
+    
+    Module Impl_core_ops_arith_Mul_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*             type Output = $t; *)
+      Definition _Output : Ty.t := Ty.path "f128".
+      
+      (*             fn mul(self, other: $t) -> $t { self * other } *)
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Wrap.mul Integer.Usize (M.read (| self |)) (M.read (| other |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::Mul"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
+    End Impl_core_ops_arith_Mul_for_f128.
     
     (* Trait *)
     (* Empty module 'Div' *)
@@ -1419,6 +1575,32 @@ Module ops.
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_i128.
     
+    Module Impl_core_ops_arith_Div_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*             type Output = $t; *)
+      Definition _Output : Ty.t := Ty.path "f16".
+      
+      (*             fn div(self, other: $t) -> $t { self / other } *)
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Wrap.div Integer.Usize (M.read (| self |)) (M.read (| other |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::Div"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
+    End Impl_core_ops_arith_Div_for_f16.
+    
     Module Impl_core_ops_arith_Div_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
@@ -1470,6 +1652,32 @@ Module ops.
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_f64.
+    
+    Module Impl_core_ops_arith_Div_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*             type Output = $t; *)
+      Definition _Output : Ty.t := Ty.path "f128".
+      
+      (*             fn div(self, other: $t) -> $t { self / other } *)
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Wrap.div Integer.Usize (M.read (| self |)) (M.read (| other |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::Div"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
+    End Impl_core_ops_arith_Div_for_f128.
     
     (* Trait *)
     (* Empty module 'Rem' *)
@@ -1786,6 +1994,32 @@ Module ops.
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_i128.
     
+    Module Impl_core_ops_arith_Rem_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*             type Output = $t; *)
+      Definition _Output : Ty.t := Ty.path "f16".
+      
+      (*             fn rem(self, other: $t) -> $t { self % other } *)
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Wrap.rem Integer.Usize (M.read (| self |)) (M.read (| other |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::Rem"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
+    End Impl_core_ops_arith_Rem_for_f16.
+    
     Module Impl_core_ops_arith_Rem_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
@@ -1837,6 +2071,32 @@ Module ops.
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_f64.
+    
+    Module Impl_core_ops_arith_Rem_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*             type Output = $t; *)
+      Definition _Output : Ty.t := Ty.path "f128".
+      
+      (*             fn rem(self, other: $t) -> $t { self % other } *)
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            BinOp.Wrap.rem Integer.Usize (M.read (| self |)) (M.read (| other |))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::Rem"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
+    End Impl_core_ops_arith_Rem_for_f128.
     
     (* Trait *)
     (* Empty module 'Neg' *)
@@ -1991,6 +2251,31 @@ Module ops.
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_i128.
     
+    Module Impl_core_ops_arith_Neg_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*             type Output = $t; *)
+      Definition _Output : Ty.t := Ty.path "f16".
+      
+      (*             fn neg(self) -> $t { -self } *)
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            UnOp.Panic.neg (| Integer.Usize, M.read (| self |) |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::Neg"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
+    End Impl_core_ops_arith_Neg_for_f16.
+    
     Module Impl_core_ops_arith_Neg_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
@@ -2040,6 +2325,31 @@ Module ops.
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_f64.
+    
+    Module Impl_core_ops_arith_Neg_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*             type Output = $t; *)
+      Definition _Output : Ty.t := Ty.path "f128".
+      
+      (*             fn neg(self) -> $t { -self } *)
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            UnOp.Panic.neg (| Integer.Usize, M.read (| self |) |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::Neg"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
+    End Impl_core_ops_arith_Neg_for_f128.
     
     (* Trait *)
     (* Empty module 'AddAssign' *)
@@ -2344,6 +2654,31 @@ Module ops.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_i128.
     
+    Module Impl_core_ops_arith_AddAssign_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*             fn add_assign(&mut self, other: $t) { *self += other } *)
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              let β := M.read (| self |) in
+              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::AddAssign"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
+    End Impl_core_ops_arith_AddAssign_for_f16.
+    
     Module Impl_core_ops_arith_AddAssign_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
@@ -2393,6 +2728,31 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_f64.
+    
+    Module Impl_core_ops_arith_AddAssign_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*             fn add_assign(&mut self, other: $t) { *self += other } *)
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              let β := M.read (| self |) in
+              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::AddAssign"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
+    End Impl_core_ops_arith_AddAssign_for_f128.
     
     (* Trait *)
     (* Empty module 'SubAssign' *)
@@ -2697,6 +3057,31 @@ Module ops.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_i128.
     
+    Module Impl_core_ops_arith_SubAssign_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              let β := M.read (| self |) in
+              M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::SubAssign"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
+    End Impl_core_ops_arith_SubAssign_for_f16.
+    
     Module Impl_core_ops_arith_SubAssign_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
@@ -2746,6 +3131,31 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_f64.
+    
+    Module Impl_core_ops_arith_SubAssign_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              let β := M.read (| self |) in
+              M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::SubAssign"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
+    End Impl_core_ops_arith_SubAssign_for_f128.
     
     (* Trait *)
     (* Empty module 'MulAssign' *)
@@ -3050,6 +3460,31 @@ Module ops.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_i128.
     
+    Module Impl_core_ops_arith_MulAssign_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              let β := M.read (| self |) in
+              M.write (| β, BinOp.Wrap.mul Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::MulAssign"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
+    End Impl_core_ops_arith_MulAssign_for_f16.
+    
     Module Impl_core_ops_arith_MulAssign_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
@@ -3099,6 +3534,31 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_f64.
+    
+    Module Impl_core_ops_arith_MulAssign_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              let β := M.read (| self |) in
+              M.write (| β, BinOp.Wrap.mul Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::MulAssign"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
+    End Impl_core_ops_arith_MulAssign_for_f128.
     
     (* Trait *)
     (* Empty module 'DivAssign' *)
@@ -3403,6 +3863,31 @@ Module ops.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_i128.
     
+    Module Impl_core_ops_arith_DivAssign_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              let β := M.read (| self |) in
+              M.write (| β, BinOp.Wrap.div Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::DivAssign"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
+    End Impl_core_ops_arith_DivAssign_for_f16.
+    
     Module Impl_core_ops_arith_DivAssign_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
@@ -3452,6 +3937,31 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_f64.
+    
+    Module Impl_core_ops_arith_DivAssign_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              let β := M.read (| self |) in
+              M.write (| β, BinOp.Wrap.div Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::DivAssign"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
+    End Impl_core_ops_arith_DivAssign_for_f128.
     
     (* Trait *)
     (* Empty module 'RemAssign' *)
@@ -3756,6 +4266,31 @@ Module ops.
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_i128.
     
+    Module Impl_core_ops_arith_RemAssign_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              let β := M.read (| self |) in
+              M.write (| β, BinOp.Wrap.rem Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::RemAssign"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
+    End Impl_core_ops_arith_RemAssign_for_f16.
+    
     Module Impl_core_ops_arith_RemAssign_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
@@ -3805,5 +4340,30 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_f64.
+    
+    Module Impl_core_ops_arith_RemAssign_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              let β := M.read (| self |) in
+              M.write (| β, BinOp.Wrap.rem Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::arith::RemAssign"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
+    End Impl_core_ops_arith_RemAssign_for_f128.
   End arith.
 End ops.

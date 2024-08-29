@@ -122,8 +122,8 @@ Module fmt.
     where
         T: flt2dec::DecodableFloat,
     {
-        let mut buf: [MaybeUninit<u8>; 1024] = MaybeUninit::uninit_array(); // enough for f32 and f64
-        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 4] = MaybeUninit::uninit_array();
+        let mut buf: [MaybeUninit<u8>; 1024] = [MaybeUninit::uninit(); 1024]; // enough for f32 and f64
+        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 4] = [MaybeUninit::uninit(); 4];
         let formatted = flt2dec::to_exact_fixed_str(
             flt2dec::strategy::grisu::format_exact,
             *num,
@@ -151,27 +151,33 @@ Module fmt.
           M.read (|
             let~ buf :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                    "uninit_array",
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                      "uninit",
+                      []
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer 1024
                 |)
               |) in
             let~ parts :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        []
+                        [ Ty.path "core::num::fmt::Part" ],
+                      "uninit",
                       []
-                      [ Ty.path "core::num::fmt::Part" ],
-                    "uninit_array",
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer 4
                 |)
               |) in
             let~ formatted :=
@@ -218,8 +224,8 @@ Module fmt.
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
                     M.read (| precision |);
-                    (* Unsize *) M.pointer_coercion buf;
-                    (* Unsize *) M.pointer_coercion parts
+                    buf;
+                    parts
                   ]
                 |)
               |) in
@@ -251,8 +257,9 @@ Module fmt.
         T: flt2dec::DecodableFloat,
     {
         // enough for f32 and f64
-        let mut buf: [MaybeUninit<u8>; flt2dec::MAX_SIG_DIGITS] = MaybeUninit::uninit_array();
-        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 4] = MaybeUninit::uninit_array();
+        let mut buf: [MaybeUninit<u8>; flt2dec::MAX_SIG_DIGITS] =
+            [MaybeUninit::uninit(); flt2dec::MAX_SIG_DIGITS];
+        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 4] = [MaybeUninit::uninit(); 4];
         let formatted = flt2dec::to_shortest_str(
             flt2dec::strategy::grisu::format_shortest,
             *num,
@@ -280,27 +287,33 @@ Module fmt.
           M.read (|
             let~ buf :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                    "uninit_array",
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                      "uninit",
+                      []
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer 17
                 |)
               |) in
             let~ parts :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        []
+                        [ Ty.path "core::num::fmt::Part" ],
+                      "uninit",
                       []
-                      [ Ty.path "core::num::fmt::Part" ],
-                    "uninit_array",
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer 4
                 |)
               |) in
             let~ formatted :=
@@ -346,8 +359,8 @@ Module fmt.
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
                     M.read (| precision |);
-                    (* Unsize *) M.pointer_coercion buf;
-                    (* Unsize *) M.pointer_coercion parts
+                    buf;
+                    parts
                   ]
                 |)
               |) in
@@ -490,8 +503,8 @@ Module fmt.
     where
         T: flt2dec::DecodableFloat,
     {
-        let mut buf: [MaybeUninit<u8>; 1024] = MaybeUninit::uninit_array(); // enough for f32 and f64
-        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 6] = MaybeUninit::uninit_array();
+        let mut buf: [MaybeUninit<u8>; 1024] = [MaybeUninit::uninit(); 1024]; // enough for f32 and f64
+        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 6] = [MaybeUninit::uninit(); 6];
         let formatted = flt2dec::to_exact_exp_str(
             flt2dec::strategy::grisu::format_exact,
             *num,
@@ -521,27 +534,33 @@ Module fmt.
           M.read (|
             let~ buf :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                    "uninit_array",
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                      "uninit",
+                      []
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer 1024
                 |)
               |) in
             let~ parts :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        []
+                        [ Ty.path "core::num::fmt::Part" ],
+                      "uninit",
                       []
-                      [ Ty.path "core::num::fmt::Part" ],
-                    "uninit_array",
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer 6
                 |)
               |) in
             let~ formatted :=
@@ -589,8 +608,8 @@ Module fmt.
                     M.read (| sign |);
                     M.read (| precision |);
                     M.read (| upper |);
-                    (* Unsize *) M.pointer_coercion buf;
-                    (* Unsize *) M.pointer_coercion parts
+                    buf;
+                    parts
                   ]
                 |)
               |) in
@@ -624,8 +643,9 @@ Module fmt.
         T: flt2dec::DecodableFloat,
     {
         // enough for f32 and f64
-        let mut buf: [MaybeUninit<u8>; flt2dec::MAX_SIG_DIGITS] = MaybeUninit::uninit_array();
-        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 6] = MaybeUninit::uninit_array();
+        let mut buf: [MaybeUninit<u8>; flt2dec::MAX_SIG_DIGITS] =
+            [MaybeUninit::uninit(); flt2dec::MAX_SIG_DIGITS];
+        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 6] = [MaybeUninit::uninit(); 6];
         let formatted = flt2dec::to_shortest_exp_str(
             flt2dec::strategy::grisu::format_shortest,
             *num,
@@ -654,27 +674,33 @@ Module fmt.
           M.read (|
             let~ buf :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                    "uninit_array",
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                      "uninit",
+                      []
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer 17
                 |)
               |) in
             let~ parts :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        []
+                        [ Ty.path "core::num::fmt::Part" ],
+                      "uninit",
                       []
-                      [ Ty.path "core::num::fmt::Part" ],
-                    "uninit_array",
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer 6
                 |)
               |) in
             let~ formatted :=
@@ -721,8 +747,8 @@ Module fmt.
                     M.read (| sign |);
                     Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
                     M.read (| upper |);
-                    (* Unsize *) M.pointer_coercion buf;
-                    (* Unsize *) M.pointer_coercion parts
+                    buf;
+                    parts
                   ]
                 |)
               |) in
@@ -1254,5 +1280,175 @@ Module fmt.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperExp_for_f64.
+    
+    Module Impl_core_fmt_Debug_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*
+          fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+              write!(f, "{:#06x}", self.to_bits())
+          }
+      *)
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              [
+                M.read (| f |);
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1_formatted",
+                    []
+                  |),
+                  [
+                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_lower_hex",
+                              [ Ty.path "u16" ]
+                            |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (| Ty.path "f16", "to_bits", [] |),
+                                  [ M.read (| M.read (| self |) |) ]
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Placeholder",
+                              "new",
+                              []
+                            |),
+                            [
+                              Value.Integer 0;
+                              Value.UnicodeChar 32;
+                              Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                              Value.Integer 12;
+                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                              Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 6 ]
+                            ]
+                          |)
+                        ]
+                    |);
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "core::fmt::rt::UnsafeArg", "new", [] |),
+                      []
+                    |)
+                  ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::fmt::Debug"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+    End Impl_core_fmt_Debug_for_f16.
+    
+    Module Impl_core_fmt_Debug_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*
+          fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+              write!(f, "{:#034x}", self.to_bits())
+          }
+      *)
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              [
+                M.read (| f |);
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1_formatted",
+                    []
+                  |),
+                  [
+                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_lower_hex",
+                              [ Ty.path "u128" ]
+                            |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (| Ty.path "f128", "to_bits", [] |),
+                                  [ M.read (| M.read (| self |) |) ]
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Placeholder",
+                              "new",
+                              []
+                            |),
+                            [
+                              Value.Integer 0;
+                              Value.UnicodeChar 32;
+                              Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                              Value.Integer 12;
+                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                              Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 34 ]
+                            ]
+                          |)
+                        ]
+                    |);
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "core::fmt::rt::UnsafeArg", "new", [] |),
+                      []
+                    |)
+                  ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::fmt::Debug"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+    End Impl_core_fmt_Debug_for_f128.
   End float.
 End fmt.

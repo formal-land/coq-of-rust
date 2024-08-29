@@ -89,23 +89,19 @@ Module char.
                 M.read (| f |);
                 M.read (| Value.String "DecodeUtf16" |);
                 M.read (| Value.String "iter" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::char::decode::DecodeUtf16",
+                  "iter"
+                |);
+                M.read (| Value.String "buf" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::char::decode::DecodeUtf16",
-                    "iter"
-                  |));
-                M.read (| Value.String "buf" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::char::decode::DecodeUtf16",
-                      "buf"
-                    |)
-                  |))
+                    "buf"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -148,15 +144,13 @@ Module char.
                 M.read (| f |);
                 M.read (| Value.String "DecodeUtf16Error" |);
                 M.read (| Value.String "code" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::char::decode::DecodeUtf16Error",
-                      "code"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::char::decode::DecodeUtf16Error",
+                    "code"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -204,17 +198,6 @@ Module char.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_char_decode_DecodeUtf16Error.
-    
-    Module Impl_core_marker_StructuralEq_for_core_char_decode_DecodeUtf16Error.
-      Definition Self : Ty.t := Ty.path "core::char::decode::DecodeUtf16Error".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_char_decode_DecodeUtf16Error.
     
     Module Impl_core_cmp_Eq_for_core_char_decode_DecodeUtf16Error.
       Definition Self : Ty.t := Ty.path "core::char::decode::DecodeUtf16Error".
@@ -1048,32 +1031,28 @@ Module char.
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array [ M.read (| Value.String "unpaired surrogate found: " |) ]
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_lower_hex",
-                                [ Ty.path "u16" ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::char::decode::DecodeUtf16Error",
-                                  "code"
-                                |)
-                              ]
-                            |)
-                          ]
-                      |))
+                    M.alloc (|
+                      Value.Array [ M.read (| Value.String "unpaired surrogate found: " |) ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_lower_hex",
+                              [ Ty.path "u16" ]
+                            |),
+                            [
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::char::decode::DecodeUtf16Error",
+                                "code"
+                              |)
+                            ]
+                          |)
+                        ]
+                    |)
                   ]
                 |)
               ]

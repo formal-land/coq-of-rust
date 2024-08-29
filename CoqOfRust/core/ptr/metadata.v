@@ -10,31 +10,17 @@ Module ptr.
     
     (*
     pub const fn metadata<T: ?Sized>(ptr: *const T) -> <T as Pointee>::Metadata {
-        // SAFETY: Accessing the value from the `PtrRepr` union is safe since *const T
-        // and PtrComponents<T> have the same memory layouts. Only std can make this
-        // guarantee.
-        unsafe { PtrRepr { const_ptr: ptr }.components.metadata }
+        ptr_metadata(ptr)
     }
     *)
     Definition metadata (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [ T ], [ ptr ] =>
+      | [], [ T ], [ ptr ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.SubPointer.get_struct_record_field (|
-                M.alloc (|
-                  Value.StructRecord
-                    "core::ptr::metadata::PtrRepr"
-                    [ ("const_ptr", M.read (| ptr |)) ]
-                |),
-                "core::ptr::metadata::PtrRepr",
-                "components"
-              |),
-              "core::ptr::metadata::PtrComponents",
-              "metadata"
-            |)
+          M.call_closure (|
+            M.get_function (| "core::intrinsics::ptr_metadata", [ T; Ty.associated ] |),
+            [ M.read (| ptr |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -43,39 +29,28 @@ Module ptr.
     
     (*
     pub const fn from_raw_parts<T: ?Sized>(
-        data_address: *const (),
+        data_pointer: *const impl Thin,
         metadata: <T as Pointee>::Metadata,
     ) -> *const T {
-        // SAFETY: Accessing the value from the `PtrRepr` union is safe since *const T
-        // and PtrComponents<T> have the same memory layouts. Only std can make this
-        // guarantee.
-        unsafe { PtrRepr { components: PtrComponents { data_address, metadata } }.const_ptr }
+        aggregate_raw_ptr(data_pointer, metadata)
     }
     *)
     Definition from_raw_parts (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [ T ], [ data_address; metadata ] =>
+      | [], [ T; impl_Thin ], [ data_pointer; metadata ] =>
         ltac:(M.monadic
-          (let data_address := M.alloc (| data_address |) in
+          (let data_pointer := M.alloc (| data_pointer |) in
           let metadata := M.alloc (| metadata |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.alloc (|
-                Value.StructRecord
-                  "core::ptr::metadata::PtrRepr"
-                  [
-                    ("components",
-                      Value.StructRecord
-                        "core::ptr::metadata::PtrComponents"
-                        [
-                          ("data_address", M.read (| data_address |));
-                          ("metadata", M.read (| metadata |))
-                        ])
-                  ]
-              |),
-              "core::ptr::metadata::PtrRepr",
-              "const_ptr"
-            |)
+          M.call_closure (|
+            M.get_function (|
+              "core::intrinsics::aggregate_raw_ptr",
+              [
+                Ty.apply (Ty.path "*const") [] [ T ];
+                Ty.apply (Ty.path "*const") [] [ impl_Thin ];
+                Ty.associated
+              ]
+            |),
+            [ M.read (| data_pointer |); M.read (| metadata |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -85,101 +60,34 @@ Module ptr.
     
     (*
     pub const fn from_raw_parts_mut<T: ?Sized>(
-        data_address: *mut (),
+        data_pointer: *mut impl Thin,
         metadata: <T as Pointee>::Metadata,
     ) -> *mut T {
-        // SAFETY: Accessing the value from the `PtrRepr` union is safe since *const T
-        // and PtrComponents<T> have the same memory layouts. Only std can make this
-        // guarantee.
-        unsafe { PtrRepr { components: PtrComponents { data_address, metadata } }.mut_ptr }
+        aggregate_raw_ptr(data_pointer, metadata)
     }
     *)
     Definition from_raw_parts_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [ T ], [ data_address; metadata ] =>
+      | [], [ T; impl_Thin ], [ data_pointer; metadata ] =>
         ltac:(M.monadic
-          (let data_address := M.alloc (| data_address |) in
+          (let data_pointer := M.alloc (| data_pointer |) in
           let metadata := M.alloc (| metadata |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.alloc (|
-                Value.StructRecord
-                  "core::ptr::metadata::PtrRepr"
-                  [
-                    ("components",
-                      Value.StructRecord
-                        "core::ptr::metadata::PtrComponents"
-                        [
-                          ("data_address",
-                            (* MutToConstPointer *) M.pointer_coercion (M.read (| data_address |)));
-                          ("metadata", M.read (| metadata |))
-                        ])
-                  ]
-              |),
-              "core::ptr::metadata::PtrRepr",
-              "mut_ptr"
-            |)
+          M.call_closure (|
+            M.get_function (|
+              "core::intrinsics::aggregate_raw_ptr",
+              [
+                Ty.apply (Ty.path "*mut") [] [ T ];
+                Ty.apply (Ty.path "*mut") [] [ impl_Thin ];
+                Ty.associated
+              ]
+            |),
+            [ M.read (| data_pointer |); M.read (| metadata |) ]
           |)))
       | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_raw_parts_mut :
       M.IsFunction "core::ptr::metadata::from_raw_parts_mut" from_raw_parts_mut.
-    
-    (* Error Union *)
-    
-    (* StructRecord
-      {
-        name := "PtrComponents";
-        const_params := [];
-        ty_params := [ "T" ];
-        fields :=
-          [
-            ("data_address", Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]);
-            ("metadata", Ty.associated)
-          ];
-      } *)
-    
-    Module Impl_core_marker_Copy_where_core_marker_Sized_T_for_core_ptr_metadata_PtrComponents_T.
-      Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::PtrComponents") [] [ T ].
-      
-      Axiom Implements :
-        forall (T : Ty.t),
-        M.IsTraitInstance
-          "core::marker::Copy"
-          (Self T)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_Copy_where_core_marker_Sized_T_for_core_ptr_metadata_PtrComponents_T.
-    
-    Module Impl_core_clone_Clone_where_core_marker_Sized_T_for_core_ptr_metadata_PtrComponents_T.
-      Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::metadata::PtrComponents") [] [ T ].
-      
-      (*
-          fn clone(&self) -> Self {
-              *self
-          }
-      *)
-      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T in
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom Implements :
-        forall (T : Ty.t),
-        M.IsTraitInstance
-          "core::clone::Clone"
-          (Self T)
-          (* Trait polymorphic types *) []
-          (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
-    End Impl_core_clone_Clone_where_core_marker_Sized_T_for_core_ptr_metadata_PtrComponents_T.
     
     (* StructRecord
       {
@@ -188,8 +96,12 @@ Module ptr.
         ty_params := [ "Dyn" ];
         fields :=
           [
-            ("vtable_ptr", Ty.apply (Ty.path "&") [] [ Ty.path "core::ptr::metadata::VTable" ]);
-            ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [] [ Dyn ])
+            ("_vtable_ptr",
+              Ty.apply
+                (Ty.path "core::ptr::non_null::NonNull")
+                []
+                [ Ty.path "core::ptr::metadata::VTable" ]);
+            ("_phantom", Ty.apply (Ty.path "core::marker::PhantomData") [] [ Dyn ])
           ];
       } *)
     
@@ -200,14 +112,47 @@ Module ptr.
         Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
       (*
+          fn vtable_ptr(self) -> *const VTable {
+              // SAFETY: this layout assumption is hard-coded into the compiler.
+              // If it's somehow not a size match, the transmute will error.
+              unsafe { crate::mem::transmute::<Self, *const VTable>(self) }
+          }
+      *)
+      Definition vtable_ptr
+          (Dyn : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self Dyn in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_function (|
+                "core::intrinsics::transmute",
+                [
+                  Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ];
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ]
+                ]
+              |),
+              [ M.read (| self |) ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_vtable_ptr :
+        forall (Dyn : Ty.t),
+        M.IsAssociatedFunction (Self Dyn) "vtable_ptr" (vtable_ptr Dyn).
+      
+      (*
           pub fn size_of(self) -> usize {
               // Note that "size stored in vtable" is *not* the same as "result of size_of_val_raw".
               // Consider a reference like `&(i32, dyn Send)`: the vtable will only store the size of the
               // `Send` part!
               // SAFETY: DynMetadata always contains a valid vtable pointer
-              return unsafe {
-                  crate::intrinsics::vtable_size(self.vtable_ptr as *const VTable as *const ())
-              };
+              return unsafe { crate::intrinsics::vtable_size(self.vtable_ptr() as *const ()) };
           }
       *)
       Definition size_of (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -225,17 +170,13 @@ Module ptr.
                         M.get_function (| "core::intrinsics::vtable_size", [] |),
                         [
                           M.rust_cast
-                            (M.read (|
-                              M.use
-                                (M.alloc (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      self,
-                                      "core::ptr::metadata::DynMetadata",
-                                      "vtable_ptr"
-                                    |)
-                                  |)
-                                |))
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                                "vtable_ptr",
+                                []
+                              |),
+                              [ M.read (| self |) ]
                             |))
                         ]
                       |)
@@ -253,9 +194,7 @@ Module ptr.
       (*
           pub fn align_of(self) -> usize {
               // SAFETY: DynMetadata always contains a valid vtable pointer
-              return unsafe {
-                  crate::intrinsics::vtable_align(self.vtable_ptr as *const VTable as *const ())
-              };
+              return unsafe { crate::intrinsics::vtable_align(self.vtable_ptr() as *const ()) };
           }
       *)
       Definition align_of (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -273,17 +212,13 @@ Module ptr.
                         M.get_function (| "core::intrinsics::vtable_align", [] |),
                         [
                           M.rust_cast
-                            (M.read (|
-                              M.use
-                                (M.alloc (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      self,
-                                      "core::ptr::metadata::DynMetadata",
-                                      "vtable_ptr"
-                                    |)
-                                  |)
-                                |))
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                                "vtable_ptr",
+                                []
+                              |),
+                              [ M.read (| self |) ]
                             |))
                         ]
                       |)
@@ -376,7 +311,7 @@ Module ptr.
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-              f.debug_tuple("DynMetadata").field(&(self.vtable_ptr as *const VTable)).finish()
+              f.debug_tuple("DynMetadata").field(&self.vtable_ptr()).finish()
           }
       *)
       Definition fmt (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -410,18 +345,16 @@ Module ptr.
                         [ M.read (| f |); M.read (| Value.String "DynMetadata" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.use
-                        (M.alloc (|
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::ptr::metadata::DynMetadata",
-                              "vtable_ptr"
-                            |)
-                          |)
-                        |)))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                          "vtable_ptr",
+                          []
+                        |),
+                        [ M.read (| M.read (| self |) |) ]
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -511,7 +444,7 @@ Module ptr.
       
       (*
           fn eq(&self, other: &Self) -> bool {
-              crate::ptr::eq::<VTable>(self.vtable_ptr, other.vtable_ptr)
+              crate::ptr::eq::<VTable>(self.vtable_ptr(), other.vtable_ptr())
           }
       *)
       Definition eq (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -524,19 +457,21 @@ Module ptr.
             M.call_closure (|
               M.get_function (| "core::ptr::eq", [ Ty.path "core::ptr::metadata::VTable" ] |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ptr::metadata::DynMetadata",
-                    "vtable_ptr"
-                  |)
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                    "vtable_ptr",
+                    []
+                  |),
+                  [ M.read (| M.read (| self |) |) ]
                 |);
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "core::ptr::metadata::DynMetadata",
-                    "vtable_ptr"
-                  |)
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                    "vtable_ptr",
+                    []
+                  |),
+                  [ M.read (| M.read (| other |) |) ]
                 |)
               ]
             |)))
@@ -558,7 +493,7 @@ Module ptr.
       
       (*
           fn cmp(&self, other: &Self) -> crate::cmp::Ordering {
-              (self.vtable_ptr as *const VTable).cmp(&(other.vtable_ptr as *const VTable))
+              <*const VTable>::cmp(&self.vtable_ptr(), &other.vtable_ptr())
           }
       *)
       Definition cmp (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -577,26 +512,26 @@ Module ptr.
                 []
               |),
               [
-                M.use
-                  (M.alloc (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::ptr::metadata::DynMetadata",
-                        "vtable_ptr"
-                      |)
-                    |)
-                  |));
-                M.use
-                  (M.alloc (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "core::ptr::metadata::DynMetadata",
-                        "vtable_ptr"
-                      |)
-                    |)
-                  |))
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                      "vtable_ptr",
+                      []
+                    |),
+                    [ M.read (| M.read (| self |) |) ]
+                  |)
+                |);
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                      "vtable_ptr",
+                      []
+                    |),
+                    [ M.read (| M.read (| other |) |) ]
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -664,7 +599,7 @@ Module ptr.
       
       (*
           fn hash<H: Hasher>(&self, hasher: &mut H) {
-              crate::ptr::hash::<VTable, _>(self.vtable_ptr, hasher)
+              crate::ptr::hash::<VTable, _>(self.vtable_ptr(), hasher)
           }
       *)
       Definition hash (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -677,12 +612,13 @@ Module ptr.
             M.call_closure (|
               M.get_function (| "core::ptr::hash", [ Ty.path "core::ptr::metadata::VTable"; H ] |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::ptr::metadata::DynMetadata",
-                    "vtable_ptr"
-                  |)
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                    "vtable_ptr",
+                    []
+                  |),
+                  [ M.read (| M.read (| self |) |) ]
                 |);
                 M.read (| hasher |)
               ]

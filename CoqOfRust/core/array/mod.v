@@ -3,6 +3,33 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module array.
   (*
+  pub fn repeat<T: Clone, const N: usize>(val: T) -> [T; N] {
+      from_trusted_iterator(repeat_n(val, N))
+  }
+  *)
+  Definition repeat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ N ], [ T ], [ val ] =>
+      ltac:(M.monadic
+        (let val := M.alloc (| val |) in
+        M.call_closure (|
+          M.get_function (|
+            "core::array::from_trusted_iterator",
+            [ T; Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ T ] ]
+          |),
+          [
+            M.call_closure (|
+              M.get_function (| "core::iter::sources::repeat_n::repeat_n", [ T ] |),
+              [ M.read (| val |); M.read (| M.get_constant (| "core::array::repeat::N" |) |) ]
+            |)
+          ]
+        |)))
+    | _, _, _ => M.impossible
+    end.
+  
+  Axiom Function_repeat : M.IsFunction "core::array::repeat" repeat.
+  
+  (*
   pub fn from_fn<T, const N: usize, F>(cb: F) -> [T; N]
   where
       F: FnMut(usize) -> T,
@@ -54,7 +81,7 @@ Module array.
       R: Try,
       R::Residual: Residual<[R::Output; N]>,
   {
-      let mut array = MaybeUninit::uninit_array::<N>();
+      let mut array = [const { MaybeUninit::uninit() }; N];
       match try_from_fn_erased(&mut array, cb) {
           ControlFlow::Break(r) => FromResidual::from_residual(r),
           ControlFlow::Continue(()) => {
@@ -72,20 +99,16 @@ Module array.
         M.read (|
           let~ array :=
             M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.associated ],
-                  "uninit_array",
-                  []
-                |),
-                []
+              repeat (|
+                M.read (| M.get_constant (| "core::array::try_from_fn_discriminant" |) |),
+                N
               |)
             |) in
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::array::try_from_fn_erased", [ Ty.associated; R; F ] |),
-                [ (* Unsize *) M.pointer_coercion array; M.read (| cb |) ]
+                [ array; M.read (| cb |) ]
               |)
             |),
             [
@@ -158,7 +181,7 @@ Module array.
   *)
   Definition from_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ s ] =>
+    | [], [ T ], [ s ] =>
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         M.call_closure (|
@@ -182,7 +205,7 @@ Module array.
   *)
   Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ s ] =>
+    | [], [ T ], [ s ] =>
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         M.call_closure (|
@@ -225,15 +248,13 @@ Module array.
             [
               M.read (| f |);
               M.read (| Value.String "TryFromSliceError" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::array::TryFromSliceError",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::array::TryFromSliceError",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -480,7 +501,7 @@ Module array.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          (* Unsize *) M.pointer_coercion (M.read (| self |))))
+          M.read (| self |)))
       | _, _, _ => M.impossible
       end.
     
@@ -513,7 +534,7 @@ Module array.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          (* Unsize *) M.pointer_coercion (M.read (| self |))))
+          M.read (| self |)))
       | _, _, _ => M.impossible
       end.
     
@@ -969,7 +990,7 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -1018,7 +1039,7 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter_mut", [] |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -1069,12 +1090,7 @@ Module array.
               "index",
               []
             |),
-            [
-              M.read (|
-                M.use (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |))
-              |);
-              M.read (| index |)
-            ]
+            [ M.read (| M.use (M.alloc (| M.read (| self |) |)) |); M.read (| index |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -1121,12 +1137,7 @@ Module array.
               "index_mut",
               []
             |),
-            [
-              M.read (|
-                M.use (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |))
-              |);
-              M.read (| index |)
-            ]
+            [ M.read (| M.use (M.alloc (| M.read (| self |) |)) |); M.read (| index |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -1573,10 +1584,7 @@ Module array.
                     "clone_from_slice",
                     []
                   |),
-                  [
-                    (* Unsize *) M.pointer_coercion (M.read (| self |));
-                    (* Unsize *) M.pointer_coercion (M.read (| other |))
-                  ]
+                  [ M.read (| self |); M.read (| other |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -1637,7 +1645,7 @@ Module array.
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
-                    [ (* Unsize *) M.pointer_coercion (M.read (| array |)) ]
+                    [ M.read (| array |) ]
                   |)
                 ]
               |)
@@ -4630,8 +4638,8 @@ Module array.
                     Ty.apply (Ty.path "array") [ N ] [ T ],
                     "try_map",
                     [
-                      Ty.associated;
-                      Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ U ]
+                      Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ U ];
+                      Ty.associated
                     ]
                   |),
                   [
@@ -4659,11 +4667,9 @@ Module array.
       M.IsAssociatedFunction (Self N T) "map" (map N T).
     
     (*
-        pub fn try_map<F, R>(self, f: F) -> ChangeOutputType<R, [R::Output; N]>
+        pub fn try_map<R>(self, f: impl FnMut(T) -> R) -> ChangeOutputType<R, [R::Output; N]>
         where
-            F: FnMut(T) -> R,
-            R: Try,
-            R::Residual: Residual<[R::Output; N]>,
+            R: Try<Residual: Residual<[R::Output; N]>>,
         {
             drain_array_with(self, |iter| try_from_trusted_iterator(iter.map(f)))
         }
@@ -4677,7 +4683,7 @@ Module array.
         : M :=
       let Self : Ty.t := Self N T in
       match ε, τ, α with
-      | [], [ F; R ], [ self; f ] =>
+      | [], [ R; impl_FnMut_T__arrow_R ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -4714,7 +4720,10 @@ Module array.
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::map::Map")
                                       []
-                                      [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ]; F ]
+                                      [
+                                        Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ];
+                                        impl_FnMut_T__arrow_R
+                                      ]
                                   ]
                                 |),
                                 [
@@ -4724,7 +4733,7 @@ Module array.
                                       Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ],
                                       [],
                                       "map",
-                                      [ R; F ]
+                                      [ R; impl_FnMut_T__arrow_R ]
                                     |),
                                     [ M.read (| iter |); M.read (| f |) ]
                                   |)
@@ -4757,10 +4766,10 @@ Module array.
         : M :=
       let Self : Ty.t := Self N T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          (* Unsize *) M.pointer_coercion (M.read (| self |))))
+          M.read (| self |)))
       | _, _, _ => M.impossible
       end.
     
@@ -4785,7 +4794,7 @@ Module array.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          (* Unsize *) M.pointer_coercion (M.read (| self |))))
+          M.read (| self |)))
       | _, _, _ => M.impossible
       end.
     
@@ -4821,7 +4830,7 @@ Module array.
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
-                [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                [ M.read (| self |) ]
               |)
             ]
           |)))
@@ -4860,7 +4869,7 @@ Module array.
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter_mut", [] |),
-                [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                [ M.read (| self |) ]
               |)
             ]
           |)))
@@ -4873,7 +4882,7 @@ Module array.
     
     (*
         pub fn split_array_ref<const M: usize>(&self) -> (&[T; M], &[T]) {
-            (&self[..]).split_array_ref::<M>()
+            (&self[..]).split_first_chunk::<M>().unwrap()
         }
     *)
     Definition split_array_ref
@@ -4890,20 +4899,38 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [] [ T ],
-              "split_array_ref",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ];
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    ]
+                ],
+              "unwrap",
               []
             |),
             [
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.apply (Ty.path "array") [ N ] [ T ],
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ T ],
+                  "split_first_chunk",
                   []
                 |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                [
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.apply (Ty.path "array") [ N ] [ T ],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      []
+                    |),
+                    [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  |)
+                ]
               |)
             ]
           |)))
@@ -4916,7 +4943,7 @@ Module array.
     
     (*
         pub fn split_array_mut<const M: usize>(&mut self) -> (&mut [T; M], &mut [T]) {
-            (&mut self[..]).split_array_mut::<M>()
+            (&mut self[..]).split_first_chunk_mut::<M>().unwrap()
         }
     *)
     Definition split_array_mut
@@ -4933,20 +4960,38 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [] [ T ],
-              "split_array_mut",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    ]
+                ],
+              "unwrap",
               []
             |),
             [
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::IndexMut",
-                  Ty.apply (Ty.path "array") [ N ] [ T ],
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index_mut",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ T ],
+                  "split_first_chunk_mut",
                   []
                 |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                [
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::IndexMut",
+                      Ty.apply (Ty.path "array") [ N ] [ T ],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index_mut",
+                      []
+                    |),
+                    [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  |)
+                ]
               |)
             ]
           |)))
@@ -4959,7 +5004,7 @@ Module array.
     
     (*
         pub fn rsplit_array_ref<const M: usize>(&self) -> (&[T], &[T; M]) {
-            (&self[..]).rsplit_array_ref::<M>()
+            (&self[..]).split_last_chunk::<M>().unwrap()
         }
     *)
     Definition rsplit_array_ref
@@ -4976,20 +5021,38 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [] [ T ],
-              "rsplit_array_ref",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ]
+                    ]
+                ],
+              "unwrap",
               []
             |),
             [
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.apply (Ty.path "array") [ N ] [ T ],
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ T ],
+                  "split_last_chunk",
                   []
                 |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                [
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.apply (Ty.path "array") [ N ] [ T ],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      []
+                    |),
+                    [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  |)
+                ]
               |)
             ]
           |)))
@@ -5002,7 +5065,7 @@ Module array.
     
     (*
         pub fn rsplit_array_mut<const M: usize>(&mut self) -> (&mut [T], &mut [T; M]) {
-            (&mut self[..]).rsplit_array_mut::<M>()
+            (&mut self[..]).split_last_chunk_mut::<M>().unwrap()
         }
     *)
     Definition rsplit_array_mut
@@ -5019,20 +5082,38 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [] [ T ],
-              "rsplit_array_mut",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ]
+                    ]
+                ],
+              "unwrap",
               []
             |),
             [
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::IndexMut",
-                  Ty.apply (Ty.path "array") [ N ] [ T ],
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index_mut",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ T ],
+                  "split_last_chunk_mut",
                   []
                 |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                [
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::IndexMut",
+                      Ty.apply (Ty.path "array") [ N ] [ T ],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index_mut",
+                      []
+                    |),
+                    [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  |)
+                ]
               |)
             ]
           |)))
@@ -5767,7 +5848,7 @@ Module array.
   pub(crate) fn iter_next_chunk<T, const N: usize>(
       iter: &mut impl Iterator<Item = T>,
   ) -> Result<[T; N], IntoIter<T, N>> {
-      let mut array = MaybeUninit::uninit_array::<N>();
+      let mut array = [const { MaybeUninit::uninit() }; N];
       let r = iter_next_chunk_erased(&mut array, iter);
       match r {
           Ok(()) => {
@@ -5789,13 +5870,9 @@ Module array.
         M.read (|
           let~ array :=
             M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                  "uninit_array",
-                  []
-                |),
-                []
+              repeat (|
+                M.read (| M.get_constant (| "core::array::iter_next_chunk_discriminant" |) |),
+                N
               |)
             |) in
           let~ r :=
@@ -5805,7 +5882,7 @@ Module array.
                   "core::array::iter_next_chunk_erased",
                   [ T; impl_Iterator_Item___T_ ]
                 |),
-                [ (* Unsize *) M.pointer_coercion array; M.read (| iter |) ]
+                [ array; M.read (| iter |) ]
               |)
             |) in
           M.match_operator (|

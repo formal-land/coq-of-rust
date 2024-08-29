@@ -19,21 +19,12 @@ Module collections.
                 //     self.push_back(item);
                 // }
         
-                // May only be called if `deque.len() < deque.capacity()`
-                unsafe fn push_unchecked<T, A: Allocator>(deque: &mut VecDeque<T, A>, element: T) {
-                    // SAFETY: Because of the precondition, it's guaranteed that there is space
-                    // in the logical array after the last element.
-                    unsafe { deque.buffer_write(deque.to_physical_idx(deque.len), element) };
-                    // This can't overflow because `deque.len() < deque.capacity() <= usize::MAX`.
-                    deque.len += 1;
-                }
-        
                 while let Some(element) = iter.next() {
                     let (lower, _) = iter.size_hint();
                     self.reserve(lower.saturating_add(1));
         
                     // SAFETY: We just reserved space for at least one element.
-                    unsafe { push_unchecked(self, element) };
+                    unsafe { self.push_unchecked(element) };
         
                     // Inner loop to avoid repeatedly calling `reserve`.
                     while self.len < self.capacity() {
@@ -41,7 +32,7 @@ Module collections.
                             return;
                         };
                         // SAFETY: The loop condition guarantees that `self.len() < self.capacity()`.
-                        unsafe { push_unchecked(self, element) };
+                        unsafe { self.push_unchecked(element) };
                     }
                 }
             }
@@ -133,8 +124,11 @@ Module collections.
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Self,
-                                            "push_unchecked.spec_extend",
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                              []
+                                              [ T; A ],
+                                            "push_unchecked",
                                             []
                                           |),
                                           [ M.read (| self |); M.read (| element |) ]
@@ -203,8 +197,12 @@ Module collections.
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               M.get_associated_function (|
-                                                                Self,
-                                                                "push_unchecked.spec_extend",
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloc::collections::vec_deque::VecDeque")
+                                                                  []
+                                                                  [ T; A ],
+                                                                "push_unchecked",
                                                                 []
                                                               |),
                                                               [
@@ -423,59 +421,55 @@ Module collections.
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "TrustedLen iterator's size hint is not exact: "
-                                                                                        |)
-                                                                                      ]
-                                                                                  |));
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::rt::Argument",
-                                                                                            "new_debug",
-                                                                                            [
-                                                                                              Ty.tuple
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "usize";
-                                                                                                  Ty.apply
-                                                                                                    (Ty.path
-                                                                                                      "core::option::Option")
-                                                                                                    []
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "usize"
-                                                                                                    ]
-                                                                                                ]
-                                                                                            ]
-                                                                                          |),
+                                                                                M.alloc (|
+                                                                                  Value.Array
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "TrustedLen iterator's size hint is not exact: "
+                                                                                      |)
+                                                                                    ]
+                                                                                |);
+                                                                                M.alloc (|
+                                                                                  Value.Array
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::rt::Argument",
+                                                                                          "new_debug",
                                                                                           [
-                                                                                            M.alloc (|
-                                                                                              Value.Tuple
-                                                                                                [
-                                                                                                  M.read (|
-                                                                                                    low
-                                                                                                  |);
-                                                                                                  M.read (|
-                                                                                                    high
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |)
+                                                                                            Ty.tuple
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "usize";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "core::option::Option")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "usize"
+                                                                                                  ]
+                                                                                              ]
                                                                                           ]
-                                                                                        |)
-                                                                                      ]
-                                                                                  |))
+                                                                                        |),
+                                                                                        [
+                                                                                          M.alloc (|
+                                                                                            Value.Tuple
+                                                                                              [
+                                                                                                M.read (|
+                                                                                                  low
+                                                                                                |);
+                                                                                                M.read (|
+                                                                                                  high
+                                                                                                |)
+                                                                                              ]
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
+                                                                                |)
                                                                               ]
                                                                             |)
                                                                           ]
@@ -627,17 +621,15 @@ Module collections.
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "The number of items written to VecDeque doesn't match the TrustedLen size hint"
-                                                                                        |)
-                                                                                      ]
-                                                                                  |))
+                                                                                M.alloc (|
+                                                                                  Value.Array
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "The number of items written to VecDeque doesn't match the TrustedLen size hint"
+                                                                                      |)
+                                                                                    ]
+                                                                                |)
                                                                               ]
                                                                             |)
                                                                           ]
@@ -673,12 +665,10 @@ Module collections.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String "capacity overflow" |) ]
-                                              |))
+                                            M.alloc (|
+                                              Value.Array
+                                                [ M.read (| Value.String "capacity overflow" |) ]
+                                            |)
                                           ]
                                         |)
                                       ]

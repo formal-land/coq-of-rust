@@ -31,15 +31,13 @@ Module future.
               [
                 M.read (| f |);
                 M.read (| Value.String "Ready" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::future::ready::Ready",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::future::ready::Ready",
+                    0
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible

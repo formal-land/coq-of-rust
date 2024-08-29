@@ -133,17 +133,6 @@ Module ffi.
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_alloc_ffi_c_str_CString.
     
-    Module Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_CString.
-      Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::CString".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_CString.
-    
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_CString.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::CString".
       
@@ -454,17 +443,6 @@ Module ffi.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_NulError.
     
-    Module Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_NulError.
-      Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::NulError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_NulError.
-    
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_NulError.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::NulError".
       
@@ -522,22 +500,18 @@ Module ffi.
               [
                 M.read (| f |);
                 M.read (| Value.String "NulError" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_tuple_field (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "alloc::ffi::c_str::NulError",
+                  0
+                |);
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "alloc::ffi::c_str::NulError",
-                    0
-                  |));
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "alloc::ffi::c_str::NulError",
-                      1
-                    |)
-                  |))
+                    1
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -660,7 +634,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -670,7 +644,7 @@ Module ffi.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -682,7 +656,7 @@ Module ffi.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -709,9 +683,16 @@ Module ffi.
                                 |) in
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.read (| M.read (| __self_0 |) |))
-                                  (M.read (| M.read (| __arg1_0 |) |))
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                                    "eq",
+                                    []
+                                  |),
+                                  [ __self_0; __arg1_0 ]
+                                |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
                         ]
@@ -730,17 +711,6 @@ Module ffi.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
-    
-    Module Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
-      Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
     
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind".
@@ -804,11 +774,7 @@ Module ffi.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "InteriorNul" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "InteriorNul" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -1005,17 +971,6 @@ Module ffi.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_FromVecWithNulError.
     
-    Module Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_FromVecWithNulError.
-      Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::FromVecWithNulError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_FromVecWithNulError.
-    
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_FromVecWithNulError.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::FromVecWithNulError".
       
@@ -1074,23 +1029,19 @@ Module ffi.
                 M.read (| f |);
                 M.read (| Value.String "FromVecWithNulError" |);
                 M.read (| Value.String "error_kind" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::ffi::c_str::FromVecWithNulError",
+                  "error_kind"
+                |);
+                M.read (| Value.String "bytes" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "alloc::ffi::c_str::FromVecWithNulError",
-                    "error_kind"
-                  |));
-                M.read (| Value.String "bytes" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::ffi::c_str::FromVecWithNulError",
-                      "bytes"
-                    |)
-                  |))
+                    "bytes"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -1312,17 +1263,6 @@ Module ffi.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_IntoStringError.
     
-    Module Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_IntoStringError.
-      Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::IntoStringError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_IntoStringError.
-    
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_IntoStringError.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::IntoStringError".
       
@@ -1381,23 +1321,19 @@ Module ffi.
                 M.read (| f |);
                 M.read (| Value.String "IntoStringError" |);
                 M.read (| Value.String "inner" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::ffi::c_str::IntoStringError",
+                  "inner"
+                |);
+                M.read (| Value.String "error" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "alloc::ffi::c_str::IntoStringError",
-                    "inner"
-                  |));
-                M.read (| Value.String "error" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::ffi::c_str::IntoStringError",
-                      "error"
-                    |)
-                  |))
+                    "error"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -1685,7 +1621,7 @@ Module ffi.
                       fn strlen(s: *const c_char) -> usize;
                   }
                   let len = strlen(ptr) + 1; // Including the NUL byte
-                  let slice = slice::from_raw_parts_mut(ptr, len as usize);
+                  let slice = slice::from_raw_parts_mut(ptr, len);
                   CString { inner: Box::from_raw(slice as *mut [c_char] as *mut [u8]) }
               }
           }
@@ -1710,7 +1646,7 @@ Module ffi.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::slice::raw::from_raw_parts_mut", [ Ty.path "i8" ] |),
-                    [ M.read (| ptr |); M.read (| M.use len |) ]
+                    [ M.read (| ptr |); M.read (| len |) ]
                   |)
                 |) in
               M.alloc (|
@@ -3144,22 +3080,22 @@ Module ffi.
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
     
-    Module Impl_core_convert_From_alloc_vec_Vec_core_num_nonzero_NonZeroU8_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
+    Module Impl_core_convert_From_alloc_vec_Vec_core_num_nonzero_NonZero_u8_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::CString".
       
       (*
-          fn from(v: Vec<NonZeroU8>) -> CString {
+          fn from(v: Vec<NonZero<u8>>) -> CString {
               unsafe {
-                  // Transmute `Vec<NonZeroU8>` to `Vec<u8>`.
+                  // Transmute `Vec<NonZero<u8>>` to `Vec<u8>`.
                   let v: Vec<u8> = {
                       // SAFETY:
-                      //   - transmuting between `NonZeroU8` and `u8` is sound;
-                      //   - `alloc::Layout<NonZeroU8> == alloc::Layout<u8>`.
-                      let (ptr, len, cap): ( *mut NonZeroU8, _, _) = Vec::into_raw_parts(v);
+                      //   - transmuting between `NonZero<u8>` and `u8` is sound;
+                      //   - `alloc::Layout<NonZero<u8>> == alloc::Layout<u8>`.
+                      let (ptr, len, cap): ( *mut NonZero<u8>, _, _) = Vec::into_raw_parts(v);
                       Vec::from_raw_parts(ptr.cast::<u8>(), len, cap)
                   };
                   // SAFETY: `v` cannot contain nul bytes, given the type-level
-                  // invariant of `NonZeroU8`.
+                  // invariant of `NonZero<u8>`.
                   Self::_from_vec_unchecked(v)
               }
           }
@@ -3180,7 +3116,7 @@ Module ffi.
                             (Ty.path "alloc::vec::Vec")
                             []
                             [
-                              Ty.path "core::num::nonzero::NonZeroU8";
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
                               Ty.path "alloc::alloc::Global"
                             ],
                           "into_raw_parts",
@@ -3214,7 +3150,12 @@ Module ffi.
                                     Ty.apply
                                       (Ty.path "*mut")
                                       []
-                                      [ Ty.path "core::num::nonzero::NonZeroU8" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::num::nonzero::NonZero")
+                                          []
+                                          [ Ty.path "u8" ]
+                                      ],
                                     "cast",
                                     [ Ty.path "u8" ]
                                   |),
@@ -3252,10 +3193,13 @@ Module ffi.
             Ty.apply
               (Ty.path "alloc::vec::Vec")
               []
-              [ Ty.path "core::num::nonzero::NonZeroU8"; Ty.path "alloc::alloc::Global" ]
+              [
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                Ty.path "alloc::alloc::Global"
+              ]
           ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
-    End Impl_core_convert_From_alloc_vec_Vec_core_num_nonzero_NonZeroU8_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
+    End Impl_core_convert_From_alloc_vec_Vec_core_num_nonzero_NonZero_u8_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
     
     Module Impl_core_clone_Clone_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
       Definition Self : Ty.t :=
@@ -3799,6 +3743,64 @@ Module ffi.
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref__core_ffi_c_str_CStr_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
     
+    Module Impl_core_default_Default_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "alloc::rc::Rc")
+          []
+          [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ].
+      
+      (*
+          fn default() -> Self {
+              let c_str: &CStr = Default::default();
+              Rc::from(c_str)
+          }
+      *)
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
+          ltac:(M.monadic
+            (M.read (|
+              let~ c_str :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply
+                      (Ty.path "alloc::rc::Rc")
+                      []
+                      [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| c_str |) ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::default::Default"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("default", InstanceField.Method default) ].
+    End Impl_core_default_Default_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
+    
     Module Impl_core_default_Default_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
       Definition Self : Ty.t :=
         Ty.apply
@@ -3943,37 +3945,30 @@ Module ffi.
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (|
-                              Value.String "nul byte found in provided data at position: "
-                            |)
-                          ]
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "usize" ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.read (| self |),
-                                  "alloc::ffi::c_str::NulError",
-                                  0
-                                |)
-                              ]
-                            |)
-                          ]
-                      |))
+                    M.alloc (|
+                      Value.Array
+                        [ M.read (| Value.String "nul byte found in provided data at position: " |)
+                        ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_display",
+                              [ Ty.path "usize" ]
+                            |),
+                            [
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.read (| self |),
+                                "alloc::ffi::c_str::NulError",
+                                0
+                              |)
+                            ]
+                          |)
+                        ]
+                    |)
                   ]
                 |)
               ]
@@ -4043,32 +4038,28 @@ Module ffi.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "data provided contains an interior nul byte at pos "
-                                        |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [ pos ]
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String
+                                          "data provided contains an interior nul byte at pos "
+                                      |)
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [ pos ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -4097,16 +4088,14 @@ Module ffi.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "data provided is not nul terminated"
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String "data provided is not nul terminated"
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -4625,13 +4614,11 @@ Module ffi.
             Value.StructTuple
               "core::option::Option::Some"
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::ffi::c_str::IntoStringError",
-                    "error"
-                  |))
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::ffi::c_str::IntoStringError",
+                  "error"
+                |)
               ]))
         | _, _, _ => M.impossible
         end.

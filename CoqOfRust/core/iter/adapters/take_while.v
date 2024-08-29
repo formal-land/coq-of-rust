@@ -157,23 +157,19 @@ Module iter.
                             |)
                           |);
                           M.read (| Value.String "iter" |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::take_while::TakeWhile",
-                              "iter"
-                            |))
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::take_while::TakeWhile",
+                            "iter"
+                          |)
                         ]
                       |);
                       M.read (| Value.String "flag" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::take_while::TakeWhile",
-                          "flag"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::take_while::TakeWhile",
+                        "flag"
+                      |)
                     ]
                   |)
                 ]
@@ -753,22 +749,22 @@ Module iter.
         Definition Self (I F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::take_while::TakeWhile") [] [ I; F ].
         
-        (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
+        (*     const EXPAND_BY: Option<NonZero<usize>> = I::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_EXPAND_BY (I F : Ty.t) : Value.t :=
           let Self : Ty.t := Self I F in
           M.run
             ltac:(M.monadic
               (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
         
-        (*     const MERGE_BY: Option<NonZeroUsize> = I::MERGE_BY; *)
+        (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_MERGE_BY (I F : Ty.t) : Value.t :=
           let Self : Ty.t := Self I F in
           M.run

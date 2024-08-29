@@ -238,7 +238,7 @@ Module asserting.
     Definition new (M_ T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self M_ T in
       match ε, τ, α with
-      | [ host ], [], [] =>
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "core::asserting::Capture"

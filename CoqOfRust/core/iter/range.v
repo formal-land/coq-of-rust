@@ -288,44 +288,6 @@ Module iter.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
               fn forward(start: Self, n: usize) -> Self {
                   // In debug builds, trigger a panic on overflow.
                   // This should optimize completely out in release builds.
@@ -467,6 +429,44 @@ Module iter.
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.unchecked_add(n as Self) }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u8", "unchecked_add", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.unchecked_sub(n as Self) }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u8", "unchecked_sub", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -646,10 +646,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -658,44 +658,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i8", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i8", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -839,6 +801,62 @@ Module iter.
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.checked_add_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i8", "checked_add_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.checked_sub_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i8", "checked_sub_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -1103,10 +1121,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -1115,44 +1133,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -1296,6 +1276,44 @@ Module iter.
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.unchecked_add(n as Self) }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u16", "unchecked_add", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.unchecked_sub(n as Self) }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u16", "unchecked_sub", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -1475,10 +1493,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -1487,44 +1505,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i16", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i16", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -1668,6 +1648,62 @@ Module iter.
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.checked_add_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i16", "checked_add_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.checked_sub_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i16", "checked_sub_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -1932,10 +1968,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -1944,44 +1980,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -2125,6 +2123,44 @@ Module iter.
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.unchecked_add(n as Self) }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u32", "unchecked_add", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.unchecked_sub(n as Self) }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u32", "unchecked_sub", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -2304,10 +2340,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -2316,44 +2352,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i32", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i32", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -2497,6 +2495,62 @@ Module iter.
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.checked_add_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i32", "checked_add_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.checked_sub_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i32", "checked_sub_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -2761,10 +2815,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -2773,44 +2827,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -2954,6 +2970,44 @@ Module iter.
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.unchecked_add(n as Self) }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u64", "unchecked_add", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.unchecked_sub(n as Self) }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u64", "unchecked_sub", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -3133,10 +3187,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -3145,44 +3199,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i64", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i64", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -3326,6 +3342,62 @@ Module iter.
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.checked_add_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i64", "checked_add_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.checked_sub_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i64", "checked_sub_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -3590,10 +3662,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -3602,44 +3674,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
-              [ M.read (| start |); M.read (| M.use n |) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
-              [ M.read (| start |); M.read (| M.use n |) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -3783,6 +3817,44 @@ Module iter.
                   [ M.read (| start |); M.read (| M.use n |) ]
                 |)
               |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.unchecked_add(n as Self) }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
+              [ M.read (| start |); M.read (| M.use n |) ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.unchecked_sub(n as Self) }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+              [ M.read (| start |); M.read (| M.use n |) ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -3966,10 +4038,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -3978,44 +4050,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "isize", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "isize", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -4159,6 +4193,62 @@ Module iter.
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.checked_add_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "isize", "checked_add_unsigned", [] |),
+                  [ M.read (| start |); M.read (| M.use n |) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.checked_sub_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "isize", "checked_sub_unsigned", [] |),
+                  [ M.read (| start |); M.read (| M.use n |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible
         end.
@@ -4423,10 +4513,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -4435,44 +4525,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -4621,6 +4673,44 @@ Module iter.
         end.
       
       (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.unchecked_add(n as Self) }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u128", "unchecked_add", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.unchecked_sub(n as Self) }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u128", "unchecked_sub", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
                       fn steps_between(start: &Self, end: &Self) -> Option<usize> {
                           if *start <= *end {
                               usize::try_from( *end - *start).ok()
@@ -4730,10 +4820,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -4742,44 +4832,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i128", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i128", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -4928,6 +4980,62 @@ Module iter.
         end.
       
       (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.checked_add_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i128", "checked_add_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.checked_sub_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i128", "checked_sub_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
                       fn steps_between(start: &Self, end: &Self) -> Option<usize> {
                           if *start <= *end {
                               match end.checked_sub( *start) {
@@ -5061,10 +5169,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -7147,7 +7255,7 @@ Module iter.
         end.
       
       (*
-          default fn spec_advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          default fn spec_advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               let available = if self.start <= self.end {
                   Step::steps_between(&self.start, &self.end).unwrap_or(usize::MAX)
               } else {
@@ -7159,7 +7267,7 @@ Module iter.
               self.start =
                   Step::forward_checked(self.start.clone(), taken).expect("`Step` invariants not upheld");
       
-              NonZeroUsize::new(n - taken).map_or(Ok(()), Err)
+              NonZero::new(n - taken).map_or(Ok(()), Err)
           }
       *)
       Definition spec_advance_by
@@ -7299,25 +7407,31 @@ Module iter.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -7647,7 +7761,7 @@ Module iter.
         end.
       
       (*
-          default fn spec_advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          default fn spec_advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               let available = if self.start <= self.end {
                   Step::steps_between(&self.start, &self.end).unwrap_or(usize::MAX)
               } else {
@@ -7659,7 +7773,7 @@ Module iter.
               self.end =
                   Step::backward_checked(self.end.clone(), taken).expect("`Step` invariants not upheld");
       
-              NonZeroUsize::new(n - taken).map_or(Ok(()), Err)
+              NonZero::new(n - taken).map_or(Ok(()), Err)
           }
       *)
       Definition spec_advance_back_by
@@ -7799,25 +7913,31 @@ Module iter.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -8082,7 +8202,7 @@ Module iter.
         end.
       
       (*
-          fn spec_advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn spec_advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               let available = if self.start <= self.end {
                   Step::steps_between(&self.start, &self.end).unwrap_or(usize::MAX)
               } else {
@@ -8097,7 +8217,7 @@ Module iter.
               // Otherwise 0 is returned which always safe to use.
               self.start = unsafe { Step::forward_unchecked(self.start, taken) };
       
-              NonZeroUsize::new(n - taken).map_or(Ok(()), Err)
+              NonZero::new(n - taken).map_or(Ok(()), Err)
           }
       *)
       Definition spec_advance_by
@@ -8224,25 +8344,31 @@ Module iter.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -8514,7 +8640,7 @@ Module iter.
         end.
       
       (*
-          fn spec_advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn spec_advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               let available = if self.start <= self.end {
                   Step::steps_between(&self.start, &self.end).unwrap_or(usize::MAX)
               } else {
@@ -8526,7 +8652,7 @@ Module iter.
               // SAFETY: same as the spec_advance_by() implementation
               self.end = unsafe { Step::backward_unchecked(self.end, taken) };
       
-              NonZeroUsize::new(n - taken).map_or(Ok(()), Err)
+              NonZero::new(n - taken).map_or(Ok(()), Err)
           }
       *)
       Definition spec_advance_back_by
@@ -8653,25 +8779,31 @@ Module iter.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -9031,7 +9163,7 @@ Module iter.
         end.
       
       (*
-          fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               self.spec_advance_by(n)
           }
       *)
@@ -9589,7 +9721,7 @@ Module iter.
         end.
       
       (*
-          fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               self.spec_advance_back_by(n)
           }
       *)
@@ -11102,11 +11234,11 @@ Module iter.
               let is_iterating = self.start < self.end;
               Some(if is_iterating {
                   // SAFETY: just checked precondition
-                  let n = unsafe { Step::forward_unchecked(self.start.clone(), 1) };
+                  let n = unsafe { Step::forward_unchecked(self.start, 1) };
                   mem::replace(&mut self.start, n)
               } else {
                   self.exhausted = true;
-                  self.start.clone()
+                  self.start
               })
           }
       *)
@@ -11197,21 +11329,12 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::clone::Clone",
-                                              T,
-                                              [],
-                                              "clone",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::ops::range::RangeInclusive",
-                                                "start"
-                                              |)
-                                            ]
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::ops::range::RangeInclusive",
+                                              "start"
+                                            |)
                                           |);
                                           Value.Integer 1
                                         ]
@@ -11241,23 +11364,10 @@ Module iter.
                                       |),
                                       Value.Bool true
                                     |) in
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::clone::Clone",
-                                        T,
-                                        [],
-                                        "clone",
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "start"
-                                        |)
-                                      ]
-                                    |)
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::ops::range::RangeInclusive",
+                                    "start"
                                   |)))
                             ]
                           |)
@@ -11284,7 +11394,7 @@ Module iter.
       
               while self.start < self.end {
                   // SAFETY: just checked precondition
-                  let n = unsafe { Step::forward_unchecked(self.start.clone(), 1) };
+                  let n = unsafe { Step::forward_unchecked(self.start, 1) };
                   let n = mem::replace(&mut self.start, n);
                   accum = f(accum, n)?;
               }
@@ -11292,7 +11402,7 @@ Module iter.
               self.exhausted = true;
       
               if self.start == self.end {
-                  accum = f(accum, self.start.clone())?;
+                  accum = f(accum, self.start)?;
               }
       
               try { accum }
@@ -11408,21 +11518,12 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::clone::Clone",
-                                            T,
-                                            [],
-                                            "clone",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::ops::range::RangeInclusive",
-                                              "start"
-                                            |)
-                                          ]
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::ops::range::RangeInclusive",
+                                            "start"
+                                          |)
                                         |);
                                         Value.Integer 1
                                       ]
@@ -11602,21 +11703,12 @@ Module iter.
                                               Value.Tuple
                                                 [
                                                   M.read (| accum |);
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::clone::Clone",
-                                                      T,
-                                                      [],
-                                                      "clone",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::ops::range::RangeInclusive",
-                                                        "start"
-                                                      |)
-                                                    ]
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::ops::range::RangeInclusive",
+                                                      "start"
+                                                    |)
                                                   |)
                                                 ]
                                             ]
@@ -11695,11 +11787,11 @@ Module iter.
               let is_iterating = self.start < self.end;
               Some(if is_iterating {
                   // SAFETY: just checked precondition
-                  let n = unsafe { Step::backward_unchecked(self.end.clone(), 1) };
+                  let n = unsafe { Step::backward_unchecked(self.end, 1) };
                   mem::replace(&mut self.end, n)
               } else {
                   self.exhausted = true;
-                  self.end.clone()
+                  self.end
               })
           }
       *)
@@ -11795,21 +11887,12 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::clone::Clone",
-                                              T,
-                                              [],
-                                              "clone",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::ops::range::RangeInclusive",
-                                                "end"
-                                              |)
-                                            ]
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::ops::range::RangeInclusive",
+                                              "end"
+                                            |)
                                           |);
                                           Value.Integer 1
                                         ]
@@ -11839,23 +11922,10 @@ Module iter.
                                       |),
                                       Value.Bool true
                                     |) in
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::clone::Clone",
-                                        T,
-                                        [],
-                                        "clone",
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "end"
-                                        |)
-                                      ]
-                                    |)
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::ops::range::RangeInclusive",
+                                    "end"
                                   |)))
                             ]
                           |)
@@ -11882,7 +11952,7 @@ Module iter.
       
               while self.start < self.end {
                   // SAFETY: just checked precondition
-                  let n = unsafe { Step::backward_unchecked(self.end.clone(), 1) };
+                  let n = unsafe { Step::backward_unchecked(self.end, 1) };
                   let n = mem::replace(&mut self.end, n);
                   accum = f(accum, n)?;
               }
@@ -11890,7 +11960,7 @@ Module iter.
               self.exhausted = true;
       
               if self.start == self.end {
-                  accum = f(accum, self.start.clone())?;
+                  accum = f(accum, self.start)?;
               }
       
               try { accum }
@@ -12006,21 +12076,12 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::clone::Clone",
-                                            T,
-                                            [],
-                                            "clone",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::ops::range::RangeInclusive",
-                                              "end"
-                                            |)
-                                          ]
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::ops::range::RangeInclusive",
+                                            "end"
+                                          |)
                                         |);
                                         Value.Integer 1
                                       ]
@@ -12200,21 +12261,12 @@ Module iter.
                                               Value.Tuple
                                                 [
                                                   M.read (| accum |);
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::clone::Clone",
-                                                      T,
-                                                      [],
-                                                      "clone",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::ops::range::RangeInclusive",
-                                                        "start"
-                                                      |)
-                                                    ]
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::ops::range::RangeInclusive",
+                                                      "start"
+                                                    |)
                                                   |)
                                                 ]
                                             ]

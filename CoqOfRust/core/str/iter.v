@@ -141,7 +141,7 @@ Module str.
         end.
       
       (*
-          fn advance_by(&mut self, mut remainder: usize) -> Result<(), NonZeroUsize> {
+          fn advance_by(&mut self, mut remainder: usize) -> Result<(), NonZero<usize>> {
               const CHUNK_SIZE: usize = 32;
       
               if remainder >= CHUNK_SIZE {
@@ -186,7 +186,7 @@ Module str.
                   unsafe { self.iter.advance_by(slurp).unwrap_unchecked() };
               }
       
-              NonZeroUsize::new(remainder).map_or(Ok(()), Err)
+              NonZero::new(remainder).map_or(Ok(()), Err)
           }
       *)
       Definition advance_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -515,7 +515,13 @@ Module str.
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
+                                  [
+                                    Ty.tuple [];
+                                    Ty.apply
+                                      (Ty.path "core::num::nonzero::NonZero")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
                                 "unwrap_unchecked",
                                 []
                               |),
@@ -641,7 +647,10 @@ Module str.
                                               []
                                               [
                                                 Ty.tuple [];
-                                                Ty.path "core::num::nonzero::NonZeroUsize"
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "usize" ]
                                               ],
                                             "unwrap_unchecked",
                                             []
@@ -775,7 +784,13 @@ Module str.
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
+                                      [
+                                        Ty.tuple [];
+                                        Ty.apply
+                                          (Ty.path "core::num::nonzero::NonZero")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
                                     "unwrap_unchecked",
                                     []
                                   |),
@@ -824,25 +839,31 @@ Module str.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -994,12 +1015,7 @@ Module str.
                                     "new_const",
                                     []
                                   |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array [ M.read (| Value.String "Chars(" |) ]
-                                      |))
+                                  [ M.alloc (| Value.Array [ M.read (| Value.String "Chars(" |) ] |)
                                   ]
                                 |)
                               ]
@@ -1194,11 +1210,7 @@ Module str.
                                     "new_const",
                                     []
                                   |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (| Value.Array [ M.read (| Value.String ")" |) ] |))
-                                  ]
+                                  [ M.alloc (| Value.Array [ M.read (| Value.String ")" |) ] |) ]
                                 |)
                               ]
                             |)
@@ -1471,23 +1483,19 @@ Module str.
                 M.read (| f |);
                 M.read (| Value.String "CharIndices" |);
                 M.read (| Value.String "front_offset" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::iter::CharIndices",
+                  "front_offset"
+                |);
+                M.read (| Value.String "iter" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::str::iter::CharIndices",
-                    "front_offset"
-                  |));
-                M.read (| Value.String "iter" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::iter::CharIndices",
-                      "iter"
-                    |)
-                  |))
+                    "iter"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -1986,15 +1994,13 @@ Module str.
               [
                 M.read (| f |);
                 M.read (| Value.String "Bytes" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::Bytes",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -2809,53 +2815,43 @@ Module str.
                                       |)
                                     |);
                                     M.read (| Value.String "start" |);
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::str::iter::SplitInternal",
-                                        "start"
-                                      |))
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::str::iter::SplitInternal",
+                                      "start"
+                                    |)
                                   ]
                                 |);
                                 M.read (| Value.String "end" |);
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::str::iter::SplitInternal",
-                                    "end"
-                                  |))
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::iter::SplitInternal",
+                                  "end"
+                                |)
                               ]
                             |);
                             M.read (| Value.String "matcher" |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::str::iter::SplitInternal",
-                                "matcher"
-                              |))
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::str::iter::SplitInternal",
+                              "matcher"
+                            |)
                           ]
                         |);
                         M.read (| Value.String "allow_trailing_empty" |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::str::iter::SplitInternal",
-                            "allow_trailing_empty"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::iter::SplitInternal",
+                          "allow_trailing_empty"
+                        |)
                       ]
                     |);
                     M.read (| Value.String "finished" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::SplitInternal",
-                        "finished"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::iter::SplitInternal",
+                      "finished"
+                    |)
                   ]
                 |)
               ]
@@ -3400,7 +3396,7 @@ Module str.
       (*
           fn next_back(&mut self) -> Option<&'a str>
           where
-              P::Searcher: ReverseSearcher<'a>,
+              P::Searcher<'a>: ReverseSearcher<'a>,
           {
               if self.finished {
                   return None;
@@ -3745,7 +3741,7 @@ Module str.
       (*
           fn next_back_inclusive(&mut self) -> Option<&'a str>
           where
-              P::Searcher: ReverseSearcher<'a>,
+              P::Searcher<'a>: ReverseSearcher<'a>,
           {
               if self.finished {
                   return None;
@@ -4252,13 +4248,11 @@ Module str.
                         [ M.read (| f |); M.read (| Value.String "Split" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::Split",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::Split",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -4414,13 +4408,11 @@ Module str.
                         [ M.read (| f |); M.read (| Value.String "RSplit" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::RSplit",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::RSplit",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -4753,13 +4745,11 @@ Module str.
                         [ M.read (| f |); M.read (| Value.String "SplitTerminator" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::SplitTerminator",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::SplitTerminator",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -4918,13 +4908,11 @@ Module str.
                         [ M.read (| f |); M.read (| Value.String "RSplitTerminator" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::RSplitTerminator",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::RSplitTerminator",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -5332,23 +5320,19 @@ Module str.
                           |)
                         |);
                         M.read (| Value.String "iter" |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::str::iter::SplitNInternal",
-                            "iter"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::iter::SplitNInternal",
+                          "iter"
+                        |)
                       ]
                     |);
                     M.read (| Value.String "count" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::SplitNInternal",
-                        "count"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::str::iter::SplitNInternal",
+                      "count"
+                    |)
                   ]
                 |)
               ]
@@ -5474,7 +5458,7 @@ Module str.
       (*
           fn next_back(&mut self) -> Option<&'a str>
           where
-              P::Searcher: ReverseSearcher<'a>,
+              P::Searcher<'a>: ReverseSearcher<'a>,
           {
               match self.count {
                   0 => None,
@@ -5658,13 +5642,11 @@ Module str.
                         [ M.read (| f |); M.read (| Value.String "SplitN" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::SplitN",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::SplitN",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -5820,13 +5802,11 @@ Module str.
                         [ M.read (| f |); M.read (| Value.String "RSplitN" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::RSplitN",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::RSplitN",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -6124,13 +6104,11 @@ Module str.
                         [ M.read (| f |); M.read (| Value.String "MatchIndicesInternal" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::MatchIndicesInternal",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::MatchIndicesInternal",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -6266,7 +6244,7 @@ Module str.
       (*
           fn next_back(&mut self) -> Option<(usize, &'a str)>
           where
-              P::Searcher: ReverseSearcher<'a>,
+              P::Searcher<'a>: ReverseSearcher<'a>,
           {
               self.0
                   .next_match_back()
@@ -6429,13 +6407,11 @@ Module str.
                         [ M.read (| f |); M.read (| Value.String "MatchIndices" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::MatchIndices",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::MatchIndices",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -6595,13 +6571,11 @@ Module str.
                         [ M.read (| f |); M.read (| Value.String "RMatchIndices" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::RMatchIndices",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::RMatchIndices",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -6914,13 +6888,11 @@ Module str.
                         [ M.read (| f |); M.read (| Value.String "MatchesInternal" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::MatchesInternal",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::MatchesInternal",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -7050,7 +7022,7 @@ Module str.
       (*
           fn next_back(&mut self) -> Option<&'a str>
           where
-              P::Searcher: ReverseSearcher<'a>,
+              P::Searcher<'a>: ReverseSearcher<'a>,
           {
               // SAFETY: `Searcher` guarantees that `start` and `end` lie on unicode boundaries.
               self.0.next_match_back().map(|(a, b)| unsafe {
@@ -7206,13 +7178,11 @@ Module str.
                         [ M.read (| f |); M.read (| Value.String "Matches" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::Matches",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::Matches",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -7368,13 +7338,11 @@ Module str.
                         [ M.read (| f |); M.read (| Value.String "RMatches" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::RMatches",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::RMatches",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -7667,15 +7635,13 @@ Module str.
               [
                 M.read (| f |);
                 M.read (| Value.String "Lines" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::Lines",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::str::iter::Lines",
+                    0
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -7859,6 +7825,43 @@ Module str.
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_str_iter_Lines.
     
+    Module Impl_core_str_iter_Lines.
+      Definition Self : Ty.t := Ty.path "core::str::iter::Lines".
+      
+      (*
+          pub fn remainder(&self) -> Option<&'a str> {
+              self.0.iter.remainder()
+          }
+      *)
+      Definition remainder (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ Ty.path "char" ],
+                "remainder",
+                []
+              |),
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::str::iter::Lines",
+                    0
+                  |),
+                  "core::iter::adapters::map::Map",
+                  "iter"
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_remainder : M.IsAssociatedFunction Self "remainder" remainder.
+    End Impl_core_str_iter_Lines.
+    
     (* StructTuple
       {
         name := "LinesAny";
@@ -7926,15 +7929,13 @@ Module str.
               [
                 M.read (| f |);
                 M.read (| Value.String "LinesAny" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::LinesAny",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::str::iter::LinesAny",
+                    0
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -8167,15 +8168,13 @@ Module str.
                 M.read (| f |);
                 M.read (| Value.String "SplitWhitespace" |);
                 M.read (| Value.String "inner" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::iter::SplitWhitespace",
-                      "inner"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::iter::SplitWhitespace",
+                    "inner"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -8292,15 +8291,13 @@ Module str.
                 M.read (| f |);
                 M.read (| Value.String "SplitAsciiWhitespace" |);
                 M.read (| Value.String "inner" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::iter::SplitAsciiWhitespace",
-                      "inner"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::iter::SplitAsciiWhitespace",
+                    "inner"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -8920,13 +8917,11 @@ Module str.
                       |)
                     |);
                     M.read (| Value.String "0" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::str::iter::SplitInclusive",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::str::iter::SplitInclusive",
+                      0
+                    |)
                   ]
                 |)
               ]
@@ -9322,10 +9317,7 @@ Module str.
                                                       "encode_utf16",
                                                       []
                                                     |),
-                                                    [
-                                                      M.read (| ch |);
-                                                      (* Unsize *) M.pointer_coercion buf
-                                                    ]
+                                                    [ M.read (| ch |); buf ]
                                                   |)
                                                 ]
                                               |)
@@ -9624,15 +9616,13 @@ Module str.
                 M.read (| f |);
                 M.read (| Value.String "EscapeDebug" |);
                 M.read (| Value.String "inner" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::iter::EscapeDebug",
-                      "inner"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::iter::EscapeDebug",
+                    "inner"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -9733,15 +9723,13 @@ Module str.
                 M.read (| f |);
                 M.read (| Value.String "EscapeDefault" |);
                 M.read (| Value.String "inner" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::iter::EscapeDefault",
-                      "inner"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::iter::EscapeDefault",
+                    "inner"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -9842,15 +9830,13 @@ Module str.
                 M.read (| f |);
                 M.read (| Value.String "EscapeUnicode" |);
                 M.read (| Value.String "inner" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::iter::EscapeUnicode",
-                      "inner"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::iter::EscapeUnicode",
+                    "inner"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
