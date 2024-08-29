@@ -21,7 +21,7 @@ Module Function := loader.Function.
 Module Resolver := loader.Resolver.
 
 (* TODO(progress):
-- Implement `Stack`'s `push` and `pop` operations
+- (FOCUS)Implement `Stack`'s `push` and `pop` operations
 - Write the basic framework for that function
 *)
 

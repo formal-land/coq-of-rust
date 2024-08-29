@@ -9,7 +9,7 @@ Import simulations.M.Notations.
 - Implement `Locals`
 *)
 
-(* NOTE: STUBs: Only implement if necessary *)
+(* NOTE(STUB): Only implement if necessary *)
 
 Module AccountAddress.
   Inductive t : Set := .
